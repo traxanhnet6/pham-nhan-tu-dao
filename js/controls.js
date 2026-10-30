@@ -315,13 +315,41 @@
     return clampZoom(z0 * (dNow / dStart));
   }
 
+  /* ---------- Tỷ lệ khung hình (lệnh Bui 20:12 30/10) ---------- */
+  // Người chơi web tự chọn khung hiển thị hợp thiết bị: Tự động (giữ
+  // nguyên hành vi cũ) / 16:9 / 4:3 / 9:16 / 3:4. Khung áp lên
+  // #gameWrap (canvas + mọi lớp phủ + lớp cảm ứng đều nằm trong đó):
+  // wrap được cấp đúng kích thước khung, canvas GIỮ TỈ LỆ GỐC 4:3
+  // căn giữa trong khung (contain), phần khung thừa là nền tối.
+  var FRAME_RATIOS = { '16:9': 16 / 9, '4:3': 4 / 3, '9:16': 9 / 16, '3:4': 3 / 4 };
+  var FRAME_IDS = ['auto', '16:9', '4:3', '9:16', '3:4'];
+  // Thuần (test được): khung lớn nhất đúng tỉ lệ chứa vừa trong
+  // availW x availH, căn giữa qua offset x/y. 'auto' = không áp khung
+  // (trả lại nguyên vùng khả dụng, cờ auto để bên gọi dọn style).
+  function computeFrame(frameId, availW, availH) {
+    var W = Math.max(0, Math.floor(availW || 0)), H = Math.max(0, Math.floor(availH || 0));
+    var r = FRAME_RATIOS[frameId];
+    if (!r) return { auto: true, w: W, h: H, x: 0, y: 0 };
+    var w = Math.min(W, Math.floor(H * r));
+    var h = Math.floor(w / r);
+    if (h > H) { h = H; w = Math.floor(h * r); }
+    return { auto: false, w: w, h: h, x: Math.floor((W - w) / 2), y: Math.floor((H - h) / 2) };
+  }
+  // Canvas 768x576 (4:3) contain trong khung: không bao giờ méo hình.
+  function computeCanvasFit(frameW, frameH) {
+    var w = Math.min(frameW, Math.floor(frameH * 4 / 3));
+    var h = Math.floor(w * 3 / 4);
+    if (h > frameH) { h = frameH; w = Math.floor(h * 4 / 3); }
+    return { w: w, h: h };
+  }
+
   /* ---------- Cài đặt: mặc định / chuẩn hoá / lưu trữ ---------- */
   function defaultSettings() {
     return {
       keys: cloneKeys(null),
       pad: { enabled: true, map: null },
       touch: { show: 'auto', mode: 'joystick', float: true, size: 1, opacity: 0.85 },
-      view: { orient: 'auto', zoom: 1 }
+      view: { orient: 'auto', zoom: 1, frame: 'auto', ticker: true, ambientFx: true }
     };
   }
   function clampNum(v, a, b, dft) {
@@ -347,6 +375,9 @@
     if (raw.view && typeof raw.view === 'object') {
       if (['auto', 'ngang', 'doc', 'full'].indexOf(raw.view.orient) >= 0) s.view.orient = raw.view.orient;
       s.view.zoom = clampZoom(raw.view.zoom == null ? 1 : raw.view.zoom);
+      if (FRAME_IDS.indexOf(raw.view.frame) >= 0) s.view.frame = raw.view.frame;
+      if (typeof raw.view.ticker === 'boolean') s.view.ticker = raw.view.ticker;
+      if (typeof raw.view.ambientFx === 'boolean') s.view.ambientFx = raw.view.ambientFx;
     }
     return s;
   }
@@ -451,7 +482,8 @@
 
   /* ---------- CSS (tiêm 1 lần) ---------- */
   var CSS = [
-    '#ctlOverlay{position:absolute;inset:0;pointer-events:none;z-index:8;display:none}',
+    '#ctlOverlay{position:absolute;inset:0;pointer-events:none;z-index:4;display:none}', // QA (c) 16:01 30/10: dưới panel/hộp thoại (z-index 5) để cú chạm vào panel không bị nút chiêu/joystick/zoom chặn, vẫn trên canvas (không z-index) nên khi không mở panel thì cảm ứng vẫn ăn.
+    '#gameWrap.pnt-framed{background:#14100b;display:flex;align-items:center;justify-content:center;border:3px solid #8b5a2b;border-radius:8px;margin:0 auto}', // Lệnh Bui 20:12: khung tỷ lệ đã chọn — nền tối liền mạch quanh canvas contain 4:3.
     '#ctlOverlay.on{display:block}',
     '#ctlOverlay .ctl-el{position:absolute;pointer-events:auto;touch-action:none;user-select:none;-webkit-user-select:none}',
     '#ctlJoyZone{left:0;bottom:0;width:46%;height:58%;pointer-events:auto;touch-action:none}',
@@ -591,7 +623,50 @@
     var sk = el.querySelector ? el.querySelector('.sk') : null;
     if (sk) sk.style.fontSize = Math.max(10, d * 0.17) + 'px'; // số phím/hồi chiêu giữ đọc rõ ở cỡ mới
   }
+  // Áp tỷ lệ khung hình đã chọn lên #gameWrap (lệnh Bui 20:12):
+  // vùng khả dụng = bề ngang cột game x (chiều cao cửa sổ - phần trên
+  // wrap - chiều cao các khối dưới wrap đo thật + đệm). 'auto' thì
+  // dọn style nội tuyến, trả wrap về CSS gốc (hành vi cũ nguyên vẹn).
+  // Layout cảm ứng tự theo vì positionOverlay đọc clientWidth/Height
+  // của wrap; zoom map là zoom camera trong canvas nên không xung đột.
+  function applyFrame() {
+    var wrap = $('gameWrap');
+    if (!wrap) return;
+    var cv = $('gameCanvas');
+    var fid = settings.view.frame || 'auto';
+    if (!FRAME_RATIOS[fid]) {
+      wrap.style.width = ''; wrap.style.height = '';
+      wrap.classList.remove('pnt-framed');
+      if (cv) { cv.style.width = ''; cv.style.height = ''; }
+      return;
+    }
+    var sg = $('screen-game');
+    if (sg && sg.style.display === 'none') return; // chưa vào game: không đo
+    var availW = wrap.parentNode && wrap.parentNode.clientWidth ? wrap.parentNode.clientWidth : window.innerWidth;
+    var rect = wrap.getBoundingClientRect();
+    var below = 0;
+    if (wrap.parentNode) {
+      var seen = false;
+      Array.prototype.forEach.call(wrap.parentNode.children, function (c) {
+        if (c === wrap) { seen = true; return; }
+        if (seen) below += (c.offsetHeight || 0);
+      });
+    }
+    var availH = window.innerHeight - rect.top - below - 28;
+    if (availH < 200) availH = 200;
+    var box = computeFrame(fid, availW, availH);
+    wrap.style.width = box.w + 'px';
+    wrap.style.height = box.h + 'px';
+    wrap.classList.add('pnt-framed');
+    if (cv) {
+      var fit = computeCanvasFit(box.w, box.h);
+      cv.style.width = fit.w + 'px';
+      cv.style.height = fit.h + 'px';
+    }
+    if (els.ov) positionOverlay();
+  }
   function applyLayout() {
+    applyFrame();
     var wrap = $('gameWrap');
     if (!wrap || !els.ov) return;
     var orient = settings.view.orient;
@@ -1027,10 +1102,16 @@
       [['auto', 'Tự động theo máy'], ['ngang', 'Khóa ngang'], ['doc', 'Khóa dọc'], ['full', 'Toàn màn hình (ngang)']].map(function (o) {
         return '<option value="' + o[0] + '"' + (settings.view.orient === o[0] ? ' selected' : '') + '>' + o[1] + '</option>';
       }).join('') + '</select>');
+    html += row('Tỷ lệ khung hình', '<select id="ctlFrame">' +
+      [['auto', 'Tự động (như cũ)'], ['16:9', '16:9 — ngang (PC / điện thoại ngang)'], ['4:3', '4:3 — ngang cổ điển'], ['9:16', '9:16 — dọc (điện thoại)'], ['3:4', '3:4 — dọc gần vuông']].map(function (o) {
+        return '<option value="' + o[0] + '"' + ((settings.view.frame || 'auto') === o[0] ? ' selected' : '') + '>' + o[1] + '</option>';
+      }).join('') + '</select>');
     html += row('Zoom map', '<input type="range" id="ctlZoomRange" min="0.6" max="2" step="0.05" value="' + zoom() + '"> <span>' + Math.round(zoom() * 100) + '%</span>' +
       '<button class="kbtn" id="ctlZoomResetBtn">Về 100%</button>');
     html += row('Toàn màn hình', '<button class="kbtn" id="ctlFsBtn">Bật toàn màn hình</button>');
-    html += '<p style="font-size:12px;color:#6b5836">Zoom: pinch 2 ngón / nút + − trên màn hình / lăn chuột trên map; chạm 2 lần (double-tap) để về 100%. Tay cầm: cần trái hoặc D-pad để đi, cắm là nhận.</p>';
+    html += row('Thanh sự kiện trực tiếp', '<input type="checkbox" id="ctlTicker"' + (settings.view.ticker !== false ? ' checked' : '') + '> <span style="font-size:12px">Dải 1 dòng ở mép trên khung: bí cảnh, thú triều, vết nứt, chợ phiên (lệnh 20:22)</span>');
+    html += row('Hiệu ứng môi trường', '<input type="checkbox" id="ctlAmbient"' + (settings.view.ambientFx !== false ? ' checked' : '') + '> <span style="font-size:12px">Lá rơi + bướm ở làng (tự tắt ở đồ hoạ Thấp)</span>');
+    html += '<p style="font-size:12px;color:#6b5836">Tỷ lệ khung hình áp ngay khi chọn: khung game co đúng tỷ lệ, căn giữa, phần ngoài là nền tối; tranh trong khung giữ nguyên tỉ lệ gốc nên không méo. Zoom: pinch 2 ngón / nút + − trên màn hình / lăn chuột trên map; chạm 2 lần (double-tap) để về 100%. Tay cầm: cần trái hoặc D-pad để đi, cắm là nhận.</p>';
     body.innerHTML = html;
     bindSettingsPanel();
   }
@@ -1081,6 +1162,15 @@
       persist();
       if (orient.value === 'full') requestFullscreen(true);
     });
+    var frameSel = q('ctlFrame');
+    if (frameSel) frameSel.addEventListener('change', function () {
+      settings.view.frame = frameSel.value; // lệnh Bui 20:12: áp ngay qua persist -> applyAll -> applyFrame, không tải lại trang
+      persist();
+    });
+    var tickerCb = q('ctlTicker');
+    if (tickerCb) tickerCb.addEventListener('change', function () { settings.view.ticker = tickerCb.checked; persist(); });
+    var ambientCb = q('ctlAmbient');
+    if (ambientCb) ambientCb.addEventListener('change', function () { settings.view.ambientFx = ambientCb.checked; persist(); });
     var zr = q('ctlZoomRange');
     if (zr) zr.addEventListener('input', function () { settings.view.zoom = clampZoom(zr.value); persist(); renderSettingsPanel(); });
     var zReset = q('ctlZoomResetBtn');
@@ -1166,6 +1256,7 @@
     PAD_DEADZONE: PAD_DEADZONE,
     LAYOUTS: LAYOUTS, pickLayout: pickLayout,
     MIN_TOUCH: MIN_TOUCH, touchHit: touchHit,
+    FRAME_RATIOS: FRAME_RATIOS, FRAME_IDS: FRAME_IDS, computeFrame: computeFrame, computeCanvasFit: computeCanvasFit,
     ZOOM_MIN: ZOOM_MIN, ZOOM_MAX: ZOOM_MAX,
     clampZoom: clampZoom, stepZoom: stepZoom, pinchZoom: pinchZoom,
     defaultSettings: defaultSettings, normalizeSettings: normalizeSettings,

@@ -149,7 +149,11 @@
     hat_huyet_sam: { id: 'hat_huyet_sam', herb: 'huyet_sam', price: 60, growMs: 4 * HOUR },
     hat_doc_tam_hoa: { id: 'hat_doc_tam_hoa', herb: 'doc_tam_hoa', price: 80, growMs: 4 * HOUR },
     hat_ngoc_tuy_chi: { id: 'hat_ngoc_tuy_chi', herb: 'ngoc_tuy_chi', price: 150, growMs: 8 * HOUR },
-    hat_thanh_linh_tuy: { id: 'hat_thanh_linh_tuy', herb: 'thanh_linh_tuy', price: 200, growMs: 12 * HOUR }
+    hat_thanh_linh_tuy: { id: 'hat_thanh_linh_tuy', herb: 'thanh_linh_tuy', price: 200, growMs: 12 * HOUR },
+    // Hạt Lúa Linh (mục 21 hàng chờ): chỉ có từ kỳ ngộ nguồn gốc NV06,
+    // gieo theo đúng luật hạt giống sẵn có nhưng KHÔNG bán ở cửa phủ
+    // (noShop) — game.js lọc khỏi danh sách mua, buySeed chặn mua.
+    hat_lua_linh: { id: 'hat_lua_linh', herb: 'lua_linh', price: 0, growMs: 2 * HOUR, noShop: true }
   };
   function seedOfHerb(herbId) {
     var ids = Object.keys(SEEDS);
@@ -463,6 +467,7 @@
   function buySeed(ch, seedId, n) {
     var def = SEEDS[seedId];
     if (!def || !L) return { ok: false, reason: 'noseed' };
+    if (def.noShop) return { ok: false, reason: 'noshop' };
     n = Math.max(1, Math.floor(num(n, 1)));
     var cost = def.price * n;
     if ((ch.linhThach || 0) < cost) return { ok: false, reason: 'linhThach', need: cost };

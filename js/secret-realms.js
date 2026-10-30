@@ -122,12 +122,422 @@
           { kind: 'item', id: 'thit_lon', n: 1, chance: 1 },
           { kind: 'item', id: 'bt_gen_luu_sa', n: 1, chance: 0.25 }
         ]
+      },
+      // ----- KỲ NGỘ NGUỒN GỐC NHÓM A (mục 20 hàng chờ,
+      // docs/origins-and-encounters.md mục 2–3). Khác 3 mẫu thường ở:
+      // originOnly + originId (chỉ nguồn gốc đó mới được mời, xem
+      // pickOriginTemplate), trigger (loại sự kiện / map / tầng tối
+      // thiểu / nhiệm vụ trục đã trả), peaceful (không quái gác —
+      // vào là hiện lựa chọn, không phải dọn quái), choices (mỗi lựa
+      // chọn mang bảng thưởng RIÊNG, đều trong trần fate: LT ≤ 50,
+      // tu vi ≤ 80, tỉ lệ Huyền ≤ 0,4). rewards của mẫu để trống vì
+      // thưởng nằm ở lựa chọn; rollRewards chỉ trả khi run đã chọn.
+      {
+        id: 'og_nv01', originOnly: true, originId: 'nv01', name: 'Vết Chém Trên Cột Đá',
+        story: 'Động đá sau rặng trúc, giữa động là cột đá khắc đầy vết chém luyện kiếm của đội hộ vệ cũ. Vết chém cuối cùng còn dở dang một chiêu kiếm — chính là chiêu cha ngươi từng luyện.',
+        trigger: { kind: 'kill', mapIds: ['map2'], turned: ['q_chinh_6'] },
+        spawns: [
+          { type: 'soi_rung', x: 10, y: 7 }, { type: 'soi_rung', x: 10, y: 9 },
+          { type: 'soi_rung', x: 16, y: 7 }
+        ],
+        rewards: [],
+        choices: [
+          { id: 'mai_kiem', label: 'Mài lại kiếm gỉ bằng đá linh trong động',
+            text: 'Ngươi mài Kiếm Gỉ Của Cha bằng đá linh — gỉ hết, chiêu dở dang trên cột đã ngộ. Danh dự của cha không phải đồ để chém thuê: kiếm đã mài vẫn là vật ký danh, không thành vũ khí.',
+            fromToken: 'kiem_gi_cua_cha',
+            rewards: [
+              { kind: 'tuvi', n: 60, chance: 1 }, { kind: 'linhThach', n: 40, chance: 1 },
+              { kind: 'item', id: 'kiem_cua_cha_da_mai', n: 1, chance: 1 },
+              { kind: 'artifact', grade: 'huyen', chance: 0.4 }
+            ] },
+          { id: 'de_nguyen', label: 'Để nguyên vết gỉ, như lời nhắc đường còn dài',
+            text: 'Ngươi để nguyên vết gỉ — đường còn dài, gỉ là lời nhắc. Ngộ sâu hơn từ chính vết chém dở dang trên cột.',
+            rewards: [
+              { kind: 'tuvi', n: 80, chance: 1 }, { kind: 'linhThach', n: 40, chance: 1 },
+              { kind: 'artifact', grade: 'huyen', chance: 0.4 }
+            ] }
+        ]
+      },
+      {
+        id: 'og_nv02', originOnly: true, originId: 'nv02', name: 'Động Đá Tàn Thư',
+        story: 'Động đá nhỏ sau suối linh, tàn thư của một tu sĩ vô danh kẹp trong kẽ đá — một thiên thổ nạp cổ chép dở. Bầy khỉ mặt đỏ tha sách làm ổ quanh đó.',
+        trigger: { kind: 'gather', minTier: 1 },
+        spawns: [
+          { type: 'khi_mat_do', x: 10, y: 7 }, { type: 'khi_mat_do', x: 10, y: 9 },
+          { type: 'khi_mat_do', x: 16, y: 7 }
+        ],
+        rewards: [],
+        choices: [
+          { id: 'chep_ve', label: 'Chép lại mang về',
+            text: 'Ngươi chép lại thiên thổ nạp cổ mang về — bán bản chép cho thương đội, đúng việc thư sinh vẫn làm. Bầy khỉ mặt đỏ tha sách làm ổ đã bị ngươi đánh tan lúc nãy, động đá từ nay yên.',
+            rewards: [ { kind: 'tuvi', n: 40, chance: 1 }, { kind: 'linhThach', n: 30, chance: 1 } ] },
+          { id: 'ngay_tai_cho', label: 'Đọc tại chỗ, ngộ tại chỗ',
+            text: 'Ngươi ngồi trong động đọc hết thiên thổ nạp cổ, ngộ ngay tại chỗ — không Linh Thạch, chỉ có tu vi. Bầy khỉ mặt đỏ bị đánh tan lúc nãy không dám quay lại quấy nữa.',
+            rewards: [ { kind: 'tuvi', n: 80, chance: 1 } ] }
+        ]
+      },
+      {
+        id: 'og_nv04', originOnly: true, originId: 'nv04', name: 'Linh Thú Bị Thương',
+        story: 'Khoảnh rừng yên tĩnh — một con linh hồ non bị thương ở chân vì bẫy cũ của thợ săn vô danh. Nó không đánh nhau, chỉ nhìn ngươi, chân run run.',
+        trigger: { kind: 'kill', mapIds: ['map2'], minTier: 1 },
+        peaceful: true, spawns: [], rewards: [],
+        choices: [
+          { id: 'bang_bo', label: 'Băng bó rồi thả đi',
+            text: 'Ngươi băng chân cho linh hồ non rồi thả nó về rừng. Nó để lại một chiếc lông, liếm tay ngươi một cái rồi chạy vào rừng sâu — rừng này từ nay nhớ ân của ngươi.',
+            flag: 'an_rung',
+            rewards: [
+              { kind: 'tuvi', n: 40, chance: 1 }, { kind: 'linhThach', n: 30, chance: 1 },
+              { kind: 'item', id: 'long_linh_ho', n: 1, chance: 1 }
+            ] },
+          { id: 'thu_phuc', label: 'Thu phục ngay (cần Bùa Ngự Thú, tỉ lệ theo luật thường)',
+            text: 'Ngươi giơ Bùa Ngự Thú về phía linh hồ non bị thương — tỉ lệ theo đúng luật thu phục (hồ non phẩm 1, chân bị thương tính như máu còn 25%). Trượt thì mất bùa như luật thường, nhưng kỳ ngộ vẫn tính đã gặp.',
+            capture: 'ho_ly', captureHpPct: 0.25,
+            rewards: [ { kind: 'linhThach', n: 30, chance: 1 } ] }
+        ]
+      },
+      {
+        id: 'og_nv07', originOnly: true, originId: 'nv07', name: 'Chuyến Tiêu Cuối Cùng',
+        story: 'Đoạn đường rừng có xe tiêu cũ lật nghiêng từ nhiều năm trước, sói rừng làm ổ quanh xe. Dưới gầm xe là Hộp Tiêu Thư niêm phong của cha ngươi.',
+        trigger: { kind: 'kill', mapIds: ['map2'], turned: ['q_chinh_6'] },
+        spawns: [
+          { type: 'soi_rung', x: 10, y: 7 }, { type: 'soi_rung', x: 10, y: 9 },
+          { type: 'soi_rung', x: 16, y: 7 }
+        ],
+        rewards: [],
+        choices: [
+          { id: 'mo_hop', label: 'Mở hộp ngay',
+            text: 'Ngươi mở Hộp Tiêu Thư ngay — trong hộp là tiền tiêu còn sót và một đoạn thư cha dặn đường.',
+            rewards: [ { kind: 'linhThach', n: 50, chance: 1 }, { kind: 'tuvi', n: 50, chance: 1 } ] },
+          { id: 'mang_ve', label: 'Mang nguyên niêm phong về cho cha',
+            text: 'Ngươi mang hộp còn nguyên niêm phong về làng. Đoạn thư trong hộp hé ra chuyện chuyến tiêu bí mật năm xưa mà mười tông môn đều muốn biết — giữ nguyên niêm phong, có ngày đoạn thư này tự tìm tới lúc cần mở.',
+            flag: 'nv07_hop_tieu',
+            rewards: [
+              { kind: 'artifact', grade: 'huyen', chance: 0.4 }
+            ] }
+        ]
+      },
+      {
+        id: 'og_nv08', originOnly: true, originId: 'nv08', name: 'Linh Điền Sau Mưa',
+        story: 'Một góc linh điền sau mưa — "dược linh", đốm sáng nhỏ giữ vườn từ thời mạt pháp, cho ngươi hái. Nó không đánh nhau, chỉ nhìn xem tay ngươi hái ra sao.',
+        trigger: { kind: 'gather', minTier: 1 },
+        peaceful: true, spawns: [], rewards: [],
+        choices: [
+          { id: 'hai_vua_du', label: 'Hái vừa đủ',
+            text: 'Ngươi hái vừa đủ, để vườn còn sống — dược linh sáng lên một nhịp như gật đầu. Duyên với mảnh điền này, từ nay còn đó.',
+            flag: 'duyen_dien',
+            rewards: [
+              { kind: 'item', id: 'linh_chi', n: 3, chance: 1 },
+              { kind: 'item', id: 'thao_duoc', n: 3, chance: 1 },
+              { kind: 'linhThach', n: 30, chance: 1 }, { kind: 'tuvi', n: 40, chance: 1 }
+            ] },
+          { id: 'hai_sach', label: 'Hái sạch một lần',
+            text: 'Ngươi hái sạch một lần — thêm Linh Thạch, nhưng vườn tàn, dược linh tắt. Lựa chọn tham lam có giá, không lặp lại được.',
+            rewards: [
+              { kind: 'item', id: 'linh_chi', n: 3, chance: 1 },
+              { kind: 'item', id: 'thao_duoc', n: 3, chance: 1 },
+              { kind: 'linhThach', n: 50, chance: 1 }, { kind: 'tuvi', n: 40, chance: 1 }
+            ] }
+        ]
+      },
+      {
+        id: 'og_nv10', originOnly: true, originId: 'nv10', name: 'Dấu Chân Không Thuộc Về Thú Nào',
+        story: 'Lần theo dấu chân lạ qua bãi đá tới một ổ thú bỏ hoang — trong ổ có dấu của một con thú không thuộc loài nào quanh Thanh Sơn. Dấu còn mới, đi tiếp hay đánh dấu đường về?',
+        trigger: { kind: 'kill', mapIds: ['map2', 'map4'], minTier: 2 },
+        spawns: [ { type: 'soi_rung', x: 12, y: 7, elite: true } ],
+        rewards: [],
+        choices: [
+          { id: 'duoi_theo', label: 'Đuổi theo dấu ngay',
+            text: 'Ngươi đuổi theo dấu và hạ con thú lạ canh ổ — trong ổ, hình như còn một quả trứng linh thú.',
+            rewards: [
+              { kind: 'tuvi', n: 30, chance: 1 }, { kind: 'linhThach', n: 40, chance: 1 },
+              { kind: 'egg', chance: 0.25 }
+            ] },
+          { id: 'danh_dau', label: 'Đánh dấu đường rồi về',
+            text: 'Ngươi đánh dấu đường giữ rừng rồi về làng — dấu này về sau thành đường tắt vào điểm linh mạch tranh chấp mà các tông môn đang giành nhau.',
+            flag: 'duong_giu_rung',
+            rewards: [ { kind: 'tuvi', n: 80, chance: 1 } ] }
+        ]
+      },
+      // ----- KỲ NGỘ NGUỒN GỐC NHÓM B DẠNG FATE (mục 21 hàng chờ,
+      // docs/origins-and-encounters.md mục 2–3): cùng khuôn nhóm A —
+      // originOnly + trigger + 2 lựa chọn, thưởng trong trần fate
+      // (LT ≤ 50, tu vi ≤ 80, tỉ lệ Huyền ≤ 0,4, không vũ khí).
+      {
+        id: 'og_nv06', originOnly: true, originId: 'nv06', name: 'Mảnh Ruộng Phát Sáng',
+        story: 'Mảnh ruộng hoang sau cơn mưa linh, đất phát sáng mờ — gà rừng với khỉ mặt đỏ lảng vảng quanh như giữ ruộng. Ngươi mang theo Hạt Giống Lúa Cũ Của Bà: gieo xuống đây, lúa sẽ nảy mầm ngay trong linh khí.',
+        trigger: { kind: 'gather', mapIds: ['map1'], minTier: 1 },
+        spawns: [
+          { type: 'ga_rung', x: 10, y: 7 }, { type: 'ga_rung', x: 10, y: 9 },
+          { type: 'khi_mat_do', x: 16, y: 7 }
+        ],
+        rewards: [],
+        choices: [
+          { id: 'de_lai_nua', label: 'Gieo hạt, để lại một nửa lúa cho làng',
+            text: 'Ngươi gieo Hạt Giống Lúa Cũ xuống mảnh ruộng linh — lúa nảy mầm ngay, một nửa để lại cho làng như bà từng cứu đói cả làng năm mất mùa.',
+            flag: 'lua_cho_lang', fromToken: 'hat_giong_lua_cu_cua_ba',
+            rewards: [
+              { kind: 'item', id: 'linh_chi', n: 2, chance: 1 },
+              { kind: 'item', id: 'hat_lua_linh', n: 1, chance: 1 },
+              { kind: 'linhThach', n: 30, chance: 1 }, { kind: 'tuvi', n: 40, chance: 1 }
+            ] },
+          { id: 'mang_het', label: 'Gieo hạt, mang hết lúa về',
+            text: 'Ngươi gieo Hạt Giống Lúa Cũ xuống mảnh ruộng linh — lúa nảy mầm ngay, ngươi mang hết về. Không ai phạt ngươi vì mang hết, chỉ khác là làng không có thêm câu chuyện về nửa ruộng lúa này.',
+            fromToken: 'hat_giong_lua_cu_cua_ba',
+            rewards: [
+              { kind: 'item', id: 'linh_chi', n: 2, chance: 1 },
+              { kind: 'item', id: 'hat_lua_linh', n: 1, chance: 1 },
+              { kind: 'linhThach', n: 30, chance: 1 }, { kind: 'tuvi', n: 40, chance: 1 }
+            ] }
+        ]
+      },
+      {
+        id: 'og_nv11', originOnly: true, originId: 'nv11', name: 'Văn Thư Trong Hòm Sách Ướt',
+        story: 'Kho sách cũ của trạm dịch bỏ hoang sau bãi tuyển — khỉ mặt đỏ tha sách làm ổ. Trong hòm sách ướt có một Văn Thư Cổ đóng triện lạ, giấy đã ngả màu nhưng triện còn rõ.',
+        // Không chốt kind: tài liệu chính cho cả hạ quái lẫn hái dược
+        // ở map 3 đều mời được (pickOriginTemplate bỏ qua kind khi
+        // trigger không ghi kind).
+        trigger: { mapIds: ['map3'], turned: ['q_chinh_8'] },
+        spawns: [
+          { type: 'khi_mat_do', x: 10, y: 7 }, { type: 'khi_mat_do', x: 10, y: 9 },
+          { type: 'khi_mat_do', x: 16, y: 7 }
+        ],
+        rewards: [],
+        choices: [
+          { id: 'doc_ky', label: 'Đọc kỹ tại chỗ',
+            text: 'Ngươi đọc kỹ Văn Thư Cổ tại chỗ — văn thư là một thiên bút ký tu hành dở dang, chữ của người viết còn ấm mùi mực cũ.',
+            rewards: [ { kind: 'tuvi', n: 80, chance: 1 } ] },
+          { id: 'niem_phong_gui', label: 'Niêm phong gửi về trấn',
+            text: 'Ngươi niêm phong Văn Thư Cổ gửi về trấn qua thương đội — thương đội trả công giữ văn thư, còn dấu triện trên văn thư thì về sau mới có người cần tới.',
+            flag: 'van_thu_co',
+            rewards: [ { kind: 'linhThach', n: 50, chance: 1 } ] }
+        ]
+      },
+      // ----- KỲ NGỘ RÚT GỌN CỦA 3 NGUỒN GỐC NỀN (mục 21 hàng chờ,
+      // docs/origins-and-encounters.md mục 1.1): đi qua đúng 3 mẫu
+      // instance sẵn có (spawns + thang thưởng fate của mẫu thường),
+      // chỉ khác thoại riêng theo nguồn gốc nền. Không có lựa chọn
+      // (thưởng trực tiếp như mẫu thường), trigger mở — lăn fate đã
+      // yêu cầu lộ linh căn nên không cần thêm cổng mốc chương.
+      {
+        id: 'og_goc_nong_dan', originOnly: true, originId: 'goc_nong_dan', name: 'Ruộng Cuối Làng Phát Sáng',
+        story: 'Ruộng cuối làng nhà ngươi sau cơn mưa linh bỗng phát sáng mờ — đất làng chính gốc mà ngươi cày từ nhỏ, nay linh khí thấm lên tận mặt ruộng. Gà rừng với khỉ lảng vảng quanh như giữ ruộng cho ngươi.',
+        spawns: [
+          { type: 'ga_rung', x: 10, y: 7 }, { type: 'ga_rung', x: 10, y: 9 },
+          { type: 'khi_mat_do', x: 16, y: 7 }, { type: 'khi_mat_do', x: 16, y: 5 }
+        ],
+        rewards: [
+          { kind: 'item', id: 'linh_chi', n: 3, chance: 1 },
+          { kind: 'item', id: 'thao_duoc', n: 3, chance: 1 },
+          { kind: 'linhThach', n: 30, chance: 1 }, { kind: 'tuvi', n: 40, chance: 1 }
+        ]
+      },
+      {
+        id: 'og_goc_tho_san', originOnly: true, originId: 'goc_tho_san', name: 'Hang Yêu Bên Lán Cũ',
+        story: 'Hang yêu thú bỏ hoang gần lán Hà lão nơi ngươi học việc — bầy cũ đã dời đi, chỉ còn vài con ở lại giữ kho thịt khô và chiến lợi phẩm của thợ săn xấu số. Mũi tên gãy đầu tiên của ngươi từng cắm ở cửa hang này.',
+        spawns: [
+          { type: 'soi_rung', x: 10, y: 7 }, { type: 'lon_mong_sat', x: 10, y: 9 },
+          { type: 'lon_mong_sat', x: 16, y: 7 }
+        ],
+        rewards: [
+          { kind: 'linhThach', n: 50, chance: 1 }, { kind: 'tuvi', n: 50, chance: 1 },
+          { kind: 'item', id: 'thit_lon', n: 1, chance: 1 }
+        ]
+      },
+      {
+        id: 'og_goc_thu_sinh', originOnly: true, originId: 'goc_thu_sinh', name: 'Tàn Phủ Dưới Đình Làng',
+        story: 'Dưới rễ cây cổ thụ gần đình làng nơi ngươi chép sách hé ra một cửa đá phủ rêu — tàn tích động phủ của tu sĩ vô danh, sách chép dở còn kẹp trong kẽ đá. Nghiên mực nứt của ngươi đặt xuống đây vừa khít một hõm đá như có người chờ.',
+        spawns: [
+          { type: 'soi_rung', x: 10, y: 7 }, { type: 'soi_rung', x: 10, y: 5 },
+          { type: 'lon_mong_sat', x: 16, y: 7 }
+        ],
+        rewards: [
+          { kind: 'tuvi', n: 80, chance: 1 }, { kind: 'linhThach', n: 40, chance: 1 },
+          { kind: 'item', id: 'linh_chi', n: 2, chance: 1 },
+          { kind: 'artifact', grade: 'huyen', chance: 0.4 }
+        ]
       }
     ]
   };
+  // ----- KỲ NGỘ NGUỒN GỐC NHÓM B DẠNG ĐIỂM KÍCH HOẠT (mục 21 hàng
+  // chờ): 4 kỳ ngộ KHÔNG đi qua lăn fate nên KHÔNG nằm trong
+  // FATE.templates (tránh bị fate mời nhầm) — mở bằng tương tác tại
+  // điểm đã chốt trong tài liệu chính (miếu / giếng / suối / vườn
+  // đào). Khuôn giống mẫu fate: originId + choices + thưởng trong
+  // trần fate, cờ flags.originFate.<originId> + flags.originFlags khi
+  // hoàn thành có thưởng (game.js completeRealmRun dùng chung nhờ
+  // templateById cũng tìm trong danh sách này).
+  var SPOT_TEMPLATES = [
+    {
+      id: 'spot_nv03', originId: 'nv03', name: 'Quẻ Dưới Gốc Đa',
+      story: 'Đàn quẻ cũ sau Miếu Sơn Thần trong màn sương — một tàn niệm đạo sĩ già ngồi gieo quẻ, không nói rõ có phải sư phụ ngươi hay không. Lá Bùa Không Chữ trong túi ngươi ấm lên.',
+      token: 'la_bua_khong_chu', anchor: { mapId: 'map2', x: 32, y: 6, label: 'Miếu Sơn Thần' },
+      trigger: { turned: ['q_chinh_7'] },
+      peaceful: true, spawns: [], rewards: [],
+      choices: [
+        { id: 'hoi_duong_tu', label: 'Gieo quẻ hỏi về đường tu',
+          text: 'Quẻ về đường tu: tàn niệm chỉ vào Lá Bùa Không Chữ — chữ còn thiếu phải tự tay người giữ bùa viết lên, đợi ngày lập phong ấn mới.',
+          rewards: [ { kind: 'tuvi', n: 70, chance: 1 } ] },
+        { id: 'hoi_ve_lang', label: 'Gieo quẻ hỏi về làng',
+          text: 'Quẻ về làng: tàn niệm dặn đêm giếng sáng bất thường thì đừng để trẻ con ra sân giếng một mình — và tặng ngươi hai cây Thanh Tâm Thảo hái từ vườn miếu.',
+          rewards: [
+            { kind: 'item', id: 'thanh_tam_thao', n: 2, chance: 1 },
+            { kind: 'linhThach', n: 30, chance: 1 }
+          ] }
+      ]
+    },
+    {
+      id: 'spot_nv05', originId: 'nv05', name: 'Tiếng Chuông Không Người Gõ',
+      story: 'Giếng cổ về đêm vang tiếng chuông không người gõ — nền chùa cũ trên đồi sau làng hiện ra trong sương, khỉ mặt đỏ tha đồ chùa làm ổ quanh đống tro. Dưới tro có một chuông nhỏ bằng đồng.',
+      token: 'hat_trang_go_chay_sem', anchor: { mapId: 'map1', x: 19, y: 7, label: 'Giếng cổ' },
+      trigger: { turned: ['q_chinh_5'] },
+      spawns: [
+        { type: 'khi_mat_do', x: 10, y: 7 }, { type: 'khi_mat_do', x: 10, y: 9 },
+        { type: 'khi_mat_do', x: 16, y: 7 }
+      ],
+      rewards: [],
+      choices: [
+        { id: 'treo_chuong', label: 'Treo chuông lên Miếu Sơn Thần',
+          text: 'Ngươi treo chuông nhỏ lên Miếu Sơn Thần — tiếng chuông từ nay giữ cho cả làng an tâm mỗi đêm giếng sáng.',
+          rewards: [
+            { kind: 'tuvi', n: 80, chance: 1 }, { kind: 'linhThach', n: 30, chance: 1 }
+          ] },
+        { id: 'giu_chuong', label: 'Giữ chuông bên mình',
+          text: 'Ngươi giữ chuông nhỏ bên mình — chuông của chùa cũ nay theo người của chùa cũ, tiếng chuông chỉ ngươi nghe rõ nhất.',
+          rewards: [
+            { kind: 'item', id: 'chuong_dong_nho', n: 1, chance: 1 },
+            { kind: 'artifact', grade: 'huyen', chance: 0.4 },
+            { kind: 'linhThach', n: 30, chance: 1 }
+          ] }
+      ]
+    },
+    {
+      id: 'spot_nv09', originId: 'nv09', name: 'Mảnh Ngọc Dưới Đáy Suối',
+      story: 'Mặt suối linh tự sáng khi ngươi mang Ngọc Bội Khuyết tới — dưới đá có mảnh ngọc thứ hai, khớp đúng góc khuyết của miếng ngọc ngươi đeo từ khi được tìm thấy cạnh suối này.',
+      token: 'ngoc_boi_khuyet_mot_goc', anchor: { mapId: 'map2', x: 35, y: 11, label: 'Suối Linh' },
+      trigger: { turned: ['q_chinh_6'] },
+      peaceful: true, spawns: [], rewards: [],
+      choices: [
+        { id: 'giu_kin', label: 'Giữ kín trong người',
+          text: 'Ngươi giữ kín mảnh ngọc trong người — có những chuyện chỉ hé khi tới Thiên 4, khi góc ngọc khớp với ấn cổ dưới điểm linh mạch.',
+          flag: 'ngoc_giu_kin',
+          rewards: [
+            { kind: 'item', id: 'manh_ngoc_khuyet', n: 1, chance: 1 },
+            { kind: 'tuvi', n: 70, chance: 1 }, { kind: 'linhThach', n: 40, chance: 1 }
+          ] },
+        { id: 'dua_tran_duc', label: 'Đưa Trần Đức xem',
+          text: 'Trần Đức xem mảnh ngọc rồi thừa nhận: chất ngọc này là ngọc của đội hộ vệ Thanh Khê lão nhân, và ông đã chờ người mang nó quay lại từ rất lâu.',
+          flag: 'ngoc_da_xem',
+          rewards: [
+            { kind: 'item', id: 'manh_ngoc_khuyet', n: 1, chance: 1 },
+            { kind: 'tuvi', n: 70, chance: 1 }, { kind: 'linhThach', n: 40, chance: 1 }
+          ] }
+      ]
+    },
+    {
+      id: 'spot_nv12', originId: 'nv12', name: 'Gốc Đào Cổ Nở Hoa Trái Mùa',
+      story: 'Vườn đào đầu làng trong đêm — gốc đào cổ nhất nở hoa phát sáng giữa mùa không phải mùa hoa, hoa rụng thành Đào Linh. Vườn này trồng trên đất cũ Thanh Khê lão nhân để lại cho làng.',
+      token: 'khan_hoa_dao_cua_chi', anchor: { mapId: 'map1', x: 35, y: 13, label: 'Vườn Đào' },
+      trigger: { turned: ['q_chinh_5'] },
+      peaceful: true, spawns: [], rewards: [],
+      choices: [
+        { id: 'hai_ban', label: 'Hái thêm hoa bán cho thương đội',
+          text: 'Ngươi hái thêm hoa đào bán cho thương đội qua làng — hoa trái mùa bán được giá, còn Đào Linh thì giữ lại bồi bổ thân thể.',
+          rewards: [
+            { kind: 'item', id: 'dao_linh_qua', n: 2, chance: 1 },
+            { kind: 'tuvi', n: 50, chance: 1 }, { kind: 'linhThach', n: 40, chance: 1 }
+          ] },
+        { id: 'de_cho_lang', label: 'Để hoa kết trái cho cả làng',
+          text: 'Ngươi để hoa kết trái cho cả làng — không Linh Thạch, nhưng vườn đào này từ nay là chuyện cả làng cùng nhớ mỗi mùa hoa trái.',
+          flag: 'dao_lang',
+          rewards: [
+            { kind: 'item', id: 'dao_linh_qua', n: 2, chance: 1 },
+            { kind: 'tuvi', n: 50, chance: 1 }
+          ] }
+      ]
+    }
+  ];
   function templateById(id) {
     for (var i = 0; i < FATE.templates.length; i++) if (FATE.templates[i].id === id) return FATE.templates[i];
+    // Điểm kích hoạt nhóm B cũng tra được qua cùng hàm này để
+    // completeRealmRun / rollRewards / entrySpawns / chooseFateChoice
+    // dùng chung một đường (nhưng pickOriginTemplate chỉ duyệt
+    // FATE.templates nên điểm kích hoạt không bao giờ bị fate mời).
+    for (var j = 0; j < SPOT_TEMPLATES.length; j++) if (SPOT_TEMPLATES[j].id === id) return SPOT_TEMPLATES[j];
     return null;
+  }
+  function spotTemplateById(id) {
+    for (var i = 0; i < SPOT_TEMPLATES.length; i++) if (SPOT_TEMPLATES[i].id === id) return SPOT_TEMPLATES[i];
+    return null;
+  }
+  // Điểm kích hoạt nhóm B mở được khi: đúng nguồn gốc, chưa gặp
+  // (flags.originFate), đủ nhiệm vụ trục đã trả, và đang mang dấu ấn
+  // (ctx.items = mảng id vật phẩm trong túi; ctx.turnedIn như
+  // pickOriginTemplate — mảng hoặc object cờ).
+  function spotAvailable(spotId, ctx, done) {
+    var tpl = spotTemplateById(spotId);
+    if (!tpl || !ctx) return false;
+    if (ctx.storyOrigin !== tpl.originId) return false;
+    if (done && done[tpl.originId]) return false;
+    var okTurn = true;
+    ((tpl.trigger && tpl.trigger.turned) || []).forEach(function (qid) { if (!turnedHas(ctx.turnedIn, qid)) okTurn = false; });
+    if (!okTurn) return false;
+    if (tpl.token && (!ctx.items || ctx.items.indexOf(tpl.token) < 0)) return false;
+    return true;
+  }
+  // Vào điểm kích hoạt: như acceptFate nhưng không cần lời mời fate
+  // (điểm kích hoạt mở bằng tương tác, không qua lăn 2%/5% và không
+  // tốn nhịp chờ 10 phút của hệ fate).
+  function beginSpotRun(flags, spotId, now, returnTo) {
+    var s = ensure(flags, now); if (!s) return { ok: false, reason: 'nosave' };
+    if (s.run) return { ok: false, reason: 'inrun' };
+    var tpl = spotTemplateById(spotId);
+    if (!tpl) return { ok: false, reason: 'notemplate' };
+    s.run = {
+      kind: 'ky_ngo', mapId: FATE.mapId, templateId: tpl.id,
+      endAt: now + FATE.runLimitMs, returnTo: returnTo,
+      kills: 0, need: tpl.spawns.length, rewarded: false
+    };
+    return { ok: true, run: s.run, template: tpl };
+  }
+  // Kỳ ngộ nguồn gốc NHÓM A (mục 20): chọn template nguồn gốc còn
+  // chưa gặp, đúng loại sự kiện / map / tầng / nhiệm vụ trục đã trả.
+  // turnedIn nhận cả mảng (qs.turnedIn của game) lẫn object cờ.
+  // done là flags.originFate (thiếu thì coi như chưa gặp kỳ ngộ nào).
+  function turnedHas(turnedIn, qid) {
+    if (!turnedIn) return false;
+    if (Array.isArray(turnedIn)) return turnedIn.indexOf(qid) >= 0;
+    return !!turnedIn[qid];
+  }
+  function pickOriginTemplate(storyOrigin, ctx, done) {
+    if (!storyOrigin) return null;
+    ctx = ctx || {};
+    for (var i = 0; i < FATE.templates.length; i++) {
+      var t = FATE.templates[i];
+      if (!t.originOnly || t.originId !== storyOrigin) continue;
+      if (done && done[t.originId]) continue;
+      var tr = t.trigger || {};
+      if (tr.kind && tr.kind !== ctx.kind) continue;
+      if (tr.mapIds && ctx.mapId && tr.mapIds.indexOf(ctx.mapId) < 0) continue;
+      if (tr.minTier != null && (ctx.tier || 0) < tr.minTier) continue;
+      var okTurn = true;
+      (tr.turned || []).forEach(function (qid) { if (!turnedHas(ctx.turnedIn, qid)) okTurn = false; });
+      if (!okTurn) continue;
+      return t;
+    }
+    return null;
+  }
+  // Ghi lựa chọn của người chơi vào run kỳ ngộ (trước khi trả thưởng).
+  // Trả {ok:false} khi không có run / mẫu không có lựa chọn / đã trả.
+  function chooseFateChoice(flags, choiceId) {
+    var s = ensure(flags); if (!s || !s.run || s.run.kind !== 'ky_ngo') return { ok: false, reason: 'norun' };
+    var tpl = templateById(s.run.templateId);
+    if (!tpl || !tpl.choices) return { ok: false, reason: 'nochoice' };
+    if (s.run.rewarded) return { ok: false, reason: 'rewarded' };
+    var choice = null;
+    for (var i = 0; i < tpl.choices.length; i++) if (tpl.choices[i].id === choiceId) choice = tpl.choices[i];
+    if (!choice) return { ok: false, reason: 'badchoice' };
+    s.run.choiceId = choiceId;
+    return { ok: true, choice: choice, template: tpl };
   }
 
   // ---------- 2 map instance (dùng lại hệ map: tiles/blocked/portals) --
@@ -1470,7 +1880,18 @@
     var rand = rng || Math.random;
     var chance = opts.kind === 'gather' ? FATE.chanceGather : FATE.chanceKill;
     if (rand() >= chance) return null;
-    var tpl = FATE.templates[Math.floor(rand() * FATE.templates.length) % FATE.templates.length];
+    // Ưu tiên kỳ ngộ nguồn gốc (mục 20): khi lăn TRÚNG kỳ ngộ mà nguồn
+    // gốc hiện tại còn kỳ ngộ chưa gặp + đủ mốc thì mời mẫu nguồn gốc
+    // trước, không để 3 mẫu thường "ăn" mất lượt duyên của đời mình.
+    // Không có storyOrigin (đường lăn cũ / test cũ) thì giữ đúng hành
+    // vi cũ: chọn ngẫu nhiên trong 3 mẫu thường (không originOnly).
+    var tpl = pickOriginTemplate(opts.storyOrigin, {
+      kind: opts.kind, mapId: opts.mapId, tier: opts.tier || 0, turnedIn: opts.turnedIn
+    }, (flags && flags.originFate) || {});
+    if (!tpl) {
+      var ordinary = FATE.templates.filter(function (t) { return !t.originOnly; });
+      tpl = ordinary[Math.floor(rand() * ordinary.length) % ordinary.length];
+    }
     s.lastFateAt = now; // tính từ lúc MỜI xuất hiện — bỏ qua cũng tốn nhịp chờ
     s.fateOffer = { templateId: tpl.id, at: now };
     return s.fateOffer;
@@ -1534,7 +1955,14 @@
       var rd = run.realmId ? realmById(run.realmId) : null;
       table = rd ? rd.rewards : SCHEDULED.rewards;
     } else {
-      table = (templateById(run.templateId) || {}).rewards;
+      var tplR = templateById(run.templateId) || {};
+      if (tplR.choices) {
+        // Mẫu có lựa chọn (kỳ ngộ nguồn gốc): chưa chọn thì chưa có
+        // thưởng — game.js phải hiện panel lựa chọn trước khi gọi lại.
+        var chR = null;
+        for (var ci = 0; ci < tplR.choices.length; ci++) if (tplR.choices[ci].id === run.choiceId) chR = tplR.choices[ci];
+        table = chR ? chR.rewards : [];
+      } else table = tplR.rewards;
     }
     if (!table) return [];
     var rand = rng || Math.random, out = [];
@@ -1551,7 +1979,7 @@
   }
   // Mô tả spawn phụ khi vào 1 map instance (game.js diễn giải bằng
   // makeMonster của engine): boss định kỳ hoặc đàn quái gác kỳ ngộ.
-  function entrySpawns(flags, mapId) {
+  function entrySpawns(flags, mapId, opts) {
     var s = ensure(flags); if (!s || !s.run || s.run.mapId !== mapId) return [];
     if (s.run.kind === 'dinh_ky') {
       var rdef = s.run.realmId ? realmById(s.run.realmId) : null;
@@ -1569,7 +1997,15 @@
     var tpl = templateById(s.run.templateId);
     if (!tpl) return [];
     return tpl.spawns.map(function (sp) {
-      return { type: sp.type, x: sp.x, y: sp.y, extra: { noRespawn: true, realmGuard: true } };
+      var extra = { noRespawn: true, realmGuard: true };
+      // Quái tinh anh của kỳ ngộ nguồn gốc (NV10): co theo tầng bằng
+      // scaleMonsterStats như kỳ ngộ trong bí cảnh (docs mục 3 NV10).
+      if (sp.elite && L && L.MONSTERS && L.MONSTERS[sp.type]) {
+        var sc = scaleMonsterStats(L.MONSTERS[sp.type], (opts && opts.tier) || 0, (opts && opts.rank) || 0);
+        extra.name = 'Tinh Anh ' + L.MONSTERS[sp.type].name;
+        extra.maxHp = sc.maxHp; extra.hp = sc.maxHp; extra.atk = sc.atk; extra.linhThach = sc.linhThach;
+      }
+      return { type: sp.type, x: sp.x, y: sp.y, extra: extra };
     });
   }
 
@@ -1590,6 +2026,9 @@
     ensure: ensure, dayKey: dayKey, sessionAt: sessionAt, nextSession: nextSession,
     status: status, canEnter: canEnter, beginRun: beginRun,
     rollFate: rollFate, declineFate: declineFate, acceptFate: acceptFate, validOffer: validOffer,
+    pickOriginTemplate: pickOriginTemplate, chooseFateChoice: chooseFateChoice,
+    SPOT_TEMPLATES: SPOT_TEMPLATES, spotTemplateById: spotTemplateById,
+    spotAvailable: spotAvailable, beginSpotRun: beginSpotRun,
     noteKill: noteKill, markRewarded: markRewarded, clearRun: clearRun,
     runExpired: runExpired, rollRewards: rollRewards, entrySpawns: entrySpawns
   };

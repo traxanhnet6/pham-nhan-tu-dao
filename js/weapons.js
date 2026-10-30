@@ -229,7 +229,24 @@
   }
   function equippedDef(ch) {
     var e = equippedEntry(ch);
-    return e ? WEAPONS[e.id] : null;
+    if (!e) return null;
+    var def = WEAPONS[e.id];
+    // Cường hoá/tẩy luyện (20:26): món có cấp cường hoá hoặc dòng
+    // phụ thì trả BẢN SAO đã hiệu chỉnh (công +%/cấp theo phẩm, dòng
+    // phụ gộp vào stats) để Logic.statTotals/weaponAtk hưởng đúng;
+    // món thường trả nguyên def gốc (giữ nguyên danh tính object).
+    if ((e.enh || 0) > 0 || (e.subs && Object.keys(e.subs).length)) {
+      var clone = {};
+      for (var k in def) clone[k] = def[k];
+      clone.atk = entryAtk(e);
+      var st = {};
+      if (def.stats) for (var k2 in def.stats) st[k2] = def.stats[k2];
+      if (e.subs) for (var k3 in e.subs) st[k3] = (st[k3] || 0) + e.subs[k3];
+      clone.stats = st;
+      clone._enh = e.enh || 0;
+      return clone;
+    }
+    return def;
   }
   // Công vũ khí cộng vào công nhân vật. forSkill: chiêu thức kiếm hưởng 100%
   // khi cầm Kiếm, 70% khi cầm loại khác; đánh thường luôn 100%.
@@ -348,6 +365,7 @@
     var e = findEntry(ch, uid);
     if (!e) return { ok: false, reason: 'missing' };
     var def = WEAPONS[e.id];
+    if (e.locked) return { ok: false, reason: 'locked', def: def }; // món đã khoá không bán được (20:26)
     if (ch.equipUid === uid) ch.equipUid = null; // bán món đang đeo: tự tháo trước
     ch.inventory.splice(ch.inventory.indexOf(e), 1);
     var gained = def.value;
@@ -355,6 +373,111 @@
     if (AC && typeof AC.guardGain === 'function') gained = AC.guardGain('sell', gained);
     ch.linhThach += gained;
     return { ok: true, def: def, gained: gained };
+  }
+  // ---------- CƯỜNG HOÁ + TẨY LUYỆN + KHOÁ (lệnh Bui 20:26) ----------
+  // Số liệu chuẩn ở docs/economy.md (mục Cường hoá/Tẩy luyện).
+  // Trường trên món (nằm trong save theo entry túi đồ): enh (0..10),
+  // subs {khoá chỉ số: giá trị}, subsPending (bản lăn chờ chọn),
+  // locked (cờ khoá).
+  var ENH = {
+    MAX: 10,
+    PCT: { pham: 4, linh: 3.5, huyen: 3, dia: 2.5, thien: 2 },
+    BASE: { pham: 40, linh: 120, huyen: 300, dia: 700, thien: 1500 },
+    FAIL: { 6: 0.2, 7: 0.3, 8: 0.4, 9: 0.5, 10: 0.6 },
+    MAT_FROM: 5, MAT_ID: 'tinh_van_thach', MAT_NAME: 'Tinh Vẫn Thạch'
+  };
+  var REFINE = {
+    COST_LT: 120, MAT_ID: 'tinh_van_thach', MAT_N: 1, MIN_GRADE_RANK: 2,
+    POOL: [
+      { k: 'speed', label: 'Tốc độ', min: 2, max: 6 },
+      { k: 'crit', label: 'Chí mạng', min: 1, max: 4 },
+      { k: 'critDmg', label: 'Sát thương chí mạng', min: 5, max: 12 },
+      { k: 'lifesteal', label: 'Hút máu', min: 1, max: 3 }
+    ]
+  };
+  function enhCost(def, targetLv) {
+    var lt = Math.round(ENH.BASE[def.grade] * Math.pow(targetLv, 1.6) / 5) * 5;
+    return { lt: lt, mats: targetLv >= ENH.MAT_FROM ? 1 : 0 };
+  }
+  function enhFailRate(targetLv) { return ENH.FAIL[targetLv] || 0; }
+  function entryAtk(e) {
+    var def = WEAPONS[e.id];
+    if (!def) return 0;
+    var enh = e.enh || 0;
+    if (!enh) return def.atk;
+    return Math.floor(def.atk * (1 + ENH.PCT[def.grade] * enh / 100));
+  }
+  function takeStack(ch, itemId, n) {
+    for (var i = 0; i < ch.inventory.length; i++) {
+      var it = ch.inventory[i];
+      if (it && !it.w && it.id === itemId && (it.count || 1) >= n) {
+        it.count -= n;
+        if (it.count <= 0) ch.inventory.splice(i, 1);
+        return true;
+      }
+    }
+    return false;
+  }
+  function tryEnhance(ch, uid, rng) {
+    var e = findEntry(ch, uid);
+    if (!e) return { ok: false, reason: 'missing' };
+    var def = WEAPONS[e.id];
+    if (e.locked) return { ok: false, reason: 'locked', def: def };
+    var cur = e.enh || 0;
+    if (cur >= ENH.MAX) return { ok: false, reason: 'max', def: def, enh: cur };
+    var target = cur + 1;
+    var cost = enhCost(def, target);
+    if ((ch.linhThach || 0) < cost.lt) return { ok: false, reason: 'lt', def: def, cost: cost };
+    if (cost.mats && itemCount(ch, ENH.MAT_ID) < cost.mats) return { ok: false, reason: 'mat', def: def, cost: cost };
+    ch.linhThach -= cost.lt;
+    if (cost.mats) takeStack(ch, ENH.MAT_ID, cost.mats);
+    var roll = (typeof rng === 'function' ? rng : Math.random)();
+    if (roll < enhFailRate(target)) {
+      // Thất bại: mất phí + nguyên liệu, KHÔNG mất món, KHÔNG tụt cấp.
+      return { ok: true, success: false, def: def, enh: cur, cost: cost };
+    }
+    e.enh = target;
+    return { ok: true, success: true, def: def, enh: target, cost: cost };
+  }
+  function refineRoll(rng) {
+    var r = typeof rng === 'function' ? rng : Math.random;
+    var pool = REFINE.POOL.slice();
+    var n = r() < 0.5 ? 2 : 1;
+    var out = {};
+    for (var i = 0; i < n && pool.length; i++) {
+      var idx = Math.floor(r() * pool.length);
+      var p = pool.splice(idx, 1)[0];
+      out[p.k] = p.min + Math.floor(r() * (p.max - p.min + 1));
+    }
+    return out;
+  }
+  function tryRefine(ch, uid, rng) {
+    var e = findEntry(ch, uid);
+    if (!e) return { ok: false, reason: 'missing' };
+    var def = WEAPONS[e.id];
+    if (e.locked) return { ok: false, reason: 'locked', def: def };
+    if ((GRADES[def.grade] ? GRADES[def.grade].rank : 0) < REFINE.MIN_GRADE_RANK)
+      return { ok: false, reason: 'grade', def: def };
+    if ((ch.linhThach || 0) < REFINE.COST_LT) return { ok: false, reason: 'lt', def: def };
+    if (itemCount(ch, REFINE.MAT_ID) < REFINE.MAT_N) return { ok: false, reason: 'mat', def: def };
+    ch.linhThach -= REFINE.COST_LT;
+    takeStack(ch, REFINE.MAT_ID, REFINE.MAT_N);
+    e.subsPending = refineRoll(rng);
+    return { ok: true, def: def, pending: e.subsPending };
+  }
+  function applyRefine(ch, uid, takeNew) {
+    var e = findEntry(ch, uid);
+    if (!e || !e.subsPending) return { ok: false, reason: 'nopending' };
+    if (takeNew) e.subs = e.subsPending;
+    var kept = e.subs || null;
+    delete e.subsPending;
+    return { ok: true, subs: kept };
+  }
+  function toggleLock(ch, uid) {
+    var e = findEntry(ch, uid);
+    if (!e) return { ok: false, reason: 'missing' };
+    e.locked = !e.locked;
+    return { ok: true, locked: !!e.locked, def: WEAPONS[e.id] };
   }
   function itemCount(ch, itemId) {
     var n = 0;
@@ -598,6 +721,9 @@
     STAT_LABELS: STAT_LABELS, STAT_SUFFIX: STAT_SUFFIX, STAT_ORDER: STAT_ORDER, ELEM_NAMES: ELEM_NAMES,
     statBlockOf: statBlockOf, procOf: procOf, equippedBlock: equippedBlock, statLines: statLines, compareLines: compareLines,
     sellPrice: sellPrice, buyWeapon: buyWeapon, sellWeapon: sellWeapon,
+    ENH: ENH, REFINE: REFINE, enhCost: enhCost, enhFailRate: enhFailRate,
+    entryAtk: entryAtk, tryEnhance: tryEnhance, refineRoll: refineRoll,
+    tryRefine: tryRefine, applyRefine: applyRefine, toggleLock: toggleLock,
     itemCount: itemCount, canCraft: canCraft, craft: craft, rollDrop: rollDrop,
     GRIDS: GRIDS, heldGrid: heldGrid, iconPixels: iconPixels, heldPixels: heldPixels,
     HAND: HAND, drawPixels: drawPixels, drawIcon: drawIcon, drawHeldAt: drawHeldAt, drawHeld: drawHeld

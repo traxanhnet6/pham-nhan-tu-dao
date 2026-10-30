@@ -150,7 +150,10 @@
     q_tong_phap: 10, q_tong_khi: 10, q_tong_dan: 10, q_tong_thu: 10, q_tong_phu: 10,
     q_tong_tran: 10, q_tong_the: 10, q_tong_doc: 10, q_tong_am: 10,
     q_tkc_1: 10, q_tkc_2: 10, q_tkc_3: 10,
+    q_kn_1: 10, q_kn_2: 10, q_kn_3: 10,
     q_chinh_18: 15,
+    q_thien4_1: 15, q_thien4_2: 15, q_thien4_3: 15,
+    q_thien5_1: 15, q_thien5_2: 15, q_thien5_3: 15,
     q_ngu_kiem_1: 20, q_ngu_kiem_2: 30, q_ngu_kiem_3: 40
   };
   var QUEST_DEFAULTS = { sectQuest: 20, q_mon: 15, q_tong: 10 };

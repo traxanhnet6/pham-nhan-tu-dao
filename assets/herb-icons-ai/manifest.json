@@ -207,6 +207,14 @@
   "dp_pha_canh_dan": {
    "cellCao": 192,
    "cellTrung": 120
+  },
+  "lua_linh": {
+   "cellCao": 192,
+   "cellTrung": 120
+  },
+  "hat_lua_linh": {
+   "cellCao": 192,
+   "cellTrung": 120
   }
  },
  "audit": {
@@ -825,6 +833,34 @@
    ],
    "comps": 30,
    "opaquePx": 157485
+  },
+  "lua_linh": {
+   "src": "media-generation-icon-lua-linh-0-b55bfd9d-1f1d-4c31-ba59-10f12ed39a72.webp",
+   "cell": 2,
+   "grade": "linh",
+   "cat": "duoc",
+   "crop": [
+    73,
+    58
+   ],
+   "comps": 132,
+   "opaquePx": 300154,
+   "caoBytes": 69703,
+   "trungBytes": 30818
+  },
+  "hat_lua_linh": {
+   "src": "media-generation-icon-hat-lua-linh-0-f882973e-11bc-4ec4-b0ce-4687d8c1ab29.webp",
+   "cell": 2,
+   "grade": "linh",
+   "cat": "hat",
+   "crop": [
+    158,
+    153
+   ],
+   "comps": 14,
+   "opaquePx": 94970,
+   "caoBytes": 28416,
+   "trungBytes": 14521
   }
  }
 }

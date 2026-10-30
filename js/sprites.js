@@ -2108,6 +2108,28 @@
   };
   // ---- Icon vật phẩm 8x8 (panel túi đồ lưới) ----
   var ITEM_ICONS = {
+    // ---- Icon CỔ VẬT 8x8 (sự kiện Cổ Vật Vùi Lấp, js/world-events.js):
+    // đồng tiền cổ lỗ vuông vàng sẫm / vụn ngọc cổ xanh ngọc góc cạnh. ----
+    dong_tien_co: [
+      '.tttttt.',
+      'tAAAAAAt',
+      'tAAttAAt',
+      'tAAttAAt',
+      'tAAttAAt',
+      'tAAttAAt',
+      'tAAAAAAt',
+      '.tttttt.'
+    ],
+    vun_ngoc_co: [
+      '..777...',
+      '.77777..',
+      '.7LL777.',
+      '..7LL7..',
+      '...7777.',
+      '..777...',
+      '.77.....',
+      '........'
+    ],
     // ---- Icon PHÙ CHÚ 8x8 (hệ phù chú js/talismans.js): lá bùa vàng,
     // đầu bùa màu theo phẩm, triện theo hệ — fallback của bộ icon
     // assets/talisman-icons-ai/-md (tools/art-talisman-icons.py). ----
@@ -2811,6 +2833,218 @@
   ITEM_ICONS.lenh_bai_kim_cang = tokenIcon('A');
   ITEM_ICONS.lenh_bai_ngu_doc = tokenIcon('7');
   ITEM_ICONS.lenh_bai_huyen_am = tokenIcon('M');
+  // Lệnh bài tông dùng khuôn tokenIcon (khung màu + tâm sáng) — riêng
+  // vật dấu ấn nguồn gốc có hình riêng từng vật ở khối dưới (QA-A
+  // 18:01 30/10), vẫn đúng 1 lưới 8x8 cho mọi id trong túi.
+  // Icon vật dấu ấn nguồn gốc (mục 19): mỗi vật một hình 8x8 riêng đọc
+  // được ở 32px — kiếm gỉ dựng đứng, nửa quyển sách mép rách, bùa vàng
+  // để trống, nanh cong, tràng hạt vòng, hạt lúa rải, lệnh bài rạn nứt,
+  // giỏ thuốc, ngọc khuyết góc, sừng nai chạc, triện đỏ, khăn đào, cuốc
+  // cũ, tên gãy, nghiên nứt — không dùng lại khuôn tokenIcon của lệnh
+  // bài tông (QA-A 18:01 30/10: trước đây cả 15 vật chỉ khác màu khung,
+  // 3 vật trùng pixel y hệt lệnh bài tông).
+  ITEM_ICONS.kiem_gi_cua_cha = [
+    '...v....',
+    '...vV...',
+    '...v....',
+    '...v6...',
+    '...v....',
+    '.rrr....',
+    '...6....',
+    '..666...'
+  ];
+  ITEM_ICONS.nua_quyen_thanh_khe_chi = [
+    '.NNN....',
+    'NccxN...',
+    'NcccN...',
+    'Nccx....',
+    'NcccN...',
+    'Nccx....',
+    '.NNN....',
+    '........'
+  ];
+  ITEM_ICONS.la_bua_khong_chu = [
+    '.YYYY...',
+    'Y4444Y..',
+    'Y44Y4Y..',
+    'Y44Y4Y..',
+    'Y44Y4Y..',
+    'Y4444Y..',
+    '.YYYY...',
+    '........'
+  ];
+  ITEM_ICONS.nanh_soi_dau_tien = [
+    '.WWx....',
+    '.WW.....',
+    '..WW....',
+    '..WW....',
+    '..W.....',
+    '..W.....',
+    '...W....',
+    '........'
+  ];
+  ITEM_ICONS.hat_trang_go_chay_sem = [
+    '..666...',
+    '.6...6..',
+    '6.....6.',
+    '6..5..6.',
+    '6.....6.',
+    '.6...6..',
+    '..666...',
+    '........'
+  ];
+  ITEM_ICONS.hat_giong_lua_cu_cua_ba = [
+    '........',
+    '..A.....',
+    '.A.A....',
+    '..A..A..',
+    '.A...A..',
+    '..A.....',
+    '........',
+    '........'
+  ];
+  ITEM_ICONS.lenh_bai_tieu_cuc_ran = [
+    '.RRRR...',
+    'R4444R..',
+    'R44K4R..',
+    'R4K44R..',
+    'R44K4R..',
+    'R4444R..',
+    '.RRRR...',
+    '........'
+  ];
+  ITEM_ICONS.gio_thuoc_cua_me = [
+    '..L.....',
+    '.LLL....',
+    'LL.L....',
+    'NNNNN...',
+    'NnNnN...',
+    'NNNNN...',
+    '.NNN....',
+    '........'
+  ];
+  ITEM_ICONS.ngoc_boi_khuyet_mot_goc = [
+    '...BB...',
+    '..BBB...',
+    '.BBBBB..',
+    '.BBWWBB.',
+    '.BBBBBB.',
+    '..BBBB..',
+    '...BB...',
+    '........'
+  ];
+  ITEM_ICONS.sung_nai_gac_dau_tien = [
+    '.n..n...',
+    '..nn....',
+    '..n.....',
+    '..n.....',
+    '..n.....',
+    '..n.....',
+    '.nn.....',
+    '........'
+  ];
+  ITEM_ICONS.con_dau_trien_gia_truyen = [
+    '..RR....',
+    '..RR....',
+    'RRRRRR..',
+    'RRWWRR..',
+    'RRWWRR..',
+    'RRRRRR..',
+    '........',
+    '........'
+  ];
+  ITEM_ICONS.khan_hoa_dao_cua_chi = [
+    '..ZZ....',
+    '.ZZZZ...',
+    'ZZWZZZ..',
+    '.ZZZZ...',
+    '..ZZZ...',
+    '...ZZ...',
+    '....Z...',
+    '........'
+  ];
+  ITEM_ICONS.cuoc_cu_cua_cha = [
+    '......N.',
+    '.....N..',
+    '....N...',
+    '...N....',
+    '..N.....',
+    'NNN.....',
+    'NN......',
+    '........'
+  ];
+  ITEM_ICONS.mui_ten_gay_dau_tien = [
+    '6.......',
+    '.66.....',
+    '..6.....',
+    '........',
+    '....6...',
+    '.....66.',
+    '......6.',
+    '........'
+  ];
+  ITEM_ICONS.nghien_muc_nut = [
+    '........',
+    '.DDDD...',
+    'DDDDDD..',
+    'DDJKDD..',
+    'DDDKDD..',
+    'DDDDDD..',
+    '.DDDD...',
+    '........'
+  ];
+  // Icon vật ký danh kỳ ngộ nguồn gốc NHÓM B (mục 21 hàng chờ): lưới
+  // 8x8 cùng khuôn các vật dấu ấn ở trên, không dùng emoji/khối màu.
+  ITEM_ICONS.chuong_dong_nho = [
+    '........',
+    '...YY...',
+    '..YWWY..',
+    '..YWYY..',
+    '.YYWWYY.',
+    '.YYYYYY.',
+    '..Y..Y..',
+    '........'
+  ];
+  ITEM_ICONS.manh_ngoc_khuyet = [
+    '........',
+    '...BB...',
+    '..BBB...',
+    '.BBBB...',
+    '.BBWWB..',
+    '..BBB...',
+    '...B....',
+    '........'
+  ];
+  ITEM_ICONS.dao_linh_qua = [
+    '........',
+    '..RR....',
+    '.RRRRR..',
+    'RRWRRRR.',
+    'RRRRRRR.',
+    '.RRRRR..',
+    '..RRR...',
+    '...7....'
+  ];
+  ITEM_ICONS.lua_linh = [
+    '........',
+    '..Y.....',
+    '.Y.Y....',
+    '..Y..Y..',
+    '.Y...Y..',
+    '..Y.Y...',
+    '...Y....',
+    '........'
+  ];
+  ITEM_ICONS.hat_lua_linh = [
+    '........',
+    '...55...',
+    '..5nn5..',
+    '.nnnnnn.',
+    '.nYYYYn.',
+    '.nnnnnn.',
+    '..nnnn..',
+    '........'
+  ];
   // Icon linh dược + đan dược (hệ luyện đan js/alchemy.js): mỗi món một id
   // icon riêng để giai đoạn sau thay bằng icon AI mà không đổi logic.
   // Đan = bình hồ lô thân màu theo phẩm + nút vàng đồng + điểm sáng.

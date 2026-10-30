@@ -119,7 +119,7 @@
     },
     {
       id: 'hau_vuong', name: 'Hầu Vương Mặt Đỏ', type: 'khi_mat_do',
-      mapId: 'map3', lair: { x: 55, y: 27 }, stele: { x: 49, y: 24 },
+      mapId: 'map3', lair: { x: 55, y: 27 }, stele: { x: 49, y: 25 },
       lairName: 'Bãi Luyện Công — Chân Núi Thanh Phong', scale: 1.5,
       hp: 310, atk: 15, linhThach: 190, cycleMin: 240, offsetMin: 0,
       desc: 'Khỉ chúa chiếm bãi luyện công của đệ tử Thanh Phong, mặt đỏ như vẽ, nhanh và lì đòn. Nó chỉ tụ yêu khí bốn giờ một lần.',

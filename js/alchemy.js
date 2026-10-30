@@ -158,7 +158,19 @@
     thien_lien: { id: 'thien_lien', name: 'Thiên Liên', grade: 'thien', respawnMs: 600000,
       rarity: 'Thiên phẩm hiếm có', areas: 'Độ Kiếp Đài',
       zones: [{ map: 'map14', zone: null }],
-      desc: 'Sen trời nở trên Độ Kiếp Đài ở đỉnh Thập Vạn Đại Sơn, tương truyền chỉ nở khi có người sắp độ kiếp. Nguyên liệu luyện đan Thiên phẩm.' }
+      desc: 'Sen trời nở trên Độ Kiếp Đài ở đỉnh Thập Vạn Đại Sơn, tương truyền chỉ nở khi có người sắp độ kiếp. Nguyên liệu luyện đan Thiên phẩm.' },
+    // ---- Lúa Linh (mục 21 hàng chờ, kỳ ngộ NV06): dược "trồng mới có"
+    // — KHÔNG mọc hoang, KHÔNG có điểm hái SPOTS, chỉ thu từ linh điền
+    // động phủ khi gieo Hạt Lúa Linh. Đăng ký ở đây vì test DP bắt mọi
+    // hạt giống trong DP.SEEDS phải trỏ tới một dược có thật, và test
+    // HICON bắt mọi hạt phải có icon + phẩm từ dược gốc. Phẩm Linh
+    // (ngang Linh Chi), thời gian mọc lại chỉ dùng khi tính mọc lại
+    // của ô điền theo luật chung (không áp cho hái hoang vì không có
+    // SPOTS nào mang lúa linh).
+    lua_linh: { id: 'lua_linh', name: 'Lúa Linh', grade: 'linh', respawnMs: 120000,
+      rarity: 'Chỉ từ kỳ ngộ', areas: 'Linh điền động phủ (gieo từ Hạt Lúa Linh, không mọc hoang)',
+      zones: [],
+      desc: 'Bông lúa linh thu từ linh điền động phủ — hạt lúa cũ của bà nảy mầm trong linh khí sau cơn mưa linh. Lương thực linh, để dành cho Thiên 6 khi đường buôn bị cắt.' }
   };
 
   // Điểm hái BỔ SUNG (ngoài herbs có sẵn trong js/maps.js) — game.js cộng

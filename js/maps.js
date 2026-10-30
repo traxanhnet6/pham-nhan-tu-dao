@@ -193,6 +193,7 @@
       // V7: Xóm Đông + biển tên các khu quái ở đất mới.
       { sprite: 'sign', x: 41, y: 11, label: 'Xóm Đông' },
       { sprite: 'sign', x: 28, y: 30, label: 'Ruộng Nam' },
+      { sprite: 'sign', x: 35, y: 12, label: 'Vườn Đào' },
       { sprite: 'sign', x: 22, y: 16, label: 'Bãi Gà Thỏ' },
       { sprite: 'sign', x: 22, y: 23, label: 'Khu Sói Con' },
       { sprite: 'sign', x: 40, y: 24, label: 'Khu Lợn Rừng' },
@@ -342,7 +343,8 @@
       { sprite: 'sign', x: 34, y: 10, label: 'Khu Khỉ Mặt Đỏ' },
       { sprite: 'sign', x: 19, y: 22, label: 'Sào Huyệt Sơn Quân' },
       { sprite: 'sign', x: 47, y: 3, label: 'Bãi Vọng Hồ' },
-      { sprite: 'sign', x: 31, y: 31, label: 'Ao Phát Sáng' }
+      { sprite: 'sign', x: 31, y: 31, label: 'Ao Phát Sáng' },
+      { sprite: 'sign', x: 35, y: 10, label: 'Suối Linh' }
     ]
   };
   // ================= MAP 3 — Chân Núi Thanh Phong =================
@@ -957,7 +959,23 @@
       { type: 'soi_rung', x: 40, y: 23, zone: 'soi_dinh_tuyet' }, { type: 'soi_rung', x: 45, y: 24, zone: 'soi_dinh_tuyet' }, { type: 'soi_rung', x: 49, y: 26, zone: 'soi_dinh_tuyet' },
       { type: 'soi_rung', x: 42, y: 26, zone: 'soi_dinh_tuyet' },
       { type: 'lon_mong_sat', x: 21, y: 25, zone: 'lon_da_dinh' }, { type: 'lon_mong_sat', x: 26, y: 26, zone: 'lon_da_dinh' }, { type: 'lon_mong_sat', x: 31, y: 25, zone: 'lon_da_dinh' },
-      { type: 'lon_mong_sat', x: 22, y: 30, zone: 'lon_da_dinh' }, { type: 'lon_mong_sat', x: 27, y: 31, zone: 'lon_da_dinh' }, { type: 'lon_mong_sat', x: 32, y: 32, zone: 'lon_da_dinh' }
+      { type: 'lon_mong_sat', x: 22, y: 30, zone: 'lon_da_dinh' }, { type: 'lon_mong_sat', x: 27, y: 31, zone: 'lon_da_dinh' }, { type: 'lon_mong_sat', x: 32, y: 32, zone: 'lon_da_dinh' },
+      // QA 14:31 30/10 (lượt test+khắc phục lệnh Bui 19:35): map 7
+      // thưa quái nhất chuỗi (20 spawn/4.480 ô = 0,45/100 ô — các map
+      // 8–14 đều 0,80/100) vì cụm vành V10 của riêng map này bị kiểm
+      // liên thông zone bác sạch. Bổ sung 16 spawn vào ĐÚNG 3 khu sẵn
+      // có bằng 3 loài sẵn có (khỉ +6, sói +6, lợn +4 -> tổng 36,
+      // ~0,80/100 ô ngang dãy; tỉ lệ loài giữ atk trung bình map ở
+      // 8,39 — trong dung sai tiến trình của audit, và không con
+      // mạnh nhất nào đứng gần điểm vào quá luật L7): mọi vị trí đã
+      // kiểm trên lưới cuối — đất đi được, hộp lang thang ±4 thoáng
+      // >= 55%, cách spawn khác/dược/biển >= 2 ô, trong rect khu.
+      { type: 'khi_mat_do', x: 6, y: 26, zone: 'khi_dinh_may' }, { type: 'khi_mat_do', x: 13, y: 26, zone: 'khi_dinh_may' }, { type: 'khi_mat_do', x: 14, y: 20, zone: 'khi_dinh_may' },
+      { type: 'khi_mat_do', x: 9, y: 16, zone: 'khi_dinh_may' }, { type: 'khi_mat_do', x: 11, y: 16, zone: 'khi_dinh_may' }, { type: 'khi_mat_do', x: 13, y: 16, zone: 'khi_dinh_may' },
+      { type: 'soi_rung', x: 38, y: 27, zone: 'soi_dinh_tuyet' }, { type: 'soi_rung', x: 49, y: 22, zone: 'soi_dinh_tuyet' }, { type: 'soi_rung', x: 45, y: 27, zone: 'soi_dinh_tuyet' },
+      { type: 'soi_rung', x: 41, y: 17, zone: 'soi_dinh_tuyet' }, { type: 'soi_rung', x: 43, y: 17, zone: 'soi_dinh_tuyet' }, { type: 'soi_rung', x: 45, y: 17, zone: 'soi_dinh_tuyet' },
+      { type: 'lon_mong_sat', x: 29, y: 28, zone: 'lon_da_dinh' }, { type: 'lon_mong_sat', x: 23, y: 33, zone: 'lon_da_dinh' },
+      { type: 'lon_mong_sat', x: 23, y: 24, zone: 'lon_da_dinh' }, { type: 'lon_mong_sat', x: 25, y: 24, zone: 'lon_da_dinh' }
     ],
     herbs: [
       { x: 24, y: 16, item: 'linh_chi' }, { x: 30, y: 16, item: 'linh_chi' }, { x: 12, y: 20, item: 'linh_chi' },
@@ -1306,7 +1324,11 @@
     if (i < HIGH_CHAIN.length - 1) {
       var nxt = HIGH_CHAIN[i + 1];
       mp.portals = mp.portals.concat(chainPortals(0, cx, nxt.id, Math.floor(nxt.w / 2), nxt.h - 2, realmGate(nxt.reqRealm.realm)));
-      mp.props.push({ sprite: 'sign', x: cx + 3, y: 2, label: nxt.name });
+      // QA 14:31 30/10: biển cổng phải nói cả ĐIỀU KIỆN như biển map 7
+      // ("Lên Sơn Trung Vân Hải — Cần Trúc Cơ") — trước đây 6 biển
+      // chặng cao chỉ ghi tên map đích, người chơi đi vào mới bị cổng
+      // chặn mới biết thiếu cảnh giới.
+      mp.props.push({ sprite: 'sign', x: cx + 3, y: 2, label: 'Lên ' + nxt.name + ' — Cần ' + nxt.reqRealm.name });
     }
   });
   var MAPS = { map1: MAP, map2: MAP2, map3: MAP3, map4: MAP4, map5: MAP5, map6: MAP6, map7: MAP7, map8: MAP8, map9: MAP9, map10: MAP10, map11: MAP11, map12: MAP12, map13: MAP13, map14: MAP14 };

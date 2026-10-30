@@ -190,6 +190,20 @@
       nv05: 'nam', nv06: 'nam', nv07: 'nu', nv08: 'nu', nv09: 'nu',
       nv10: 'nu', nv11: 'nu', nv12: 'nu' };
     if (lookId && LOOK_GENDER[lookId] === gender) ch.look = lookId;
+    // NGUỒN GỐC (mục 19 hàng chờ, docs/origins-and-encounters.md):
+    // có look NV thì storyOrigin = look; không thì 'goc_' + khung xuất
+    // thân (3 nguồn gốc nền). Nguồn gốc KHÔNG đổi chỉ số — chỉ số vẫn
+    // là của khung ORIGINS ở trên. Vật dấu ấn trao ngay vào túi lúc
+    // tạo nhân vật (vật cốt truyện, heal 0, không bán được như lệnh
+    // bài); chi tiết lore/thoại NPC ở js/origins.js.
+    var ORIGIN_TOKENS = { nv01: 'kiem_gi_cua_cha', nv02: 'nua_quyen_thanh_khe_chi',
+      nv03: 'la_bua_khong_chu', nv04: 'nanh_soi_dau_tien', nv05: 'hat_trang_go_chay_sem',
+      nv06: 'hat_giong_lua_cu_cua_ba', nv07: 'lenh_bai_tieu_cuc_ran', nv08: 'gio_thuoc_cua_me',
+      nv09: 'ngoc_boi_khuyet_mot_goc', nv10: 'sung_nai_gac_dau_tien', nv11: 'con_dau_trien_gia_truyen',
+      nv12: 'khan_hoa_dao_cua_chi', goc_nong_dan: 'cuoc_cu_cua_cha', goc_tho_san: 'mui_ten_gay_dau_tien',
+      goc_thu_sinh: 'nghien_muc_nut' };
+    ch.storyOrigin = ch.look || ('goc_' + originId);
+    ch.inventory.push({ id: ORIGIN_TOKENS[ch.storyOrigin], count: 1 });
     return ch;
   }
   function rootOf(ch) { return ch.root ? ROOTS.filter(function (r) { return r.id === ch.root; })[0] : null; }
@@ -717,6 +731,40 @@
     lenh_bai_kim_cang: { name: 'Lệnh Bài Kim Cang', desc: 'Lệnh bài đồng vàng khắc nắm quyền của Kim Cang Môn. Nhận khi bái nhập tông môn này ở Sơn Môn Đại Hội, không dùng được, không bán.', heal: 0 },
     lenh_bai_ngu_doc: { name: 'Lệnh Bài Ngũ Độc', desc: 'Lệnh bài lục trầm khắc trăng khuyết của Ngũ Độc Giáo. Nhận khi bái nhập tông môn này ở Sơn Môn Đại Hội, không dùng được, không bán.', heal: 0 },
     lenh_bai_huyen_am: { name: 'Lệnh Bài Huyền Âm', desc: 'Lệnh bài bạc khắc dây đàn của Huyền Âm Cung. Nhận khi bái nhập tông môn này ở Sơn Môn Đại Hội, không dùng được, không bán.', heal: 0 },
+    // ----- VẬT DẤU ẤN NGUỒN GỐC (mục 19 hàng chờ, docs/origins-and-encounters.md):
+    // 15 vật cốt truyện, không chỉ số, heal 0 (không dùng trực tiếp
+    // được), không nằm trong danh sách bán của shop nào nên không bán
+    // được — giá trị nằm ở thoại NPC nhận ra + kỳ ngộ riêng (mục 20/21).
+    kiem_gi_cua_cha: { name: 'Kiếm Gỉ Của Cha', desc: 'Thanh kiếm đã gỉ của cha — tiêu sư chết trên đường nam mười lăm năm trước. Dấu ấn của Kiếm Khách Lãng Du, không dùng được, không bán.', heal: 0 },
+    nua_quyen_thanh_khe_chi: { name: 'Nửa Quyển Thanh Khê Chí', desc: 'Nửa quyển sách chép tay về làng Thanh Khê do cha để lại. Dấu ấn của Thư Sinh Ôn Nhuận, không dùng được, không bán.', heal: 0 },
+    la_bua_khong_chu: { name: 'Lá Bùa Không Chữ', desc: 'Lá bùa giấy vàng sư phụ để lại, trên mặt không một nét mực. Dấu ấn của Đạo Sĩ Vân Du, không dùng được, không bán.', heal: 0 },
+    nanh_soi_dau_tien: { name: 'Nanh Sói Đầu Tiên', desc: 'Chiếc nanh của con sói đầu tiên tự hạ năm 14 tuổi. Dấu ấn của Thợ Săn Sơn Dã, không dùng được, không bán.', heal: 0 },
+    hat_trang_go_chay_sem: { name: 'Hạt Tràng Gỗ Cháy Sém', desc: 'Nửa tràng hạt còn lại từ đêm chùa trên núi cháy. Dấu ấn của Tiểu Hòa Thượng, không dùng được, không bán.', heal: 0 },
+    hat_giong_lua_cu_cua_ba: { name: 'Hạt Giống Lúa Cũ Của Bà', desc: 'Giống lúa cũ nhà ba đời, từng cứu đói cả làng năm mất mùa. Dấu ấn của Thôn Phu Cường Tráng, không dùng được, không bán.', heal: 0 },
+    lenh_bai_tieu_cuc_ran: { name: 'Lệnh Bài Tiêu Cục Rạn', desc: 'Lệnh bài tiêu cục phương bắc của cha, đã rạn một góc. Dấu ấn của Nữ Hiệp Hồng Y, không dùng được, không bán.', heal: 0 },
+    gio_thuoc_cua_me: { name: 'Giỏ Thuốc Của Mẹ', desc: 'Chiếc giỏ hái thuốc của mẹ — dược nương mất trong mùa dịch năm xưa. Dấu ấn của Dược Nương Hoa Cài, không dùng được, không bán.', heal: 0 },
+    ngoc_boi_khuyet_mot_goc: { name: 'Ngọc Bội Khuyết Một Góc', desc: 'Miếng ngọc đeo từ khi được tìm thấy cạnh suối linh, khuyết đúng một góc. Dấu ấn của Tiên Tử Áo Tím, không dùng được, không bán.', heal: 0 },
+    sung_nai_gac_dau_tien: { name: 'Sừng Nai Gác Đầu Tiên', desc: 'Chiếc sừng nai đầu tiên săn được ở bìa rừng, buộc dây cung kiểu dân giữ rừng. Dấu ấn của Sơn Nữ Thợ Săn, không dùng được, không bán.', heal: 0 },
+    con_dau_trien_gia_truyen: { name: 'Con Dấu Triện Gia Truyền', desc: 'Con triện nhà bán sách giấy ở trấn trên, mang theo khi xuống Thanh Khê tránh nợ. Dấu ấn của Tài Nữ Thư Hương, không dùng được, không bán.', heal: 0 },
+    khan_hoa_dao_cua_chi: { name: 'Khăn Hoa Đào Của Chị', desc: 'Chiếc khăn chị gái thêu cho trước khi đi lấy chồng xa qua đường nam. Dấu ấn của Thôn Nữ Hoa Đào, không dùng được, không bán.', heal: 0 },
+    cuoc_cu_cua_cha: { name: 'Cuốc Cũ Của Cha', desc: 'Chiếc cuốc mòn cán của người làng Thanh Khê chính gốc. Dấu ấn nền của Nông Dân Thanh Khê, không dùng được, không bán.', heal: 0 },
+    mui_ten_gay_dau_tien: { name: 'Mũi Tên Gãy Đầu Tiên', desc: 'Mũi tên gãy đầu tiên học việc ở lán Hà lão. Dấu ấn nền của Thợ Săn Thanh Khê, không dùng được, không bán.', heal: 0 },
+    nghien_muc_nut: { name: 'Nghiên Mực Nứt', desc: 'Nghiên mực nứt dùng chép sách ở đình làng. Dấu ấn nền của Thư Sinh Thanh Khê, không dùng được, không bán.', heal: 0 },
+    // ----- VẬT KÝ DANH SINH RA TRONG KỲ NGỘ NGUỒN GỐC NHÓM A (mục 20
+    // hàng chờ, docs/origins-and-encounters.md mục 2–3): vật cốt truyện
+    // như dấu ấn (heal 0, không dùng trực tiếp, không bán), chỉ khác là
+    // chúng sinh ra TRONG kỳ ngộ chứ không có sẵn lúc tạo nhân vật.
+    kiem_cua_cha_da_mai: { name: 'Kiếm Của Cha — Đã Mài', desc: 'Kiếm gỉ của cha sau khi mài lại bằng đá linh trong động cột đá — vết gỉ hết, chiêu kiếm dở dang trên cột đã ngộ. Vật ký danh của Kiếm Khách Lãng Du, không dùng được, không bán.', heal: 0 },
+    long_linh_ho: { name: 'Lông Linh Hồ', desc: 'Chiếc lông linh hồ non để lại sau khi được băng bó rồi thả đi — rừng nhớ ân này. Vật ký danh của Thợ Săn Sơn Dã, không dùng được, không bán.', heal: 0 },
+    // ----- VẬT KÝ DANH SINH RA TRONG KỲ NGỘ NGUỒN GỐC NHÓM B (mục 21
+    // hàng chờ, docs/origins-and-encounters.md mục 2–3): cùng khuôn vật
+    // cốt truyện như nhóm A (heal 0, không dùng trực tiếp, không bán),
+    // trừ Đào Linh / Lúa Linh là đồ ăn theo đúng tài liệu chính.
+    chuong_dong_nho: { name: 'Chuông Nhỏ', desc: 'Chuông nhỏ bằng đồng nhặt dưới đống tro nền chùa cũ trên đồi sau làng — tiếng chuông không người gõ đêm đó vẫn còn vang. Vật ký danh của Tiểu Hòa Thượng, không dùng được, không bán.', heal: 0 },
+    manh_ngoc_khuyet: { name: 'Mảnh Ngọc Khuyết', desc: 'Mảnh ngọc thứ hai vớt dưới đáy suối linh — khớp đúng góc khuyết của Ngọc Bội Khuyết Một Góc. Vật ký danh của Tiên Tử Áo Tím, không dùng được, không bán.', heal: 0 },
+    dao_linh_qua: { name: 'Đào Linh', desc: 'Quả đào rụng từ gốc đào cổ nở hoa trái mùa trong đêm — linh khí thấm vào thịt quả. Đồ ăn hồi 60 HP, ngang Thịt Sơn Quân theo tài liệu chính.', heal: 60 },
+    lua_linh: { name: 'Lúa Linh', desc: 'Bông lúa linh thu từ linh điền động phủ — hạt lúa cũ của bà nảy mầm trong linh khí. Lương thực linh, hồi 30 HP; để dành cho Thiên 6 khi đường buôn bị cắt.', heal: 30 },
+    hat_lua_linh: { name: 'Hạt Lúa Linh', desc: 'Hạt giống lúa linh thu được ở mảnh ruộng phát sáng sau mưa. Gieo ở linh điền trong động phủ, khoảng 2 giờ là thu được Lúa Linh — chỉ có từ kỳ ngộ nguồn gốc, không bán ở cửa phủ.', heal: 0 },
     // ----- Quyển ĐAN PHƯƠNG rơi từ BOSS THẾ GIỚI (lệnh Bui 22:10
     // 29/10): vật phẩm dạng bí tịch — BẤM DÙNG (đọc) trong túi để HỌC
     // đan phương tương ứng qua PNT_ALCHEMY.useRecipeScroll (học mở khóa
@@ -819,7 +867,12 @@
     bt_pq_bang_tien: { name: 'Bí Tịch: Băng Tiễn Thuật', desc: 'Pháp quyết nhập môn hệ Băng (Phàm phẩm — cần Luyện Khí tầng 2). Tàng Kinh Các mọi tông đổi 40 Điểm Cống Hiến. Bấm dùng trong túi để học: băng tiễn làm chậm kẻ trúng đòn 1,2 giây.', heal: 0, manualSkill: 'pq_bang_tien' },
     bt_pq_loi_kich: { name: 'Bí Tịch: Lôi Kích Thuật', desc: 'Pháp quyết nhập môn hệ Lôi (Phàm phẩm — cần Luyện Khí tầng 2). Tàng Kinh Các mọi tông đổi 40 Điểm Cống Hiến. Bấm dùng trong túi để học: sét giáng nhanh lên 1 mục tiêu, hồi chiêu 3 giây.', heal: 0, manualSkill: 'pq_loi_kich' },
     bt_pq_phong_nhan: { name: 'Bí Tịch: Phong Nhận Thuật', desc: 'Pháp quyết nhập môn hệ Phong (Phàm phẩm — cần Luyện Khí tầng 2). Tủ sách làng bán 50 Linh Thạch; Tàng Kinh Các mọi tông đổi 40 Điểm Cống Hiến. Bấm dùng trong túi để học: lưỡi gió bay xa 280.', heal: 0, manualSkill: 'pq_phong_nhan' },
-    bt_pq_tho_thu: { name: 'Bí Tịch: Thổ Thứ Thuật', desc: 'Pháp quyết nhập môn hệ Thổ (Phàm phẩm — cần Luyện Khí tầng 2). Tàng Kinh Các mọi tông đổi 40 Điểm Cống Hiến. Bấm dùng trong túi để học: gai đá đội đất đâm lên dưới chân địch.', heal: 0, manualSkill: 'pq_tho_thu' }
+    bt_pq_tho_thu: { name: 'Bí Tịch: Thổ Thứ Thuật', desc: 'Pháp quyết nhập môn hệ Thổ (Phàm phẩm — cần Luyện Khí tầng 2). Tàng Kinh Các mọi tông đổi 40 Điểm Cống Hiến. Bấm dùng trong túi để học: gai đá đội đất đâm lên dưới chân địch.', heal: 0, manualSkill: 'pq_tho_thu' },
+    // CỔ VẬT VÙI LẤP (js/world-events.js, lệnh Bui 20:20 2026-10-30):
+    // hái dược/hạ quái ở map cày có 1% thấy; bán cho Thương Nhân
+    // Thần Bí giá cố định 15 / 30 LT (economy.md mục 21).
+    dong_tien_co: { name: 'Đồng Tiền Cổ', desc: 'Tiền cổ của người xưa bị đất trồi lên theo linh khí quanh Thanh Sơn — mặt tiền mòn, lỗ vuông còn rõ. Vô dụng với tu sĩ, nhưng Thương Nhân Thần Bí ghé làng lại chịu thu 15 Linh Thạch.', heal: 0 },
+    vun_ngoc_co: { name: 'Vụn Ngọc Cổ', desc: 'Mảnh ngọc vỡ của một món cổ vật nào đó, vân ngọc còn ấm linh khí nhạt. Thương Nhân Thần Bí ghé làng chịu thu 30 Linh Thạch — như thể ông ta biết nó thuộc về thời nào.', heal: 0 }
   };
   // LINH THẠCH RƠI TỪ QUÁI (chỉnh kinh tế cày cuốc — Bui 22:15 2026-10-29,
   // xem docs/economy.md): KHÔNG còn rơi phẳng chắc chắn. Mỗi loài khai
@@ -1098,6 +1151,49 @@
       desc: 'Mang sổ mượn của Tàng Kinh Các tới bãi tuyển báo cho Tạ Thanh Vân biết kỳ này các không mất một quyển nào, không rách một trang nào.',
       objectives: [{ type: 'talk', target: 'de_tu_phai', need: 1 }],
       rewards: { linhThach: 100, tuVi: 30, items: [] } },
+    // ----- Chuỗi KẾT NGHĨA (js/sworn.js quản, mục 16 hàng chờ) -----
+    // Chỉ mở cho người ĐÃ CHIÊU MỘ bạn đi cùng + hảo cảm với đại
+    // diện tông từ mốc Thân thiết (40) trở lên — cổng nằm ở
+    // js/sworn.js gate(), không nằm ở requires. Người kết nghĩa
+    // chính là bạn đi cùng đã chiêu mộ (mục 4), không tạo NPC mới.
+    // giver 'sect_rep' = đại diện của tông NGƯỜI CHƠI ĐÃ BÁI NHẬP
+    // ở map 3; nút Trả riêng của chuỗi nằm ở đại diện tông (vì
+    // giver không khớp một NPC cố định nên nút Trả chung theo
+    // giver không bắt được). Thưởng mỗi việc trong trần nhiệm vụ
+    // lẻ <= 300 LT của docs/economy.md; trả xong q_kn_3 thì
+    // flags.sworn.done = true, buff +2 công khi đi cùng nhau.
+    q_kn_1: { id: 'q_kn_1', main: false, knQuest: true, title: 'Lễ vật kết nghĩa', giver: 'sect_rep',
+      desc: 'Hái 3 tai Linh Chi tươi làm lễ vật dâng trời đất cho lễ kết nghĩa với bạn đi cùng — linh chi mọc gần suối linh trong Rừng Thanh Sơn, hái cây còn đẫm sương mới tính.',
+      objectives: [{ type: 'collect', target: 'linh_chi', need: 3 }],
+      rewards: { linhThach: 60, tuVi: 20, items: [] } },
+    q_kn_2: { id: 'q_kn_2', main: false, knQuest: true, title: 'Vai kề vai dẹp đường', giver: 'sect_rep', requires: 'q_kn_1',
+      desc: 'Cùng bạn đi cùng hạ 3 con Khỉ Mặt Đỏ phá đường núi từ bãi tuyển lên rừng — một người đánh, một người giữ đường, đường sạch thì lễ thề mới có đường mà đi.',
+      objectives: [{ type: 'kill', target: 'khi_mat_do', need: 3 }],
+      rewards: { linhThach: 80, tuVi: 25, items: [] } },
+    q_kn_3: { id: 'q_kn_3', main: false, knQuest: true, title: 'Lời thề dưới gốc đa', giver: 'sect_rep', requires: 'q_kn_2',
+      desc: 'Mang lời thề về làng cho trưởng làng Trần Đức làm chứng — người làng chứng kiến thì lời thề mới nặng — rồi quay lại đại diện tông làm lễ thề dưới gốc đa với bạn đi cùng.',
+      objectives: [{ type: 'talk', target: 'truong_lang', need: 1 }],
+      rewards: { linhThach: 100, tuVi: 30, items: [] } },
+    // --- VIỆC TIẾT (mục 17 hàng chờ, js/season-tide.js): mỗi tiết 1
+    // việc, mỗi việc một lần duy nhất, chỉ nhận trong đúng tháng của
+    // tiết; thưởng 50 LT/việc (trong trần NV lẻ ≤ 300 LT của
+    // economy.md mục 6). Người giao đều là NPC làng map 1 đã có.
+    q_tiet_linh: { id: 'q_tiet_linh', main: false, tietQuest: true, title: 'Tiết Linh Tố: Thuốc đầu mùa', giver: 'hoc_tro',
+      desc: 'Tiết Linh Tố, đất làng thấm linh khí, dược mọc nhanh hơn mọi tháng. Hái 3 cây Thanh Tâm Thảo tươi cho Tiểu Hạnh giã thuốc dự trữ cho mùa khô sắp tới.',
+      objectives: [{ type: 'collect', target: 'thanh_tam_thao', need: 3 }],
+      rewards: { linhThach: 50, tuVi: 10, items: [] } },
+    q_tiet_thu: { id: 'q_tiet_thu', main: false, tietQuest: true, title: 'Tiết Thú Dữ: Giữ cổng làng', giver: 'linh_gac',
+      desc: 'Tiết Thú Dữ, trời khô thú đói, tinh anh xuống gần làng nhiều hơn. Hạ 3 con Sói Con lảng vảng quanh bãi hoang để A Hổ giữ yên cổng Nam Môn.',
+      objectives: [{ type: 'kill', target: 'soi_con', need: 3 }],
+      rewards: { linhThach: 50, tuVi: 10, items: [] } },
+    q_tiet_dang: { id: 'q_tiet_dang', main: false, tietQuest: true, title: 'Tiết Đăng Hoa: Lời chúc hội đèn', giver: 'chu_quan',
+      desc: 'Tiết Đăng Hoa, đêm hội đèn của làng. Mang lời chúc hội đèn của Hoa nương sang cho Dì Tư (người lo lễ hội của làng) rồi quay lại ăn cỗ hội.',
+      objectives: [{ type: 'talk', target: 'le_su', need: 1 }],
+      rewards: { linhThach: 50, tuVi: 10, items: [{ id: 'thit_ga', n: 2 }] } },
+    q_tiet_tinh: { id: 'q_tiet_tinh', main: false, tietQuest: true, title: 'Tiết Tĩnh Tu: Ngồi yên một tuần trà', giver: 'dai_phu',
+      desc: 'Tiết Tĩnh Tu, linh khí lặng mà đầy, thổ nạp được thêm một phần tư. Ngồi thổ nạp tích đủ 30 tu vi trong tiết này cho Lý lão xem tâm tĩnh tới đâu.',
+      objectives: [{ type: 'tuvi', need: 30 }],
+      rewards: { linhThach: 50, tuVi: 10, items: [] } },
     q_tong_tran: { id: 'q_tong_tran', main: false, title: 'Dẫn khí qua cửu cung', giver: 'tong_tran', requires: 'q_tong_phu',
       desc: 'Theo trận đồ Cửu Cung của Cửu Cung Trận Tông mà dẫn khí đi đủ một vòng: thổ nạp tích đủ 50 tu vi.', objectives: [{ type: 'tuvi', need: 50 }],
       rewards: { linhThach: 70, tuVi: 20, items: [] } },
@@ -1153,6 +1249,41 @@
       desc: 'Mang về một mảnh trời rơi — thiên tài địa bảo phát sáng vàng mọc ngẫu nhiên trong cảnh của vết nứt. Đợt này tông đã nhờ Từ bà khấn trấn nên mảnh trời chắc chắn hiện ra. Hái được thì ra ngay, đừng tham.',
       objectives: [{ type: 'rift', target: 'treasure', need: 1 }],
       rewards: { linhThach: 300, tuVi: 120, items: [] } },
+    // ===== THIÊN 4 TIẾP: CHƯƠNG 25-27 (mục 18 hàng chờ, js/thien4.js quản)
+    // Mở sau arc vết nứt (q_vet_nut_4) + Trúc Cơ + bái nhập (cổng ở
+    // thien4.js). Objectives type 'thien4' do module tự set done khi hệ
+    // đã có báo thành công (hộ tống / đấu giá / nâng cấp động phủ) —
+    // như tiền lệ type 'rift' của arc vết nứt.
+    q_thien4_1: { id: 'q_thien4_1', main: true, thien4: true, title: 'Điểm mạch Thanh Sơn', giver: 'sect_rep', requires: 'q_vet_nut_4',
+      desc: 'Vết nứt đã đo xong, các tông bắt đầu cắm cọc tranh linh mạch quanh Thanh Sơn. Tông của ngươi giao ngươi giữ một điểm mạch nhỏ ở Sơn Trung Vân Hải — việc đầu là hộ tống một chuyến hàng vận mạch của Mã Vạn Lai (đá trận, lương thực cho đệ tử giữ mạch) từ Rừng Thanh Sơn lên Trạm Buôn Chân Núi.',
+      objectives: [{ type: 'thien4', target: 'escort', need: 1 }],
+      rewards: { linhThach: 250, tuVi: 100, items: [] } },
+    q_thien4_2: { id: 'q_thien4_2', main: true, thien4: true, title: 'Phiên đấu giá tranh mạch', giver: 'sect_rep', requires: 'q_thien4_1',
+      desc: 'Bản đồ điểm mạch của vùng lọt vào phiên đấu giá Liên Tông ở bãi tuyển — đệ tử các tông đều ra giá, trong đó có thiên tài trẻ của tông đối trọng, kẻ vẫn coi ngươi là đối thủ đồng lứa từ ngày bái sư. Tông cần ngươi ra mặt: thắng 1 lô ở phiên đấu giá, đồ về tay tông là công của ngươi.',
+      objectives: [{ type: 'thien4', target: 'auction', need: 1 }],
+      rewards: { linhThach: 280, tuVi: 120, items: [] } },
+    q_thien4_3: { id: 'q_thien4_3', main: true, thien4: true, title: 'Ấn cổ dưới điểm mạch', giver: 'sect_rep', requires: 'q_thien4_2',
+      desc: 'Giữ được điểm mạch rồi, người giữ mạch đào thấy dưới mạch có khắc ấn cổ không thuộc tông nào — ấn của thời TRƯỚC Đại Kiếp, cùng loại ấn với vết khắc dưới đáy giếng cổ. Ấn chỉ "đọc" được qua Tụ Linh Trận mạnh: nâng động phủ riêng của ngươi lên cấp 2 (Tụ Linh Trận x2,0) rồi quay lại báo cho tông.',
+      objectives: [{ type: 'thien4', target: 'cave', need: 1 }],
+      rewards: { linhThach: 300, tuVi: 150, items: [] } },
+    // ===== THIÊN 5 MỞ ĐẦU: CHƯƠNG 28-30 (lệnh Bui 19:11 30/10, js/thien5.js quản)
+    // Vụ án đan độc mở đầu Thiên 5 "Kim Đan Phong Vân": mở sau Thiên 4
+    // (q_thien4_3) + Trúc Cơ + bái nhập (cổng ở thien5.js). Ch.28 dùng
+    // objective 'collect' sẵn có (recordEvent đếm khi hái điểm dược);
+    // ch.29/30 dùng objective type 'thien5' do module tự set done khi
+    // hệ đã có báo thành công (hạ boss thế giới / thú triều / vết nứt).
+    q_thien5_1: { id: 'q_thien5_1', main: true, thien5: true, title: 'Đan độc vào làng', giver: 'sect_rep', requires: 'q_thien4_3',
+      desc: 'Một mẻ đan giả đóng ấn Đan Hà Cốc bán qua phiên chợ: hai người làng và ba đệ tử trúng độc, cả vùng chỉ mặt Ngũ Độc Giáo. Tông giao ngươi tra án — việc đầu không phải đánh ai: hái 4 cây Độc Tâm Hoa còn tươi quanh bờ suối phía đông Rừng Thanh Sơn (hoặc khe suối Đại Sơn) mang về. Lý lão cần mẫu hoa THẬT để đối chiếu: độc trong đan giả bị tinh luyện lệch một nấc, chỉ mẫu tươi mới phân biệt được.',
+      objectives: [{ type: 'collect', target: 'doc_tam_hoa', need: 4 }],
+      rewards: { linhThach: 260, tuVi: 110, items: [] } },
+    q_thien5_2: { id: 'q_thien5_2', main: true, thien5: true, title: 'Sào mãng sau Đầm Độc', giver: 'sect_rep', requires: 'q_thien5_1',
+      desc: 'Đối chiếu xong: độc trong đan giả là nọc Cổ Mãng bị tinh luyện, mà quanh sào Cổ Mãng Vương ở Thập Vạn Đại Sơn (map 4) có dấu một lò luyện dã chiến. Hạ Cổ Mãng Vương, lục sào của nó lấy bằng chứng mang về — nghe nói trong sào còn có một trang sách lạ bị dùng làm giấy gói nọc.',
+      objectives: [{ type: 'thien5', target: 'boss', need: 1 }],
+      rewards: { linhThach: 280, tuVi: 130, items: [] } },
+    q_thien5_3: { id: 'q_thien5_3', main: true, thien5: true, title: 'Kẻ giữ ấn lên tiếng', giver: 'sect_rep', requires: 'q_thien5_2',
+      desc: 'Bằng chứng đủ rửa oan cho Ngũ Độc Giáo, nhưng kẻ luyện đan giả — một ma tu giữ di chỉ dưới điểm mạch — chưa lộ mặt. Hắn chỉ còn hai đường bịt đầu mối: xúi bầy thú đánh vào làng trong một lượt Thú Triều, hoặc trốn vào Vết Nứt Hư Không chờ khe khép. Giữ trọn một lượt Thú Triều (thắng cả 6 đợt), hoặc dọn xong một lượt Vết Nứt Hư Không — đường nào hắn cũng phải lộ diện.',
+      objectives: [{ type: 'thien5', target: 'showdown', need: 1 }],
+      rewards: { linhThach: 300, tuVi: 150, items: [] } },
     // ===== ARC CHUONG 13-20 (sau bai su, js/sect-arc.js quan bien the) =====
     // Truc chinh: q_chinh_19..27 (mo theo requires nhu cac chuong truoc).
     q_chinh_19: {"id": "q_chinh_19", "main": true, "title": "Báo danh nhập môn", "giver": "de_tu_phai", "requires": "q_chinh_18", "desc": "Lễ bái sư đã xong, tên ngươi đã vào sổ đệ tử của tông. Tạ Thanh Vân dặn: trước khi nhận việc tông đầu tiên, về làng Thanh Khê báo cho trưởng làng Trần Đức biết ngươi đã bái nhập tông nào — người giữ làng một đời đáng được nghe tin này từ chính miệng ngươi.", "objectives": [{"type": "talk", "target": "truong_lang", "need": 1}], "rewards": {"linhThach": 100, "tuVi": 30, "items": []}},
@@ -1288,9 +1419,13 @@
       var q = QUESTS[qid];
       if (q.sectQuest) return false; // chuỗi ngự kiếm: cổng theo flags (Trúc Cơ + bái sư), js/flight.js quản
       if (q.tkcQuest) return false; // chuỗi Tàng Kinh Các: cổng bái nhập, js/library.js quản
+      if (q.knQuest) return false; // chuỗi Kết Nghĩa: cổng chiêu mộ + hảo cảm 40, js/sworn.js quản
+      if (q.tietQuest) return false; // việc tiết: chỉ mở trong đúng tháng của tiết, js/season-tide.js quản
       if (q.sectArc) return false; // arc chuong 13-20: js/sect-arc.js quan (chi mo cho tong da bai nhap)
       if (q.festQuest) return false; // chuỗi việc lễ: chỉ mở trong cửa sổ lễ, js/wardrobe.js quản
       if (q.riftArc) return false; // arc Vết Nứt Hư Không: cổng Trúc Cơ + chương 18, js/rift-events.js quản
+      if (q.thien4) return false; // Thiên 4 ch.25-27: cổng Trúc Cơ + arc vết nứt + bái nhập, js/thien4.js quản
+      if (q.thien5) return false; // Thiên 5 ch.28-30: cổng Trúc Cơ + đã xong Thiên 4 + bái nhập, js/thien5.js quản
       if (qs.accepted[qid] || isTurnedIn(qs, qid)) return false;
       if (q.requires && !isTurnedIn(qs, q.requires)) return false;
       return true;

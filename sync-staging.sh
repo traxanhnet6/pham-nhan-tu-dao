@@ -32,6 +32,7 @@ ASSET_DIRS=(
   herb-icons-ai herb-icons-md
   talisman-icons-ai talisman-icons-md
   manual-icons-ai manual-icons-md
+  origin-icons-ai origin-icons-md
   looks
 )
 

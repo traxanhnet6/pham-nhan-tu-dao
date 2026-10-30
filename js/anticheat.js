@@ -60,7 +60,7 @@
   var GAIN_CAPS = {
     quest: 300, questTuVi: 150, monster: 1000, realm: 250, realmTuVi: 320,
     tourn: 3000, tide: 400, escort: 200, season: 400, sectRank: 400, sell: 1300,
-    codex: 200
+    codex: 200, gift: 200
   };
 
   // ---------- Tra cứu lười các module khác (mẫu chung của dự án) ----------

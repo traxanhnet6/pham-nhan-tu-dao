@@ -36,13 +36,18 @@
     player_death: 1, breakthrough: 1, kyngo: 1, quest_accept: 1,
     quest_complete: 1, ui_click: 1, pickup: 1, pickup_weapon: 1, coin: 1,
     use_item: 1, portal: 1, meditate: 1, gather: 1, artifact_cast: 1,
-    tourn_drum: 1, tourn_cheer: 1,
+    tourn_drum: 1, tourn_cheer: 1, fly_whoosh: 1, revive: 1, formation: 1,
     shop_buy: 1, shop_sell: 1, plant: 1, water: 1, capture_miss: 1, break_fail: 1,
     ice_tick: 1, fire_tick: 1, zap_small: 1, boom_small: 1
   };
   // Tiếng tung chiêu theo id skill (thanh skill trong skills.js).
+  // QA 15:16 30/10: 10 chiêu cảnh giới cao có bản tiếng RIÊNG ở
+  // skillSound (ghép từ nguyên liệu sẵn có theo đúng hệ/hình thái
+  // chiêu) — trước đây cả 10 đều rơi về một tiếng vút kiếm chung.
   var SKILL_SOUNDS = {
-    combo: 1, kiem_khi: 1, toan_phong: 1, thien_can: 1, luu_tinh: 1, ngu_kiem: 1
+    combo: 1, kiem_khi: 1, toan_phong: 1, thien_can: 1, luu_tinh: 1, ngu_kiem: 1,
+    xuyen_van: 1, linh_khien: 1, dan_hoa: 1, than_loi: 1, phan_than: 1,
+    tran_ap: 1, linh_vuc: 1, kiem_tran: 1, loi_kiep: 1, pha_huyen: 1
   };
   // Thiên Căn Thần Thông: tiếng riêng theo 8 hệ linh căn.
   var ROOT_SOUNDS = {
@@ -487,6 +492,23 @@
       tone({ type: 'sine', f0: 150, f1: 88, t: t, dur: 0.09, vol: 0.21 });
       noiseHit({ t: t + 0.08, dur: 0.06, vol: 0.09, type: 'lowpass', f0: 700 });
     },
+    fly_whoosh: function () { // cất cánh/hạ cánh ngự kiếm: gió quét lên rồi lắng (QA 15:16 30/10 — trước đây bay lên/xuống im lặng tuyệt đối)
+      var t = V();
+      noiseHit({ t: t, dur: 0.42, vol: 0.14, type: 'bandpass', f0: 480, f1: 1750, q: 1.1, a: 0.05 });
+      tone({ type: 'sine', f0: 1567.98, t: t + 0.1, dur: 0.18, vol: 0.04 });
+    },
+    revive: function () { // hồi sinh sau khi gục: chuông nhỏ ngân lên hai nốt — đối nghịch tiếng chết trầm (QA 16:31 30/10)
+      var t = V();
+      tone({ type: 'sine', f0: 523.25, t: t, dur: 0.3, vol: 0.12 });
+      tone({ type: 'sine', f0: 783.99, t: t + 0.14, dur: 0.42, vol: 0.12 });
+      noiseHit({ t: t, dur: 0.3, vol: 0.05, type: 'bandpass', f0: 2400, q: 2 });
+    },
+    formation: function () { // cắm/thu/tan trận kỳ: trầm rung một nhịp + keng đá nhỏ — một tiếng dùng chung cho cả vòng đời trận (QA 15:16 30/10)
+      var t = V();
+      tone({ type: 'sine', f0: 130, f1: 82, t: t, dur: 0.28, vol: 0.2 });
+      tone({ type: 'triangle', f0: 1567.98, t: t + 0.03, dur: 0.14, vol: 0.06 });
+      noiseHit({ t: t, dur: 0.16, vol: 0.08, type: 'bandpass', f0: 900, q: 1.4 });
+    },
     water: function () { // tưới nước giếng: dòng nước rót quét lên + vài giọt rơi leng keng cuối dòng
       var t = V();
       noiseHit({ t: t, dur: 0.55, vol: 0.10, type: 'bandpass', f0: 850, f1: 1650, q: 0.7, a: 0.05 });
@@ -613,6 +635,71 @@
         tone({ type: 'sine', f0: 196, f1: 392, t: t, dur: 0.4, vol: 0.14 });
         noiseHit({ t: t, dur: 0.3, vol: 0.12, type: 'bandpass', f0: 900, f1: 1600, q: 1.2 });
       }
+      return;
+    }
+    // ---- 10 chiêu cảnh giới cao (QA 15:16 30/10): mỗi chiêu một
+    // bản tiếng riêng ghép từ nguyên liệu sẵn có, bám hệ + hình thái.
+    if (id === 'xuyen_van') { // kiếm khí xuyên mây: vút cao, nhanh, có tiếng keng kim ở cuối đường bay
+      noiseHit({ t: t, dur: 0.3, vol: 0.24, type: 'bandpass', f0: 900, f1: 3400, q: 1.3 });
+      tone({ type: 'sine', f0: 2093.0, t: t + 0.16, dur: 0.12, vol: 0.07 });
+      tone({ type: 'sawtooth', f0: 262, f1: 392, t: t, dur: 0.18, vol: 0.04, filter: { type: 'lowpass', f: 900 } });
+      return;
+    }
+    if (id === 'pha_huyen') { // nhất kiếm phá huyền: một nhát nặng, trầm, dứt khoát
+      noiseHit({ t: t, dur: 0.38, vol: 0.3, type: 'bandpass', f0: 500, f1: 2600, q: 1.1 });
+      tone({ type: 'sine', f0: 90, f1: 48, t: t, dur: 0.32, vol: 0.3 });
+      tone({ type: 'sine', f0: 1567.98, t: t + 0.05, dur: 0.34, vol: 0.05 });
+      return;
+    }
+    if (id === 'linh_khien') { // khiên linh khí: ù ấm lên như bong bóng khí dựng quanh người
+      tone({ type: 'sine', f0: 392.0, f1: 523.25, t: t, dur: 0.5, vol: 0.13 });
+      tone({ type: 'triangle', f0: 783.99, t: t + 0.08, dur: 0.4, vol: 0.05 });
+      noiseHit({ t: t, dur: 0.4, vol: 0.06, type: 'lowpass', f0: 600 });
+      return;
+    }
+    if (id === 'dan_hoa') { // đan hỏa liệu thiên: bùng lửa + nổ nhỏ + tàn lửa lách tách
+      noiseHit({ t: t, dur: 0.45, vol: 0.3, type: 'lowpass', f0: 520, f1: 170, a: 0.02 });
+      tone({ type: 'sine', f0: 98, f1: 42, t: t, dur: 0.38, vol: 0.3 });
+      for (var fh = 0; fh < 4; fh++) noiseHit({ t: t + 0.2 + fh * rnd(0.05, 0.1), dur: 0.05, vol: 0.08, type: 'bandpass', f0: rnd(900, 1800), q: 2 });
+      return;
+    }
+    if (id === 'than_loi') { // ngũ lôi oanh đỉnh: chớp nổ gọn + lách tách đuôi (nhẹ hơn Lôi Kiếp)
+      noiseHit({ t: t, dur: 0.08, vol: 0.34, type: 'highpass', f0: 2400 });
+      tone({ type: 'sine', f0: 82, f1: 38, t: t, dur: 0.42, vol: 0.36 });
+      for (var th = 0; th < 3; th++) noiseHit({ t: t + 0.1 + th * rnd(0.05, 0.1), dur: 0.03, vol: 0.08, type: 'highpass', f0: 4200 });
+      return;
+    }
+    if (id === 'loi_kiep') { // cửu thiên lôi kiếp: sấm lớn hai lớp, trầm và dài nhất trong các chiêu lôi
+      noiseHit({ t: t, dur: 0.1, vol: 0.42, type: 'highpass', f0: 2600 });
+      tone({ type: 'sine', f0: 68, f1: 30, t: t, dur: 0.7, vol: 0.44 });
+      noiseHit({ t: t + 0.03, dur: 0.5, vol: 0.24, type: 'lowpass', f0: 700 });
+      noiseHit({ t: t + 0.28, dur: 0.08, vol: 0.3, type: 'highpass', f0: 2200 });
+      tone({ type: 'sine', f0: 55, f1: 28, t: t + 0.28, dur: 0.5, vol: 0.3 });
+      for (var lk = 0; lk < 5; lk++) noiseHit({ t: t + 0.14 + lk * rnd(0.05, 0.11), dur: 0.03, vol: 0.09, type: 'highpass', f0: 4200 });
+      return;
+    }
+    if (id === 'phan_than') { // nguyên anh xuất khiếu: hai nốt lơ lửng lệch pha như bóng tách khỏi thân
+      tone({ type: 'sine', f0: 783.99, t: t, dur: 0.65, vol: 0.1 });
+      tone({ type: 'sine', f0: 1174.66, t: t + 0.09, dur: 0.55, vol: 0.07 });
+      noiseHit({ t: t, dur: 0.5, vol: 0.08, type: 'bandpass', f0: 700, f1: 1500, q: 1.4 });
+      return;
+    }
+    if (id === 'tran_ap') { // trấn áp hồn phách: áp lực trầm đè xuống, quét tần đi xuống
+      tone({ type: 'sine', f0: 65, f1: 38, t: t, dur: 0.6, vol: 0.36 });
+      noiseHit({ t: t, dur: 0.5, vol: 0.2, type: 'bandpass', f0: 1200, f1: 200, q: 1.1 });
+      noiseHit({ t: t + 0.05, dur: 0.4, vol: 0.14, type: 'lowpass', f0: 210 });
+      return;
+    }
+    if (id === 'linh_vuc') { // lĩnh vực hóa thần: ngân dài hai lớp, quét sáng dần
+      tone({ type: 'sine', f0: 261.63, t: t, dur: 0.8, vol: 0.1 });
+      tone({ type: 'sine', f0: 392.0, t: t + 0.12, dur: 0.7, vol: 0.08 });
+      noiseHit({ t: t, dur: 0.75, vol: 0.07, type: 'bandpass', f0: 500, f1: 1900, q: 1.6 });
+      return;
+    }
+    if (id === 'kiem_tran') { // thiên điều kiếm trận: mưa keng kim loại giáng xuống như Thiên Căn hệ Kim nhưng dày hơn
+      for (var kt = 0; kt < 9; kt++) tone({ type: 'triangle', f0: rnd(1750, 2650), t: t + kt * rnd(0.03, 0.05), dur: 0.16, vol: 0.12 });
+      tone({ type: 'sine', f0: 130, f1: 65, t: t + 0.34, dur: 0.24, vol: 0.2 });
+      noiseHit({ t: t, dur: 0.3, vol: 0.1, type: 'bandpass', f0: 800, f1: 2400, q: 1.2 });
       return;
     }
     SFX_FNS.swing(); // skill lạ: rơi về tiếng vút kiếm

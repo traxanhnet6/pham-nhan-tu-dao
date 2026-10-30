@@ -1,0 +1,280 @@
+{
+ "tiers": {
+  "cao": "assets/origin-icons-ai",
+  "trung": "assets/origin-icons-md"
+ },
+ "types": {
+  "kiem_gi_cua_cha": {
+   "cellCao": 192,
+   "cellTrung": 120
+  },
+  "nua_quyen_thanh_khe_chi": {
+   "cellCao": 192,
+   "cellTrung": 120
+  },
+  "la_bua_khong_chu": {
+   "cellCao": 192,
+   "cellTrung": 120
+  },
+  "nanh_soi_dau_tien": {
+   "cellCao": 192,
+   "cellTrung": 120
+  },
+  "hat_trang_go_chay_sem": {
+   "cellCao": 192,
+   "cellTrung": 120
+  },
+  "hat_giong_lua_cu_cua_ba": {
+   "cellCao": 192,
+   "cellTrung": 120
+  },
+  "lenh_bai_tieu_cuc_ran": {
+   "cellCao": 192,
+   "cellTrung": 120
+  },
+  "gio_thuoc_cua_me": {
+   "cellCao": 192,
+   "cellTrung": 120
+  },
+  "ngoc_boi_khuyet_mot_goc": {
+   "cellCao": 192,
+   "cellTrung": 120
+  },
+  "sung_nai_gac_dau_tien": {
+   "cellCao": 192,
+   "cellTrung": 120
+  },
+  "con_dau_trien_gia_truyen": {
+   "cellCao": 192,
+   "cellTrung": 120
+  },
+  "khan_hoa_dao_cua_chi": {
+   "cellCao": 192,
+   "cellTrung": 120
+  },
+  "cuoc_cu_cua_cha": {
+   "cellCao": 192,
+   "cellTrung": 120
+  },
+  "mui_ten_gay_dau_tien": {
+   "cellCao": 192,
+   "cellTrung": 120
+  },
+  "nghien_muc_nut": {
+   "cellCao": 192,
+   "cellTrung": 120
+  }
+ },
+ "audit": {
+  "kiem_gi_cua_cha": {
+   "src": "media-generation-origin-icons-sheet-0-a7828a35-4411-4e36-a7cc-3a7e59b8a870.png",
+   "cell": 0,
+   "originId": "nv01",
+   "originName": "Kiếm Khách Lãng Du",
+   "itemName": "Kiếm Gỉ Của Cha",
+   "lore": "Cha là tiêu sư, chết trên đường nam trong mùa thú dữ nổi loạn mười lăm năm trước; mẹ gửi con ở lại Thanh Khê với thanh kiếm đã gỉ của cha. Cậu lớn lên học lỏm kiếm pháp qua những vết chém còn in trên cột đình làng.",
+   "crop": [
+    359,
+    362
+   ],
+   "comps": 1,
+   "opaquePx": 31573
+  },
+  "nua_quyen_thanh_khe_chi": {
+   "src": "media-generation-origin-icons-sheet-0-a7828a35-4411-4e36-a7cc-3a7e59b8a870.png",
+   "cell": 1,
+   "originId": "nv02",
+   "originName": "Thư Sinh Ôn Nhuận",
+   "itemName": "Nửa Quyển Thanh Khê Chí",
+   "lore": "Con nhà nho nghèo; cha dạy chữ ở đình làng, mất sớm, để lại nửa quyển sách chép tay về làng Thanh Khê. Cậu chép sách thuê cho thương đội qua lại, mơ một ngày thi đỗ — nhưng thời mạt pháp, chữ nghĩa không giữ nổi làng trước bầy sói.",
+   "crop": [
+    275,
+    343
+   ],
+   "comps": 1,
+   "opaquePx": 87795
+  },
+  "la_bua_khong_chu": {
+   "src": "media-generation-origin-icons-sheet-0-a7828a35-4411-4e36-a7cc-3a7e59b8a870.png",
+   "cell": 2,
+   "originId": "nv03",
+   "originName": "Đạo Sĩ Vân Du",
+   "itemName": "Lá Bùa Không Chữ",
+   "lore": "Được một đạo sĩ già bỏ lại trước cửa Miếu Sơn Thần khi còn bé, Từ bà nuôi lớn bằng cơm miếu. Lớn lên cậu theo nếp sư phụ đi khắp các làng quanh Thanh Sơn xem quẻ, chữa bệnh vặt — rồi quay về đúng mùa giếng cổ phát sáng, như có ai gọi.",
+   "crop": [
+    227,
+    362
+   ],
+   "comps": 1,
+   "opaquePx": 50942
+  },
+  "nanh_soi_dau_tien": {
+   "src": "media-generation-origin-icons-sheet-0-a7828a35-4411-4e36-a7cc-3a7e59b8a870.png",
+   "cell": 3,
+   "originId": "nv04",
+   "originName": "Thợ Săn Sơn Dã",
+   "itemName": "Nanh Sói Đầu Tiên",
+   "lore": "Học trò cũ bỏ dở của Hà Thiết Sơn. Cha anh chết trong mùa thú dữ hai mươi năm trước — cùng mùa chồng của Từ bà mất. Từ đó anh sống bằng săn bắn ở bìa rừng nam, tin vào tay mình hơn tin vào lời đồn tiên nhân.",
+   "crop": [
+    275,
+    337
+   ],
+   "comps": 1,
+   "opaquePx": 37039
+  },
+  "hat_trang_go_chay_sem": {
+   "src": "media-generation-origin-icons-sheet-0-a7828a35-4411-4e36-a7cc-3a7e59b8a870.png",
+   "cell": 4,
+   "originId": "nv05",
+   "originName": "Tiểu Hòa Thượng",
+   "itemName": "Hạt Tràng Gỗ Cháy Sém",
+   "lore": "Trẻ mồ côi của ngôi chùa trên núi gửi xuống làng lánh nạn khi chùa cháy nhiều năm trước; chú tiểu ở nhờ hiệu thuốc họ Lý, quét sân miếu, thuộc kinh làu làu mà chưa từng thấy tượng Phật nguyên vẹn.",
+   "crop": [
+    347,
+    235
+   ],
+   "comps": 2,
+   "opaquePx": 34970
+  },
+  "hat_giong_lua_cu_cua_ba": {
+   "src": "media-generation-origin-icons-sheet-0-a7828a35-4411-4e36-a7cc-3a7e59b8a870.png",
+   "cell": 5,
+   "originId": "nv06",
+   "originName": "Thôn Phu Cường Tráng",
+   "itemName": "Hạt Giống Lúa Cũ Của Bà",
+   "lore": "Con trưởng nhà nông ba đời; ruộng nhà anh ở cuối làng, sát bãi hoang — là ruộng đầu tiên sói về phá mỗi mùa. Bà nội anh chính là người dặn câu gốc của cả game: \"tu tiên là để bảo vệ người dưới đất\".",
+   "crop": [
+    305,
+    348
+   ],
+   "comps": 1,
+   "opaquePx": 50808
+  },
+  "lenh_bai_tieu_cuc_ran": {
+   "src": "media-generation-origin-icons-sheet-0-a7828a35-4411-4e36-a7cc-3a7e59b8a870.png",
+   "cell": 6,
+   "originId": "nv07",
+   "originName": "Nữ Hiệp Hồng Y",
+   "itemName": "Lệnh Bài Tiêu Cục Rạn",
+   "lore": "Con gái một tiêu cục phương bắc; theo cha áp tiêu qua Thanh Khê đúng mùa sói về, cha bị thương phải nằm lại quán trọ của Hoa nương. Cô ở lại làng trả ơn — và phát hiện đường tiêu năm xưa cha cô đi qua làng này nhiều hơn ông từng kể.",
+   "crop": [
+    295,
+    351
+   ],
+   "comps": 1,
+   "opaquePx": 65380
+  },
+  "gio_thuoc_cua_me": {
+   "src": "media-generation-origin-icons-sheet-0-a7828a35-4411-4e36-a7cc-3a7e59b8a870.png",
+   "cell": 7,
+   "originId": "nv08",
+   "originName": "Dược Nương Hoa Cài",
+   "itemName": "Giỏ Thuốc Của Mẹ",
+   "lore": "Học việc ở hiệu thuốc họ Lý từ năm mười tuổi — là người Lý Tiểu Hạnh gọi là \"chị\" trước khi lên thành phố. Mẹ cô cũng là dược nương, mất trong mùa dịch năm xưa vì vào rừng hái thuốc cứu người.",
+   "crop": [
+    300,
+    338
+   ],
+   "comps": 1,
+   "opaquePx": 64074
+  },
+  "ngoc_boi_khuyet_mot_goc": {
+   "src": "media-generation-origin-icons-sheet-0-a7828a35-4411-4e36-a7cc-3a7e59b8a870.png",
+   "cell": 8,
+   "originId": "nv09",
+   "originName": "Tiên Tử Áo Tím",
+   "itemName": "Ngọc Bội Khuyết Một Góc",
+   "lore": "Cô gái được tìm thấy cạnh suối linh khi còn đỏ hỏn, không ai trong vùng biết cha mẹ là ai; Trần Đức nhận nuôi, cả làng gọi đùa là \"tiên tử rớt xuống suối\". Cô từng thấy mặt giếng phát sáng từ khi còn rất nhỏ — từ trước khi chuyện giếng sáng thành chuyện của cả làng rất lâu; nói ra chẳng ai tin, nên cô giữ kín tới giờ.",
+   "crop": [
+    260,
+    321
+   ],
+   "comps": 1,
+   "opaquePx": 46436
+  },
+  "sung_nai_gac_dau_tien": {
+   "src": "media-generation-origin-icons-sheet-0-a7828a35-4411-4e36-a7cc-3a7e59b8a870.png",
+   "cell": 9,
+   "originId": "nv10",
+   "originName": "Sơn Nữ Thợ Săn",
+   "itemName": "Sừng Nai Gác Đầu Tiên",
+   "lore": "Sinh ra trong lán thợ săn ở bìa rừng; mẹ là người của dân giữ rừng phía tây Thanh Sơn — tộc người sống cùng rừng, biết đường thú đi và luật của vương thú. Cô bắn cung từ năm bảy tuổi, nói chuyện với thú nhiều hơn với người làng.",
+   "crop": [
+    309,
+    371
+   ],
+   "comps": 1,
+   "opaquePx": 29989
+  },
+  "con_dau_trien_gia_truyen": {
+   "src": "media-generation-origin-icons-sheet-0-a7828a35-4411-4e36-a7cc-3a7e59b8a870.png",
+   "cell": 10,
+   "originId": "nv11",
+   "originName": "Tài Nữ Thư Hương",
+   "itemName": "Con Dấu Triện Gia Truyền",
+   "lore": "Con gái nhà bán sách giấy ở trấn trên; nhà sa sút vì nợ, cô theo thương đội xuống Thanh Khê tránh nợ, ở lại chép sách cho đình và dạy chữ cho trẻ làng. Khác NV02: cô là người NGOÀI đến — và mang theo tin tức thiên hạ mà làng Thanh Khê không có.",
+   "crop": [
+    309,
+    332
+   ],
+   "comps": 1,
+   "opaquePx": 53366
+  },
+  "khan_hoa_dao_cua_chi": {
+   "src": "media-generation-origin-icons-sheet-0-a7828a35-4411-4e36-a7cc-3a7e59b8a870.png",
+   "cell": 11,
+   "originId": "nv12",
+   "originName": "Thôn Nữ Hoa Đào",
+   "itemName": "Khăn Hoa Đào Của Chị",
+   "lore": "Em út nhà giữ vườn đào ở đầu làng — vườn đào trồng trên đất cũ Thanh Khê lão nhân để lại cho làng khi ông mới tới. Chiếc khăn hoa đào cô luôn mang theo là của chị gái thêu cho, trước khi chị đi lấy chồng xa qua đường nam. Cô vui vẻ, được cả làng quý, và là người đầu tiên mang cơm ra cổng cho lính gác trong đêm thú dữ về ở chương 5.",
+   "crop": [
+    310,
+    329
+   ],
+   "comps": 1,
+   "opaquePx": 74035
+  },
+  "cuoc_cu_cua_cha": {
+   "src": "media-generation-origin-icon-fix-hoe-0-0b3afce3-2539-4751-83d9-71d8aa831c71.png",
+   "cell": "fix-full-frame",
+   "originId": "goc_nong_dan",
+   "originName": "Nông Dân Thanh Khê",
+   "itemName": "Cuốc Cũ Của Cha",
+   "lore": "Người làng chính gốc, ruộng ở cuối làng. Không chọn tạo hình NV — nguồn gốc nền theo khung Nông dân, dấu ấn là chiếc cuốc mòn cán của cha.",
+   "crop": [
+    1277,
+    1486
+   ],
+   "comps": 1,
+   "opaquePx": 426046
+  },
+  "mui_ten_gay_dau_tien": {
+   "src": "media-generation-origin-icons-sheet-0-a7828a35-4411-4e36-a7cc-3a7e59b8a870.png",
+   "cell": 13,
+   "originId": "goc_tho_san",
+   "originName": "Thợ Săn Thanh Khê",
+   "itemName": "Mũi Tên Gãy Đầu Tiên",
+   "lore": "Học việc ở lán Hà lão, sống bằng săn bắn bìa rừng. Không chọn tạo hình NV — nguồn gốc nền theo khung Thợ săn, dấu ấn là mũi tên gãy đầu tiên.",
+   "crop": [
+    362,
+    362
+   ],
+   "comps": 2,
+   "opaquePx": 21975
+  },
+  "nghien_muc_nut": {
+   "src": "media-generation-origin-icons-sheet-0-a7828a35-4411-4e36-a7cc-3a7e59b8a870.png",
+   "cell": 14,
+   "originId": "goc_thu_sinh",
+   "originName": "Thư Sinh Thanh Khê",
+   "itemName": "Nghiên Mực Nứt",
+   "lore": "Chép sách ở đình làng, chữ nghĩa là vốn liếng duy nhất. Không chọn tạo hình NV — nguồn gốc nền theo khung Thư sinh, dấu ấn là nghiên mực nứt.",
+   "crop": [
+    335,
+    319
+   ],
+   "comps": 1,
+   "opaquePx": 70025
+  }
+ }
+}
