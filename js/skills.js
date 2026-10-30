@@ -54,7 +54,7 @@
     linh_khien: {
       id: 'linh_khien', key: '9', name: 'Linh Khí Thần Khiên', mech: 'shield', unlockRealm: 2,
       cd: 16, mana: 38, shieldPct: 35, dur: 8, color: '#7fe8d6',
-      desc: 'Dựng khiên linh khí quanh thân chịu thay 35% HP tối đa trong 8 giây — tấm chắn để đứng chịu lôi kiếp và boss.'
+      desc: 'Dựng khiên linh khí quanh thân chịu thay 35% Máu tối đa trong 8 giây — tấm chắn để đứng chịu lôi kiếp và boss.'
     },
     dan_hoa: {
       id: 'dan_hoa', key: '0', name: 'Đan Hỏa Liệu Thiên', mech: 'aoe_point', unlockRealm: 3,
@@ -106,7 +106,7 @@
     kim: { root: 'kim', name: 'Kim Quang Vạn Kiếm', mech: 'aoe_point', mult: 2.3, radius: 88, color: '#ffd94a',
       desc: 'Mười bốn thanh kim kiếm từ trời giáng xuống cắm quanh mục tiêu, kim quang chói lòa.' },
     moc: { root: 'moc', name: 'Mộc Linh Trùng Sinh', mech: 'aoe_self', mult: 1.7, radius: 96, healPct: 0.12, color: '#69d66f',
-      desc: 'Dây leo linh mộc bùng lên quanh thân quật ngã kẻ địch, sinh cơ tràn về hồi 12% HP.' },
+      desc: 'Dây leo linh mộc bùng lên quanh thân quật ngã kẻ địch, sinh cơ tràn về hồi 12% Máu.' },
     thuy: { root: 'thuy', name: 'Thủy Long Phá', mech: 'projectile_wide', mult: 2.0, speed: 370, range: 210, width: 68, slow: 1.6, color: '#5aa7d6',
       desc: 'Sóng nước cuộn hình đầu rồng lao thẳng, kẻ trúng đòn bị dòng nước níu chân, chậm đi một nửa trong 1,6 giây.' },
     hoa: { root: 'hoa', name: 'Hỏa Phượng Liệu Nguyên', mech: 'aoe_point', mult: 2.4, radius: 102, color: '#ff7a3c',

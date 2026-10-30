@@ -68,10 +68,10 @@ for (const d of [...ASSET_DIRS.map(x => 'assets/' + x), 'js']) {
   const b = countFiles(path.join(DST, d));
   if (a !== b) { mismatch++; notes.push(`[số file lệch] ${d}: nguồn=${a} staging=${b}`); }
 }
-// File lẻ: index.html + png gốc của assets/
-const srcRootPng = fs.readdirSync(path.join(SRC, 'assets')).filter(f => f.endsWith('.png')).length;
-const dstRootPng = fs.readdirSync(path.join(DST, 'assets')).filter(f => f.endsWith('.png')).length;
-if (srcRootPng !== dstRootPng) { mismatch++; notes.push(`[số file lệch] assets/*.png gốc: nguồn=${srcRootPng} staging=${dstRootPng}`); }
+// File lẻ: index.html + png/webp gốc của assets/
+const srcRootPng = fs.readdirSync(path.join(SRC, 'assets')).filter(f => f.endsWith('.png') || f.endsWith('.webp')).length;
+const dstRootPng = fs.readdirSync(path.join(DST, 'assets')).filter(f => f.endsWith('.png') || f.endsWith('.webp')).length;
+if (srcRootPng !== dstRootPng) { mismatch++; notes.push(`[số file lệch] assets/*.png+webp gốc: nguồn=${srcRootPng} staging=${dstRootPng}`); }
 console.log(`Lớp 3: đối chiếu số file nguồn/staging, lệch ${mismatch} mục`);
 
 console.log('---');

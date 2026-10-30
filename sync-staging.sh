@@ -48,6 +48,7 @@ ARGS=(
   --include='/js/***'
   --include='/assets/'
   --include='/assets/*.png'
+  --include='/assets/*.webp'
 )
 for d in "${ASSET_DIRS[@]}"; do
   ARGS+=(--include="/assets/$d/***")

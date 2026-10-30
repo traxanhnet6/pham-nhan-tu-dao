@@ -216,7 +216,7 @@
     } else if (def.healPct) {
       var heal = Math.round(st.playerMaxHp * def.healPct);
       st.playerHp = Math.min(st.playerMaxHp, st.playerHp + heal);
-      rec.playerSkill += ' (hồi ' + heal + ' HP)';
+      rec.playerSkill += ' (hồi ' + heal + ' Máu)';
     } else {
       var dmg = skillDmg(st.playerAtk, def, rng);
       st.clone.hp = Math.max(0, st.clone.hp - dmg);

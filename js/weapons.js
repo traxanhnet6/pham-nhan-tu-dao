@@ -82,6 +82,7 @@
     kiem_huyen: { id: 'kiem_huyen', type: 'kiem', grade: 'huyen', name: 'Huyền Băng Kiếm', atk: 11, reqTier: 2, price: 0, value: 260,
       stats: { elem: { bang: 12 } },
       desc: 'Kiếm rèn từ huyền thiết chôn dưới suối lạnh, quanh năm tỏa hơi sương, chém trúng để lại vệt băng mỏng.' },
+
     kiem_dia: { id: 'kiem_dia', type: 'kiem', grade: 'dia', name: 'Trấn Nhạc Kiếm', atk: 16, reqTier: 3, price: 0, value: 520,
       stats: { hp: 35, def: 5 },
       desc: 'Trọng kiếm khắc phù trấn sơn, nặng như đeo núi trên tay, một chém xuống đất rung.' },
@@ -104,7 +105,7 @@
       desc: 'Ký danh của Sơn Quân: rèn từ chính chiếc nanh của lợn vương, vệt đỏ sậm trên sống đao là huyết khí trăm năm chưa tan. Chỉ rơi từ Sơn Quân.' },
     dao_thien: { id: 'dao_thien', type: 'dao', grade: 'thien', name: 'Trảm Thiên Đao', atk: 24, reqTier: 3, price: 0, value: 1200,
       stats: { crit: 12, lifesteal: 9, hp: 40 },
-      proc: { kind: 'burst', chance: 12, dmgPct: 40, healPct: 8, name: 'Phệ Huyết Trảm', desc: 'Tỉ lệ 12%: đòn chém bùng nổ huyết khí, gây thêm 40% sát thương và hồi ngay 8% HP tối đa.' },
+      proc: { kind: 'burst', chance: 12, dmgPct: 40, healPct: 8, name: 'Phệ Huyết Trảm', desc: 'Tỉ lệ 12%: đòn chém bùng nổ huyết khí, gây thêm 40% sát thương và hồi ngay 8% Máu tối đa.' },
       desc: 'Đao ý "một đao trảm thiên", lưỡi vàng trắng chói mắt, là đỉnh cao mà lò rèn làng Thanh Khê có thể đúc.' },
     // --- Thương ---
     thuong_tre: { id: 'thuong_tre', type: 'thuong', grade: 'pham', name: 'Thương Tre Vót Nhọn', atk: 3, reqTier: 0, price: 60, value: 24,
@@ -280,7 +281,7 @@
   }
   // ---------- Chỉ số phụ + hiệu ứng riêng: hiển thị & so sánh ----------
   var STAT_LABELS = {
-    hp: 'HP tối đa', def: 'Giáp', crit: 'Tỉ lệ chí mạng', critDmg: 'Sát thương chí mạng',
+    hp: 'Máu tối đa', def: 'Giáp', crit: 'Tỉ lệ chí mạng', critDmg: 'Sát thương chí mạng',
     lifesteal: 'Hút máu', ll: 'Linh lực tối đa', llRegen: 'Hồi linh lực', speed: 'Tốc độ di chuyển'
   };
   var STAT_SUFFIX = { hp: '', def: '', crit: '%', critDmg: '%', lifesteal: '%', ll: '', llRegen: '/giây', speed: '%' };
@@ -365,6 +366,7 @@
     var e = findEntry(ch, uid);
     if (!e) return { ok: false, reason: 'missing' };
     var def = WEAPONS[e.id];
+    if (def && def.noSell) return { ok: false, reason: 'nosell', def: def }; // vật ký danh kỳ ngộ tông không bán được
     if (e.locked) return { ok: false, reason: 'locked', def: def }; // món đã khoá không bán được (20:26)
     if (ch.equipUid === uid) ch.equipUid = null; // bán món đang đeo: tự tháo trước
     ch.inventory.splice(ch.inventory.indexOf(e), 1);

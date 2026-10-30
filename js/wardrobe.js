@@ -295,7 +295,7 @@
     trung_thu_nguyet_hoa_kinh: { id: 'trung_thu_nguyet_hoa_kinh', kind: 'phap', shape: 'kinh', grade: 'dia', name: 'Trung Thu Nguyệt Hoa Kính', reqTier: 2, price: 0, value: 560,
       fx: { kind: 'execute', pct: 20 }, stats: { def: 2 },
       active: { name: 'Nguyệt Soi', mana: 10, cd: 11, kind: 'mark', range: 190, dur: 4, pct: 30 },
-      fxText: 'Quái dưới 30% HP nhận thêm 20% sát thương. Kích hoạt Nguyệt Soi (10 linh lực): quái quanh bạn bị soi, nhận thêm 30% sát thương trong 4 giây.',
+      fxText: 'Quái dưới 30% Máu nhận thêm 20% sát thương. Kích hoạt Nguyệt Soi (10 linh lực): quái quanh bạn bị soi, nhận thêm 30% sát thương trong 4 giây.',
       desc: 'Mặt kính đồng hứng trọn ánh trăng rằm tháng tám một đêm không mây, mặt kính lạnh như nước hồ thu. Pháp bảo lễ giới hạn: chỉ nhận được qua chuỗi việc lễ Trung Thu trong cửa sổ lễ.', fest: 'trung_thu' },
     han_thuc_thanh_liu_hoan: { id: 'han_thuc_thanh_liu_hoan', kind: 'bao', shape: 'hat', grade: 'huyen', name: 'Hàn Thực Thanh Liễu Hoàn', reqTier: 1, price: 0, value: 250,
       fx: { healPct: 35 }, stats: { hp: 25 },

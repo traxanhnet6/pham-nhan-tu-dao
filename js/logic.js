@@ -82,7 +82,7 @@
   };
   var ROOTS = [
     { id: 'kim', name: 'Kim Linh Căn', color: '#d8b45a', weight: 16, desc: 'Sắc bén, công kích tăng.', atk: 2, mult: 1.0, bpBonus: 0 },
-    { id: 'moc', name: 'Mộc Linh Căn', color: '#4caf50', weight: 16, desc: 'Sinh cơ dồi dào, HP tăng.', atk: 0, mult: 1.0, bpBonus: 0 },
+    { id: 'moc', name: 'Mộc Linh Căn', color: '#4caf50', weight: 16, desc: 'Sinh cơ dồi dào, Máu tăng.', atk: 0, mult: 1.0, bpBonus: 0 },
     { id: 'thuy', name: 'Thủy Linh Căn', color: '#5aa7d6', weight: 16, desc: 'Nhu hòa, thổ nạp nhanh hơn.', atk: 0, mult: 1.15, bpBonus: 2 },
     { id: 'hoa', name: 'Hỏa Linh Căn', color: '#e07b39', weight: 16, desc: 'Bùng nổ, công kích tăng.', atk: 3, mult: 1.0, bpBonus: 0 },
     { id: 'tho', name: 'Thổ Linh Căn', color: '#8b5a2b', weight: 16, desc: 'Vững chãi, phòng thủ tăng.', atk: 0, mult: 1.0, bpBonus: 0 },
@@ -180,7 +180,7 @@
       name: name, gender: gender, origin: originId,
       hp: o.hp, maxHp: o.hp, atk: o.atk, def: o.def, rate: o.rate,
       tuVi: 0, tuViMax: TIERS[0].need, tier: 0, realm: TIERS[0].realm,
-      root: null, linhThach: 0, inventory: [], x: 31, y: 17, dir: 'down' // V10: start map1 (19,9) + offset mở rộng (12,8)
+      root: null, linhThach: 0, inventory: [], x: 43, y: 47, dir: 'down' // V3: start map1 (19,9) + offset V10 (12,8) + neo V3 (12,30)
     };
     // TẠO HÌNH NV01–NV12 (Bui duyệt hết 06:06 30/10/2026): trường 'look'
     // chỉ tồn tại khi người chơi chọn mẫu NV đúng giới; save cũ không có
@@ -632,10 +632,10 @@
   }
   // ---------- Vật phẩm, quái, chiến đấu ----------
   var ITEMS = {
-    thit_ga: { name: 'Thịt Gà', desc: 'Thịt gà rừng nướng thơm. Hồi 15 HP.', heal: 15 },
-    thit_tho: { name: 'Thịt Thỏ', desc: 'Thịt thỏ mềm. Hồi 12 HP.', heal: 12 },
-    thit_lon: { name: 'Thịt Lợn', desc: 'Thịt lợn rừng chắc nịch. Hồi 30 HP.', heal: 30 },
-    thao_duoc: { name: 'Thảo Dược', desc: 'Cầm máu, hồi 25 HP.', heal: 25 },
+    thit_ga: { name: 'Thịt Gà', desc: 'Thịt gà rừng nướng thơm. Hồi 15 Máu.', heal: 15 },
+    thit_tho: { name: 'Thịt Thỏ', desc: 'Thịt thỏ mềm. Hồi 12 Máu.', heal: 12 },
+    thit_lon: { name: 'Thịt Lợn', desc: 'Thịt lợn rừng chắc nịch. Hồi 30 Máu.', heal: 30 },
+    thao_duoc: { name: 'Thảo Dược', desc: 'Cầm máu, hồi 25 Máu.', heal: 25 },
     da_soi: { name: 'Da Sói', desc: 'Da sói con, thợ rèn thu mua.', heal: 0 },
     long_ga: { name: 'Lông Gà', desc: 'Lông gà rừng, nhẹ và đẹp.', heal: 0 },
     linh_chi: { name: 'Linh Chi', desc: 'Nấm linh chi mọc gần suối linh trong Rừng Thanh Sơn, tai nấm ánh xanh. Vật phẩm nhiệm vụ và nguyên liệu thuốc mạnh.', heal: 0 },
@@ -676,21 +676,28 @@
     thien_loi_qua: { name: 'Thiên Lôi Quả', desc: 'Quả tím đọng điện quang ở Lôi Trì Thiên Khanh, vỏ quả thi thoảng tóe tia sét nhỏ. Nguyên liệu luyện đan cao cấp.', heal: 0 },
     tinh_van_thach: { name: 'Tinh Vẫn Thạch', desc: 'Mảnh đá sao rơi ở Tinh Vẫn Chi Địa, nặng và lạnh, lõi đá ánh sao. Khoáng linh dùng luyện khí và luyện đan.', heal: 0 },
     thien_lien: { name: 'Thiên Liên', desc: 'Sen trời nở trên Độ Kiếp Đài ở đỉnh Thập Vạn Đại Sơn, tương truyền chỉ nở khi có người sắp độ kiếp. Nguyên liệu luyện đan Thiên phẩm.', heal: 0 },
-    hoi_khi_tan: { name: 'Hồi Khí Tán', desc: 'Bột thuốc cầm máu hồi sức của nhà thuốc họ Lý. Hồi 30 HP.', heal: 0 },
+    hoi_khi_tan: { name: 'Hồi Khí Tán', desc: 'Bột thuốc cầm máu hồi sức của nhà thuốc họ Lý. Hồi 30 Máu.', heal: 0 },
     linh_khi_tan: { name: 'Linh Khí Tán', desc: 'Bột tán từ Thanh Tâm Thảo. Hồi 20 linh lực.', heal: 0 },
-    hoi_xuan_dan: { name: 'Hồi Xuân Đan', desc: 'Viên đan xanh ngọc từ linh chi và thảo dược. Hồi 70 HP.', heal: 0 },
+    hoi_xuan_dan: { name: 'Hồi Xuân Đan', desc: 'Viên đan xanh ngọc từ linh chi và thảo dược. Hồi 70 Máu.', heal: 0 },
     tu_linh_dan: { name: 'Tụ Linh Đan', desc: 'Đan luyện từ Tụ Linh Quả. Hồi 45 linh lực.', heal: 0 },
     tieu_boi_nguyen_dan: { name: 'Tiểu Bồi Nguyên Đan', desc: 'Đan bồi nguyên khí cho người mới tu. Dùng được +25 tu vi.', heal: 0 },
     giai_doc_dan: { name: 'Giải Độc Đan', desc: 'Đan giải độc trứ danh của Lý lão. Giải mọi độc đang mang trên người.', heal: 0 },
-    dai_hoi_xuan_dan: { name: 'Đại Hồi Xuân Đan', desc: 'Bản lớn của Hồi Xuân Đan theo phương Đan Hà Cốc. Hồi 140 HP.', heal: 0 },
+    dai_hoi_xuan_dan: { name: 'Đại Hồi Xuân Đan', desc: 'Bản lớn của Hồi Xuân Đan theo phương Đan Hà Cốc. Hồi 140 Máu.', heal: 0 },
     cuong_the_dan: { name: 'Cường Thể Đan', desc: 'Đan từ Huyết Sâm làm gân cốt cứng cáp. Giáp +4 trong 5 phút.', heal: 0 },
     than_hanh_dan: { name: 'Thần Hành Đan', desc: 'Đan nhẹ thân từ Tụ Linh Quả. Tốc độ +15% trong 4 phút.', heal: 0 },
-    sinh_co_dan: { name: 'Sinh Cơ Đan', desc: 'Đan sinh cơ của Đan Hà Cốc. Hồi 260 HP và giải độc.', heal: 0 },
+    sinh_co_dan: { name: 'Sinh Cơ Đan', desc: 'Đan sinh cơ của Đan Hà Cốc. Hồi 260 Máu và giải độc.', heal: 0 },
     dai_boi_nguyen_dan: { name: 'Đại Bồi Nguyên Đan', desc: 'Đan bồi nguyên bậc cao từ Ngọc Tủy Chi và Thanh Linh Tủy. Dùng được +80 tu vi.', heal: 0 },
     chien_y_dan: { name: 'Chiến Ý Đan', desc: 'Đan lấy độc trị thân của Đan Hà Cốc. Công +20% trong 5 phút.', heal: 0 },
-    cuu_chuyen_hoi_hon_dan: { name: 'Cửu Chuyển Hồi Hồn Đan', desc: 'Đan Thiên phẩm luyện chín lần mới thành. Hồi đầy 100% HP.', heal: 0 },
+    cuu_chuyen_hoi_hon_dan: { name: 'Cửu Chuyển Hồi Hồn Đan', desc: 'Đan Thiên phẩm luyện chín lần mới thành. Hồi đầy 100% Máu.', heal: 0 },
     nanh_son_quan: { name: 'Nanh Sơn Quân', desc: 'Nanh của lợn vương Sơn Quân, hút linh khí trăm năm. Vật phẩm cốt truyện: vật trấn trong lễ khấn trấn phong ấn giếng cổ.', heal: 0 },
-    thit_son_quan: { name: 'Thịt Sơn Quân', desc: 'Thịt lợn vương chắc và bổ. Hồi 60 HP.', heal: 60 },
+    // Vật ký danh kỳ ngộ tông nhóm 1 (mục 22 hàng chờ): để trứng lại
+    // cho thú mẹ ở Tổ Cổ thì nhận ấn này làm tin (kèm cờ Ân Thú).
+    van_thu_an: { name: 'Vạn Thú Ấn', desc: 'Ấn gỗ khắc dấu chân thú của Vạn Thú Môn, làm tin cho lời hứa để trứng lại cho thú mẹ ở Tổ Cổ. Vật phẩm cốt truyện, không bán được.', heal: 0 },
+    // Vật ký danh kỳ ngộ tông nhóm 2 (mục 23 hàng chờ): phá 3 tầng
+    // bia khí sau thác ở Bia Luyện Thể Sau Thác thì nhận mảnh này
+    // làm tín vật (vật cốt truyện, không cộng điểm luyện thể).
+    thiet_bia_tan_phien: { name: 'Thiết Bia Tàn Phiến', desc: 'Mảnh bia đá luyện thể vỡ ra sau thác Đại Sơn, nặng và lạnh. Vật phẩm cốt truyện: tín vật để đệ tử Kim Cang nhận ra nhau khi hộ pháp độ kiếp.', heal: 0 },
+    thit_son_quan: { name: 'Thịt Sơn Quân', desc: 'Thịt lợn vương chắc và bổ. Hồi 60 Máu.', heal: 60 },
     // ----- Yêu Đan (lệnh Bui 21:45 29/10): nội đan của yêu thú, CHỈ rơi
     // từ BOSS (Sơn Quân cốt truyện, 8 boss thế giới ở js/bosses.js, boss
     // bí cảnh ở js/secret-realms.js) — quái thường/tinh anh không rơi.
@@ -723,7 +730,7 @@
     truc_co_dan: { name: 'Trúc Cơ Đan', desc: 'Đan dẫn kiếp luyện từ Yêu Đan Cấp 3 — viên đan kết thành đạo cơ mới chịu nổi thiên lôi Trúc Cơ. Khi đột phá từ Luyện Khí tầng 9 lên Trúc Cơ, lò tu hành tự dùng 1 viên để dẫn động lôi kiếp (mất cả khi độ kiếp thất bại).', heal: 0, pillCat: 'dan_kiep' },
     lenh_bai_thanh_phong: { name: 'Lệnh Bài Thanh Phong', desc: 'Lệnh bài gỗ xanh khắc mây gió của Thanh Phong Phái. Chứng nhận đệ tử nhập môn, không dùng được, không bán.', heal: 0 },
     lenh_bai_huyen_phap: { name: 'Lệnh Bài Huyền Pháp', desc: 'Lệnh bài tím khắc ngũ hành luân của Huyền Pháp Tông. Nhận khi bái nhập tông môn này ở Sơn Môn Đại Hội, không dùng được, không bán.', heal: 0 },
-    lenh_bai_thien_cong: { name: 'Lệnh Bài Thiên Công', desc: 'Lệnh bài đồng khắc chùy rèn của Thiên Công Phường. Nhận khi bái nhập tông môn này ở Sơn Môn Đại Hội, không dùng được, không bán.', heal: 0 },
+    lenh_bai_thien_cong: { name: 'Lệnh Bài Thiên Tấn công', desc: 'Lệnh bài đồng khắc chùy rèn của Thiên Công Phường. Nhận khi bái nhập tông môn này ở Sơn Môn Đại Hội, không dùng được, không bán.', heal: 0 },
     lenh_bai_dan_ha: { name: 'Lệnh Bài Đan Hà', desc: 'Lệnh bài đỏ khắc lò đan của Đan Hà Cốc. Nhận khi bái nhập tông môn này ở Sơn Môn Đại Hội, không dùng được, không bán.', heal: 0 },
     lenh_bai_van_thu: { name: 'Lệnh Bài Vạn Thú', desc: 'Lệnh bài xanh rêu khắc dấu chân thú của Vạn Thú Môn. Nhận khi bái nhập tông môn này ở Sơn Môn Đại Hội, không dùng được, không bán.', heal: 0 },
     lenh_bai_thien_phu: { name: 'Lệnh Bài Thiên Phù', desc: 'Lệnh bài vàng khắc nét bùa chu sa của Thiên Phù Các. Nhận khi bái nhập tông môn này ở Sơn Môn Đại Hội, không dùng được, không bán.', heal: 0 },
@@ -762,8 +769,8 @@
     // trừ Đào Linh / Lúa Linh là đồ ăn theo đúng tài liệu chính.
     chuong_dong_nho: { name: 'Chuông Nhỏ', desc: 'Chuông nhỏ bằng đồng nhặt dưới đống tro nền chùa cũ trên đồi sau làng — tiếng chuông không người gõ đêm đó vẫn còn vang. Vật ký danh của Tiểu Hòa Thượng, không dùng được, không bán.', heal: 0 },
     manh_ngoc_khuyet: { name: 'Mảnh Ngọc Khuyết', desc: 'Mảnh ngọc thứ hai vớt dưới đáy suối linh — khớp đúng góc khuyết của Ngọc Bội Khuyết Một Góc. Vật ký danh của Tiên Tử Áo Tím, không dùng được, không bán.', heal: 0 },
-    dao_linh_qua: { name: 'Đào Linh', desc: 'Quả đào rụng từ gốc đào cổ nở hoa trái mùa trong đêm — linh khí thấm vào thịt quả. Đồ ăn hồi 60 HP, ngang Thịt Sơn Quân theo tài liệu chính.', heal: 60 },
-    lua_linh: { name: 'Lúa Linh', desc: 'Bông lúa linh thu từ linh điền động phủ — hạt lúa cũ của bà nảy mầm trong linh khí. Lương thực linh, hồi 30 HP; để dành cho Thiên 6 khi đường buôn bị cắt.', heal: 30 },
+    dao_linh_qua: { name: 'Đào Linh', desc: 'Quả đào rụng từ gốc đào cổ nở hoa trái mùa trong đêm — linh khí thấm vào thịt quả. Đồ ăn hồi 60 Máu, ngang Thịt Sơn Quân theo tài liệu chính.', heal: 60 },
+    lua_linh: { name: 'Lúa Linh', desc: 'Bông lúa linh thu từ linh điền động phủ — hạt lúa cũ của bà nảy mầm trong linh khí. Lương thực linh, hồi 30 Máu; để dành cho Thiên 6 khi đường buôn bị cắt.', heal: 30 },
     hat_lua_linh: { name: 'Hạt Lúa Linh', desc: 'Hạt giống lúa linh thu được ở mảnh ruộng phát sáng sau mưa. Gieo ở linh điền trong động phủ, khoảng 2 giờ là thu được Lúa Linh — chỉ có từ kỳ ngộ nguồn gốc, không bán ở cửa phủ.', heal: 0 },
     // ----- Quyển ĐAN PHƯƠNG rơi từ BOSS THẾ GIỚI (lệnh Bui 22:10
     // 29/10): vật phẩm dạng bí tịch — BẤM DÙNG (đọc) trong túi để HỌC
@@ -805,16 +812,16 @@
     kiem_khi_phu_dia: { name: 'Kiếm Khí Phù (Địa)', desc: 'Phù công kích dùng 1 lần: kiếm khí Địa phẩm chém xa theo công (trần 1,55 lần công — vẫn dưới chiêu cảnh giới). Phù phương chỉ có trong quyển chép tay rơi từ vương thú.', heal: 0 },
     pha_giap_phu_linh: { name: 'Phá Giáp Phù (Linh)', desc: 'Phù công kích dùng 1 lần: ít sát thương + khắc dấu phá giáp, mục tiêu nhận thêm 20% sát thương trong 6 giây.', heal: 0 },
     pha_giap_phu_huyen: { name: 'Phá Giáp Phù (Huyền)', desc: 'Phù công kích dùng 1 lần: ít sát thương + mục tiêu nhận thêm 30% sát thương trong 8 giây.', heal: 0 },
-    kim_cang_phu_pham: { name: 'Kim Cang Phù (Phàm)', desc: 'Phù phòng thủ dùng 1 lần: dựng khiên linh khí chịu thay 15% HP tối đa trong 20 giây.', heal: 0 },
-    kim_cang_phu_linh: { name: 'Kim Cang Phù (Linh)', desc: 'Phù phòng thủ dùng 1 lần: khiên chịu thay 25% HP tối đa trong 20 giây.', heal: 0 },
-    kim_cang_phu_huyen: { name: 'Kim Cang Phù (Huyền)', desc: 'Phù phòng thủ dùng 1 lần: khiên hai lớp chịu thay 35% HP tối đa trong 25 giây.', heal: 0 },
+    kim_cang_phu_pham: { name: 'Kim Cang Phù (Phàm)', desc: 'Phù phòng thủ dùng 1 lần: dựng khiên linh khí chịu thay 15% Máu tối đa trong 20 giây.', heal: 0 },
+    kim_cang_phu_linh: { name: 'Kim Cang Phù (Linh)', desc: 'Phù phòng thủ dùng 1 lần: khiên chịu thay 25% Máu tối đa trong 20 giây.', heal: 0 },
+    kim_cang_phu_huyen: { name: 'Kim Cang Phù (Huyền)', desc: 'Phù phòng thủ dùng 1 lần: khiên hai lớp chịu thay 35% Máu tối đa trong 25 giây.', heal: 0 },
     ho_than_phu_linh: { name: 'Hộ Thân Phù (Linh)', desc: 'Phù phòng thủ dùng 1 lần: giảm 20% sát thương nhận vào trong 20 giây.', heal: 0 },
     ho_than_phu_huyen: { name: 'Hộ Thân Phù (Huyền)', desc: 'Phù phòng thủ dùng 1 lần: giảm 30% sát thương nhận vào trong 25 giây.', heal: 0 },
     tho_don_phu_pham: { name: 'Thổ Độn Phù (Phàm)', desc: 'Phù phòng thủ dùng 1 lần: độn về điểm vào của map đang đứng (không xuyên cổng) + ẩn tức 4 giây. Không dùng được giữa lôi kiếp.', heal: 0 },
     than_hanh_phu_pham: { name: 'Thần Hành Phù (Phàm)', desc: 'Phù hỗ trợ dùng 1 lần: tốc độ +15% trong 60 giây (ghi đè buff tốc độ của đan, không cộng dồn).', heal: 0 },
     than_hanh_phu_linh: { name: 'Thần Hành Phù (Linh)', desc: 'Phù hỗ trợ dùng 1 lần: tốc độ +20% trong 90 giây.', heal: 0 },
-    hoi_xuan_phu_linh: { name: 'Hồi Xuân Phù (Linh)', desc: 'Phù hỗ trợ dùng 1 lần: hồi 4 HP/giây trong 10 giây.', heal: 0 },
-    hoi_xuan_phu_huyen: { name: 'Hồi Xuân Phù (Huyền)', desc: 'Phù hỗ trợ dùng 1 lần: hồi 7 HP/giây trong 12 giây.', heal: 0 },
+    hoi_xuan_phu_linh: { name: 'Hồi Xuân Phù (Linh)', desc: 'Phù hỗ trợ dùng 1 lần: hồi 4 Máu/giây trong 10 giây.', heal: 0 },
+    hoi_xuan_phu_huyen: { name: 'Hồi Xuân Phù (Huyền)', desc: 'Phù hỗ trợ dùng 1 lần: hồi 7 Máu/giây trong 12 giây.', heal: 0 },
     tu_linh_phu_pham: { name: 'Tụ Linh Phù (Phàm)', desc: 'Phù hỗ trợ dùng 1 lần: hồi ngay 20 linh lực, thổ nạp +50% tu vi trong 120 giây.', heal: 0 },
     tu_linh_phu_linh: { name: 'Tụ Linh Phù (Linh)', desc: 'Phù hỗ trợ dùng 1 lần: hồi ngay 45 linh lực, thổ nạp +50% tu vi trong 180 giây.', heal: 0 },
     giai_doc_phu_pham: { name: 'Giải Độc Phù (Phàm)', desc: 'Phù hỗ trợ dùng 1 lần: đốt hít khói, giải mọi độc đang mang (đối trọng Ngũ Độc/rắn lục). Không có độc thì không đốt được.', heal: 0 },
@@ -843,7 +850,7 @@
     bt_vt_hao_lenh: { name: 'Bí Tịch: Vạn Thú Hào Lệnh', desc: 'Tuyệt học ký danh Vạn Thú Môn (Huyền phẩm — cần Luyện Khí tầng 6). Bấm dùng trong túi để học chiêu Vạn Thú Hào Lệnh: ảo ảnh bầy thú xúm quanh thân, tự vồ kẻ địch gần nhất. Quầy Tàng Kinh Các của Vạn Thú Môn đổi bằng 260 Điểm Cống Hiến (hàm Nội Môn).', heal: 0, manualSkill: 'vt_hao_lenh' },
     bt_tphu_kiem_tran: { name: 'Bí Tịch: Kim Phù Kiếm Trận', desc: 'Tuyệt học ký danh Thiên Phù Các (Huyền phẩm — cần Luyện Khí tầng 6). Bấm dùng trong túi để học chiêu Kim Phù Kiếm Trận: kim phù hóa phù kiếm giáng xuống quanh mục tiêu. Quầy Tàng Kinh Các của Thiên Phù Các đổi bằng 260 Điểm Cống Hiến (hàm Nội Môn).', heal: 0, manualSkill: 'tphu_kiem_tran' },
     bt_cc_khon_tran: { name: 'Bí Tịch: Cửu Cung Khốn Trận', desc: 'Tuyệt học ký danh Cửu Cung Trận Tông (Huyền phẩm — cần Luyện Khí tầng 6). Bấm dùng trong túi để học chiêu Cửu Cung Khốn Trận: bày trận níu chân và xé kẻ địch trong trận. Quầy Tàng Kinh Các của Cửu Cung Trận Tông đổi bằng 260 Điểm Cống Hiến (hàm Nội Môn).', heal: 0, manualSkill: 'cc_khon_tran' },
-    bt_kc_bat_hoai: { name: 'Bí Tịch: Kim Cang Bất Hoại Thể', desc: 'Tuyệt học ký danh Kim Cang Môn (Huyền phẩm — cần Luyện Khí tầng 6). Bấm dùng trong túi để học chiêu Kim Cang Bất Hoại Thể: dựng thể khiên chịu thay 45% HP tối đa. Quầy Tàng Kinh Các của Kim Cang Môn đổi bằng 260 Điểm Cống Hiến (hàm Nội Môn).', heal: 0, manualSkill: 'kc_bat_hoai' },
+    bt_kc_bat_hoai: { name: 'Bí Tịch: Kim Cang Bất Hoại Thể', desc: 'Tuyệt học ký danh Kim Cang Môn (Huyền phẩm — cần Luyện Khí tầng 6). Bấm dùng trong túi để học chiêu Kim Cang Bất Hoại Thể: dựng thể khiên chịu thay 45% Máu tối đa. Quầy Tàng Kinh Các của Kim Cang Môn đổi bằng 260 Điểm Cống Hiến (hàm Nội Môn).', heal: 0, manualSkill: 'kc_bat_hoai' },
     bt_nd_thuc_cot: { name: 'Bí Tịch: Ngũ Độc Thực Cốt', desc: 'Tuyệt học ký danh Ngũ Độc Giáo (Huyền phẩm — cần Luyện Khí tầng 6). Bấm dùng trong túi để học chiêu Ngũ Độc Thực Cốt: làn chướng độc phun thẳng, làm chậm kẻ trúng đòn. Quầy Tàng Kinh Các của Ngũ Độc Giáo đổi bằng 260 Điểm Cống Hiến (hàm Nội Môn).', heal: 0, manualSkill: 'nd_thuc_cot' },
     bt_ha_han_tien: { name: 'Bí Tịch: Huyền Âm Hàn Tiễn', desc: 'Tuyệt học ký danh Huyền Âm Cung (Huyền phẩm — cần Luyện Khí tầng 6). Bấm dùng trong túi để học chiêu Huyền Âm Hàn Tiễn: một mũi hàn tiễn bay thẳng xuyên mục tiêu. Quầy Tàng Kinh Các của Huyền Âm Cung đổi bằng 260 Điểm Cống Hiến (hàm Nội Môn).', heal: 0, manualSkill: 'ha_han_tien' },
     bt_boss_lang_hao: { name: 'Bí Tịch: Huyết Nguyệt Lang Hào', desc: 'Chiêu ký danh của Lang Vương Huyết Nguyệt (Huyền phẩm — cần Luyện Khí tầng 6), rơi 12% khi hạ boss này. Bấm dùng trong túi để học: tiếng hú trăng máu cuốn thành sóng chấn động quanh thân.', heal: 0, manualSkill: 'boss_lang_hao' },
@@ -854,12 +861,12 @@
     bt_boss_ma_vuong: { name: 'Bí Tịch: Ma Vương Diệt Thế Chùy', desc: 'Chiêu ký danh của Thiết Bì Ma Vương (Thiên phẩm — cần cảnh giới Kim Đan), rơi 8% khi hạ boss này. Bấm dùng trong túi để học: một chùy diệt thế nện xuống vùng chỉ định.', heal: 0, manualSkill: 'boss_ma_vuong' },
     bt_rare_van_kiem: { name: 'Bí Tịch: Vạn Kiếm Quy Tông', desc: 'Kiếm phổ thất truyền của cổ tu (Thiên phẩm — cần cảnh giới Kim Đan). Rơi cực hiếm: Kiếm Mộ Cổ 10%, Cổ Tu Động Phủ 6%, kỳ ngộ Tàn Phủ Thanh Khê 3%, vương thú chặng sâu 4%. Bấm dùng trong túi để học: vạn kiếm quy về một điểm.', heal: 0, manualSkill: 'rare_van_kiem' },
     bt_rare_cuu_u: { name: 'Bí Tịch: Cửu U Hàn Diệm', desc: 'Lửa lạnh rò ra từ Vết Nứt Hư Không (Địa phẩm — cần cảnh giới Trúc Cơ). Rơi ở Hàn Băng Động (vết nứt) 8% và vương thú chặng sâu 4–5%. Bấm dùng trong túi để học: hàn diệm nhảy qua 5 kẻ địch.', heal: 0, manualSkill: 'rare_cuu_u' },
-    bt_rare_hoi_xuan: { name: 'Bí Tịch: Đại Bi Hồi Xuân Chú', desc: 'Chú văn của một y tu vô danh (Địa phẩm — cần cảnh giới Trúc Cơ). Rơi ở Vạn Yêu Sào 10%, kỳ ngộ Linh Điền Hoang 5%, vương thú 4–5%. Bấm dùng trong túi để học: sinh cơ bùng lên, quật ngã địch quanh thân và hồi 15% HP.', heal: 0, manualSkill: 'rare_hoi_xuan' },
+    bt_rare_hoi_xuan: { name: 'Bí Tịch: Đại Bi Hồi Xuân Chú', desc: 'Chú văn của một y tu vô danh (Địa phẩm — cần cảnh giới Trúc Cơ). Rơi ở Vạn Yêu Sào 10%, kỳ ngộ Linh Điền Hoang 5%, vương thú 4–5%. Bấm dùng trong túi để học: sinh cơ bùng lên, quật ngã địch quanh thân và hồi 15% Máu.', heal: 0, manualSkill: 'rare_hoi_xuan' },
     bt_gen_phi_hoa: { name: 'Bí Tịch: Phi Hoa Trích Diệp', desc: 'Chiêu nhập môn của tán tu Thanh Sơn (Linh phẩm — cần Luyện Khí tầng 3). Kỳ ngộ Tàn Phủ Thanh Khê 30%, Tàng Kinh Các mọi tông đổi 130 Điểm Cống Hiến, có lô đấu giá. Bấm dùng trong túi để học: phi hoa làm ám khí bay thẳng xuyên mục tiêu.', heal: 0, manualSkill: 'gen_phi_hoa' },
     bt_gen_luu_sa: { name: 'Bí Tịch: Lưu Sa Chưởng', desc: 'Chưởng pháp của thợ mỏ Thập Vạn Đại Sơn (Linh phẩm — cần Luyện Khí tầng 3). Kỳ ngộ Hang Yêu Bỏ Hoang 25%, Tàng Kinh Các mọi tông đổi 130 Điểm Cống Hiến, có lô đấu giá. Bấm dùng trong túi để học: một chưởng đẩy cát đá nứt đất lao thẳng.', heal: 0, manualSkill: 'gen_luu_sa' },
     bt_cb_thanh_khe: { name: 'Bí Tịch: Thanh Khê Kiếm Quyết', desc: 'Kiếm quyết vỡ lòng của làng Thanh Khê (Phàm phẩm — cần Luyện Khí tầng 2). Trưởng làng tặng lúc lộ linh căn (NV chính 2); Tủ sách làng bán 50 Linh Thạch; Tàng Kinh Các mọi tông đổi 40 Điểm Cống Hiến. Bấm dùng trong túi để học: kiếm khí mỏng bay thẳng xuyên mục tiêu.', heal: 0, manualSkill: 'cb_thanh_khe' },
     bt_cb_liet_phong: { name: 'Bí Tịch: Liệt Phong Chưởng', desc: 'Chưởng pháp vỡ lòng mượn sức gió núi (Phàm phẩm — cần Luyện Khí tầng 2). Tủ sách làng bán 50 Linh Thạch; Tàng Kinh Các mọi tông đổi 40 Điểm Cống Hiến. Bấm dùng trong túi để học: liệt phong quét quanh thân tầm gần.', heal: 0, manualSkill: 'cb_liet_phong' },
-    bt_cb_thiet_bo: { name: 'Bí Tịch: Thiết Bố Sam', desc: 'Công phu vận khí hộ thể vỡ lòng (Phàm phẩm — cần Luyện Khí tầng 2). Tủ sách làng bán 50 Linh Thạch; Tàng Kinh Các mọi tông đổi 40 Điểm Cống Hiến. Bấm dùng trong túi để học: khiên khí chịu thay 15% HP tối đa trong 5 giây.', heal: 0, manualSkill: 'cb_thiet_bo' },
+    bt_cb_thiet_bo: { name: 'Bí Tịch: Thiết Bố Sam', desc: 'Công phu vận khí hộ thể vỡ lòng (Phàm phẩm — cần Luyện Khí tầng 2). Tủ sách làng bán 50 Linh Thạch; Tàng Kinh Các mọi tông đổi 40 Điểm Cống Hiến. Bấm dùng trong túi để học: khiên khí chịu thay 15% Máu tối đa trong 5 giây.', heal: 0, manualSkill: 'cb_thiet_bo' },
     bt_cb_tat_phong: { name: 'Bí Tịch: Tật Phong Bộ', desc: 'Bộ pháp vỡ lòng mượn gió dưới chân (Phàm phẩm — cần Luyện Khí tầng 2). Tủ sách làng bán 50 Linh Thạch; Tàng Kinh Các mọi tông đổi 40 Điểm Cống Hiến. Bấm dùng trong túi để học: tốc độ +18% trong 5 giây (chạy nhanh, không phải chiêu lướt).', heal: 0, manualSkill: 'cb_tat_phong' },
     bt_cb_dan_khi: { name: 'Bí Tịch: Dẫn Khí Quyết', desc: 'Khẩu quyết dẫn khí nhập thể (Phàm phẩm — BỊ ĐỘNG, cần Luyện Khí tầng 2). Trưởng làng tặng ở NV Thổ Nạp Đầu Tiên (NV chính 3); Tủ sách làng bán 50 Linh Thạch; Tàng Kinh Các đổi 40 Điểm Cống Hiến. Bấm dùng trong túi để học: thổ nạp +8% tu vi, mỗi cấp +2% (tối đa +12%).', heal: 0, manualSkill: 'cb_dan_khi' },
     bt_pq_hoa_cau: { name: 'Bí Tịch: Hỏa Cầu Thuật', desc: 'Pháp quyết nhập môn hệ Hỏa (Phàm phẩm — cần Luyện Khí tầng 2). Tủ sách làng bán 50 Linh Thạch; Tàng Kinh Các mọi tông đổi 40 Điểm Cống Hiến. Bấm dùng trong túi để học: cầu lửa đơn thể, cháy bám thêm 2 giây.', heal: 0, manualSkill: 'pq_hoa_cau' },
@@ -1003,14 +1010,14 @@
     monster.hp -= dmgToMonster;
     var healed = off.healed + procHeal;
     if (healed > 0) ch.hp = Math.min(effMaxHp(ch), ch.hp + healed);
-    var log = 'Bạn chém ' + monster.name + ' mất ' + dmgToMonster + ' HP.';
+    var log = 'Bạn chém ' + monster.name + ' mất ' + dmgToMonster + ' Máu.';
     if (off.crit) log += ' Chí mạng!';
     var dead = monster.hp <= 0;
     var dmgToPlayer = 0, drops = [], poisoned = false;
     if (!dead) {
       dmgToPlayer = Math.max(1, monster.atk - effDef(ch));
       ch.hp -= dmgToPlayer;
-      log += ' ' + monster.name + ' cắn lại, bạn mất ' + dmgToPlayer + ' HP.';
+      log += ' ' + monster.name + ' cắn lại, bạn mất ' + dmgToPlayer + ' Máu.';
       // Rắn Lục Đuôi Đỏ cắn trúng thì 40% trúng độc: ch.poison do game.js
       // trừ HP theo giây (sàn 1 HP), Giải Độc Đan của js/alchemy.js giải.
       var TALp = talismanApi();
@@ -1238,7 +1245,7 @@
       objectives: [{ type: 'talk', target: 'giu_mieu', need: 1 }],
       rewards: { linhThach: 150, tuVi: 60, items: [] } },
     q_vet_nut_2: { id: 'q_vet_nut_2', main: false, riftArc: true, title: 'Bước vào hư không', giver: 'sect_rep', requires: 'q_vet_nut_1',
-      desc: 'Bước vào một Vết Nứt Hư Không đang mở và hạ yêu thú canh giữ khe nứt trong cảnh. Nó mạnh hơn cảnh giới của ngươi một bậc; đan hồi HP dưới Địa phẩm vào đó cháy thành tro; gục trong cảnh là bị hất văng ra và mất lượt tới hết chu kỳ.',
+      desc: 'Bước vào một Vết Nứt Hư Không đang mở và hạ yêu thú canh giữ khe nứt trong cảnh. Nó mạnh hơn cảnh giới của ngươi một bậc; đan hồi Máu dưới Địa phẩm vào đó cháy thành tro; gục trong cảnh là bị hất văng ra và mất lượt tới hết chu kỳ.',
       objectives: [{ type: 'rift', target: 'boss', need: 1 }],
       rewards: { linhThach: 200, tuVi: 80, items: [{ id: 'yeu_dan_1', n: 1 }] } },
     q_vet_nut_3: { id: 'q_vet_nut_3', main: false, riftArc: true, title: 'Kẻ canh giữ thứ hai', giver: 'sect_rep', requires: 'q_vet_nut_2',

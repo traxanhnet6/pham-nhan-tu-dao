@@ -18,7 +18,7 @@
 //   với đại diện của chính tông đó ở bãi tuyển map 3, bấm "Mời đồng
 //   hành". Mỗi tông đúng 1 đệ tử; người chơi chỉ bái nhập được 1 tông
 //   nên cũng chỉ có tối đa 1 đồng hành — không có chuyện đổi tông để
-//   gom đủ 10 người. Đường "NPC làng hảo cảm cao" CHƯA mở: hệ hảo cảm
+//   gom đủ 10 người. Đường "người làng làng hảo cảm cao" CHƯA mở: hệ hảo cảm
 //   là mục 10 trong hàng chờ, chưa làm — khi mục 10 xong mới nối thêm
 //   đường đó, không tự bịa điểm hảo cảm ở đây.
 // - Đi cùng: đồng hành bám theo sau-lệch bên chủ (không đè lên linh

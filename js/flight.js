@@ -57,7 +57,7 @@
   var TRIAL_MAP = 'map3';
   var CHECKPOINTS = [
     { x: 32, y: 20, name: 'Quảng Trường Tuyển Đệ Tử' },
-    { x: 52, y: 27, name: 'Bãi Luyện Công' },
+    { x: 52, y: 27, name: 'Bãi Luyện Tấn công' },
     { x: 55, y: 31, name: 'Đài Vọng Vân' },
     { x: 20, y: 40, name: 'Thềm Bia Thanh Phong' },
     { x: 31, y: 12, name: 'Đường Lên Đại Sơn' }

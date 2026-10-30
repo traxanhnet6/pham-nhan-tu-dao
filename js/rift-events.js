@@ -54,8 +54,8 @@
   // đi được trong maps.js): sân giếng cổ / bờ suối linh / bãi tuyển đệ
   // tử / chân Thập Vạn Đại Sơn.
   var ANCHORS = [
-    { mapId: 'map1', x: 38, y: 18, place: 'sân giếng cổ Thanh Khê' },
-    { mapId: 'map2', x: 32, y: 28, place: 'bờ suối linh trong Rừng Thanh Sơn' },
+    { mapId: 'map1', x: 50, y: 48, place: 'sân giếng cổ Thanh Khê' },
+    { mapId: 'map2', x: 68, y: 44, place: 'bờ suối linh trong Rừng Thanh Sơn' },
     { mapId: 'map3', x: 42, y: 24, place: 'bãi tuyển đệ tử dưới Chân Núi' },
     { mapId: 'map4', x: 32, y: 50, place: 'Ngoại Vi Thập Vạn Đại Sơn' }
   ];
@@ -211,7 +211,7 @@
     if (!def || def.kind !== 'heal') return null;
     var g = al.GRADES && al.GRADES[def.grade];
     if (g && g.rank >= 3) return null;
-    return 'Linh khí hư không thiêu rụi dược lực của ' + def.name + ' ngay khi vừa nuốt — trong vết nứt chỉ đan Địa phẩm trở lên mới hồi được HP.';
+    return 'Linh khí hư không thiêu rụi dược lực của ' + def.name + ' ngay khi vừa nuốt — trong vết nứt chỉ đan Địa phẩm trở lên mới hồi được Máu.';
   }
 
   // ---------- Chết trong vết nứt ----------

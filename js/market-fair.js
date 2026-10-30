@@ -63,7 +63,7 @@
 
   function num(v, d) { v = Number(v); return isFinite(v) ? v : d; }
 
-  var KEEPER = { id: 'tieu_thuong', name: 'Lục Tiểu Lục', mapId: 'map1', x: 36, y: 19 }; // V10: (24,11) + offset map (12,8)
+  var KEEPER = { id: 'tieu_thuong', name: 'Lục Tiểu Lục', mapId: 'map1', x: 48, y: 49 }; // V3: (24,11) + offset V10 (12,8) + neo V3 map1 (12,30)
   var FAIR_DAY = 0; // Chủ nhật (getDay() địa phương)
   var SLOTS = 6;
   var BUYBACK_CAP_LT = 150;

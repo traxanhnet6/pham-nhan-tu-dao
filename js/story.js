@@ -55,6 +55,22 @@
         personality: 'Hiền, chậm rãi, tin điềm báo nhưng không mê muội, nhớ mọi chuyện cũ của làng.',
         past: 'Giữ Miếu Sơn Thần ở bìa rừng từ khi còn trẻ. Chồng mất trong mùa thú dữ hai mươi năm trước. Là người duy nhất còn nhớ bài khấn trấn phong ấn giếng cổ mà Thanh Khê lão nhân để lại.',
         relations: 'Bạn già của Trần Đức và Lý lão; người cảnh báo biến cố phong ấn ở chương 7.' },
+      lam_ba: { name: 'Lâm Bá', title: 'Người gác rừng trên sườn bắc', age: 61,
+        personality: 'Ít nói, mắt tinh, thuộc từng tiếng động của rừng như thuộc lòng bàn tay.',
+        past: 'Vốn là lính gác cổng rừng cho làng từ thời trai trẻ. Sau mùa thú dữ hai mươi năm trước, ông xin lên Chòi Gác Rừng trên sườn bắc ở hẳn, canh đường mòn và khói hiệu cho cả vùng Thanh Sơn.',
+        relations: 'Bạn già của Hà Thiết Sơn; người đốt khói hiệu khi có thú dữ lớn hoặc người lạ vào rừng sâu.' },
+      ong_tu: { name: 'Trần Văn Hậu', title: 'Người trông Miếu Sơn Thần Sườn Bắc', age: 71,
+        personality: 'Điềm đạm, hay cười hiền, kể chuyện xưa của rừng như kể chuyện nhà mình.',
+        past: 'Theo cha trông Miếu Sơn Thần trên sườn bắc từ nhỏ. Sau này dân làng dựng thêm miếu ở bìa rừng cho Ngô Thị Từ giữ, ông vẫn ở lại miếu cũ trên cao vì "thần núi quen mặt người cũ".',
+        relations: 'Bạn cũ của Ngô Thị Từ; hay đối chiếu điềm báo của hai miếu với nhau mỗi đầu mùa.' },
+      a_san: { name: 'Đỗ Sơn', title: 'Thợ săn ở Lán Thợ Săn', age: 34,
+        personality: 'Nhanh nhẹn, hoạt bát, khoe khoang chút đỉnh nhưng tay nghề săn bắn thật sự giỏi.',
+        past: 'Học nghề săn từ Hà Thiết Sơn, ba năm nay tự dựng Lán Thợ Săn ở rừng tây, chuyên săn lợn mông sắt và dẫn người làng qua đường vòng rừng.',
+        relations: 'Học trò của Hà Thiết Sơn; hay tranh hơn thua với A Báo mỗi mùa săn.' },
+      ha_cui: { name: 'Hà Văn Củi', title: 'Tiều phu rừng tây', age: 45,
+        personality: 'Chậm rãi, chắc nịch, nói câu nào ra câu nấy; quý rừng, chỉ đốn cây khô và cây đổ.',
+        past: 'Ba đời nhà ông làm tiều phu ở rừng tây Thanh Sơn. Ông thuộc từng gốc cổ thụ phía nam, và là người đầu tiên báo tin khi Sơn Quân để lại vết chân mới trong rừng sâu.',
+        relations: 'Bạn đốn củi lâu năm của thợ rèn Thiết Cường; người chỉ đường rừng sâu cho dân làng khi cần.' },
       thuong_nhan_ma: { name: 'Mã Vạn Lai', title: 'Trưởng thương đội phương bắc', age: 47,
         personality: 'Sởi lởi, tính toán rõ ràng, coi chữ tín hơn vàng.',
         past: 'Nhiều năm dẫn thương đội phương bắc qua Thanh Khê. Đợt này xe hàng bị sói rừng chặn ở đường mòn phía nam nên kẹt lại chờ đường thông.',
@@ -126,7 +142,27 @@
       le_su: { name: 'Dì Tư', title: 'Người lo lễ hội làng Thanh Khê', age: 52,
         personality: 'Vui vẻ, nhớ ngày lễ hơn nhớ sinh nhật con cháu; tin rằng làng còn giữ lễ là còn giữ được nếp người.',
         past: 'Ba đời nhà bà lo lễ cho làng Thanh Khê: cúng giếng cổ ngày Tết, treo ngải Đoan Ngọ, làm bánh rằm Trung Thu. Bà thuộc lòng ngày âm lịch của từng lễ trong năm mà không cần xem lịch.',
-        relations: 'Người giao chuỗi việc lễ theo mùa lễ thật và trao pháp bảo lễ giới hạn; giữ hộ Tủ Đồ y phục của dân làng lên núi tu hành (dữ liệu hệ thống ở js/wardrobe.js).' }
+        relations: 'Người giao chuỗi việc lễ theo mùa lễ thật và trao pháp bảo lễ giới hạn; giữ hộ Tủ Đồ y phục của dân làng lên núi tu hành (dữ liệu hệ thống ở js/wardrobe.js).' },
+      van_tra: { name: 'Vân Trà', title: 'Chủ quán trà Xóm Bến Hồ', age: 34,
+        personality: 'Lanh lợi, pha trà ngon, nhớ mặt khách lạ rất nhanh.',
+        past: 'Quê ở trấn dưới núi, theo chồng về Thanh Khê mở quán trà ở xóm mới ven hồ; chồng mất sớm, một mình giữ quán và nhà kho của xóm.',
+        relations: 'Chủ quán trà ở Xóm Bến Hồ phía đông làng; người đầu tiên khách lạ gặp khi vào xóm.' },
+      thim_sau: { name: 'Nguyễn Thị Sáu', title: 'Dân Xóm Bến Hồ', age: 57,
+        personality: 'Hiền hậu, hay chuyện làng, tay luôn bận việc vườn.',
+        past: 'Một trong những hộ đầu tiên dựng nhà ở Xóm Bến Hồ khi làng mở đất phía đông.',
+        relations: 'Hàng xóm của Vân Trà; hay gửi trà và rau ra chợ làng.' },
+      anh_luc: { name: 'Trần Lực', title: 'Nông dân ruộng bậc thang', age: 29,
+        personality: 'Chắc nịch, ít nói, cày ruộng từ khi trời chưa sáng.',
+        past: 'Con nhà nông ở làng, theo cha mở ruộng bậc thang ở sườn đông từ năm mười lăm tuổi.',
+        relations: 'Người coi ruộng bậc thang phía đông; em họ xa của trưởng làng Trần Đức.' },
+      ong_cau: { name: 'Hà Văn Câu', title: 'Người câu cá ở Hồ Thanh Khê', age: 66,
+        personality: 'Điềm tĩnh, nói chậm, thuộc từng luồng cá trong hồ.',
+        past: 'Cả đời sống bằng nghề câu ở Hồ Thanh Khê; cá câu được chia cho xóm, ít khi mang bán.',
+        relations: 'Bạn già của Lý lão; thường ngồi ở bờ bắc của hồ từ sớm tới chiều.' },
+      be_nam: { name: 'Bé Nấm', title: 'Trẻ con Xóm Bến Hồ', age: 8,
+        personality: 'Lém lỉnh, chạy khắp xóm, sợ ma nhưng mê nghe chuyện tu tiên.',
+        past: 'Con của Vân Trà, sinh ở Xóm Bến Hồ.',
+        relations: 'Hay bám theo người lạ hỏi chuyện trên núi; đầu mối tin tức vỉa hè của xóm.' }
     },
     DIALOGUE: {
       // Thủ Thư Tàng Kinh Các — trong game, js/library.js ưu tiên thoại
@@ -188,6 +224,111 @@
         greeting: ['Làng Thanh Khê sắp có lễ thì ghé dì. Ngoài mùa lễ, dì giữ hộ tủ y phục cho bà con lên núi tu hành.'],
         lore: ['Ba đời nhà dì lo lễ cho làng: cúng giếng cổ ngày Tết, treo ngải ngày Đoan Ngọ, làm bánh đêm rằm. Làng còn giữ lễ là còn giữ được nếp người.'],
         idle: ['Ngày lễ tính theo lịch thật đó nghen — qua ngày là dì đóng sổ, chờ mùa lễ năm sau.'],
+        quest: {}
+      },
+      // Dân Xóm Bến Hồ + ruộng bậc thang + Hồ Thanh Khê (mở rộng map 1
+      // V3, 2026-10-30): NPC thường trú ở đất mới, không giao nhiệm vụ —
+      // thoại lines/greeting/idle theo đúng hệ thoại sẵn có.
+      van_tra: {
+        lines: [
+          'Quán trà của thím mở từ ngày xóm này dựng nhà đầu tiên. Khách qua đường đông, người làng ghé cũng đông.',
+          'Trà ở đây hái trên sườn đông, pha với nước hồ Thanh Khê — thơm theo kiểu của làng mình, không giống trà trấn trên đâu.',
+          'Ngồi xuống uống chén trà đã. Đi ruộng bậc thang hay ra hồ câu cá thì cũng phải có chén trà lót dạ.'
+        ],
+        greeting: ['Khách lạ mặt nhỉ? Xóm Bến Hồ này nhỏ, ai mới tới là thím biết ngay. Ngồi xuống, thím pha cho ấm trà.'],
+        lore: ['Xóm Bến Hồ này mở sau ngày làng mở đất phía đông. Đất ven hồ lành, cá nhiều, khách qua đường hay ghé quán thím nghỉ chân trước khi lên núi.'],
+        idle: ['Nồi nước sôi rồi, để thím châm thêm ấm mới cho khách.'],
+        quest: {}
+      },
+      // Dân rừng Thanh Sơn ở đất mở rộng map 2 V4 (2026-10-30): NPC
+      // thường trú ở công trình mới, không giao nhiệm vụ — thoại
+      // lines/greeting/lore/idle theo đúng hệ thoại sẵn có.
+      lam_ba: {
+        lines: [
+          'Đứng trên chòi cao, ta thấy được cả thung lũng. Thú dữ hay người lạ vào rừng, khói hiệu của ta lên trước khi chuông làng kịp rung.',
+          'Sườn bắc này gió quanh năm. Đêm nằm nghe thông reo, biết mai trời nắng hay mưa còn chuẩn hơn xem lịch.',
+          'Đi rừng sâu thì nhớ: nghe tiếng chim im bặt là phải dừng lại nghe ngóng. Rừng im quá thường là có chuyện.'
+        ],
+        greeting: ['Lên được tới chòi này à? Chân khỏe đấy. Đứng đây nhìn xuống, làng Thanh Khê bé như lòng bàn tay.'],
+        lore: ['Chòi gác này dựng từ mùa thú dữ hai mươi năm trước. Hồi đó chưa có chòi, thú vào sát làng rồi mới có người hay. Nay có khói hiệu, làng có thêm nửa ngày chuẩn bị.'],
+        idle: ['Khói bếp làng trong bay lên rồi. Yên bình thế này là quý nhất.'],
+        quest: {}
+      },
+      ong_tu: {
+        lines: [
+          'Miếu này nhỏ mà cổ hơn miếu dưới bìa rừng nhiều. Thần núi ngự trên cao, ngó xuống cả rừng lẫn làng.',
+          'Khấn ở đây không cầu giàu sang, chỉ cầu đi rừng về đủ người, săn bắn không ai mang thương.',
+          'Mỗi đầu mùa ta lại quét dọn, thay nước, cắm nhang. Thần không cần lễ lớn, cần người nhớ tới.'
+        ],
+        greeting: ['Lên thắp nén nhang đi cháu. Tới được miếu trên cao này, lòng thành đã hơn nửa lễ rồi.'],
+        lore: ['Truyền rằng Thanh Khê lão nhân năm xưa từng dừng chân ở miếu này trước khi xuống giếng cổ. Từ đó người đi rừng qua đây đều ghé khấn một câu mới dám vào sâu.'],
+        idle: ['Nhang vừa tàn. Để ta thắp tuần mới, khói lên thẳng là điềm lành.'],
+        quest: {}
+      },
+      a_san: {
+        lines: [
+          'Lán này ta tự dựng, bẫy ta tự đặt. Lợn mông sắt rừng tây con nào lảng vảng gần đây, ta thuộc dấu chân từng con.',
+          'Thầy ta — Hà Thiết Sơn — bảo săn giỏi không bằng về nhà đủ ngón tay. Ta nghe thầy, chưa bao giờ đuổi thú tới cùng đường.',
+          'Muốn qua thung đông thì đi đường ven hồ cho thoáng. Chui bụi rậm là rắn lục nó chào hỏi trước đấy.'
+        ],
+        greeting: ['Khách tu sĩ à? Ngồi nghỉ chân, uống ngụm nước lá rừng đã. Đường còn dài.'],
+        lore: ['Rừng tây này xưa là đường vòng của thương đội khi đường chính có thú dữ. Lán thợ săn dựng lên cũng để giữ con đường vòng đó cho người làng.'],
+        idle: ['Dây bẫy còn chưa kiểm. Chiều nay phải đi một vòng trước khi tối.'],
+        quest: {}
+      },
+      ha_cui: {
+        lines: [
+          'Ta chỉ đốn cây khô, cây đổ. Cổ thụ phía nam cây nào cây nấy mấy trăm năm, rìu của ta không bao giờ chạm tới.',
+          'Củi rừng sâu khô nhanh, cháy đượm. Gánh xuống làng bán, nhà nào cũng thích, nhất là lò rèn của Thiết Cường.',
+          'Thấy vết chân to như cái bát úp trong rừng sâu thì đừng có tò mò lần theo. Về báo làng trước đã.'
+        ],
+        greeting: ['Đi rừng một mình à? Ngồi xuống thềm lán nghỉ chút, gánh củi này ta còn phải buộc lại.'],
+        lore: ['Ba đời nhà ta ăn cơm rừng tây. Rừng cho củi, cho nấm, cho thuốc — nhưng lấy của rừng bao nhiêu thì phải trả lại bằng công giữ rừng bấy nhiêu.'],
+        idle: ['Củi xếp gọn rồi mới khô đều. Làm gì cũng phải có thứ tự.'],
+        quest: {}
+      },
+      thim_sau: {
+        lines: [
+          'Nhà thím là một trong mấy nhà đầu tiên dựng ở xóm này. Hồi đó phía đông toàn rừng, đêm nghe sói hú sát vách.',
+          'Giờ thì yên rồi: có đường, có đèn, có quán trà. Xóm nhỏ mà ấm cúng hơn cả phố huyện.',
+          'Rau vườn nhà thím trồng không xuể, bữa nào cháu qua thím hái cho một rổ mang về làng.'
+        ],
+        greeting: ['Cháu là tu sĩ ở làng trong phải không? Nghe tiếng cháu lâu rồi, nay mới gặp mặt.'],
+        lore: ['Ngày mới mở xóm, phía đông còn là rừng rậm, ban đêm sói hú sát vách nhà. Dân làng góp công phát đường, dựng đèn mãi mới thành xóm như bây giờ.'],
+        idle: ['Vườn sau nhà còn mấy luống rau chưa tưới. Tuổi này rồi, làm chậm mà chắc.'],
+        quest: {}
+      },
+      anh_luc: {
+        lines: [
+          'Ruộng bậc thang này cha con tôi đắp từng bậc một. Nước từ mương trên chảy xuống, bậc nào cũng có phần.',
+          'Đất sườn đông mỏng, được cái nắng tốt. Lúa ở đây hạt chắc, nấu cơm thơm cả xóm.',
+          'Leo hết ba bậc ruộng này mỗi ngày, thân thể tôi chẳng thua gì người luyện võ đâu.'
+        ],
+        greeting: ['Cẩn thận kẻo trượt chân xuống mương. Bậc đá ướt sương trơn lắm.'],
+        lore: ['Ruộng bậc thang là cách giữ nước trên sườn dốc: mưa xuống, nước ở lại từng bậc thay vì trôi tuột xuống hồ. Cha tôi học cách này từ người dưới trấn rồi về dạy lại cả làng.'],
+        idle: ['Còn hai thửa nữa chưa gặt xong. Làm nông là đua với trời.'],
+        quest: {}
+      },
+      ong_cau: {
+        lines: [
+          'Hồ này cá khôn lắm. Muốn câu được thì phải hiểu bụng nó hơn hiểu bụng mình.',
+          'Ngồi câu từ sớm tới giờ, được ba con cá chép. Tối nay xóm lại có nồi canh chua.',
+          'Người tu tiên các cháu bay trên trời, còn ta chỉ mong ngồi yên được một chỗ. Ai cũng có cái đạo của mình.'
+        ],
+        greeting: ['Suỵt — nói khẽ thôi, cá đang cắn câu. Ngồi xuống đây, bờ này mát nhất hồ.'],
+        lore: ['Hồ Thanh Khê thông với suối từ trên núi chảy xuống. Năm nào nước hồ trong là năm đó làng được mùa — các cụ nói vậy, tôi câu cá bốn mươi năm thấy chẳng sai.'],
+        idle: ['Phao động rồi... từ từ, chưa phải lúc giật.'],
+        quest: {}
+      },
+      be_nam: {
+        lines: [
+          'Anh/chị là tu sĩ thật hả? Bay được không? Cho em xem một chiêu đi!',
+          'Xóm này em thuộc từng ngõ. Ai trốn ở đâu em cũng tìm ra hết.',
+          'Mẹ em bảo trên núi có tiên. Sau này lớn em cũng lên núi học bay.'
+        ],
+        greeting: ['Ê, người lạ! Anh/chị từ làng trong ra phải không? Có kẹo không?'],
+        lore: ['Em nghe thím Sáu kể ngày xưa xóm này là rừng, có cây cổ thụ to bằng ba người ôm ở chỗ quán trà của mẹ em bây giờ.'],
+        idle: ['Em đang trốn thím Sáu. Thím mà bắt được là bắt em đi tưới rau.'],
         quest: {}
       },
       // Đại diện tông môn (giver trừu tượng) cho chuỗi NGỰ KIẾM — dòng thoại
@@ -1595,7 +1736,7 @@
         climax: 'Tàn niệm khép lại bằng một câu: "Vào nứt thì đi như đi trên miệng vực." Người chơi nhận lệnh thám thính đầu tiên.',
         reward: '150 Linh Thạch, +60 tu vi.', hook: 'Vết nứt đầu tiên đang chờ người bước vào — và thứ canh giữ nó mạnh hơn người vào một bậc.' },
       { id: 'chuong_22', title: 'Bước vào hư không', quests: ['q_vet_nut_2'], npcs: ['sect_rep'],
-        beats: ['Người chơi canh chu kỳ vết nứt, bước qua khe nứt vào một cảnh ngẫu nhiên trong kho hư không (11 cảnh riftPool + 4 cảnh định kỳ).', 'Luật hư không áp ngay từ bước đầu: quái co theo cảnh giới người vào rồi đè thêm một bậc; đan hồi HP dưới Địa phẩm cháy thành tro; chết là bị hất văng ra và mất lượt cả chu kỳ.', 'Hạ yêu thú canh giữ khe nứt trong cảnh — trận đánh cược mạng đầu tiên của chặng Trúc Cơ.'],
+        beats: ['Người chơi canh chu kỳ vết nứt, bước qua khe nứt vào một cảnh ngẫu nhiên trong kho hư không (11 cảnh riftPool + 4 cảnh định kỳ).', 'Luật hư không áp ngay từ bước đầu: quái co theo cảnh giới người vào rồi đè thêm một bậc; đan hồi Máu dưới Địa phẩm cháy thành tro; chết là bị hất văng ra và mất lượt cả chu kỳ.', 'Hạ yêu thú canh giữ khe nứt trong cảnh — trận đánh cược mạng đầu tiên của chặng Trúc Cơ.'],
         climax: 'Kẻ canh giữ gục xuống, ấn hư không trên trán nó vỡ ra thành tro tím. Người chơi trở ra với yêu đan — và với hiểu biết rằng hư không không hề thương ai.',
         reward: '200 Linh Thạch, +80 tu vi, Yêu Đan Cấp 1 ×1.', hook: 'Trong cảnh còn một thứ nữa chưa lộ mặt: kẻ bị linh khí hư không kinh động.' },
       { id: 'chuong_23', title: 'Kẻ canh giữ thứ hai', quests: ['q_vet_nut_3'], npcs: ['sect_rep'],
@@ -1636,8 +1777,8 @@
         trigger: 'Sự kiện lặp vĩnh viễn sau Trúc Cơ: mỗi chu kỳ 3 giờ, 1 vết nứt xé mở ngẫu nhiên trên 1 trong 4 map thường trong 30 phút (gieo hạt tất định theo chu kỳ — js/rift-events.js). Vào nứt bốc ngẫu nhiên 1 cảnh riftPool qua pickRiftRealm của secret-realms.js.',
         spawnGate: 'Neo vết nứt: sân giếng cổ map 1 (26,10) / bờ suối linh map 2 (20,20) / bãi tuyển đệ tử map 3 (30,16) / Ngoại Vi Đại Sơn map 4 (20,42). Đứng cạnh bấm E mở panel sự kiện.',
         waves: [
-          'Luật khó: quái scale theo tầng + realmRank rồi nhân thêm HP ×1,45 / công ×1,20; boss kỳ ngộ thêm ×1,15/×1,10 (mạnh nhất cảnh).',
-          'Đan hồi HP dưới Địa phẩm bị chặn trong cảnh (chỉ Địa/Thiên phẩm dùng được). Chết = đẩy ra + khóa lượt cả chu kỳ; tối đa 2 lượt/chu kỳ.',
+          'Luật khó: quái scale theo tầng + realmRank rồi nhân thêm Máu ×1,45 / công ×1,20; boss kỳ ngộ thêm ×1,15/×1,10 (mạnh nhất cảnh).',
+          'Đan hồi Máu dưới Địa phẩm bị chặn trong cảnh (chỉ Địa/Thiên phẩm dùng được). Chết = đẩy ra + khóa lượt cả chu kỳ; tối đa 2 lượt/chu kỳ.',
           'Thưởng theo bảng của cảnh được bốc (secret-realms) + kỳ ngộ: Yêu Đan Cấp 3 chỉ tới được ở mức realmRank ≥ 2 qua kỳ ngộ 20% và Bãi Săn Tinh Anh 12%.'
         ],
         reward: 'Theo bảng rơi của từng cảnh (không phát Linh Thạch ngoài thang economy); arc 4 nhiệm vụ tổng 900 Linh Thạch + Yêu Đan Cấp 1 ×1 + Cấp 2 ×1.' },
@@ -1650,9 +1791,9 @@
           'Đợt 3 (khi đợt 2 chết hết): 3 Sói Rừng (soi_rung) + 1 Lợn Mông Sắt (lon_mong_sat). Đợt sau chỉ spawn khi đợt trước chết hết - đếm bằng sự kiện kill qua recordEvent như nhiệm vụ thường.'
         ],
         win: 'Đánh đuổi đủ 5 Sói Con (mục tiêu của q_chinh_5, tính qua kill soi_con) và dọn sạch các đợt - trả nhiệm vụ cho linh_gac là kết thúc sự kiện.',
-        lose: 'Người chơi bị hạ (HP về 0): hồi sinh như thường lệ, sự kiện đặt lại từ đợt 1, nói chuyện lại với linh_gac để đánh tiếp. Không có thua vĩnh viễn, không mất vật phẩm.',
+        lose: 'Người chơi bị hạ (Máu về 0): hồi sinh như thường lệ, sự kiện đặt lại từ đợt 1, nói chuyện lại với linh_gac để đánh tiếp. Không có thua vĩnh viễn, không mất vật phẩm.',
         reward: 'Thưởng nằm trong thưởng q_chinh_5 (80 Linh Thạch, +20 tu vi, 2 Thảo Dược) - không cần hệ thống thưởng riêng.',
-        dialogue: 'Mở đầu: DIALOGUE.linh_gac.quest.q_chinh_5. Kết thúc: DIALOGUE.linh_gac.turnin.q_chinh_5. A Báo, dân làng chỉ đứng ở vị trí trang trí như NPC thường, không cần AI chiến đấu mới.' }
+        dialogue: 'Mở đầu: DIALOGUE.linh_gac.quest.q_chinh_5. Kết thúc: DIALOGUE.linh_gac.turnin.q_chinh_5. A Báo, dân làng chỉ đứng ở vị trí trang trí như người làng thường, không cần AI chiến đấu mới.' }
     ],
     NEW_MAPS: [
       { id: 'map_2', name: 'Rừng Thanh Sơn', size: '40x30',
@@ -1676,7 +1817,7 @@
     NEW_ITEMS: [
       { id: 'linh_chi', name: 'Linh Chi', desc: 'Nấm linh chi mọc gần suối linh trong Rừng Thanh Sơn, tai nấm ánh xanh. Vật phẩm nhiệm vụ (q_phu_thuoc_rung) và nguyên liệu thuốc mạnh.' },
       { id: 'nanh_son_quan', name: 'Nanh Sơn Quân', desc: 'Nanh của lợn vương Sơn Quân, hút linh khí trăm năm. Vật phẩm cốt truyện: dùng làm vật trấn trong lễ khấn trấn phong ấn giếng cổ.' },
-      { id: 'thit_son_quan', name: 'Thịt Sơn Quân', desc: 'Thịt lợn vương chắc và bổ. Hồi nhiều HP (đề xuất heal 60) - phần thưởng sau khi hạ boss.' },
+      { id: 'thit_son_quan', name: 'Thịt Sơn Quân', desc: 'Thịt lợn vương chắc và bổ. Hồi nhiều Máu (đề xuất heal 60) - phần thưởng sau khi hạ boss.' },
       { id: 'lenh_bai_thanh_phong', name: 'Lệnh Bài Thanh Phong', desc: 'Lệnh bài gỗ xanh khắc mây gió của Thanh Phong Phái. Vật phẩm cốt truyện chứng nhận đệ tử nhập môn (thưởng q_chinh_8), không dùng được, không bán.' }
     ],
     NEW_QUESTS: [

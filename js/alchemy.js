@@ -177,16 +177,16 @@
   // vào danh sách điểm dược khi nạp map. Mọi toạ độ đã kiểm chứng: ô đi
   // được (không blocked) và thuộc đúng zone khai trong HERBS.zones.
   var SPOTS = [
-    { map: 'map1', x: 58, y: 29, item: 'thanh_tam_thao', zone: 'ga_tho' },
-    { map: 'map1', x: 55, y: 41, item: 'thanh_tam_thao', zone: 'lon_rung' },
-    { map: 'map1', x: 36, y: 39, item: 'thanh_tam_thao', zone: 'soi_con' },
-    { map: 'map2', x: 38, y: 17, item: 'thanh_tam_thao', zone: 'ran_luc' },
-    { map: 'map2', x: 52, y: 22, item: 'thanh_tam_thao', zone: 'ran_luc' },
+    { map: 'map1', x: 70, y: 59, item: 'thanh_tam_thao', zone: 'ga_tho' },
+    { map: 'map1', x: 67, y: 71, item: 'thanh_tam_thao', zone: 'lon_rung' },
+    { map: 'map1', x: 48, y: 69, item: 'thanh_tam_thao', zone: 'soi_con' },
+    { map: 'map2', x: 74, y: 33, item: 'thanh_tam_thao', zone: 'ran_luc' },
+    { map: 'map2', x: 88, y: 38, item: 'thanh_tam_thao', zone: 'ran_luc' },
     { map: 'map4', x: 67, y: 43, item: 'thanh_tam_thao', zone: null },
     { map: 'map4', x: 20, y: 48, item: 'thanh_tam_thao', zone: 'lon_rung_dai_son' },
-    { map: 'map2', x: 28, y: 38, item: 'huyet_sam', zone: 'son_quan' },
-    { map: 'map2', x: 40, y: 38, item: 'huyet_sam', zone: 'son_quan' },
-    { map: 'map2', x: 34, y: 19, item: 'huyet_sam', zone: 'soi_rung' },
+    { map: 'map2', x: 64, y: 54, item: 'huyet_sam', zone: 'son_quan' },
+    { map: 'map2', x: 76, y: 54, item: 'huyet_sam', zone: 'son_quan' },
+    { map: 'map2', x: 70, y: 35, item: 'huyet_sam', zone: 'soi_rung' },
     { map: 'map4', x: 78, y: 20, item: 'huyet_sam', zone: 'soi_vach_da' },
     { map: 'map4', x: 24, y: 36, item: 'huyet_sam', zone: 'lon_mong_sat_dai_son' },
     { map: 'map3', x: 46, y: 30, item: 'tu_linh_qua', zone: 'khi_mat_do' },
@@ -194,14 +194,14 @@
     { map: 'map4', x: 48, y: 28, item: 'tu_linh_qua', zone: 'khi_co_thu' },
     { map: 'map4', x: 25, y: 23, item: 'tu_linh_qua', zone: 'khi_rung_gia' },
     { map: 'map4', x: 31, y: 27, item: 'tu_linh_qua', zone: 'khi_rung_gia' },
-    { map: 'map2', x: 53, y: 29, item: 'doc_tam_hoa', zone: 'ran_luc' },
-    { map: 'map2', x: 41, y: 26, item: 'doc_tam_hoa', zone: 'ran_luc' },
+    { map: 'map2', x: 89, y: 45, item: 'doc_tam_hoa', zone: 'ran_luc' },
+    { map: 'map2', x: 77, y: 42, item: 'doc_tam_hoa', zone: 'ran_luc' },
     { map: 'map4', x: 70, y: 23, item: 'doc_tam_hoa', zone: 'ran_khe_suoi' },
     { map: 'map4', x: 62, y: 46, item: 'doc_tam_hoa', zone: 'ran_khe_suoi' },
     { map: 'map4', x: 41, y: 16, item: 'doc_tam_hoa', zone: 'ran_phe_tich' },
     { map: 'map4', x: 37, y: 14, item: 'doc_tam_hoa', zone: 'ran_phe_tich' },
     { map: 'map4', x: 54, y: 16, item: 'doc_tam_hoa', zone: 'ran_phe_tich' },
-    { map: 'map2', x: 59, y: 11, item: 'ngoc_tuy_chi', zone: 'khi_mat_do' },
+    { map: 'map2', x: 95, y: 27, item: 'ngoc_tuy_chi', zone: 'khi_mat_do' },
     { map: 'map3', x: 52, y: 28, item: 'ngoc_tuy_chi', zone: 'khi_mat_do' },
     { map: 'map3', x: 48, y: 26, item: 'ngoc_tuy_chi', zone: 'khi_mat_do' },
     { map: 'map3', x: 25, y: 38, item: 'son_tinh', zone: 'soi_rung' },
@@ -209,8 +209,8 @@
     { map: 'map4', x: 19, y: 13, item: 'son_tinh', zone: null },
     { map: 'map4', x: 77, y: 13, item: 'son_tinh', zone: null },
     { map: 'map4', x: 22, y: 12, item: 'son_tinh', zone: null },
-    { map: 'map2', x: 34, y: 39, item: 'thanh_linh_tuy', zone: 'son_quan' },
-    { map: 'map2', x: 40, y: 39, item: 'thanh_linh_tuy', zone: 'son_quan' },
+    { map: 'map2', x: 70, y: 53, item: 'thanh_linh_tuy', zone: 'son_quan' },
+    { map: 'map2', x: 76, y: 55, item: 'thanh_linh_tuy', zone: 'son_quan' },
     { map: 'map4', x: 48, y: 12, item: 'thanh_linh_tuy', zone: null },
     { map: 'map4', x: 52, y: 36, item: 'thanh_linh_tuy', zone: 'ran_khe_suoi' },
     // Điểm hái bổ sung map 5–7 (vòng tích hợp, mục 3 hàng chờ, 2026-10-30):
@@ -234,11 +234,11 @@
   // câu mô tả hiệu lực để panel hiển thị.
   var PILLS = {
     hoi_khi_tan: { id: 'hoi_khi_tan', name: 'Hồi Khí Tán', grade: 'pham', kind: 'heal', heal: 30,
-      fxText: 'Hồi 30 HP', desc: 'Bột thuốc cầm máu hồi sức của nhà thuốc họ Lý, đi đường xa không thể thiếu.' },
+      fxText: 'Hồi 30 Máu', desc: 'Bột thuốc cầm máu hồi sức của nhà thuốc họ Lý, đi đường xa không thể thiếu.' },
     linh_khi_tan: { id: 'linh_khi_tan', name: 'Linh Khí Tán', grade: 'pham', kind: 'mana', mana: 20,
       fxText: 'Hồi 20 linh lực', desc: 'Bột tán từ Thanh Tâm Thảo, giúp linh lực đang cạn hồi lại một mạch.' },
     hoi_xuan_dan: { id: 'hoi_xuan_dan', name: 'Hồi Xuân Đan', grade: 'linh', kind: 'heal', heal: 70,
-      fxText: 'Hồi 70 HP', desc: 'Viên đan xanh ngọc từ linh chi và thảo dược. Vết thương khép lại thấy rõ bằng mắt.' },
+      fxText: 'Hồi 70 Máu', desc: 'Viên đan xanh ngọc từ linh chi và thảo dược. Vết thương khép lại thấy rõ bằng mắt.' },
     tu_linh_dan: { id: 'tu_linh_dan', name: 'Tụ Linh Đan', grade: 'linh', kind: 'mana', mana: 45,
       fxText: 'Hồi 45 linh lực', desc: 'Đan luyện từ Tụ Linh Quả, linh khí trong đan tự tìm về đan điền.' },
     tieu_boi_nguyen_dan: { id: 'tieu_boi_nguyen_dan', name: 'Tiểu Bồi Nguyên Đan', grade: 'linh', kind: 'tuvi', tuvi: 25,
@@ -248,7 +248,7 @@
     tu_khi_dan: { id: 'tu_khi_dan', name: 'Tụ Khí Đan', grade: 'pham', kind: 'break',
       fxText: 'Đột phá +10% (tự dùng khi đột phá)', desc: 'Đan hỗ trợ đột phá sơ cấp theo phương của Lý lão. Engine đột phá tự dùng 1 viên mỗi lần thử.' },
     dai_hoi_xuan_dan: { id: 'dai_hoi_xuan_dan', name: 'Đại Hồi Xuân Đan', grade: 'huyen', kind: 'heal', heal: 140,
-      fxText: 'Hồi 140 HP', desc: 'Bản lớn của Hồi Xuân Đan theo phương Đan Hà Cốc, dược lực gấp đôi, vết thương nặng cũng kéo lại được.' },
+      fxText: 'Hồi 140 Máu', desc: 'Bản lớn của Hồi Xuân Đan theo phương Đan Hà Cốc, dược lực gấp đôi, vết thương nặng cũng kéo lại được.' },
     cuong_the_dan: { id: 'cuong_the_dan', name: 'Cường Thể Đan', grade: 'huyen', kind: 'buff', dur: 300,
       buffs: [{ stat: 'def', val: 4, label: 'Giáp +4' }], fxText: 'Giáp +4 trong 5 phút',
       desc: 'Đan từ Huyết Sâm làm gân cốt cứng như ngâm thuốc cả tháng. Dân làng gánh núi trước khi vào rừng sâu hay xin một viên.' },
@@ -258,7 +258,7 @@
     ngung_khi_dan: { id: 'ngung_khi_dan', name: 'Ngưng Khí Đan', grade: 'huyen', kind: 'break',
       fxText: 'Đột phá +20% (tự dùng khi đột phá)', desc: 'Đan hỗ trợ đột phá trung cấp, ngưng tụ linh khí quanh đan điền lúc xung quan. Engine đột phá tự dùng 1 viên mỗi lần thử.' },
     sinh_co_dan: { id: 'sinh_co_dan', name: 'Sinh Cơ Đan', grade: 'dia', kind: 'heal', heal: 260, cure: true,
-      fxText: 'Hồi 260 HP + giải độc', desc: 'Đan sinh cơ của Đan Hà Cốc: thịt nát xương gãy cũng liền lại, độc trong người bị đẩy ra theo mồ hôi.' },
+      fxText: 'Hồi 260 Máu + giải độc', desc: 'Đan sinh cơ của Đan Hà Cốc: thịt nát xương gãy cũng liền lại, độc trong người bị đẩy ra theo mồ hôi.' },
     dai_boi_nguyen_dan: { id: 'dai_boi_nguyen_dan', name: 'Đại Bồi Nguyên Đan', grade: 'dia', kind: 'tuvi', tuvi: 80,
       fxText: '+80 tu vi', desc: 'Đan bồi nguyên bậc cao luyện từ Ngọc Tủy Chi và Thanh Linh Tủy. Một viên bằng nhiều ngày thổ nạp.' },
     chien_y_dan: { id: 'chien_y_dan', name: 'Chiến Ý Đan', grade: 'dia', kind: 'buff', dur: 300,
@@ -269,7 +269,7 @@
     truc_co_dan: { id: 'truc_co_dan', name: 'Trúc Cơ Đan', grade: 'dia', kind: 'break',
       fxText: 'Đan dẫn kiếp Trúc Cơ (tự dùng khi dẫn động lôi kiếp)', desc: 'Đan vượt cảnh giới luyện từ Yêu Đan Cấp 3 — lõi đan gánh thay một phần thiên uy lúc lôi kiếp giáng xuống. Không ăn trực tiếp: khi đột phá Luyện Khí tầng 9 lên Trúc Cơ, lò tu hành tự dùng 1 viên để dẫn động lôi kiếp, mất cả khi độ kiếp thất bại.' },
     cuu_chuyen_hoi_hon_dan: { id: 'cuu_chuyen_hoi_hon_dan', name: 'Cửu Chuyển Hồi Hồn Đan', grade: 'thien', kind: 'heal', healPctMax: 100,
-      fxText: 'Hồi đầy 100% HP', desc: 'Đan Thiên phẩm tương truyền luyện chín lần mới thành. Người sắp tắt thở ăn vào cũng mở mắt ngồi dậy.' }
+      fxText: 'Hồi đầy 100% Máu', desc: 'Đan Thiên phẩm tương truyền luyện chín lần mới thành. Người sắp tắt thở ăn vào cũng mở mắt ngồi dậy.' }
   };
   function isPill(id) { return !!PILLS[id]; }
   function pillDef(id) { return PILLS[id] || null; }
@@ -506,7 +506,7 @@
       return { ok: false, pill: true, msg: 'Người không có độc, uống ' + def.name + ' bây giờ phí thuốc.' };
     }
     if (def.kind === 'heal' && ch.hp >= L.effMaxHp(ch) && !def.cure) {
-      return { ok: false, pill: true, msg: 'HP đang đầy, chưa cần dùng ' + def.name + '.' };
+      return { ok: false, pill: true, msg: 'Máu đang đầy, chưa cần dùng ' + def.name + '.' };
     }
     if (!L.consumeItem(ch, pillId, 1)) return { ok: false };
     var out = { ok: true, pill: true, kind: def.kind };
@@ -517,7 +517,7 @@
       var before = ch.hp;
       ch.hp = Math.min(L.effMaxHp(ch), ch.hp + amt);
       out.healed = ch.hp - before;
-      out.msg = 'Dùng ' + def.name + ', hồi ' + out.healed + ' HP.';
+      out.msg = 'Dùng ' + def.name + ', hồi ' + out.healed + ' Máu.';
       if (def.cure && ch.poison) { ch.poison = null; out.cured = true; out.msg += ' Độc trong người cũng tan hết.'; }
     } else if (def.kind === 'mana') {
       var SK = skillsApi();

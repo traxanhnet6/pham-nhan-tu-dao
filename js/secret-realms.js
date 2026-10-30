@@ -370,7 +370,7 @@
     {
       id: 'spot_nv03', originId: 'nv03', name: 'Quẻ Dưới Gốc Đa',
       story: 'Đàn quẻ cũ sau Miếu Sơn Thần trong màn sương — một tàn niệm đạo sĩ già ngồi gieo quẻ, không nói rõ có phải sư phụ ngươi hay không. Lá Bùa Không Chữ trong túi ngươi ấm lên.',
-      token: 'la_bua_khong_chu', anchor: { mapId: 'map2', x: 32, y: 6, label: 'Miếu Sơn Thần' },
+      token: 'la_bua_khong_chu', anchor: { mapId: 'map2', x: 68, y: 22, label: 'Miếu Sơn Thần' },
       trigger: { turned: ['q_chinh_7'] },
       peaceful: true, spawns: [], rewards: [],
       choices: [
@@ -388,7 +388,7 @@
     {
       id: 'spot_nv05', originId: 'nv05', name: 'Tiếng Chuông Không Người Gõ',
       story: 'Giếng cổ về đêm vang tiếng chuông không người gõ — nền chùa cũ trên đồi sau làng hiện ra trong sương, khỉ mặt đỏ tha đồ chùa làm ổ quanh đống tro. Dưới tro có một chuông nhỏ bằng đồng.',
-      token: 'hat_trang_go_chay_sem', anchor: { mapId: 'map1', x: 19, y: 7, label: 'Giếng cổ' },
+      token: 'hat_trang_go_chay_sem', anchor: { mapId: 'map1', x: 43, y: 45, label: 'Giếng cổ' },
       trigger: { turned: ['q_chinh_5'] },
       spawns: [
         { type: 'khi_mat_do', x: 10, y: 7 }, { type: 'khi_mat_do', x: 10, y: 9 },
@@ -413,7 +413,7 @@
     {
       id: 'spot_nv09', originId: 'nv09', name: 'Mảnh Ngọc Dưới Đáy Suối',
       story: 'Mặt suối linh tự sáng khi ngươi mang Ngọc Bội Khuyết tới — dưới đá có mảnh ngọc thứ hai, khớp đúng góc khuyết của miếng ngọc ngươi đeo từ khi được tìm thấy cạnh suối này.',
-      token: 'ngoc_boi_khuyet_mot_goc', anchor: { mapId: 'map2', x: 35, y: 11, label: 'Suối Linh' },
+      token: 'ngoc_boi_khuyet_mot_goc', anchor: { mapId: 'map2', x: 71, y: 27, label: 'Suối Linh' },
       trigger: { turned: ['q_chinh_6'] },
       peaceful: true, spawns: [], rewards: [],
       choices: [
@@ -436,7 +436,7 @@
     {
       id: 'spot_nv12', originId: 'nv12', name: 'Gốc Đào Cổ Nở Hoa Trái Mùa',
       story: 'Vườn đào đầu làng trong đêm — gốc đào cổ nhất nở hoa phát sáng giữa mùa không phải mùa hoa, hoa rụng thành Đào Linh. Vườn này trồng trên đất cũ Thanh Khê lão nhân để lại cho làng.',
-      token: 'khan_hoa_dao_cua_chi', anchor: { mapId: 'map1', x: 35, y: 13, label: 'Vườn Đào' },
+      token: 'khan_hoa_dao_cua_chi', anchor: { mapId: 'map1', x: 59, y: 50, label: 'Vườn Đào' },
       trigger: { turned: ['q_chinh_5'] },
       peaceful: true, spawns: [], rewards: [],
       choices: [
@@ -456,6 +456,234 @@
       ]
     }
   ];
+  // ----- KỲ NGỘ TÔNG NHÓM 1 (mục 22 hàng chờ,
+  // docs/origins-and-encounters.md mục 4.1–4.10): 10 kỳ ngộ định danh
+  // của 10 tông (nhóm 1 mục 22 + nhóm 2 mục 23 hàng chờ). Khuôn giống điểm kích hoạt nhóm B — KHÔNG nằm
+  // trong FATE.templates nên không bao giờ bị lăn fate mời nhầm, chỉ
+  // mở bằng nút thoại ở đại diện tông (game.js: enterSectFate).
+  // Luật chung: flags.sectJoined đúng tông + đã trả q_chinh_19,
+  // 1 lần duy nhất, cờ flags.sectFate.<sectId> (+ flags.sectFlags
+  // cho cờ phụ của lựa chọn, xem completeRealmRun trong game.js).
+  // Thưởng chuẩn (economy.md mục 6 quy tắc 4): LT 80–150, tu vi
+  // 100–150, 1 vật ký danh — vũ khí/pháp bảo dùng thật, chỉ số chép
+  // đúng món cùng phẩm sẵn có trong game, không bán được (noSell).
+  // Tất cả đều peaceful: thử thách của mỗi tông (3 đợt kiếm khí,
+  // dẫn khí qua 5 trụ đàn, rèn phôi, chọn khóm, giữ tổ) được giải
+  // quyết bằng panel lựa chọn của hệ kỳ ngộ như mẫu nguồn gốc —
+  // không sinh quái sprite lạ (kiếm linh chưa có sheet) để đóng
+  // vai quái gác, và không sinh minigame riêng ngoài engine.
+  var SECT_TEMPLATES = [
+    {
+      id: 'sect_thanh_phong', sectId: 'thanh_phong', rep: 'de_tu_phai', name: 'Kiếm Mộ Sau Núi',
+      story: 'Kiếm mộ của tổ sư khai phái trên Thanh Sơn — hành lang đá cắm đầy kiếm gỉ của các đời đệ tử, cuối mộ là bia kiếm tổ sư. Đứng trước bia chịu 3 đợt kiếm khí, rồi mặt sau bia hiện ra một ấn cổ không thuộc Thanh Phong, không thuộc tông nào.',
+      peaceful: true, spawns: [], rewards: [],
+      choices: [
+        { id: 'rut_kiem', label: 'Rút thanh kiếm của tổ sư',
+          text: 'Ngươi rút Thanh Phong Cổ Kiếm khỏi bia — kiếm của tổ sư chịu nhận người biết đứng chắn trước người khác. Ấn cổ sau bia thì ghi lại, để ngày tới điểm linh mạch ở Thiên 4 đối chiếu.',
+          rewards: [
+            { kind: 'weapon', id: 'thanh_phong_co_kiem', chance: 1 },
+            { kind: 'linhThach', n: 100, chance: 1 }, { kind: 'tuvi', n: 100, chance: 1 }
+          ] },
+        { id: 'khac_kiem_pho', label: 'Chỉ khắc lại kiếm phổ trên bia',
+          text: 'Ngươi không rút kiếm, chỉ khắc lại kiếm phổ trên bia cho đời sau — đường của người trọng đạo hơn trọng khí. Ấn cổ sau bia thì ghi lại, để ngày tới điểm linh mạch ở Thiên 4 đối chiếu.',
+          rewards: [
+            { kind: 'tuvi', n: 150, chance: 1 }, { kind: 'linhThach', n: 100, chance: 1 }
+          ] }
+      ]
+    },
+    {
+      id: 'sect_huyen_phap', sectId: 'huyen_phap', rep: 'tong_phap', name: 'Pháp Đàn Cổ Dưới Hồ',
+      story: 'Pháp đàn ngũ hành chìm dưới hồ sau núi, chỉ lộ khi nước rút mùa khô. Dẫn khí qua 5 trụ đàn theo đúng thứ tự sinh khắc hợp hệ linh căn của ngươi; đứng trên đàn, ngươi đo được một điều lạ: dòng linh khí của Thanh Sơn từng bị bẻ hướng trăm năm trước.',
+      peaceful: true, spawns: [], rewards: [],
+      choices: [
+        { id: 'dan_khi', label: 'Dẫn khí qua 5 trụ đàn theo linh căn của mình',
+          text: 'Ngươi dẫn khí đúng thứ tự sinh khắc của linh căn mình — 5 trụ đàn sáng lần lượt, Ngũ Hành Luân từ lòng hồ nổi lên nhận chủ.',
+          rewards: [
+            { kind: 'artifact', id: 'ngu_hanh_luan', chance: 1 },
+            { kind: 'tuvi', n: 120, chance: 1 }, { kind: 'linhThach', n: 80, chance: 1 }
+          ] },
+        { id: 'ghi_do_hinh', label: 'Không dẫn khí, chỉ ghi lại đồ hình đàn',
+          text: 'Ngươi không dẫn khí mà ghi lại đồ hình đàn mang về tông — đồ hình quý hơn một lần dẫn khí vội, nhưng Ngũ Hành Luân thì ở lại dưới hồ.',
+          rewards: [
+            { kind: 'tuvi', n: 150, chance: 1 }, { kind: 'linhThach', n: 80, chance: 1 }
+          ] }
+      ]
+    },
+    {
+      id: 'sect_thien_cong', sectId: 'thien_cong', rep: 'tong_khi', name: 'Lò Rèn Của Tiền Nhân',
+      story: 'Lò rèn bỏ hoang trong khe núi, cạnh lò còn một phôi khí chưa rèn xong từ trăm năm trước, rèn bằng thép lạ không rỉ — chính là thép ấn cổ mà phường đã tìm ba đời. Rèn tiếp phôi tại lò theo đúng tỉ lệ lò Địa phẩm (58%, như đan Địa phẩm của hệ luyện đan): thành thì được Thiên Công Cổ Ấn phẩm Địa, hỏng thì phôi nứt.',
+      peaceful: true, spawns: [], rewards: [],
+      choices: [
+        { id: 'ren_tiep', label: 'Rèn tiếp phôi tại lò (tỉ lệ thành 58%)',
+          text: 'Ngươi nhóm lò rèn tiếp phôi thép lạ. Thành hay hỏng đều không mất trắng: hỏng thì phôi nứt, nhận lại nguyên liệu vụn quy ra Linh Thạch và tu vi.',
+          rewards: [
+            { kind: 'artifact', id: 'thien_cong_co_an', chance: 0.58 },
+            { kind: 'linhThach', n: 100, chance: 1 }, { kind: 'tuvi', n: 100, chance: 1 }
+          ] }
+      ]
+    },
+    {
+      id: 'sect_dan_ha', sectId: 'dan_ha', rep: 'tong_dan', name: 'Vườn Dược Phong Ấn',
+      story: 'Vườn dược của cốc bị phong ấn gói lại từ thời Đại Kiếp, hé mở đúng một lần cho đệ tử của cốc. Vườn có nhiều khóm nhưng chỉ hái được 3 khóm — mỗi lựa chọn dưới đây là một tổ hợp 3 khóm ưu tiên một hướng. Trong vườn còn một khóm thuốc không thuộc vùng Thanh Sơn mà vẫn sống tốt.',
+      peaceful: true, spawns: [], rewards: [],
+      choices: [
+        { id: 'uu_tien_duoc', label: 'Hái 3 khóm: ưu tiên dược quý',
+          text: 'Ngươi hái 3 khóm dược quý nhất vườn — Ngọc Tủy Chi và hạt của nó, để dành cho những mẻ đan lớn.',
+          rewards: [
+            { kind: 'item', id: 'ngoc_tuy_chi', n: 2, chance: 1 },
+            { kind: 'item', id: 'hat_ngoc_tuy_chi', n: 1, chance: 1 },
+            { kind: 'linhThach', n: 80, chance: 1 }, { kind: 'tuvi', n: 100, chance: 1 }
+          ] },
+        { id: 'uu_tien_tan_trang', label: 'Hái 3 khóm: ưu tiên tàn trang đan phương',
+          text: 'Ngươi hái khóm tàn trang đan phương làm trọng — trang chép dở có thể dạy thêm một đan phương, kèm ít dược giữ vườn.',
+          rewards: [
+            { kind: 'recipe', id: 'dai_hoi_xuan_dan', chance: 0.6 },
+            { kind: 'item', id: 'linh_chi', n: 1, chance: 1 },
+            { kind: 'linhThach', n: 80, chance: 1 }, { kind: 'tuvi', n: 100, chance: 1 }
+          ] },
+        { id: 'uu_tien_hat', label: 'Hái 3 khóm: ưu tiên hạt giống',
+          text: 'Ngươi hái 3 khóm hạt giống — mang về gieo ở linh điền động phủ, vườn dược của riêng ngươi từ nay có thêm giống quý.',
+          rewards: [
+            { kind: 'item', id: 'hat_huyet_sam', n: 2, chance: 1 },
+            { kind: 'item', id: 'hat_linh_chi', n: 1, chance: 1 },
+            { kind: 'linhThach', n: 80, chance: 1 }, { kind: 'tuvi', n: 100, chance: 1 }
+          ] }
+      ]
+    },
+    {
+      id: 'sect_van_thu', sectId: 'van_thu', rep: 'tong_thu', name: 'Trứng Trong Tổ Cổ',
+      story: 'Tổ thú cổ trên vách đá Đại Sơn — tổ của dòng thần thú canh núi, bỏ trống vì thú mẹ đi săn xa; trong tổ còn đúng 1 quả trứng chưa nở. Mang đi hay để lại, đều là một lời hứa với bầy thú.',
+      peaceful: true, spawns: [], rewards: [],
+      choices: [
+        { id: 'mang_trung', label: 'Mang trứng về ấp',
+          text: 'Ngươi mang trứng về ấp theo đúng luật ấp trứng của game — trứng nở thành linh thú trong danh sách loài sẵn có, không sinh loài mới.',
+          rewards: [
+            { kind: 'egg', chance: 1 },
+            { kind: 'linhThach', n: 80, chance: 1 }, { kind: 'tuvi', n: 100, chance: 1 }
+          ] },
+        { id: 'de_trung', label: 'Để trứng lại cho thú mẹ',
+          text: 'Ngươi để trứng lại cho thú mẹ — rừng nhớ ân này. Vạn Thú Ấn làm tin, kèm 3 lá Bùa Ngự Thú cho những lần thu phục sau.',
+          flag: 'an_thu',
+          rewards: [
+            { kind: 'item', id: 'van_thu_an', n: 1, chance: 1 },
+            { kind: 'item', id: 'bua_ngu_thu', n: 3, chance: 1 },
+            { kind: 'linhThach', n: 80, chance: 1 }, { kind: 'tuvi', n: 100, chance: 1 }
+          ] }
+      ]
+    },
+    {
+      id: 'sect_thien_phu', sectId: 'thien_phu', rep: 'tong_phu', name: 'Phù Trận Tàn Trong Động',
+      story: 'Động đá sau bãi tuyển, trên vách là phù trận trấn tà vẽ dở từ thời Đại Kiếp — thiếu đúng nét cuối. Vẽ sai nét thì trận nổ nhẹ mất ít Máu nhưng vẽ lại được; Diệp Phù Sinh từng gợi ý thế trận này ở biến thể Thiên Phù chương 13. Nếu trong túi có Lá Bùa Không Chữ của Đạo Sĩ Vân Du, lá bùa tự ấm lên trong động — hai dây bùa gặp nhau.',
+      peaceful: true, spawns: [], rewards: [],
+      choices: [
+        { id: 've_net_cuoi', label: 'Vẽ tiếp nét cuối theo thế trận',
+          text: 'Ngươi vẽ tiếp nét cuối — trận sáng lên rồi yên lại, như một cánh cửa vừa khép đúng khớp. Nét cuối này chính là một nét của phù trấn phong ấn mới ở Thiên 6.',
+          rewards: [
+            { kind: 'artifact', id: 'chu_sa_co_but', chance: 1 },
+            { kind: 'tuvi', n: 120, chance: 1 }, { kind: 'linhThach', n: 80, chance: 1 }
+          ] },
+        { id: 'ghi_phu_tran', label: 'Không vẽ, chỉ ghi lại phù trận mang về',
+          text: 'Ngươi không vẽ mà ghi lại toàn bộ phù trận mang về các — đồ hình quý cho đời sau, nhưng Chu Sa Cổ Bút thì ở lại trong động.',
+          rewards: [
+            { kind: 'tuvi', n: 150, chance: 1 }, { kind: 'linhThach', n: 80, chance: 1 }
+          ] }
+      ]
+    },
+    {
+      id: 'sect_cuu_cung', sectId: 'cuu_cung', rep: 'tong_tran', name: 'Trận Đồ Trong Hang Sâu',
+      story: 'Hang dưới chân núi, sàn hang khắc trận đồ cửu cung khổng lồ bằng đá xanh. Đi đúng 9 cung theo đường sinh môn thì không phải đánh trận nào; bước sai cung thì trận linh hiện ra đánh. Âu Dương Kỳ đứng ngoài hang đếm bước, vòng vo như thường lệ nhưng câu cuối nói thẳng: trận này không phải của Cửu Cung — Cửu Cung chỉ là người giữ bản chép.',
+      peaceful: true, spawns: [], rewards: [],
+      choices: [
+        { id: 'di_sinh_mon', label: 'Đi đủ 9 cung theo đường sinh môn',
+          text: 'Ngươi đi đủ 9 cung không sai một bước — trận đồ sáng hết rồi thu lại vào Cửu Cung Bàn. Bản nháp này là thứ Thiên 6 lập phong ấn mới phải quay lại lấy.',
+          rewards: [
+            { kind: 'artifact', id: 'cuu_cung_ban', chance: 1 },
+            { kind: 'tuvi', n: 120, chance: 1 }, { kind: 'linhThach', n: 100, chance: 1 }
+          ] },
+        { id: 'ghi_ban_nhap', label: 'Không đi, chỉ ghi lại bản nháp trận đồ',
+          text: 'Ngươi không bước vào trận mà ghi lại bản nháp mang về tông — bản chép quý, nhưng Cửu Cung Bàn thì ở lại trong hang.',
+          rewards: [
+            { kind: 'tuvi', n: 150, chance: 1 }, { kind: 'linhThach', n: 100, chance: 1 }
+          ] }
+      ]
+    },
+    {
+      id: 'sect_kim_cang', sectId: 'kim_cang', rep: 'tong_the', name: 'Bia Luyện Thể Sau Thác',
+      story: 'Thác nước ở Đại Sơn, sau màn thác là bia đá luyện thể của tổ sư thể tu — bia có 3 tầng bia khí phải phá bằng thân thể. Đứng dưới thác chịu sức nước (đan hồi máu dùng được như thường) rồi phá 3 tầng bia khí bằng đòn thường; Máu về 0 thì bị nước cuốn ra ngoài, hồi lại vào tiếp được — không mất kỳ ngộ. KHÔNG cộng điểm luyện thể ở đây: luyện thể chỉ từ lôi kiếp theo realms.js.',
+      peaceful: true, spawns: [], rewards: [],
+      choices: [
+        { id: 'chiu_thac_pha_bia', label: 'Chịu thác, phá 3 tầng bia khí',
+          text: 'Ngươi chịu thác phá hết 3 tầng bia khí — mảnh bia vỡ làm tín vật. Thiên 8 khi độ kiếp cuối, đệ tử Kim Cang đứng hộ pháp vòng ngoài sẽ nhận ra nhau nhờ mảnh bia này.',
+          rewards: [
+            { kind: 'item', id: 'thiet_bia_tan_phien', n: 1, chance: 1 },
+            { kind: 'tuvi', n: 150, chance: 1 }, { kind: 'linhThach', n: 100, chance: 1 }
+          ] }
+      ]
+    },
+    {
+      id: 'sect_ngu_doc', sectId: 'ngu_doc', rep: 'tong_doc', name: 'Đầm Độc Cổ',
+      story: 'Đầm độc sau rừng, nơi giáo trồng độc thảo trăm năm; giữa đầm là khóm Độc Tâm Hoa Vương chỉ nở khi có đệ tử của giáo vào đầm. Lội đầm hái hoa vương — mỗi bước tích độc theo luật trúng độc sẵn có; phải mang đan giải độc hoặc quay ra bờ giải độc rồi vào lại. Đường Tĩnh đứng trên bờ nhìn, không cứu — đó là phép thử của giáo. Trên bờ đầm có dấu chân người lạ còn mới — không phải đệ tử của giáo.',
+      peaceful: true, spawns: [], rewards: [],
+      choices: [
+        { id: 'loi_dam_hai_hoa', label: 'Lội đầm, hái Độc Tâm Hoa Vương',
+          text: 'Ngươi lội đầm hái được hoa vương, mang theo dấu chân lạ trên bờ về cho Đường Tĩnh — bà thu lại nụ cười: có kẻ đã mò vào đầm độc trước ngươi không lâu.',
+          rewards: [
+            { kind: 'artifact', id: 'ngu_doc_nguyet_hoan', chance: 1 },
+            { kind: 'item', id: 'doc_tam_hoa', n: 3, chance: 1 },
+            { kind: 'tuvi', n: 100, chance: 1 }, { kind: 'linhThach', n: 80, chance: 1 }
+          ] }
+      ]
+    },
+    {
+      id: 'sect_huyen_am', sectId: 'huyen_am', rep: 'tong_am', name: 'Hàn Đàm An Hồn',
+      story: 'Hàn đàm sau núi, mặt đàm phẳng như gương, lạnh thấu xương — nơi Huyền Âm Cung đàn an hồn cho người chết đuối và người mất vì thú dữ quanh Thanh Sơn. Đàn nhịp chậm/đều thì đưa được cả 3 vong hồn về; sai nhịp thì 1 vong hồn tan thành oán khí phải đánh — không thưởng nào bị mất vì chọn sai, chỉ khác đường đi.',
+      peaceful: true, spawns: [], rewards: [],
+      choices: [
+        { id: 'dan_cham_deu', label: 'Đàn nhịp chậm, đều — đưa cả 3 vong hồn về',
+          text: 'Ngươi đàn nhịp chậm đều, cả 3 vong hồn yên lặng tan vào đàm. Vong hồn thứ ba không phải người làng — đó là một tu sĩ chết từ thời Đại Kiếp, trước khi tan chỉ kịp nói: kẻ đánh cắp linh khí "hắn cũng chỉ muốn cứu người của hắn".',
+          rewards: [
+            { kind: 'artifact', id: 'huyen_am_cam_huyen', chance: 1 },
+            { kind: 'tuvi', n: 120, chance: 1 }, { kind: 'linhThach', n: 80, chance: 1 }
+          ] },
+        { id: 'dan_sai_nhip', label: 'Đàn sai nhịp — đánh tan oán khí rồi đàn lại',
+          text: 'Ngươi đàn sai nhịp, một vong hồn tan thành oán khí — đánh tan oán khí rồi đàn lại cho yên. Vong hồn thứ ba vẫn kịp nói câu về kẻ đánh cắp linh khí trước khi tan hẳn.',
+          rewards: [
+            { kind: 'artifact', id: 'huyen_am_cam_huyen', chance: 1 },
+            { kind: 'tuvi', n: 120, chance: 1 }, { kind: 'linhThach', n: 80, chance: 1 }
+          ] }
+      ]
+    }
+  ];
+  function sectFateTemplate(sectId) {
+    for (var i = 0; i < SECT_TEMPLATES.length; i++) if (SECT_TEMPLATES[i].sectId === sectId) return SECT_TEMPLATES[i];
+    return null;
+  }
+  // Kỳ ngộ tông mở được khi: đã bái nhập ĐÚNG tông, đã trả
+  // q_chinh_19 (trục chương 13), chưa gặp kỳ ngộ tông đó
+  // (flags.sectFate). turnedIn nhận mảng hoặc object cờ như
+  // pickOriginTemplate.
+  function sectFateAvailable(sectId, flags, turnedIn) {
+    var tpl = sectFateTemplate(sectId);
+    if (!tpl || !flags) return false;
+    if (flags.sectJoined !== sectId) return false;
+    if (flags.sectFate && flags.sectFate[sectId]) return false;
+    return turnedHas(turnedIn, 'q_chinh_19');
+  }
+  // Vào kỳ ngộ tông: như beginSpotRun nhưng không cần lời mời fate
+  // hay điểm kích hoạt trên map — kích hoạt bằng thoại đại diện
+  // tông ở bãi tuyển map 3 (game.js: enterSectFate).
+  function beginSectRun(flags, sectId, now, returnTo) {
+    var s = ensure(flags, now); if (!s) return { ok: false, reason: 'nosave' };
+    if (s.run) return { ok: false, reason: 'inrun' };
+    var tpl = sectFateTemplate(sectId);
+    if (!tpl) return { ok: false, reason: 'notemplate' };
+    s.run = {
+      kind: 'ky_ngo', mapId: FATE.mapId, templateId: tpl.id,
+      endAt: now + FATE.runLimitMs, returnTo: returnTo,
+      kills: 0, need: tpl.spawns.length, rewarded: false
+    };
+    return { ok: true, run: s.run, template: tpl };
+  }
   function templateById(id) {
     for (var i = 0; i < FATE.templates.length; i++) if (FATE.templates[i].id === id) return FATE.templates[i];
     // Điểm kích hoạt nhóm B cũng tra được qua cùng hàm này để
@@ -463,6 +691,11 @@
     // dùng chung một đường (nhưng pickOriginTemplate chỉ duyệt
     // FATE.templates nên điểm kích hoạt không bao giờ bị fate mời).
     for (var j = 0; j < SPOT_TEMPLATES.length; j++) if (SPOT_TEMPLATES[j].id === id) return SPOT_TEMPLATES[j];
+    // Kỳ ngộ tông nhóm 1 + nhóm 2 cũng tra được qua cùng hàm này để
+    // completeRealmRun / rollRewards / entrySpawns / chooseFateChoice
+    // dùng chung một đường (nhưng không nằm trong FATE.templates
+    // nên lăn fate không bao giờ mời nhầm).
+    for (var k = 0; k < SECT_TEMPLATES.length; k++) if (SECT_TEMPLATES[k].id === id) return SECT_TEMPLATES[k];
     return null;
   }
   function spotTemplateById(id) {
@@ -2029,6 +2262,8 @@
     pickOriginTemplate: pickOriginTemplate, chooseFateChoice: chooseFateChoice,
     SPOT_TEMPLATES: SPOT_TEMPLATES, spotTemplateById: spotTemplateById,
     spotAvailable: spotAvailable, beginSpotRun: beginSpotRun,
+    SECT_TEMPLATES: SECT_TEMPLATES, sectFateTemplate: sectFateTemplate,
+    sectFateAvailable: sectFateAvailable, beginSectRun: beginSectRun,
     noteKill: noteKill, markRewarded: markRewarded, clearRun: clearRun,
     runExpired: runExpired, rollRewards: rollRewards, entrySpawns: entrySpawns
   };

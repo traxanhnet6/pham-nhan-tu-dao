@@ -72,10 +72,10 @@
   function num(v, d) { v = +v; return isFinite(v) ? v : d; }
 
   // ---------- Hằng số khung ----------
-  var STEWARD = { id: 'chap_su_thu_trieu', name: 'Vệ Trường Không', title: 'Chấp Sự Thủ Triều', mapId: 'map1', x: 34, y: 21 }; // V10: (22,13) + offset map (12,8)
+  var STEWARD = { id: 'chap_su_thu_trieu', name: 'Vệ Trường Không', title: 'Chấp Sự Thủ Triều', mapId: 'map1', x: 46, y: 51 }; // V3: (22,13) + offset V10 (12,8) + neo V3 map1 (12,30)
   // Cổng Nam Môn map 1: tường ở hàng 14, miệng cổng x19-20. Thú đi bộ
   // lên miệng cổng (hàng 15) trong dải x17-22 là coi như đã chạm cổng.
-  var GATE = { mapId: 'map1', x: 31, y: 22, w: 2, breachY: 23, breachX0: 29, breachX1: 34 }; // V10: + offset map (12,8)
+  var GATE = { mapId: 'map1', x: 43, y: 52, w: 2, breachY: 53, breachX0: 41, breachX1: 46 }; // V3: + neo V3 map1 (12,30) trên số V10
   var SESSIONS = [11 * 60 + 30, 20 * 60 + 30]; // 11:30 và 20:30, phút từ 00:00 giờ địa phương
   var DUR_MIN = 45;         // mỗi phiên mở nhận nhiệm vụ 45 phút
   var MIN_RANK = 2;         // Trúc Cơ
@@ -85,7 +85,7 @@
   var REWARD = { perWaveLt: 40, perWaveMerit: 5, winLt: 160, winMerit: 20, joinLt: 10 };
   var LEADER_TYPE = 'lon_mong_sat';
   var LEADER_NAME = 'Yêu Vương Hống Sơn';
-  var LEADER_SLOT = { x: 31, y: 38 }; // V10: (19,30) + offset map (12,8)
+  var LEADER_SLOT = { x: 43, y: 68 }; // V3: (19,30) + offset V10 (12,8) + neo V3 map1 (12,30)
 
   // ---------- 6 đợt thú (tăng dần về số lượng + sức loài) ----------
   var WAVES = [
@@ -97,12 +97,14 @@
     ['khi_mat_do', 'khi_mat_do', 'lon_mong_sat', 'lon_mong_sat', 'ran_luc'] // + yêu vương ở wavePlan
   ];
   // Điểm tràn vào ở bãi nam map 1 (đã kiểm ô đi được trong maps.js).
+  // V3: số V10 + neo V3 map1 (12,30).
   var SPAWN_SLOTS = [
-    { x: 24, y: 36 }, { x: 28, y: 37 }, { x: 32, y: 36 }, { x: 36, y: 37 }, { x: 40, y: 36 },
-    { x: 26, y: 39 }, { x: 38, y: 39 }, { x: 30, y: 40 }, { x: 34, y: 35 }, { x: 42, y: 38 }
+    { x: 36, y: 66 }, { x: 40, y: 67 }, { x: 44, y: 66 }, { x: 48, y: 67 }, { x: 52, y: 66 },
+    { x: 38, y: 69 }, { x: 50, y: 69 }, { x: 42, y: 70 }, { x: 46, y: 65 }, { x: 54, y: 68 }
   ];
-  // Hàng đứng của 10 đệ tử đồng minh: trước cổng, hàng 17, trải x11-29.
-  function allyPost(i) { return { x: 11 + i * 2, y: 17 }; }
+  // Hàng đứng của 10 đệ tử đồng minh: trước cổng Nam Môn, hàng 55
+  // (V3: hàng 17 cũ + tổng neo (24,38)), trải x35-53.
+  function allyPost(i) { return { x: 35 + i * 2, y: 55 }; }
 
   // ---------- Trạng thái trong save (flags.tide) ----------
   function ensure(flags) {

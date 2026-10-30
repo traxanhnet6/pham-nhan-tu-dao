@@ -156,15 +156,15 @@
     // ===== PHÒNG THỦ =====
     kim_cang_phu_pham: { id: 'kim_cang_phu_pham', type: 'kim_cang_phu', name: 'Kim Cang Phù', grade: 'pham', group: 'thu', elem: 'kim', price: 35,
       fx: { kind: 'shield', shieldPct: 15, dur: 20 },
-      fxText: 'Dựng khiên linh khí chịu thay 15% HP tối đa trong 20 giây (chung khiên với Linh Khí Thần Khiên, lấy mức lớn hơn).',
+      fxText: 'Dựng khiên linh khí chịu thay 15% Máu tối đa trong 20 giây (chung khiên với Linh Khí Thần Khiên, lấy mức lớn hơn).',
       desc: 'Nét bùa hình chuông vàng úp. Đệ tử Kim Cang Môn cười phù này là "chuông giấy" — nhưng chuông giấy đỡ được đòn thật.' },
     kim_cang_phu_linh: { id: 'kim_cang_phu_linh', type: 'kim_cang_phu', name: 'Kim Cang Phù', grade: 'linh', group: 'thu', elem: 'kim', price: 120,
       fx: { kind: 'shield', shieldPct: 25, dur: 20 },
-      fxText: 'Khiên chịu thay 25% HP tối đa trong 20 giây.',
+      fxText: 'Khiên chịu thay 25% Máu tối đa trong 20 giây.',
       desc: 'Kim Cang Phù Linh phẩm: khiên vàng mỏng như cánh chuồn mà cứng, vỡ thì tan thành bụi sáng.' },
     kim_cang_phu_huyen: { id: 'kim_cang_phu_huyen', type: 'kim_cang_phu', name: 'Kim Cang Phù', grade: 'huyen', group: 'thu', elem: 'kim', price: 0,
       fx: { kind: 'shield', shieldPct: 35, dur: 25 },
-      fxText: 'Khiên chịu thay 35% HP tối đa trong 25 giây.',
+      fxText: 'Khiên chịu thay 35% Máu tối đa trong 25 giây.',
       desc: 'Bản Huyền phẩm của Thiên Phù Các: khiên hai lớp, lớp ngoài vỡ còn lớp trong giữ thêm một nhịp thở.' },
     ho_than_phu_linh: { id: 'ho_than_phu_linh', type: 'ho_than_phu', name: 'Hộ Thân Phù', grade: 'linh', group: 'thu', elem: 'tho', price: 120,
       fx: { kind: 'dmgred', pct: 20, dur: 20 },
@@ -189,11 +189,11 @@
       desc: 'Bản Linh phẩm giữ gió lâu hơn: chạy một mạch từ làng lên chân núi không đứt hơi.' },
     hoi_xuan_phu_linh: { id: 'hoi_xuan_phu_linh', type: 'hoi_xuan_phu', name: 'Hồi Xuân Phù', grade: 'linh', group: 'tro', elem: 'moc', price: 110,
       fx: { kind: 'hot', hps: 4, dur: 10 },
-      fxText: 'Hồi 4 HP/giây trong 10 giây.',
+      fxText: 'Hồi 4 Máu/giây trong 10 giây.',
       desc: 'Nét bùa hình chồi non: sinh khí thấm dần vào vết thương như mưa xuân thấm đất.' },
     hoi_xuan_phu_huyen: { id: 'hoi_xuan_phu_huyen', type: 'hoi_xuan_phu', name: 'Hồi Xuân Phù', grade: 'huyen', group: 'tro', elem: 'moc', price: 0,
       fx: { kind: 'hot', hps: 7, dur: 12 },
-      fxText: 'Hồi 7 HP/giây trong 12 giây.',
+      fxText: 'Hồi 7 Máu/giây trong 12 giây.',
       desc: 'Bản Huyền phẩm: chồi non trên giấy như sống dậy, sinh khí mạnh gần bằng một viên Hồi Xuân Đan mà êm hơn.' },
     tu_linh_phu_pham: { id: 'tu_linh_phu_pham', type: 'tu_linh_phu', name: 'Tụ Linh Phù', grade: 'pham', group: 'tro', elem: 'thuy', price: 30,
       fx: { kind: 'mana', mana: 20, medMult: 1.5, medDur: 120 },
@@ -636,7 +636,7 @@
       if (ctx.inEvent) return { ok: false, reason: 'in_event', talisman: true, msg: 'Đang giữa sự kiện (thú triều / hộ tống / đại hội) — không truyền tống được.' };
       if (ctx.mapId === 'map1') return { ok: false, reason: 'at_home', talisman: true, msg: 'Bạn đang ở làng Thanh Khê rồi.' };
       if (!L.consumeItem(ch, id, 1)) return { ok: false, reason: 'no_item', talisman: true };
-      return { ok: true, talisman: true, kind: 'teleport', teleport: { mapId: 'map1', x: 31, y: 17 }, msg: 'Truyền Tống Phù xé mở một khe sáng — bạn trở về làng Thanh Khê.' }; // V10: đích (19,9) + offset (12,8)
+      return { ok: true, talisman: true, kind: 'teleport', teleport: { mapId: 'map1', x: 43, y: 47 }, msg: 'Truyền Tống Phù xé mở một khe sáng — bạn trở về làng Thanh Khê.' }; // V3: đích (19,9) + offset V10 (12,8) + neo V3 (12,30)
     }
     if (fx.kind === 'escape') {
       if (inTrib) return { ok: false, reason: 'in_tribulation', talisman: true, msg: 'Đang giữa lôi kiếp — đất trời đều khóa, Thổ Độn Phù không độn đi đâu được.' };
@@ -711,7 +711,7 @@
     }
     if (fx.kind === 'hot') {
       f.hot = { hps: fx.hps, until: now + fx.dur * 1000 };
-      return { ok: true, talisman: true, kind: 'hot', msg: 'Hồi Xuân Phù tan thành sinh khí: hồi ' + fx.hps + ' HP/giây trong ' + fx.dur + ' giây.' };
+      return { ok: true, talisman: true, kind: 'hot', msg: 'Hồi Xuân Phù tan thành sinh khí: hồi ' + fx.hps + ' Máu/giây trong ' + fx.dur + ' giây.' };
     }
     if (fx.kind === 'mana') {
       var SK2 = skillsApi();

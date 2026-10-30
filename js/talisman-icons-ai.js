@@ -1,5 +1,7 @@
 // Pham Nhan Tu Dao — nap luei ICON PHU CHU (js/talisman-icons-ai.js).
-// Sinh tu dong boi tools/art-talisman-icons.py — KHONG sua tay.
+// Sinh tu dong boi tools/art-talisman-icons-ai.py — KHONG sua tay.
+// Bo icon AI THAT (muc hang cho 29): 6 sheet AI 3x3 nen magenta -> tach
+// nen/cut o bang pipeline icon AI cua du an (key_sheet + fit_square).
 // Pipeline 2 muc nhu yeu-dan-ai / herb-icons-ai:
 //   Cao        = assets/talisman-icons-ai/<id>.png (192px)
 //   Trung binh = assets/talisman-icons-md/<id>.png (120px, pixel hoa)

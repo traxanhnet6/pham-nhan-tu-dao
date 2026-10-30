@@ -101,7 +101,7 @@
     'hoi_xuan_dan', 'thit_son_quan', 'dai_hoi_xuan_dan', 'sinh_co_dan', 'cuu_chuyen_hoi_hon_dan'];
 
   var MERCHANT_NPC_ID = 'wev_merchant';
-  var MERCHANT_SPOT = { mapId: 'map1', x: 38, y: 21 }; // quảng trường làng, cạnh sạp chợ (tọa độ runtime sau mở rộng V10)
+  var MERCHANT_SPOT = { mapId: 'map1', x: 50, y: 51 }; // quảng trường làng, cạnh sạp chợ (tọa độ runtime sau mở rộng V3: V10 + (12,30))
   // Kho hiếm của Thương Nhân: giá neo theo giá sẵn có của game
   // (đan: nguyên liệu + phí lò ở alchemy.js; hạt: giá Động Phủ/
   // chợ phiên; phù Huyền: vốn không mua được ở đâu — chỉ chế —

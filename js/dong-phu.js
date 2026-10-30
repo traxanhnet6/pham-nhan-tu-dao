@@ -107,7 +107,7 @@
   // ---------- Hằng số thiết kế ----------
   var MAP_ID = 'dong_phu';
   var GATE_MAP = 'map1';
-  var GATE = { x: 36, y: 15 };            // cửa đá sau giếng cổ, sân trấn map 1 (V10: + offset map (12,8))
+  var GATE = { x: 48, y: 45 };            // cửa đá sau giếng cổ, sân trấn map 1 (V3: + neo V3 map1 (12,30) trên số V10)
   var START = { x: 11, y: 12 };          // điểm rơi trong phủ
   var EXIT_TILE = { x: 11, y: 13 };      // ô cửa ra trong phủ
   var ARRAY_RECT = { x0: 8, y0: 2, x1: 14, y1: 4 }; // đài Tụ Linh Trận (theo tranh nền)

@@ -77,7 +77,7 @@
     kinh_chieu_yeu: { id: 'kinh_chieu_yeu', kind: 'phap', shape: 'kinh', grade: 'linh', name: 'Kính Chiếu Yêu', reqTier: 1, price: 0, value: 130,
       fx: { kind: 'execute', pct: 25 },
       active: { name: 'Soi Yêu', mana: 10, cd: 10, kind: 'mark', range: 180, dur: 4, pct: 30 },
-      fxText: 'Quái dưới 30% HP nhận thêm 25% sát thương. Kích hoạt Soi Yêu (10 linh lực): quái quanh bạn bị soi, nhận thêm 30% sát thương trong 4 giây.',
+      fxText: 'Quái dưới 30% Máu nhận thêm 25% sát thương. Kích hoạt Soi Yêu (10 linh lực): quái quanh bạn bị soi, nhận thêm 30% sát thương trong 4 giây.',
       desc: 'Mặt kính đồng soi rõ yếu huyệt của yêu vật. Kẻ đã trọng thương mà bị kính chiếu vào thì khó lòng thoát.' },
     chuong_tran_hon: { id: 'chuong_tran_hon', kind: 'phap', shape: 'chuong', grade: 'huyen', name: 'Chuông Trấn Hồn', reqTier: 2, price: 0, value: 240,
       fx: { kind: 'stun_react', chance: 0.20, dur: 0.8, radius: 70 },
@@ -89,6 +89,7 @@
       stats: { speed: 5 },
       fxText: 'Đòn đánh có 18% phóng dây trói quái 1,6 giây (boss cũng bị trói 0,6 giây).',
       desc: 'Dây bện từ gân thú ngâm linh dịch, gặp mục tiêu tự thắt nút. Tiên còn trói được, huống hồ lợn rừng.' },
+
     phi_kiem_bao: { id: 'phi_kiem_bao', kind: 'phap', shape: 'phi_kiem', grade: 'dia', name: 'Phi Kiếm Bảo', reqTier: 3, price: 0, value: 520,
       fx: { kind: 'flysword', pct: 40, interval: 1.2, range: 150 },
       stats: { crit: 6, critDmg: 30 },
@@ -99,6 +100,7 @@
       stats: { hp: 30, lifesteal: 5 },
       fxText: 'Thêm 18% sát thương lên boss và quái tinh anh. Hạ một quái hồi 4 linh lực.',
       desc: 'Ấn đồng nặng như đè núi, mặt ấn khắc hai chữ Trấn Sơn. Sơn Quân thấy ấn này cũng phải dè chừng ba phần.' },
+
     thien_la_vong: { id: 'thien_la_vong', kind: 'phap', shape: 'vong', grade: 'thien', name: 'Thiên La Địa Võng', reqTier: 3, price: 0, value: 1150,
       fx: { kind: 'net', chance: 0.25, dur: 1.2, radius: 95 },
       stats: { crit: 8, ll: 20, elem: { loi: 20 } },
@@ -148,7 +150,7 @@
       fx: { llRegenPct: 60, tuViPct: 15 },
       stats: { hp: 60, ll: 30, crit: 5 },
       signature: { name: 'Cửu Chuyển Hồi Sinh', kind: 'revive', hpPct: 30, threshold: 25, cd: 60 },
-      fxText: 'Hồi linh lực tăng 60%, tu vi nhận tăng 15%. Ký danh Cửu Chuyển Hồi Sinh: khi HP xuống dưới 25%, tự hồi 30% HP tối đa (mỗi 60 giây một lần).',
+      fxText: 'Hồi linh lực tăng 60%, tu vi nhận tăng 15%. Ký danh Cửu Chuyển Hồi Sinh: khi Máu xuống dưới 25%, tự hồi 30% Máu tối đa (mỗi 60 giây một lần).',
       desc: 'Chuỗi chín viên linh châu chuyển khí không ngừng, là bảo vật trấn thân mà tu sĩ Luyện Khí chỉ dám mơ.' }
   };
   Object.keys(ARTIFACTS).forEach(function (id) { ARTIFACTS[id].icon = 'art_' + id; });
@@ -183,7 +185,7 @@
     { id: 'dinh_hai_than_chau', chance: 0.2 }, { id: 'cuu_chuyen_linh_chau', chance: 0.15 }
   ];
   // Quái tinh anh: game.js lăn tỉ lệ khi dựng quái các loài này (không áp cho
-  // boss / quái sự kiện): HP x1,8, công +4, Linh Thạch x3, rơi theo ELITE_DROPS.
+  // boss / quái sự kiện): HP x1,8, công +4, Linh Thạch x5 (khớp ELITE_LT_MULT trong js/logic.js, test ECO khóa = 5), rơi theo ELITE_DROPS.
   var ELITE_TYPES = ['soi_rung', 'lon_mong_sat', 'khi_mat_do'];
   var ELITE_CHANCE = 0.08, ELITE_HP_MULT = 1.8, ELITE_ATK_ADD = 4;
   // Trần cộng dồn các % hỗ trợ (tránh đeo 2 món phá cân bằng).
@@ -464,6 +466,7 @@
     var e = findEntry(ch, uid);
     if (!e) return { ok: false, reason: 'missing' };
     var def = ARTIFACTS[e.id];
+    if (def && def.noSell) return { ok: false, reason: 'nosell', def: def }; // vật ký danh kỳ ngộ tông không bán được
     if (slotOf(ch, uid) >= 0) unequip(ch, uid);
     ch.inventory.splice(ch.inventory.indexOf(e), 1);
     var gained = def.value;
@@ -528,7 +531,7 @@
   }
   // ---------- Dòng chữ chỉ số (cho túi đồ / tiệm / ảnh xem trước) ----------
   var STAT_LABELS = [
-    ['hp', 'HP tối đa +%v'], ['def', 'Giáp +%v'], ['crit', 'Chí mạng +%v%'],
+    ['hp', 'Máu tối đa +%v'], ['def', 'Giáp +%v'], ['crit', 'Chí mạng +%v%'],
     ['critDmg', 'Sát thương chí mạng +%v%'], ['lifesteal', 'Hút máu +%v%'],
     ['ll', 'Linh lực tối đa +%v'], ['llRegen', 'Hồi linh lực +%v/giây'], ['speed', 'Tốc độ +%v%']
   ];
@@ -567,7 +570,7 @@
     if (s.healPct) parts.push('Hồi máu từ thuốc +' + s.healPct + '%');
     if (s.dmgRed) parts.push('Giảm sát thương ' + s.dmgRed + '%');
     if (s.vsBoss) parts.push('Sát thương lên boss/tinh anh +' + s.vsBoss + '%');
-    if (s.exec) parts.push('Kết liễu quái <30% HP +' + s.exec + '%');
+    if (s.exec) parts.push('Kết liễu quái <30% Máu +' + s.exec + '%');
     if (s.invBonus) parts.push('Túi đồ +' + s.invBonus + ' ô');
     return parts;
   }

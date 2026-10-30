@@ -80,7 +80,7 @@
     { pts: 150, lt: 80, title: 'Sử Gia Thanh Sơn', item: null },
     { pts: 200, lt: 100, title: 'Thiên Cơ Đại Sư', item: { id: 'yeu_dan_1', n: 1 } },
     { pts: 250, lt: 120, title: 'Thiên Cơ Tông Sư', item: null },
-    { pts: 300, lt: 150, title: 'Thiên Cơ Thánh Thủ', item: null }
+    { pts: 300, lt: 150, title: 'Thiên Cơ Thánh Phòng thủ', item: null }
   ];
 
   function num(v, d) { v = +v; return isFinite(v) ? v : d; }

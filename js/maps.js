@@ -116,7 +116,11 @@
       { id: 'truong_lang', x: 18, y: 7 },
       { id: 'chu_quan', x: 16, y: 11 },
       { id: 'dai_phu', x: 22, y: 7 },
-      { id: 'hoc_tro', x: 23, y: 8 },
+      // Dời 21:52 30/10 (phần 4B): hoc_tro (23,8)->(25,8) — trước đây
+      // đứng cách dai_phu chỉ ~1,4 ô (45px, TRONG bán kính tương tác
+      // 72px) gây bắt nhầm thoại; ô mới cách dai_phu ~3,2 ô (101px),
+      // vẫn ngay cửa hiệu thuốc như vai trò học trò của hiệu.
+      { id: 'hoc_tro', x: 25, y: 8 },
       { id: 'tho_ren', x: 12, y: 8 },
       // Playtest thật 12:46 30/10: hai lính gác lùi xuống hàng sân cổng
       // (y 15->16) và Dì Tư rời ô đường (20,11)->(21,11): hàng đáp cổng
@@ -128,7 +132,13 @@
       { id: 'linh_gac2', x: 21, y: 16, sprite: 'linh_gac', name: 'A Báo', role: 'Lính gác cổng Nam Môn (ca đêm)' },
       { id: 'chap_su_thu_trieu', x: 22, y: 13 },
       { id: 'tieu_thuong', x: 24, y: 11 },
-      { id: 'le_su', x: 21, y: 11, sprite: 'chu_quan', name: 'Dì Tư', role: 'Người lo lễ hội làng Thanh Khê' }
+      // Dời 21:52 30/10 (phần 4B): le_su (21,11)->(27,11) — trước đây
+      // cách chap_su_thu_trieu ~2,24 ô (71,6px, sát dưới bán kính
+      // tương tác 72px); ô (21,10) thử trước phạm luật ô đường '#'
+      // (audit V10-L8) nên chốt ô đất '.' đầu đông khu chợ: cách
+      // NPC gần nhất (tieu_thuong) 3 ô = 96px, các NPC còn lại
+      // >= 115px, vẫn ở khu chợ lo lễ hội như vai trò.
+      { id: 'le_su', x: 27, y: 11, sprite: 'chu_quan', name: 'Dì Tư', role: 'Người lo lễ hội làng Thanh Khê' }
     ],
     zones: [
       { id: 'ga_tho', name: 'Bãi Gà Thỏ', rects: [[4, 15, 55, 21]], types: ['ga_rung', 'tho_hoang'] },
@@ -337,6 +347,7 @@
       { sprite: 'bush', x: 26, y: 9 }, { sprite: 'bush', x: 26, y: 15 },
       { sprite: 'rock', x: 10, y: 24 }, { sprite: 'bush', x: 30, y: 24 },
       { sprite: 'sign', x: 18, y: 2, label: 'Rừng Thanh Sơn' },
+      { sprite: 'sign', x: 23, y: 0, label: 'Làng Thanh Khê' },
       { sprite: 'sign', x: 19, y: 3, label: 'Khu Sói Rừng' },
       { sprite: 'sign', x: 15, y: 17, label: 'Khu Lợn Mông Sắt' },
       { sprite: 'sign', x: 26, y: 9, label: 'Bờ Suối Rắn Lục' },
@@ -408,7 +419,12 @@
       // tương tác 72px luôn chọn đúng người (Tạ Thanh Vân là NPC duy nhất
       // trong tầm 72px tại điểm rơi). Đừng xếp 2 đại diện sát nhau < 3 ô.
       { id: 'tong_phap', x: 14, y: 12, sect: 'huyen_phap' },
-      { id: 'tong_khi', x: 25, y: 12, sect: 'thien_cong' },
+      // Dời 22:14 30/10 (phần 7): tong_khi (25,12)->(24,11) — trước
+      // đây cùng hàng cách chap_su_dai_hoi đúng 3 ô (96px) trong khi
+      // biển tên rộng ~100-130px nên hai biển chồng/cắt chữ; ô mới
+      // lệch hàng + cách ~4,1 ô (132px), hai hàng đại diện tông ở
+      // quảng trường thành so le, vẫn trên sàn quảng trường 'Q'.
+      { id: 'tong_khi', x: 24, y: 11, sect: 'thien_cong' },
       { id: 'tong_dan', x: 16, y: 15, sect: 'dan_ha' },
       { id: 'tong_thu', x: 23, y: 15, sect: 'van_thu' },
       { id: 'tong_phu', x: 12, y: 15, sect: 'thien_phu' },
@@ -417,7 +433,8 @@
       { id: 'tong_doc', x: 22, y: 9, sect: 'ngu_doc' },
       { id: 'tong_am', x: 20, y: 17, sect: 'huyen_am' },
       // Chấp Sự Đại Hội (js/tournament.js): ghi danh + bảng xếp hạng Đại
-      // Hội Tu Tiên — đứng ở đầu đông quảng trường, cách tong_khi 3 ô.
+      // Hội Tu Tiên — đứng ở đầu đông quảng trường; tong_khi đã lùi
+      // lệch hàng (24,11) nên cặp này cách ~4,1 ô, biển tên không chồng.
       { id: 'chap_su_dai_hoi', x: 28, y: 12 },
       // Chấp Sự Đấu Giá Liên Tông (js/auction.js): giữ búa phiên đấu giá
       // 12:00/20:00 tại quảng trường — ô (30,17) đi được, cách các NPC
@@ -1347,7 +1364,7 @@
   // vào bãi quái) ở dưới để chúng áp trên bố cục mới. Instance (bí cảnh,
   // động phủ, đấu trường) KHÔNG qua khối này.
   var EXP_DX = 12, EXP_DY = 8, EXP_DW = 24, EXP_DH = 16;
-  var EXP_LAYOUT_V = 2; // phiên bản bố cục — game.js dịch save cũ 1 lần theo cờ này
+  var EXP_LAYOUT_V = 4; // phiên bản bố cục — game.js dịch save cũ 1 lần theo cờ này (V3: chỉ map 1 nới tiếp, xem EXP_V3_MAP1; V4: chỉ map 2 nới tiếp, xem EXP_V4_MAP2)
   // Vùng cây danh lam KHÔNG bị luật quái đất dọn (khai ở đây vì khối mở
   // rộng chạy trước; clearMonsterHabitats ở dưới dùng chung biến này):
   // Cây Cổ Thụ Linh Khí map 4 — spawn vành không được có hộp lang thang
@@ -1624,11 +1641,249 @@
       }
     }
   }
+  // ---- TRANG TRÍ VÀNH MAP 1 (lệnh Bui 21:46 ngày 2026-10-30: "Phần mở
+  // rộng map Thanh Khê thêm vật, đất, đường đi cho hợp lý") ----
+  // Vành V10 của map 1 vốn chỉ là rải ngẫu nhiên T/o trên '.' (nền lấp
+  // mảng lấy mẫu nên vỡ ô như khảm, không đường, không ruộng, không vật
+  // có chủ đích). Riêng map 1 được thiết kế lại toàn bộ vành như một
+  // phần thật của làng: lưới đường đất rộng 2 ô (đường vòng sau làng +
+  // 2 trục dọc + đường nam, nhánh vào làng ở 6 điểm khớp cặp ô đi được
+  // ở mép lõi), ruộng nối tiếp ruộng lõi (đông bắc/đông nam/nam/tây +
+  // mương), lùm cây cụm ở góc và mép xa, đá, hàng rào viền ruộng, đèn
+  // đá ở nút giao, vật trang trí không chặn (bụi/chum/bao/biển) qua
+  // props. CHỈ sửa ô vành — lõi cũ (x 12..67, y 8..47) giữ nguyên từng
+  // ô. Chạy SAU expShiftMap, TRƯỚC expScatterClusters nên quái/dược
+  // vành rải trên đúng địa hình cuối; các bãi quái vành hình thành sau
+  // đó vẫn nằm trên đất '.' (đường/ruộng không nhận spawn), và 2 hậu xử
+  // lý (quái đất + đường vào) áp như thường. Các vùng giữ trống quanh
+  // vị trí bãi vành tương lai (ước theo rect zone nới): đông (68..73,
+  // 21..25) + (68..73, 35..40), tây (7..11, 31..35), nam (34..42,
+  // 48..51) không đặt vật chặn/ruộng/đường cắt ngang.
+  function expDressRing1(map) {
+    var Wd = map.w, Hd = map.h, ow = Wd - EXP_DW, oh = Hd - EXP_DH;
+    var rows = map.tiles.map(function (r) { return r.split(''); });
+    function inCore(x, y) { return x >= EXP_DX && x < EXP_DX + ow && y >= EXP_DY && y < EXP_DY + oh; }
+    function setR(x, y, ch) { if (x >= 0 && y >= 0 && x < Wd && y < Hd && !inCore(x, y)) rows[y][x] = ch; }
+    function rectR(x0, y0, x1, y1, ch, onlyDot) {
+      for (var y = y0; y <= y1; y++) for (var x = x0; x <= x1; x++) {
+        if (x < 0 || y < 0 || x >= Wd || y >= Hd || inCore(x, y)) continue;
+        if (onlyDot && rows[y][x] !== '.') continue;
+        rows[y][x] = ch;
+      }
+    }
+    var x, y;
+    // 1) Đưa vành về đất trống rồi mới thiết kế (bỏ rải ngẫu nhiên cũ).
+    for (y = 0; y < Hd; y++) for (x = 0; x < Wd; x++) if (!inCore(x, y)) rows[y][x] = '.';
+    // 2) Đường đất rộng 2 ô: vòng ngoài + nhánh vào làng.
+    rectR(2, 3, 77, 4, '#');            // đường sau làng (bắc)
+    rectR(4, 3, 5, 52, '#');            // trục tây
+    rectR(74, 3, 75, 52, '#');          // trục đông
+    rectR(4, 53, 75, 54, '#');          // đường nam
+    rectR(6, 18, 11, 19, '#');          // nhánh tây chính (nối đường ngang trấn ở mép lõi)
+    rectR(6, 26, 11, 27, '#');          // nhánh tây nam (vào Bãi Gà Thỏ)
+    rectR(68, 19, 73, 20, '#');         // nhánh đông (vào Xóm Đông)
+    rectR(68, 44, 73, 45, '#');         // nhánh đông nam
+    rectR(26, 5, 27, 7, '#');           // ngõ bắc tây (xuống mép lõi gần Cổng Bắc)
+    rectR(52, 5, 53, 7, '#');           // ngõ bắc đông
+    rectR(31, 48, 32, 53, '#');         // nhánh nam tây (lên Ruộng Nam/bãi nam)
+    rectR(58, 48, 59, 53, '#');         // nhánh nam đông
+    // 3) Ruộng nối chất làng (chỉ lấp ô '.'): đông bắc + mương, đông
+    // nam, nam (đường nam chạy xuyên qua như đường bờ ruộng), tây, bắc.
+    rectR(68, 9, 72, 15, 'C', true);
+    rectR(76, 9, 78, 15, 'C', true);
+    rectR(69, 12, 71, 12, 'R', true);   // mương tưới trong ruộng đông bắc
+    rectR(68, 42, 72, 46, 'C', true);
+    rectR(76, 34, 78, 41, 'C', true);
+    rectR(14, 49, 24, 52, 'C', true);
+    rectR(56, 49, 66, 52, 'C', true);
+    rectR(7, 10, 10, 14, 'C', true);    // ruộng tây
+    rectR(60, 1, 66, 2, 'C', true);     // ruộng sau làng
+    // 4) Lùm cây cụm (băm tất định trong cụm, chỉ trên '.') + cây lẻ ven đường.
+    function grove(x0, y0, x1, y1, dens, salt) {
+      for (var gy = y0; gy <= y1; gy++) for (var gx = x0; gx <= x1; gx++) {
+        if (gx < 0 || gy < 0 || gx >= Wd || gy >= Hd || inCore(gx, gy)) continue;
+        if (rows[gy][gx] !== '.') continue;
+        if (hash01(gx + salt, gy + salt * 3) < dens) rows[gy][gx] = 'T';
+      }
+    }
+    grove(0, 0, 3, 9, 0.55, 31);        // góc tây bắc
+    grove(13, 0, 24, 2, 0.50, 47);      // dải cây mép bắc
+    grove(35, 0, 50, 2, 0.50, 53);
+    grove(56, 5, 66, 7, 0.45, 59);      // lùm trên ruộng đông bắc
+    grove(0, 30, 3, 47, 0.55, 61);      // dải tây nam
+    grove(0, 48, 3, 55, 0.50, 67);      // góc tây nam
+    grove(76, 20, 79, 32, 0.50, 71);    // dải mép đông
+    grove(76, 47, 79, 55, 0.50, 73);    // góc đông nam
+    grove(44, 55, 66, 55, 0.45, 79);    // hàng cây mép nam
+    grove(2, 48, 10, 50, 0.40, 83);     // lùm thưa tây nam trong
+    [[6, 8], [72, 7], [7, 40], [46, 50], [13, 6]].forEach(function (p) { if (rows[p[1]][p[0]] === '.') setR(p[0], p[1], 'T'); });
+    // 5) Đá cụm nhỏ + hàng rào viền ruộng + đèn đá ở nút giao (chỉ trên '.').
+    [[1, 20], [2, 21], [77, 17], [78, 18], [20, 55], [63, 48], [12, 1], [36, 6], [37, 6]
+    ].forEach(function (p) { if (rows[p[1]][p[0]] === '.') setR(p[0], p[1], 'o'); });
+    rectR(68, 16, 72, 16, 'F', true);   // rào nam ruộng đông bắc
+    rectR(15, 48, 23, 48, 'F', true);   // rào bắc ruộng nam tây (chừa lối ở x19 sau khi lấp: mở lại dưới)
+    setR(19, 48, '.');
+    rectR(57, 48, 66, 48, 'F', true);   // rào bắc ruộng nam đông (đường nhánh x58..59 đã là '#')
+    setR(62, 48, '.');
+    rectR(7, 17, 9, 17, 'F', true);     // rào hông nhánh tây chính
+    [[6, 17], [73, 21], [30, 49], [54, 5], [3, 52]].forEach(function (p) { if (rows[p[1]][p[0]] === '.') setR(p[0], p[1], 'L'); });
+    // 5b) Dọn túi đất cô lập trong lùm cây: ô '.' vành nào không tới
+    // được từ điểm bắt đầu (BFS toàn lưới) thì lấp thành cây — không để
+    // ô trống bị vây kín giữa tán cây (kiểm tools/check-ring1-paths.js).
+    (function () {
+      var seen = {}, qq = [[map.start.x, map.start.y]];
+      seen[map.start.x + ',' + map.start.y] = 1;
+      while (qq.length) {
+        var c = qq.pop();
+        [[0, -1], [1, 0], [0, 1], [-1, 0]].forEach(function (d) {
+          var nx = c[0] + d[0], ny = c[1] + d[1], k = nx + ',' + ny;
+          if (nx < 0 || ny < 0 || nx >= Wd || ny >= Hd || seen[k]) return;
+          if (map.blocked[rows[ny][nx]]) return;
+          seen[k] = 1; qq.push([nx, ny]);
+        });
+      }
+      for (var yy = 0; yy < Hd; yy++) for (var xx = 0; xx < Wd; xx++) {
+        if (!inCore(xx, yy) && rows[yy][xx] === '.' && !seen[xx + ',' + yy]) rows[yy][xx] = 'T';
+      }
+    })();
+    map.tiles = rows.map(function (r) { return r.join(''); });
+    // 6) Vật trang trí KHÔNG chặn (props, tọa độ mới — props lõi đã dịch
+    // xong trong expShiftMap): bụi ven đường/ruộng, chum cạnh ruộng,
+    // lán củi bên ruộng tây, xe ở góc ruộng đông nam, biển lối đi.
+    [[13, 5], [34, 6], [57, 6], [44, 2], [2, 24], [3, 38], [77, 26], [76, 44], [25, 49], [48, 49], [10, 55]
+    ].forEach(function (p) { map.props.push({ sprite: 'bush', x: p[0], y: p[1] }); });
+    map.props.push({ sprite: 'jar', x: 69, y: 17 });
+    map.props.push({ sprite: 'jar', x: 70, y: 17 });
+    map.props.push({ sprite: 'sacks', x: 77, y: 16 });
+    map.props.push({ sprite: 'woodshed', x: 9, y: 9 });
+    map.props.push({ sprite: 'cart', x: 71, y: 47 });
+    map.props.push({ sprite: 'sign', x: 11, y: 20, label: 'Lối Tây' });
+    map.props.push({ sprite: 'sign', x: 68, y: 17, label: 'Ruộng Đông' });
+    map.props.push({ sprite: 'sign', x: 33, y: 49, label: 'Lối Nam' });
+  }
+  // ---------- 5b2) TRANG TRÍ VÀNH map 2 (Rừng Thanh Sơn) + map 3 (Chân ----------
+  // Núi Thanh Phong) — cùng chuẩn map 1 (mở rộng lệnh Bui 21:52 30/10).
+  // Rừng (map2): đường mòn vòng rừng rộng 2 ô + bãi trống ven hồ/bờ tây/
+  // nam cho cụm quái vành + rừng dày 0,58–0,66. Chân núi (map3): dải bắc
+  // ngoài cổng là vách đá kín (hàng cổng + vách lõi đã bịt, không ô đi
+  // được nào bị cô lập), thềm đá 'Q' hai sườn, bậc đá nối tiếp xuống thềm
+  // nam; thông + đá tảng theo đúng chất núi. Dọn túi cô lập như map 1.
+  function expDressRingCommon(map) {
+    // BFS từ điểm rơi trong map: ô '.' thuộc VÀNH mà không tới được thì
+    // hoá 'T' (chặn) — vành không còn túi đất chết; lõi không bị đụng.
+    var W = map.w, H = map.h, g = [], x, y;
+    for (y = 0; y < H; y++) g.push(map.tiles[y].split(''));
+    var seen = {}, q = [[map.start.x, map.start.y]]; seen[map.start.x + ',' + map.start.y] = 1;
+    while (q.length) {
+      var cur = q.pop();
+      [[1, 0], [-1, 0], [0, 1], [0, -1]].forEach(function (d) {
+        var nx = cur[0] + d[0], ny = cur[1] + d[1], k = nx + ',' + ny;
+        if (nx < 0 || ny < 0 || nx >= W || ny >= H || seen[k]) return;
+        if (BLOCKED[g[ny][nx]]) return;
+        seen[k] = 1; q.push([nx, ny]);
+      });
+    }
+    for (y = 0; y < H; y++) for (x = 0; x < W; x++) {
+      var inC = (x >= EXP_DX && x < EXP_DX + 56 && y >= EXP_DY && y < EXP_DY + 40);
+      if (!inC && g[y][x] === '.' && !seen[x + ',' + y]) g[y][x] = 'T';
+    }
+    for (y = 0; y < H; y++) map.tiles[y] = g[y].join('');
+  }
+  function expDressRing2(map) {
+    var W = map.w, H = map.h, g = [], x, y;
+    for (y = 0; y < H; y++) g.push(map.tiles[y].split(''));
+    function inCore(cx, cy) { return cx >= EXP_DX && cx < EXP_DX + 56 && cy >= EXP_DY && cy < EXP_DY + 40; }
+    function set(cx, cy, ch) { if (cx >= 0 && cy >= 0 && cx < W && cy < H && !inCore(cx, cy)) g[cy][cx] = ch; }
+    function rect(x0, y0, x1, y1, ch) { for (var yy = y0; yy <= y1; yy++) for (var xx = x0; xx <= x1; xx++) set(xx, yy, ch); }
+    function h2(ax, bx) { return ((ax * 73856093) ^ (bx * 19349663)) >>> 0; }
+    for (y = 0; y < H; y++) for (x = 0; x < W; x++) if (!inCore(x, y)) g[y][x] = '.';
+    // Đường mòn vòng rừng (rộng 2 ô) + nhánh vào các bãi vành.
+    rect(2, 4, 77, 5, '#'); rect(4, 4, 5, 52, '#'); rect(74, 4, 75, 52, '#'); rect(4, 52, 75, 53, '#');
+    rect(26, 6, 27, 7, '#'); rect(36, 6, 37, 7, '#');            // nối đường bắc xuống hàng cổng
+    rect(6, 30, 11, 31, '#');                                     // nhánh bãi Lợn bờ tây
+    rect(68, 12, 73, 13, '#');                                    // nhánh bãi ven hồ đông
+    rect(68, 44, 73, 45, '#');                                    // nhánh đông nam
+    rect(44, 48, 45, 51, '#');                                    // nhánh sào Sơn Quân phía nam
+    // Hồ nhỏ + đầm lầy ven bờ đông (khớp suối/hồ của lõi).
+    rect(70, 10, 73, 12, 'R'); rect(68, 20, 73, 25, 'w');
+    // Rừng dày vành: băm tất định theo vùng (giữ trống quanh bãi/đường).
+    var keep = [[7, 24, 11, 36], [68, 9, 73, 19], [28, 48, 43, 51], [66, 18, 75, 27], [26, 46, 47, 53]];
+    function kept(cx, cy) { return keep.some(function (r) { return cx >= r[0] && cx <= r[2] && cy >= r[1] && cy <= r[3]; }); }
+    var groves = [
+      [2, 1, 26, 16, 0.66], [36, 1, 72, 8, 0.62], [2, 8, 11, 22, 0.60], [62, 26, 77, 42, 0.64],
+      [2, 40, 26, 55, 0.60], [48, 40, 77, 55, 0.58], [14, 1, 60, 3, 0.60]
+    ];
+    groves.forEach(function (gv) {
+      for (var yy = gv[1]; yy <= gv[3]; yy++) for (var xx = gv[0]; xx <= gv[2]; xx++) {
+        if (inCore(xx, yy) || g[yy][xx] !== '.' || kept(xx, yy)) continue;
+        if ((h2(xx, yy) % 1000) / 1000 < gv[4]) g[yy][xx] = 'T';
+      }
+    });
+    [[20, 10], [58, 6], [8, 44], [70, 34], [30, 54], [64, 50], [14, 50], [76, 22], [24, 2], [50, 42]].forEach(function (p) { set(p[0], p[1], 'o'); });
+    [[6, 7], [72, 47], [45, 51]].forEach(function (p) { set(p[0], p[1], 'L'); });
+    for (y = 0; y < H; y++) map.tiles[y] = g[y].join('');
+    expDressRingCommon(map);
+    [[9, 26], [20, 8], [70, 16], [52, 49], [8, 38], [76, 40], [33, 6], [63, 30]].forEach(function (p) { map.props.push({ sprite: 'bush', x: p[0], y: p[1] }); });
+    map.props.push({ sprite: 'rock', x: 21, y: 10 });
+    map.props.push({ sprite: 'rock', x: 59, y: 48 });
+    map.props.push({ sprite: 'sign', x: 12, y: 6, label: 'Đường Vòng Rừng' });
+    map.props.push({ sprite: 'sign', x: 67, y: 13, label: 'Bãi Ven Hồ' });
+    map.props.push({ sprite: 'sign', x: 6, y: 44, label: 'Rừng Sâu' });
+  }
+  function expDressRing3(map) {
+    var W = map.w, H = map.h, g = [], x, y;
+    for (y = 0; y < H; y++) g.push(map.tiles[y].split(''));
+    function inCore(cx, cy) { return cx >= EXP_DX && cx < EXP_DX + 56 && cy >= EXP_DY && cy < EXP_DY + 40; }
+    function set(cx, cy, ch) { if (cx >= 0 && cy >= 0 && cx < W && cy < H && !inCore(cx, cy)) g[cy][cx] = ch; }
+    function rect(x0, y0, x1, y1, ch) { for (var yy = y0; yy <= y1; yy++) for (var xx = x0; xx <= x1; xx++) set(xx, yy, ch); }
+    function h2(ax, bx) { return ((ax * 73856093) ^ (bx * 19349663)) >>> 0; }
+    for (y = 0; y < H; y++) for (x = 0; x < W; x++) if (!inCore(x, y)) g[y][x] = '.';
+    // Dải bắc ngoài hàng cổng: vách đá kín + thông/đá (chỉ làm cảnh —
+    // hàng cổng y8 + vách lõi bịt kín, không ô đi được nào lọt vào).
+    rect(0, 0, 79, 5, 'W');
+    for (y = 6; y <= 7; y++) for (x = 0; x < 80; x++) {
+      var r6 = (h2(x, y) % 100) / 100;
+      g[y][x] = r6 < 0.5 ? 'W' : (r6 < 0.85 ? 'T' : 'o');
+    }
+    // Đường sườn tây/đông + nhánh ngang.
+    rect(4, 8, 5, 52, '#'); rect(74, 8, 75, 52, '#');
+    rect(6, 28, 11, 29, '#'); rect(68, 44, 73, 45, '#');
+    rect(40, 50, 73, 51, '#'); rect(58, 48, 59, 51, '#');
+    // Bậc đá nối tiếp đường nam của lõi xuống thềm ngắm cảnh.
+    rect(37, 48, 38, 53, '#'); rect(32, 52, 43, 54, 'Q');
+    // Thềm đá hai sườn (chất quảng trường lõi) + đèn đá.
+    rect(7, 34, 11, 40, 'Q'); rect(68, 26, 73, 31, 'Q');
+    [[7, 34], [11, 40], [68, 26], [73, 31], [33, 52], [42, 52], [6, 10], [72, 10]].forEach(function (p) { set(p[0], p[1], 'L'); });
+    // Thông + đá tảng sườn núi (giữ trống quanh thềm/bãi nam).
+    var keep = [[6, 33, 12, 41], [67, 25, 74, 32], [30, 46, 45, 55], [56, 46, 61, 53]];
+    function kept(cx, cy) { return keep.some(function (r) { return cx >= r[0] && cx <= r[2] && cy >= r[1] && cy <= r[3]; }); }
+    var groves = [
+      [1, 9, 11, 26, 0.50], [62, 8, 79, 24, 0.50], [1, 42, 26, 55, 0.45], [46, 34, 79, 47, 0.45]
+    ];
+    groves.forEach(function (gv) {
+      for (var yy = gv[1]; yy <= gv[3]; yy++) for (var xx = gv[0]; xx <= gv[2]; xx++) {
+        if (inCore(xx, yy) || g[yy][xx] !== '.' || kept(xx, yy)) continue;
+        var rr = (h2(xx, yy) % 1000) / 1000;
+        if (rr < gv[4]) g[yy][xx] = 'T';
+        else if (rr > 0.93) g[yy][xx] = 'o';
+      }
+    });
+    [[18, 50], [24, 44], [66, 38], [52, 54], [9, 20], [70, 18]].forEach(function (p) { set(p[0], p[1], 'o'); });
+    for (y = 0; y < H; y++) map.tiles[y] = g[y].join('');
+    expDressRingCommon(map);
+    [[9, 30], [70, 40], [20, 52], [64, 28], [8, 46], [76, 34]].forEach(function (p) { map.props.push({ sprite: 'bush', x: p[0], y: p[1] }); });
+    map.props.push({ sprite: 'sign', x: 35, y: 51, label: 'Thềm Nam' });
+    map.props.push({ sprite: 'sign', x: 12, y: 29, label: 'Sườn Tây' });
+    map.props.push({ sprite: 'sign', x: 67, y: 45, label: 'Sườn Đông' });
+  }
   var EXP_STATS = {};
   EXP_WORLD_IDS.forEach(function (id) {
     var mp = MAPS[id]; if (!mp) return;
     EXP_STATS[id] = { count: (mp.monsters || []).length, area: mp.w * mp.h };
     expShiftMap(mp);
+    if (id === 'map1') expDressRing1(mp);
+    if (id === 'map2') expDressRing2(mp);
+    if (id === 'map3') expDressRing3(mp);
   });
   EXP_WORLD_IDS.forEach(function (id) {
     var mp = MAPS[id]; if (!mp) return;
@@ -1939,6 +2194,612 @@
     DV_STATS.byMap[map.id] = DV_STATS.carved - carved0;
   }
   Object.keys(MAPS).forEach(function (id) { ensureZoneAccess(MAPS[id]); });
+  // ---- MỞ RỘNG MAP 1 V3 — GẤP 5 DIỆN TÍCH (lệnh Bui 22:12 + chỉnh 22:13
+  // ngày 2026-10-30): map 1 từ 80x56 (4480 ô, đã gồm lõi gốc 56x40) lên
+  // 112x100 (11200 ô ≈ 5x diện tích map gốc 56x40 = 2240 ô). Toàn bộ
+  // khối 80x56 hiện có GIỮ NGUYÊN TỪNG Ô, neo tại (+12,+30) trong khung
+  // mới — lệch tây-nam để phía bắc (vùng cao + Đài Vọng Khê) và phía đông
+  // (ruộng bậc thang + Xóm Bến Hồ + rừng đông) mở rộng. Đất mới KHÔNG rải
+  // ngẫu nhiên trống: có mạng đường nối liền các cổng, địa hình kể chuyện
+  // (bậc đá ở 2 điểm lên dốc trên đường bắc, cầu đá qua suối nam, thềm đá
+  // ngắm cảnh), xóm mới có NHÀ THẬT (tile 'H' + thềm cửa 'Q'), NPC dân
+  // làng mới (khai ở đây + STORY.NPCS/DIALOGUE trong js/story.js), khu
+  // quái theo thang cấp map 1 (càng xa làng càng mạnh: gà/thỏ bờ nam ->
+  // sói rừng đông -> sói + lợn vùng cao bắc). EXP_LAYOUT_V nâng lên 3:
+  // game.js migrateLayoutV10 dịch save theo EXP_V3_MAP1 cho riêng map 1
+  // (save V1->V2 vẫn dùng EXP_DX/EXP_DY cho cả 14 map như cũ).
+  var EXP_V3_MAP1 = { dx: 12, dy: 30 };
+  (function expandMap1V3() {
+    var map = MAPS.map1;
+    var OW = map.w, OH = map.h, NW = 112, NH = 100;
+    var AX = EXP_V3_MAP1.dx, AY = EXP_V3_MAP1.dy;
+    var rows = [], y, x;
+    for (y = 0; y < NH; y++) { var r0 = []; for (x = 0; x < NW; x++) r0.push('.'); rows.push(r0); }
+    for (y = 0; y < OH; y++) for (x = 0; x < OW; x++) rows[y + AY][x + AX] = map.tiles[y][x];
+    function inBlock(cx, cy) { return cx >= AX && cx < AX + OW && cy >= AY && cy < AY + OH; }
+    function S(cx, cy, ch) { if (cx >= 0 && cy >= 0 && cx < NW && cy < NH && !inBlock(cx, cy)) rows[cy][cx] = ch; }
+    function R(x0, y0, x1, y1, ch) { for (var yy = y0; yy <= y1; yy++) for (var xx = x0; xx <= x1; xx++) S(xx, yy, ch); }
+    function scatter(x0, y0, x1, y1, pT, pO, salt) {
+      // Cây mọc thành CỤM có nhịp (không rắc muối): mặt nạ cụm theo ô
+      // gộp 5x5 + nhiễu mịn trong cụm; đá rải lẻ ngoài cụm.
+      for (var yy = y0; yy <= y1; yy++) for (var xx = x0; xx <= x1; xx++) {
+        if (inBlock(xx, yy) || rows[yy][xx] !== '.') continue;
+        var grove = hash01(Math.floor(xx / 5) + salt * 7, Math.floor(yy / 5) + salt * 13);
+        var h1 = hash01(xx + salt, yy + salt * 3);
+        if (grove < pT * 1.9 && h1 < 0.62) rows[yy][xx] = 'T';
+        else if (h1 > 1 - pO) rows[yy][xx] = 'o';
+      }
+    }
+    // -- Danh sách nội dung mới (dùng cho cả dọn bãi + đẩy dữ liệu) --
+    var V3_SPAWNS = [['soi_con', 30, 10], ['soi_con', 52, 12], ['soi_con', 36, 26], ['soi_con', 58, 27], ['soi_con', 26, 20], ['soi_con', 64, 9],
+     ['lon_rung', 24, 6], ['lon_rung', 66, 15], ['lon_rung', 33, 13], ['lon_rung', 61, 24],
+     ['soi_con', 97, 10], ['soi_con', 105, 18], ['soi_con', 95, 27], ['soi_con', 108, 29], ['soi_con', 102, 6],
+     ['soi_con', 95, 90], ['soi_con', 107, 95], ['soi_con', 104, 84],
+     ['ga_rung', 20, 93], ['ga_rung', 30, 96], ['ga_rung', 24, 89],
+     ['tho_hoang', 34, 91], ['tho_hoang', 17, 97]];
+    var V3_HERBS = [[28, 14], [55, 18], [63, 25], [5, 46], [8, 51], [30, 19], [95, 35], [108, 42], [58, 86], [104, 92]];
+    var V3_NPCS = [
+      { id: 'van_tra', x: 95, y: 63, sprite: 'chu_quan', name: 'Vân Trà', role: 'Chủ quán trà Xóm Bến Hồ' },
+      { id: 'thim_sau', x: 102, y: 70, sprite: 'giu_mieu', name: 'Nguyễn Thị Sáu', role: 'Dân Xóm Bến Hồ' },
+      { id: 'anh_luc', x: 97, y: 41, sprite: 'tho_san_ha', name: 'Trần Lực', role: 'Nông dân ruộng bậc thang' },
+      { id: 'ong_cau', x: 50, y: 86, sprite: 'dai_phu', name: 'Hà Văn Câu', role: 'Người câu cá ở Hồ Thanh Khê' },
+      { id: 'be_nam', x: 102, y: 74, sprite: 'hoc_tro', name: 'Bé Nấm', role: 'Trẻ con Xóm Bến Hồ' }
+    ];
+    // -- Rải rừng/đá nền theo vùng (đường/nước/nhà vẽ đè lên sau) --
+    scatter(0, 0, 111, 29, 0.30, 0.04, 501);        // vành bắc: rừng thông vùng cao
+    scatter(92, 0, 111, 32, 0.34, 0.03, 502);       // rừng đông bắc
+    scatter(0, 30, 11, 85, 0.30, 0.03, 503);        // rừng tây
+    scatter(92, 81, 111, 99, 0.30, 0.03, 504);      // rừng đông nam
+    scatter(92, 52, 111, 55, 0.08, 0.0, 505);       // cây thưa sau xóm
+    scatter(0, 86, 39, 99, 0.05, 0.02, 506);        // đồng cỏ bờ nam (thưa)
+    scatter(80, 88, 91, 99, 0.10, 0.02, 507);       // dải cỏ đông hồ
+    // Khoảng trống giữ sạch: hành lang đường chính + các công trình.
+    R(40, 0, 45, 29, '.'); R(36, 1, 51, 10, '.');   // hành lang + sân Đài Vọng Khê
+    R(25, 15, 58, 25, '.');                          // hai thềm đá + lối nối
+    R(2, 40, 10, 53, '.');                           // lán tiều phu + bãi tây
+    R(92, 33, 111, 50, '.');                         // ruộng bậc thang + đường ruộng
+    R(92, 56, 111, 80, '.');                         // Xóm Bến Hồ
+    R(41, 86, 44, 99, '.'); R(43, 86, 101, 87, '.'); // đường nam + đường ven hồ
+    // -- Nước: Hồ Thanh Khê (nam) + suối tây chảy vào hồ --
+    R(53, 89, 77, 96, 'R'); R(52, 90, 52, 95, 'R'); R(78, 90, 78, 95, 'R'); R(54, 88, 76, 88, 'R'); R(54, 97, 76, 97, 'R');
+    R(14, 92, 51, 92, 'R');
+    // -- Ruộng bậc thang đông: 3 bậc 'C', mép bậc 'Q', mương 'R' phía tây --
+    R(94, 33, 110, 37, 'C'); R(94, 38, 110, 38, 'Q');
+    R(94, 39, 110, 43, 'C'); R(94, 44, 110, 44, 'Q');
+    R(94, 45, 110, 47, 'C');
+    R(93, 33, 93, 47, 'R');
+    // -- Thềm đá / đài ngắm cảnh / bậc đá trên tuyến bắc --
+    R(38, 3, 49, 8, 'Q');                            // Đài Vọng Khê
+    R(38, 2, 49, 2, 'F');                            // lan can mép bắc đài
+    S(38, 3, 'L'); S(49, 3, 'L');
+    R(27, 17, 35, 21, 'Q');                          // thềm đá tây (nghỉ chân)
+    R(48, 19, 56, 23, 'Q');                          // thềm đá đông
+    // -- Mạng đường (# đất, >= 2 ô, nối liền mọi cổng/khu) --
+    R(42, 9, 43, 29, '#');                           // đường vùng cao: đài -> vành bắc làng
+    R(42, 12, 43, 15, 'Q'); R(42, 22, 43, 25, 'Q');  // 2 đoạn BẬC ĐÁ ở điểm lên dốc
+    R(36, 19, 41, 20, '#');                          // lối vào thềm tây
+    R(44, 21, 47, 22, '#');                          // lối vào thềm đông
+    R(5, 30, 6, 47, '#');                            // đường mòn rừng tây: bãi bắc -> lán tiều
+    R(2, 48, 11, 49, '#');                           // đường tây: lán -> vành tây làng
+    R(88, 48, 110, 49, '#'); R(92, 50, 110, 50, '#'); // đường đông chính (3 ô ở đất mới)
+    R(100, 36, 101, 47, '#');                        // nhánh ruộng (xuyên giữa 2 thửa)
+    R(100, 50, 101, 85, '#');                        // nhánh xóm + xuống bờ hồ
+    R(92, 66, 110, 67, '#');                         // phố chính Xóm Bến Hồ
+    R(43, 87, 101, 87, '#');                         // đường ven hồ
+    R(42, 86, 43, 96, '#');                          // đường nam: vành nam -> bãi chăn thả
+    S(42, 92, 'Q'); S(43, 92, 'Q');                  // CẦU ĐÁ qua suối trên đường nam
+    // -- Xóm Bến Hồ: nhà thật (H) + thềm cửa (Q) --
+    R(94, 60, 97, 61, 'H'); R(94, 62, 97, 62, 'Q');  // Quán Trà Bến Hồ + thềm
+    R(103, 60, 106, 61, 'H'); R(103, 62, 106, 62, 'Q'); // Nhà Kho Xóm + thềm
+    R(93, 70, 95, 71, 'H'); S(94, 69, 'Q');          // nhà dân 1 + bậc cửa
+    R(98, 71, 100, 72, 'H'); S(99, 70, 'Q');         // nhà dân 2 + bậc cửa
+    R(105, 70, 107, 71, 'H'); S(106, 69, 'Q');       // nhà dân 3 + bậc cửa
+    R(104, 76, 106, 77, 'H'); S(105, 75, 'Q');       // nhà dân 4 + bậc cửa
+    R(3, 41, 5, 42, 'H'); S(4, 43, 'Q');             // Lán Tiều Phu (rừng tây) + bậc cửa
+    [[92, 63], [92, 64], [92, 65], [108, 63], [108, 64], [108, 65]].forEach(function (p) { S(p[0], p[1], 'F'); }); // rào vườn xóm
+    S(93, 65, 'L'); S(109, 65, 'L'); S(99, 57, 'L'); // đèn xóm
+    [[14, 86], [15, 86], [16, 86], [17, 86], [18, 86], [19, 86], [20, 86],
+     [24, 86], [25, 86], [26, 86], [27, 86], [28, 86], [29, 86], [30, 86]].forEach(function (p) { S(p[0], p[1], 'F'); }); // rào bãi chăn thả (có khoảng hở)
+    // -- Dọn bãi 3x3 quanh mọi điểm spawn/dược/NPC mới (chỉ gạt T/o/F,
+    // giữ nguyên đường/thềm/ruộng/nước/nhà) --
+    function clearPatch(cx, cy) {
+      for (var yy = cy - 1; yy <= cy + 1; yy++) for (var xx = cx - 1; xx <= cx + 1; xx++) {
+        if (xx < 0 || yy < 0 || xx >= NW || yy >= NH || inBlock(xx, yy)) continue;
+        var ch = rows[yy][xx];
+        if (ch === 'T' || ch === 'o' || ch === 'F') rows[yy][xx] = '.';
+      }
+    }
+    V3_SPAWNS.forEach(function (s) { clearPatch(s[1], s[2]); });
+    V3_HERBS.forEach(function (hb) { clearPatch(hb[0], hb[1]); });
+    V3_NPCS.forEach(function (n) { clearPatch(n.x, n.y); });
+    // -- Khoét thông túi đất cô lập trong đất mới (cùng thuật toán V10):
+    // BFS từ toàn bộ khối cũ; ô đi được ở đất mới nào chưa tới được thì
+    // khoét tuyến rẻ nhất qua T/o (không đụng nhà/nước/vách). --
+    function walkAt(cx, cy) { return cx >= 0 && cy >= 0 && cx < NW && cy < NH && !map.blocked[rows[cy][cx]]; }
+    function bfsReached() {
+      var seen = {}, q = [], xx, yy;
+      for (yy = 0; yy < NH; yy++) for (xx = 0; xx < NW; xx++) {
+        if (inBlock(xx, yy) && walkAt(xx, yy)) { var k = xx + ',' + yy; if (!seen[k]) { seen[k] = 1; q.push([xx, yy]); } }
+      }
+      while (q.length) {
+        var c = q.pop();
+        [[0, -1], [1, 0], [0, 1], [-1, 0]].forEach(function (d) {
+          var ax = c[0] + d[0], ay = c[1] + d[1], k2 = ax + ',' + ay;
+          if (!seen[k2] && walkAt(ax, ay)) { seen[k2] = 1; q.push([ax, ay]); }
+        });
+      }
+      return seen;
+    }
+    var reached = bfsReached();
+    for (y = 0; y < NH; y++) for (x = 0; x < NW; x++) {
+      if (inBlock(x, y) || !walkAt(x, y) || reached[x + ',' + y]) continue;
+      var srcs = [];
+      Object.keys(reached).forEach(function (k) { var p = k.split(','); srcs.push([+p[0], +p[1]]); });
+      var tx0 = x, ty0 = y;
+      var path = dvDijkstra(NW, NH, srcs, function (cx, cy) {
+        var ch = rows[cy][cx];
+        if (!map.blocked[ch]) return 1;
+        if (ch === 'T') return 7; if (ch === 'o') return 11;
+        return Infinity;
+      }, function (cx, cy) { return cx === tx0 && cy === ty0; });
+      if (path) path.forEach(function (c) { if (map.blocked[rows[c[1]][c[0]]]) rows[c[1]][c[0]] = '.'; });
+      reached = bfsReached();
+    }
+    // -- Dịch toàn bộ nội dung cũ của map 1 theo neo (+12,+30) --
+    function shPt(p) { if (p) { p.x += AX; p.y += AY; } }
+    function shRect(r) { r[0] += AX; r[1] += AY; r[2] += AX; r[3] += AY; }
+    shPt(map.start); shPt(map.well); shPt(map.bossSpawn); shPt(map.gate);
+    if (typeof map.wildY === 'number') map.wildY += AY;
+    (map.portals || []).forEach(function (p) { p.x += AX; p.y += AY; }); // tx/ty: đích map 2/3 KHÔNG đổi hình học
+    (map.npcs || []).forEach(shPt);
+    (map.monsters || []).forEach(shPt);
+    (map.herbs || []).forEach(shPt);
+    (map.props || []).forEach(shPt);
+    (map.zones || []).forEach(function (z) { (z.rects || []).forEach(shRect); });
+    (map.bossLairs || []).forEach(function (l) { shPt(l); if (l.rect) shRect(l.rect); });
+    // Cổng của map khác rơi VÀO map 1 phải dịch điểm rơi theo neo mới.
+    Object.keys(MAPS).forEach(function (id) {
+      if (id === 'map1') return;
+      (MAPS[id].portals || []).forEach(function (p) { if (p.to === 'map1') { p.tx += AX; p.ty += AY; } });
+    });
+    // -- Nội dung mới (tọa độ khung 112x100) --
+    map.zones.push(
+      { id: 'vung_cao', name: 'Vùng Cao Thanh Phong', rects: [[20, 2, 70, 16], [18, 17, 72, 28]], types: ['soi_con', 'lon_rung'] },
+      { id: 'rung_dong', name: 'Rừng Đông', rects: [[93, 4, 111, 32], [92, 81, 111, 99]], types: ['soi_con'] },
+      { id: 'bai_nam', name: 'Bãi Cỏ Bờ Nam', rects: [[13, 87, 40, 99], [80, 88, 91, 99]], types: ['ga_rung', 'tho_hoang'] }
+    );
+    V3_SPAWNS.forEach(function (s) {
+      // Gán khu theo TỌA ĐỘ THẬT: rừng đông là dải x >= 92 (cả khúc bắc
+      // y<30 lẫn khúc nam y>=81); vùng cao là vành bắc x<92; còn lại
+      // phía nam là bãi cỏ bờ nam. (Bản cũ gán theo y trước nên 5 con
+      // sói rừng đông bị gán nhầm vung_cao.)
+      var zn = s[1] >= 92 ? 'rung_dong' : (s[2] < 30 ? 'vung_cao' : 'bai_nam');
+      map.monsters.push({ type: s[0], x: s[1], y: s[2], zone: zn });
+    });
+    V3_HERBS.forEach(function (hb) { map.herbs.push({ x: hb[0], y: hb[1], item: 'thao_duoc' }); });
+    V3_NPCS.forEach(function (n) { map.npcs.push(n); });
+    map.props.push(
+      { sprite: 'sign', x: 46, y: 5, label: 'Đài Vọng Khê' },
+      { sprite: 'sign', x: 45, y: 26, label: 'Lên Đài Vọng Khê — bậc đá phía bắc' },
+      { sprite: 'sign', x: 34, y: 18, label: 'Thềm Đá Nghỉ Chân' },
+      { sprite: 'sign', x: 89, y: 47, label: 'Đông: Ruộng Bậc Thang · Xóm Bến Hồ' },
+      { sprite: 'sign', x: 99, y: 52, label: 'Xóm Bến Hồ' },
+      { sprite: 'sign', x: 98, y: 62, label: 'Quán Trà Bến Hồ' },
+      { sprite: 'sign', x: 102, y: 62, label: 'Nhà Kho Xóm' },
+      { sprite: 'sign', x: 48, y: 86, label: 'Hồ Thanh Khê' },
+      { sprite: 'sign', x: 38, y: 95, label: 'Bãi Cỏ Bờ Nam' },
+      { sprite: 'sign', x: 4, y: 47, label: 'Rừng Thông Tây' },
+      { sprite: 'sign', x: 43, y: 25, label: 'Vùng Cao Thanh Phong' },
+      { sprite: 'sign', x: 100, y: 49, label: 'Rừng Đông' }
+    );
+    // -- Luật QD (Bui 21:18): hộp lang thang ±4 quanh MỌI điểm spawn
+    // quái đất (cũ đã dịch + mới) + bossSpawn + sào boss không còn cây
+    // 'T' chặn đường — chỉ gạt 'T' -> '.', không đụng loại ô khác. --
+    (function qdClear() {
+      var centers = [];
+      (map.monsters || []).forEach(function (m) { centers.push([m.x, m.y]); });
+      if (map.bossSpawn) centers.push([map.bossSpawn.x, map.bossSpawn.y]);
+      (map.bossLairs || []).forEach(function (l) { centers.push([l.x, l.y]); });
+      centers.forEach(function (c) {
+        for (var yy = c[1] - 4; yy <= c[1] + 4; yy++) for (var xx = c[0] - 4; xx <= c[0] + 4; xx++) {
+          if (xx < 0 || yy < 0 || xx >= NW || yy >= NH) continue;
+          if (rows[yy][xx] === 'T') rows[yy][xx] = '.';
+        }
+      });
+    })();
+    // -- Luật DV (đường vào >= 2 ô): mở 2 cây ở cổ chai (104,23)-(104,24)
+    // — điểm nghẽn 1 ô duy nhất vào cụm spawn phía bắc Rừng Đông; tập ô
+    // tối thiểu tính bằng Dijkstra trên lưới neo 2x2 (lượt dọn xanh
+    // 30/10), chỉ gạt 'T' -> '.', không đụng ô khác. --
+    [[104, 23], [104, 24]].forEach(function (c) { if (rows[c[1]][c[0]] === 'T') rows[c[1]][c[0]] = '.'; });
+    map.tiles = rows.map(function (r) { return r.join(''); });
+    map.w = NW; map.h = NH;
+    map.bg = 'assets/map1-bg-v8.webp';
+  })();
+
+  // ---- MỞ RỘNG MAP 2 V4 — GẤP 10 DIỆN TÍCH (lệnh Bui 22:53 ngày
+  // 2026-10-30, theo mục chương trình map 2–14 ghi 22:26): map 2 từ
+  // 80x56 ô (4480, đã gồm lõi gốc 56x40 của nó) lên 160x140 ô (22400 ô
+  // = đúng 10x diện tích map gốc 2240 ô). Toàn bộ khối 80x56 hiện có
+  // GIỮ NGUYÊN TỪNG Ô, neo tại (+36,+16) trong khung mới — khối tựa
+  // lên phía bắc (cổng về làng vốn ở mép bắc khối) để rừng mở sâu
+  // xuống phía nam (Rừng Sâu + Cây Cổ Thụ) và hai cánh đông/tây.
+  // Đất mới: mạng đường mòn >= 2 ô nối liền mọi cổng/khu; địa hình kể
+  // chuyện theo tuyến di chuyển (bậc đá ở dốc sườn bắc và các đoạn
+  // xuống rừng sâu, cầu đá qua suối tây, thềm ngắm Hồ Đông Nam);
+  // công trình hợp rừng: Chòi Gác Rừng + Miếu Sơn Thần Sườn Bắc trên
+  // sườn bắc, Lán Thợ Săn + Lán Tiều Phu phía tây, Trạm Dừng Chân
+  // giữa đường nam; NPC hợp chỗ khai ở đây + hồ sơ/thoại trong
+  // js/story.js (STORY.NPCS + DIALOGUE). Khu quái theo thang map 2,
+  // càng xa cổng càng nặng: khỉ sườn bắc/rừng tây -> rắn + lợn thung
+  // đông -> sói + lợn rừng sâu nam + rắn ven hồ. Sào Sơn Quân giữ
+  // đúng vị trí tương đối trong lõi (dịch theo neo như mọi nội dung).
+  // EXP_LAYOUT_V nâng lên 4: game.js migrateLayoutV10 dịch save theo
+  // EXP_V4_MAP2 cho RIÊNG map 2; save cũ hơn vẫn chạy đủ các nấc
+  // V1->V2 rồi V2->V3 như cũ. Tọa độ map 2 hardcode ngoài maps.js đã
+  // dịch cùng neo trong cùng lượt: bosses.js (4 sào + 4 bia boss thế
+  // giới), alchemy.js (điểm dược map 2), escort.js (chặng 0 hộ tống),
+  // rift-events.js (điểm nứt map 2), secret-realms.js (2 neo spot).
+  var EXP_V4_MAP2 = { dx: 36, dy: 16 };
+  (function expandMap2V4() {
+    var map = MAPS.map2;
+    var OW = map.w, OH = map.h, NW = 160, NH = 140;
+    var AX = EXP_V4_MAP2.dx, AY = EXP_V4_MAP2.dy;
+    function inBlock(x, y) { return x >= AX && x < AX + OW && y >= AY && y < AY + OH; }
+    var g = [], x, y;
+    for (y = 0; y < NH; y++) { var row = []; for (x = 0; x < NW; x++) row.push('.'); g.push(row); }
+    var oldRows = map.tiles.map(function (r) { return typeof r === 'string' ? r.split('') : r.slice(); });
+    for (y = 0; y < OH; y++) for (x = 0; x < OW; x++) g[AY + y][AX + x] = oldRows[y][x];
+    function S(x, y, ch) { if (x < 0 || y < 0 || x >= NW || y >= NH || inBlock(x, y)) return; g[y][x] = ch; }
+    function R(x0, y0, x1, y1, ch) { for (var yy = y0; yy <= y1; yy++) for (var xx = x0; xx <= x1; xx++) S(xx, yy, ch); }
+    // Rải cụm rừng cho đất MỚI (deterministic, cùng thuật toán các vành
+    // trước; ô ven cụm luôn phủ đất trước khi rải).
+    function scatter(x0, y0, x1, y1, pT, pO, salt) {
+      function h2(xx, yy) { var n = Math.sin(xx * 127.1 + yy * 311.7 + salt * 74.7) * 43758.5453; return n - Math.floor(n); }
+      var cx, cy, px, py;
+      for (cy = y0 - 3; cy <= y1 + 3; cy += 3) for (cx = x0 - 3; cx <= x1 + 3; cx += 3) {
+        if (h2(cx, cy) > 0.45) continue;
+        for (py = cy; py < cy + 3; py++) for (px = cx; px < cx + 3; px++) {
+          if (px < x0 || px > x1 || py < y0 || py > y1 || inBlock(px, py)) continue;
+          var r0 = h2(px, py);
+          g[py][px] = r0 < pT ? 'T' : (r0 < pT + pO ? 'o' : '.');
+        }
+      }
+    }
+    scatter(0, 0, 159, 15, 0.32, 0.03, 601);      // sườn bắc: rừng thông già
+    scatter(0, 16, 35, 139, 0.30, 0.03, 602);     // rừng tây
+    scatter(116, 16, 159, 139, 0.28, 0.03, 603);  // thung đông + ven hồ
+    scatter(36, 72, 115, 139, 0.32, 0.03, 604);   // rừng sâu phía nam
+    // Dọn hành lang quanh các tuyến/công trình sẽ vẽ (chỉ đất mới).
+    R(23, 3, 131, 15, '.');      // hành lang sườn bắc: 2 thềm + đường sườn
+    R(24, 14, 31, 45, '.');      // hành lang đường xuống phía tây
+    R(4, 40, 35, 50, '.');       // đường tây + Lán Thợ Săn
+    R(13, 46, 22, 90, '.');      // đường tây nam + Lán Tiều Phu
+    R(62, 72, 76, 122, '.');     // đường nam + Trạm Dừng Chân
+    R(116, 40, 146, 50, '.');    // đường đông
+    R(114, 51, 121, 96, '.');    // dải suối đông
+    R(130, 84, 146, 94, '.');    // thềm ngắm hồ + đường ven hồ
+    R(118, 92, 150, 116, '.');   // bồn Hồ Đông Nam
+    R(13, 114, 146, 123, '.');   // đường vòng phía nam
+    R(58, 122, 78, 133, '.');    // thềm Cây Cổ Thụ
+    R(26, 104, 42, 117, '.');    // ao nam
+    R(16, 17, 22, 23, '.');      // trảng nhỏ tây bắc (điểm neo bạn đồng hành net.js 19,20)
+    // NƯỚC: suối tây từ sườn bắc chảy xuống rừng tây; suối đông đổ vào
+    // Hồ Đông Nam; ao nhỏ phía nam cạnh đường vòng.
+    R(20, 14, 21, 69, 'R');
+    R(117, 52, 118, 95, 'R');
+    R(119, 90, 121, 98, 'R');
+    R(122, 96, 146, 112, 'R'); R(123, 95, 145, 95, 'R'); R(123, 113, 145, 113, 'R');
+    R(30, 108, 38, 113, 'R'); R(31, 107, 37, 107, 'R'); R(31, 114, 37, 114, 'R');
+    // THỀM ĐÁ + điểm nhấn trên thềm.
+    R(23, 4, 32, 10, 'Q');       // thềm Chòi Gác Rừng
+    R(121, 4, 130, 10, 'Q');     // thềm Miếu Sơn Thần Sườn Bắc
+    R(132, 88, 144, 93, 'Q');    // thềm ngắm Hồ Đông Nam
+    R(60, 124, 76, 131, 'Q');    // thềm Cây Cổ Thụ Thanh Sơn
+    S(61, 125, 'T'); S(75, 125, 'T'); S(61, 130, 'T'); S(75, 130, 'T'); // cụm cổ thụ quanh thềm
+    S(63, 124, 'L'); S(73, 124, 'L');   // đèn đá đầu thềm cổ thụ
+    S(24, 9, 'L'); S(31, 9, 'L');       // đèn thềm chòi gác
+    S(122, 9, 'L'); S(129, 9, 'L');     // đèn thềm miếu
+    // ĐƯỜNG MÒN (mọi tuyến >= 2 ô, nối liền khối cũ và các khu mới).
+    R(26, 12, 129, 13, '#');                       // đường sườn bắc
+    R(58, 12, 65, 13, 'Q'); R(98, 12, 103, 13, 'Q'); // 2 đoạn bậc đá leo sườn
+    R(26, 11, 29, 11, '#');                        // ngõ thềm chòi -> đường sườn
+    R(125, 11, 126, 11, '#');                      // ngõ thềm miếu -> đường sườn
+    R(27, 14, 28, 43, '#');                        // đường xuống phía tây
+    R(27, 22, 28, 27, 'Q');                        // bậc đá đoạn dốc tây
+    R(8, 44, 35, 45, '#');                         // đường tây -> mép tây khối cũ
+    R(16, 46, 17, 117, '#');                       // đường tây nam: lán tiều -> đường vòng
+    R(16, 58, 17, 63, 'Q');                        // bậc đá đoạn dốc tây nam
+    R(66, 72, 67, 118, '#');                       // đường nam chính: mép nam khối -> đường vòng
+    R(66, 84, 67, 89, 'Q'); R(66, 104, 67, 109, 'Q'); // 2 đoạn bậc đá xuống rừng sâu
+    R(116, 44, 138, 45, '#');                      // đường đông -> thềm ngắm hồ
+    R(137, 46, 138, 87, '#');                      // đường ven xuống thềm hồ
+    R(17, 118, 140, 119, '#');                     // đường vòng phía nam (qua phía nam hồ)
+    R(66, 120, 67, 123, '#');                      // nhánh vào thềm Cây Cổ Thụ
+    // CẦU ĐÁ qua suối tây tại giao lộ với đường tây.
+    S(20, 44, 'Q'); S(21, 44, 'Q'); S(20, 45, 'Q'); S(21, 45, 'Q');
+    // CÔNG TRÌNH hợp rừng (mái 'H' chặn, bậc cửa 'Q' đi được).
+    R(25, 5, 27, 6, 'H');                          // Chòi Gác Rừng
+    R(124, 5, 126, 6, 'H');                        // Miếu Sơn Thần Sườn Bắc
+    R(10, 38, 13, 39, 'H'); S(11, 40, 'Q');        // Lán Thợ Săn + bậc cửa
+    R(10, 80, 13, 81, 'H'); S(11, 82, 'Q');        // Lán Tiều Phu + bậc cửa
+    R(72, 96, 74, 97, 'H'); S(73, 98, 'Q');        // Trạm Dừng Chân + bậc cửa
+    R(68, 98, 72, 98, '#');                        // ngõ trạm -> đường nam
+    [[8, 41], [9, 41], [14, 41], [15, 41]].forEach(function (p) { S(p[0], p[1], 'F'); }); // rào Lán Thợ Săn
+    // Dọn bãi 3x3 quanh spawn/dược/NPC mới (chỉ gạt T/o/F ở đất mới).
+    function clearPatch(cx, cy) {
+      for (var yy = cy - 1; yy <= cy + 1; yy++) for (var xx = cx - 1; xx <= cx + 1; xx++) {
+        if (xx < 0 || yy < 0 || xx >= NW || yy >= NH || inBlock(xx, yy)) continue;
+        if (g[yy][xx] === 'T' || g[yy][xx] === 'o' || g[yy][xx] === 'F') g[yy][xx] = '.';
+      }
+    }
+    var V4_SPAWNS = [
+      ['khi_mat_do', 16, 5, 'suon_bac'], ['khi_mat_do', 34, 7, 'suon_bac'], ['khi_mat_do', 48, 4, 'suon_bac'],
+      ['khi_mat_do', 110, 5, 'suon_bac'], ['khi_mat_do', 132, 7, 'suon_bac'], ['khi_mat_do', 148, 4, 'suon_bac'],
+      ['khi_mat_do', 8, 56, 'rung_tay'], ['khi_mat_do', 24, 68, 'rung_tay'],
+      ['ran_luc', 14, 60, 'rung_tay'], ['ran_luc', 26, 52, 'rung_tay'],
+      ['ran_luc', 128, 58, 'thung_dong'], ['ran_luc', 144, 74, 'thung_dong'],
+      ['lon_mong_sat', 136, 64, 'thung_dong'], ['lon_mong_sat', 150, 56, 'thung_dong'],
+      ['soi_rung', 30, 94, 'rung_sau'], ['soi_rung', 44, 104, 'rung_sau'],
+      ['soi_rung', 90, 94, 'rung_sau'], ['soi_rung', 102, 106, 'rung_sau'],
+      ['lon_mong_sat', 48, 96, 'rung_sau'], ['lon_mong_sat', 108, 96, 'rung_sau'],
+      ['ran_luc', 124, 124, 'ven_ho'], ['ran_luc', 140, 128, 'ven_ho']
+    ];
+    var V4_HERBS = [[33, 9], [124, 10], [19, 50], [22, 66], [116, 66], [115, 88],
+      [64, 112], [70, 122], [128, 121], [10, 54], [44, 98], [98, 108]];
+    var V4_NPCS = [
+      { id: 'lam_ba', x: 29, y: 8, sprite: 'linh_gac', name: 'Lâm Bá', role: 'Người gác rừng trên sườn bắc' },
+      { id: 'ong_tu', x: 128, y: 8, sprite: 'giu_mieu', name: 'Trần Văn Hậu', role: 'Người trông Miếu Sơn Thần Sườn Bắc' },
+      { id: 'a_san', x: 12, y: 42, sprite: 'tho_san_ha', name: 'Đỗ Sơn', role: 'Thợ săn ở Lán Thợ Săn' },
+      { id: 'ha_cui', x: 15, y: 84, sprite: 'tho_san_ha', name: 'Hà Văn Củi', role: 'Tiều phu rừng tây' }
+    ];
+    V4_SPAWNS.forEach(function (s) { clearPatch(s[1], s[2]); });
+    V4_HERBS.forEach(function (p) { clearPatch(p[0], p[1]); });
+    V4_NPCS.forEach(function (n) { clearPatch(n.x, n.y); });
+    // Khoét thông mọi túi đất-mới bị cô lập vào khối cũ (chỉ gạt T/o,
+    // cùng thuật toán bản V3 của map 1).
+    var blockedT = (map && map.blocked) || {};
+    function walkT(xx, yy) { return xx >= 0 && yy >= 0 && xx < NW && yy < NH && !blockedT[g[yy][xx]]; }
+    function bfsT(sx, sy) {
+      var seen = {}, q = [[sx, sy]];
+      if (!walkT(sx, sy)) return seen;
+      seen[sx + ',' + sy] = 1;
+      while (q.length) {
+        var c = q.pop();
+        [[1, 0], [-1, 0], [0, 1], [0, -1]].forEach(function (d) {
+          var nx = c[0] + d[0], ny = c[1] + d[1], k = nx + ',' + ny;
+          if (!seen[k] && walkT(nx, ny)) { seen[k] = 1; q.push([nx, ny]); }
+        });
+      }
+      return seen;
+    }
+    function dvDijkstra(sx, sy, reach) {
+      var dist = {}, prev = {}, pq = [[0, sx, sy]];
+      dist[sx + ',' + sy] = 0;
+      while (pq.length) {
+        var bi = 0;
+        for (var i = 1; i < pq.length; i++) if (pq[i][0] < pq[bi][0]) bi = i;
+        var cur = pq.splice(bi, 1)[0], cx2 = cur[1], cy2 = cur[2], ck = cx2 + ',' + cy2;
+        if (reach[ck]) {
+          var path = [], k2 = ck;
+          while (prev[k2]) { var pp = prev[k2]; path.push([pp[0], pp[1]]); k2 = pp[0] + ',' + pp[1]; }
+          return path;
+        }
+        if (dist[ck] !== cur[0]) continue;
+        [[1, 0], [-1, 0], [0, 1], [0, -1]].forEach(function (d) {
+          var nx = cx2 + d[0], ny = cy2 + d[1];
+          if (nx < 0 || ny < 0 || nx >= NW || ny >= NH || inBlock(nx, ny)) return;
+          var ch = g[ny][nx], w = (ch === 'T' || ch === 'o') ? 1 : (blockedT[ch] ? 1e6 : 0), nk = nx + ',' + ny, nd = cur[0] + w;
+          if (dist[nk] === undefined || nd < dist[nk]) { dist[nk] = nd; prev[nk] = [cx2, cy2]; pq.push([nd, nx, ny]); }
+        });
+      }
+      return null;
+    }
+    (function carveOrphans() {
+      for (var guard = 0; guard < 4000; guard++) {
+        var reach = bfsT(AX + 40, AY + 28);
+        var orphan = null;
+        for (var yy = 0; yy < NH && !orphan; yy++) for (var xx = 0; xx < NW; xx++) {
+          if (inBlock(xx, yy) || !walkT(xx, yy) || reach[xx + ',' + yy]) continue;
+          orphan = [xx, yy]; break;
+        }
+        if (!orphan) return;
+        var path = dvDijkstra(orphan[0], orphan[1], reach);
+        if (!path || !path.length) return;
+        path.forEach(function (p) { if (g[p[1]][p[0]] === 'T' || g[p[1]][p[0]] === 'o') g[p[1]][p[0]] = '.'; });
+      }
+    })();
+    // ---- Dịch toàn bộ nội dung cũ theo neo + gắn nội dung mới ----
+    function shPt(p) { p.x += AX; p.y += AY; }
+    function shRect(r) { r[0] += AX; r[1] += AY; r[2] += AX; r[3] += AY; }
+    if (map.start) shPt(map.start);
+    if (map.bossSpawn) shPt(map.bossSpawn);
+    if (map.gate) shPt(map.gate);
+    if (typeof map.wildY === 'number') map.wildY += AY;
+    (map.portals || []).forEach(function (p) { shPt(p); }); // tx/ty: đích ở map khác, không đổi hình học
+    (map.npcs || []).forEach(function (n) { shPt(n); });
+    (map.monsters || []).forEach(function (mn) { shPt(mn); });
+    (map.herbs || []).forEach(function (hb) { shPt(hb); });
+    (map.props || []).forEach(function (pr) { shPt(pr); });
+    (map.zones || []).forEach(function (z) { (z.rects || []).forEach(shRect); });
+    (map.bossLairs || []).forEach(function (l) { shPt(l); if (l.rect) shRect(l.rect); });
+    // Điểm rơi vào map 2 trong cổng của MỌI map khác dịch theo neo.
+    Object.keys(MAPS).forEach(function (id) {
+      if (id === 'map2') return;
+      (MAPS[id].portals || []).forEach(function (p) { if (p.to === 'map2') { p.tx += AX; p.ty += AY; } });
+    });
+    map.zones.push(
+      { id: 'suon_bac', name: 'Sườn Núi Bắc', rects: [[6, 1, 58, 10], [100, 1, 154, 10]], types: ['khi_mat_do'] },
+      { id: 'rung_tay', name: 'Rừng Tây', rects: [[2, 50, 30, 74]], types: ['khi_mat_do', 'ran_luc'] },
+      { id: 'thung_dong', name: 'Thung Lũng Đông', rects: [[122, 52, 154, 84]], types: ['ran_luc', 'lon_mong_sat'] },
+      { id: 'rung_sau', name: 'Rừng Sâu Thanh Sơn', rects: [[24, 88, 56, 112], [84, 88, 110, 112]], types: ['soi_rung', 'lon_mong_sat'] },
+      { id: 'ven_ho', name: 'Ven Hồ Đông Nam', rects: [[116, 120, 152, 134]], types: ['ran_luc'] }
+    );
+    V4_SPAWNS.forEach(function (s) { map.monsters.push({ type: s[0], x: s[1], y: s[2], zone: s[3] }); });
+    V4_HERBS.forEach(function (p) { map.herbs.push({ x: p[0], y: p[1], item: 'linh_chi' }); });
+    V4_NPCS.forEach(function (n) { map.npcs.push(n); });
+    map.props.push(
+      { sprite: 'sign', x: 30, y: 10, label: 'Chòi Gác Rừng' },
+      { sprite: 'sign', x: 127, y: 9, label: 'Miếu Sơn Thần Sườn Bắc' },
+      { sprite: 'sign', x: 15, y: 40, label: 'Lán Thợ Săn' },
+      { sprite: 'sign', x: 15, y: 82, label: 'Lán Tiều Phu' },
+      { sprite: 'sign', x: 71, y: 99, label: 'Trạm Dừng Chân' },
+      { sprite: 'sign', x: 68, y: 127, label: 'Cây Cổ Thụ Thanh Sơn' },
+      { sprite: 'sign', x: 64, y: 74, label: 'Nam: Rừng Sâu Thanh Sơn' },
+      { sprite: 'sign', x: 34, y: 46, label: 'Tây: Rừng Tây · Lán Thợ Săn' },
+      { sprite: 'sign', x: 118, y: 42, label: 'Đông: Thung Lũng · Hồ Đông Nam' },
+      { sprite: 'sign', x: 138, y: 90, label: 'Bãi Vọng Hồ Đông' },
+      { sprite: 'sign', x: 20, y: 116, label: 'Đường Vòng Rừng Sâu' },
+      { sprite: 'sign', x: 34, y: 8, label: 'Sườn Núi Bắc' },
+      { sprite: 'sign', x: 17, y: 56, label: 'Rừng Tây' },
+      { sprite: 'sign', x: 140, y: 60, label: 'Thung Lũng Đông' },
+      { sprite: 'sign', x: 66, y: 100, label: 'Rừng Sâu Thanh Sơn' },
+      { sprite: 'sign', x: 131, y: 119, label: 'Ven Hồ Đông Nam' }
+    );
+    // Đường mòn nối 2 cụm spawn của khu Rừng Sâu (tây x24-56 / đông
+    // x84-110) thành một bãi liền mạch — luật DV: mọi spawn cùng khu
+    // phải thông nhau qua đất đi được trong vùng khu.
+    R(56, 100, 83, 101, '#');
+    // -- Luật QD (Bui 21:18): hộp lang thang ±4 quanh MỌI điểm spawn
+    // quái đất (cũ đã dịch + mới) + bossSpawn + sào boss không còn cây
+    // 'T' chặn đường — chỉ gạt 'T' -> '.', không đụng loại ô khác. --
+    (function qdClear() {
+      var centers = [];
+      (map.monsters || []).forEach(function (m) { centers.push([m.x, m.y]); });
+      if (map.bossSpawn) centers.push([map.bossSpawn.x, map.bossSpawn.y]);
+      (map.bossLairs || []).forEach(function (l) { centers.push([l.x, l.y]); });
+      centers.forEach(function (c) {
+        for (var yy = c[1] - 4; yy <= c[1] + 4; yy++) for (var xx = c[0] - 4; xx <= c[0] + 4; xx++) {
+          if (xx < 0 || yy < 0 || xx >= NW || yy >= NH) continue;
+          if (g[yy][xx] === 'T') g[yy][xx] = '.';
+        }
+      });
+    })();
+    map.tiles = g.map(function (r) { return r.join(''); });
+    map.w = NW; map.h = NH;
+    map.bg = 'assets/map2-bg-v8.webp';
+  })();
+  // ---- TRỒNG CÂY PHỦ ĐẤT TRỐNG MAP 2 (lệnh parent 23:52 ngày
+  // 2026-10-30): sau mở rộng V4, map 2 còn 16.515/22.400 ô '.' trống
+  // không vật thể (73,7%) — vành mới đọc như đồng trơ. Khối này phủ
+  // cây xanh theo CỤM có nhịp lên đất trống: rừng sâu phía nam rậm
+  // nhất (mật độ ~0,60), vành nam/rừng tây/thung đông/sườn bắc vừa
+  // (0,38–0,45), lõi cũ chỉ điểm cụm thưa (0,14) giữ trảng săn; đá
+  // 'o' rải lẻ ~3% làm điểm vỡ mảng. GIỮ NGUYÊN mọi tọa độ nội dung:
+  // chỉ đổi ô '.' sang 'T'/'o', không dời spawn/NPC/dược/cổng/sào.
+  // Vùng bảo vệ không trồng: hộp ±4 quanh MỌI spawn quái + bossSpawn
+  // + tâm sào (luật QD test: hộp lang thang không còn cây chắn), ô
+  // 3x3 quanh NPC/dược/biển/start/ô cổng + điểm rơi, và trảng neo
+  // bạn đồng hành net.js (19,20). Sau khi trồng, mọi túi đất đi được
+  // bị cô lập đều xử lý (cụm < 40 ô lấp 'T', cụm lớn khoét 1 tuyến
+  // qua T/o) để toàn map còn đúng 1 thành phần đi được — audit L6.
+  // LƯU Ý: nền assets/map2-bg-v8.webp vẽ theo dữ liệu TRƯỚC lượt
+  // trồng này — cần vẽ lại nền theo dữ liệu mới ở lượt mỹ thuật sau.
+  (function plantMap2V5() {
+    var map = MAPS.map2;
+    var NW = map.w, NH = map.h, x, y;
+    var g = map.tiles.map(function (r) { return typeof r === 'string' ? r.split('') : r.slice(); });
+    var prot = {};
+    function box(cx, cy, r) {
+      for (var yy = cy - r; yy <= cy + r; yy++) for (var xx = cx - r; xx <= cx + r; xx++) {
+        if (xx >= 0 && yy >= 0 && xx < NW && yy < NH) prot[xx + ',' + yy] = 1;
+      }
+    }
+    (map.monsters || []).forEach(function (m) { box(m.x, m.y, 4); });
+    if (map.bossSpawn) box(map.bossSpawn.x, map.bossSpawn.y, 4);
+    (map.bossLairs || []).forEach(function (l) { box(l.x, l.y, 4); });
+    (map.npcs || []).forEach(function (n) { box(n.x, n.y, 1); });
+    (map.herbs || []).forEach(function (hb) { box(hb.x, hb.y, 1); });
+    (map.props || []).forEach(function (p) { box(p.x, p.y, 1); });
+    if (map.start) box(map.start.x, map.start.y, 1);
+    (map.portals || []).forEach(function (p) { box(p.x, p.y, 1); });
+    Object.keys(MAPS).forEach(function (id) {
+      (MAPS[id].portals || []).forEach(function (p) { if (p.to === 'map2') box(p.tx, p.ty, 1); });
+    });
+    for (y = 15; y <= 24; y++) for (x = 14; x <= 24; x++) prot[x + ',' + y] = 1; // trảng neo (19,20)
+    function density(cx, cy) {
+      var inCore = cx >= 36 && cx < 116 && cy >= 16 && cy < 72;
+      if (cy >= 104) return 0.60;
+      if (!inCore && cy >= 72) return 0.45;
+      if (cx < 36) return 0.42;
+      if (cx >= 116) return 0.38;
+      if (cy < 16) return 0.38;
+      return 0.14;
+    }
+    for (y = 0; y < NH; y++) for (x = 0; x < NW; x++) {
+      if (g[y][x] !== '.' || prot[x + ',' + y]) continue;
+      var d = density(x, y);
+      var grove = hash01(Math.floor(x / 4) + 911, Math.floor(y / 4) + 517);
+      var cell = hash01(x + 331, y + 771);
+      if (grove < d * 1.5 && cell < 0.74) g[y][x] = 'T';
+      else if (hash01(x * 3 + 55, y * 7 + 99) > 0.966) g[y][x] = 'o';
+    }
+    // Thông/lấp túi đất đi được cô lập (theo cụm, như bản map 10 V5).
+    function walkAt(cx, cy) { return cx >= 0 && cy >= 0 && cx < NW && cy < NH && !map.blocked[g[cy][cx]]; }
+    function labelComponents() {
+      var comp = {}, comps = [], xx, yy;
+      for (yy = 0; yy < NH; yy++) for (xx = 0; xx < NW; xx++) {
+        if (!walkAt(xx, yy) || comp[xx + ',' + yy] !== undefined) continue;
+        var id = comps.length, cells = [], q = [[xx, yy]];
+        comp[xx + ',' + yy] = id;
+        while (q.length) {
+          var c = q.pop(); cells.push(c);
+          [[0, -1], [1, 0], [0, 1], [-1, 0]].forEach(function (dd) {
+            var ax = c[0] + dd[0], ay = c[1] + dd[1], k = ax + ',' + ay;
+            if (comp[k] === undefined && walkAt(ax, ay)) { comp[k] = id; q.push([ax, ay]); }
+          });
+        }
+        comps.push(cells);
+      }
+      return { comp: comp, comps: comps };
+    }
+    var lab = labelComponents();
+    function mainCompOf(l2) { return l2.comp[map.start.x + ',' + map.start.y]; }
+    var mainComp = mainCompOf(lab);
+    lab.comps.slice().forEach(function (cells, ci) {
+      if (ci === mainComp || cells.length < 40) return;
+      var srcs = lab.comps[mainComp].map(function (c) { return [c[0], c[1]]; });
+      var t0 = cells[0];
+      var path = dvDijkstra(NW, NH, srcs, function (cx, cy) {
+        var ch = g[cy][cx];
+        if (!map.blocked[ch]) return 1;
+        if (ch === 'T') return 7; if (ch === 'o') return 11;
+        return Infinity;
+      }, function (cx, cy) { return cx === t0[0] && cy === t0[1]; });
+      if (path) path.forEach(function (c) { if (map.blocked[g[c[1]][c[0]]]) g[c[1]][c[0]] = '.'; });
+      lab = labelComponents();
+      mainComp = mainCompOf(lab);
+    });
+    lab = labelComponents();
+    mainComp = mainCompOf(lab);
+    lab.comps.forEach(function (cells, ci) {
+      if (ci === mainComp) return;
+      cells.forEach(function (c) { g[c[1]][c[0]] = 'T'; });
+    });
+    map.tiles = g.map(function (r) { return r.join(''); });
+  })();
+
+  // ---- MỞ CỔ CHAI DV MAP 2 (lượt dọn xanh 30/10): lượt trồng cây V5
+  // làm vài tuyến vào khu quái hẹp còn 1 ô — luật DV (Bui 21:47) đòi
+  // đường vào >= 2 ô liên tục từ mọi điểm rơi tới bãi của từng spawn.
+  // 33 ô 'T' dưới đây là tập tối thiểu tính bằng Dijkstra trên lưới
+  // neo 2x2 từ 2 điểm rơi của map 2 tới các spawn nghẽn (suon_bac
+  // (16,5)/(148,4), thung_dong (150,56), rung_sau cả 6 spawn + nối 2
+  // cụm trong vùng khu, ven_ho (140,128)); chỉ gạt 'T' -> '.', áp SAU
+  // plantMap2V5 để không bị trồng lại. --
+  (function dvWidenMap2() {
+    var map = MAPS.map2;
+    var g = map.tiles.map(function (r) { return typeof r === 'string' ? r.split('') : r.slice(); });
+    [[21, 8], [22, 8], [28, 73], [29, 71], [32, 72], [32, 73], [32, 75], [34, 74], [34, 88],
+     [53, 98], [55, 100], [56, 98], [56, 99], [57, 99], [85, 98], [85, 99], [86, 99],
+     [97, 110], [98, 111], [99, 111], [99, 117], [105, 101], [128, 129], [129, 127],
+     [131, 127], [132, 129], [133, 128], [140, 9], [141, 9], [143, 9], [140, 53],
+     [140, 54], [141, 53]].forEach(function (c) {
+      if (g[c[1]][c[0]] === 'T') g[c[1]][c[0]] = '.';
+    });
+    map.tiles = g.map(function (r) { return r.join(''); });
+  })();
+
   function isBlockedIn(map, x, y) {
     x = Math.floor(x); y = Math.floor(y);
     if (x < 0 || y < 0 || x >= map.w || y >= map.h) return true;
@@ -1957,7 +2818,7 @@
     }
     return null;
   }
-  var api = { MAP: MAP, MAP2: MAP2, MAP3: MAP3, MAP4: MAP4, MAP5: MAP5, MAP6: MAP6, MAP7: MAP7, MAP8: MAP8, MAP9: MAP9, MAP10: MAP10, MAP11: MAP11, MAP12: MAP12, MAP13: MAP13, MAP14: MAP14, MAPS: MAPS, HIGH_CHAIN: HIGH_CHAIN, REALMS: REALMS, realmById: realmById, realmRankOf: realmRankOf, realmGate: realmGate, getMap: getMap, isBlocked: isBlocked, isBlockedIn: isBlockedIn, tileAt: tileAt, zoneAt: zoneAt, EXP_LAYOUT_V: EXP_LAYOUT_V, EXP_DX: EXP_DX, EXP_DY: EXP_DY };
+  var api = { MAP: MAP, MAP2: MAP2, MAP3: MAP3, MAP4: MAP4, MAP5: MAP5, MAP6: MAP6, MAP7: MAP7, MAP8: MAP8, MAP9: MAP9, MAP10: MAP10, MAP11: MAP11, MAP12: MAP12, MAP13: MAP13, MAP14: MAP14, MAPS: MAPS, HIGH_CHAIN: HIGH_CHAIN, REALMS: REALMS, realmById: realmById, realmRankOf: realmRankOf, realmGate: realmGate, getMap: getMap, isBlocked: isBlocked, isBlockedIn: isBlockedIn, tileAt: tileAt, zoneAt: zoneAt, EXP_LAYOUT_V: EXP_LAYOUT_V, EXP_DX: EXP_DX, EXP_DY: EXP_DY, EXP_V3_MAP1: EXP_V3_MAP1, EXP_V4_MAP2: EXP_V4_MAP2 };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else if (typeof window !== 'undefined') window.PNT_MAPS = api;
 })();
