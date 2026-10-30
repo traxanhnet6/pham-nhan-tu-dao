@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phàm Nhân Tu Đạo</title>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #1a140e; color: #f5eeda; font-family: 'Be Vietnam Pro', 'Segoe UI', Arial, sans-serif; }
+  h1 { text-align: center; color: #f2c14e; margin: 12px 0 4px; letter-spacing: 2px; }
+  .sub { text-align: center; color: #c9b896; margin-bottom: 16px; }
+  .screen { max-width: 820px; margin: 0 auto; padding: 16px; }
+  .panel { background: #f5eeda; color: #2a2016; border: 3px solid #8b5a2b; border-radius: 10px; padding: 20px; box-shadow: 0 0 0 3px #3a2a1a; }
+  .panel h2 { margin-top: 0; color: #7a3b22; }
+  label { display: block; margin: 10px 0 4px; font-weight: bold; }
+  input[type="text"], input[type="password"] { width: 100%; padding: 10px; border: 2px solid #8b5a2b; border-radius: 6px; font-size: 16px; background: #fffdf5; }
+  .radios label { display: inline-block; margin-right: 16px; font-weight: normal; }
+  .looks { display: flex; flex-wrap: wrap; gap: 8px; margin: 6px 0; }
+  .looks .look-opt { width: 76px; padding: 4px 2px 2px; border: 2px solid #4a4238; border-radius: 8px; background: #241f18; cursor: pointer; text-align: center; }
+  .looks .look-opt.sel { border-color: #ffd94a; background: #3a2f1a; }
+  .looks .look-opt img { width: 64px; height: 64px; object-fit: contain; display: block; margin: 0 auto; }
+  .looks .look-opt span { display: block; font-size: 10px; line-height: 1.25; color: #d8cdb4; min-height: 25px; }
+  .lookprev { text-align: center; margin: 4px 0 8px; }
+  .lookprev img { height: 150px; image-rendering: auto; }
+  .lookprev div { font-size: 13px; color: #ffe9a8; margin-top: 2px; }
+  button { background: #7a3b22; color: #fff; border: none; padding: 10px 18px; border-radius: 6px; font-size: 15px; cursor: pointer; margin: 4px 2px; }
+  button:hover { background: #93492a; }
+  button:disabled { background: #9a9a9a; cursor: default; }
+  .err { color: #c0392b; min-height: 20px; margin-top: 8px; }
+  .link { color: #5aa7d6; cursor: pointer; text-decoration: underline; background: none; padding: 0; margin: 0; font-size: 15px; }
+  #hud { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; background: #2a2016; border: 2px solid #8b5a2b; border-radius: 8px; padding: 8px 12px; margin-bottom: 10px; }
+  .bar { width: 200px; height: 16px; background: #400000; border: 1px solid #000; border-radius: 4px; overflow: hidden; }
+  .bar > div { height: 100%; }
+  #hudHp { background: #4caf50; }
+  #hudTuVi { background: #5aa7d6; }
+  #gameWrap { position: relative; width: 768px; max-width: 100%; margin: 0 auto; }
+  #gameCanvas { width: 768px; max-width: 100%; height: auto; display: block; background: #74bd49; border: 3px solid #8b5a2b; border-radius: 8px; image-rendering: pixelated; }
+  .overlay { position: absolute; left: 12px; right: 12px; background: rgba(245, 238, 218, 0.97); color: #2a2016; border: 3px solid #8b5a2b; border-radius: 8px; padding: 12px; display: none; z-index: 5; }
+  #dialogueBox { bottom: 12px; }
+  #panelQuests, #panelInv, #panelShop, #panelBooks, #panelArtShop, #panelAlchemy, #panelTalisman, #panelTournament, #panelBeastTide, #panelEscort, #panelAuction, #panelSeasonBoard, #panelAffinity { top: 12px; max-height: 420px; overflow-y: auto; }
+  .modal { position: fixed; left: 0; right: 0; top: 0; bottom: 0; background: rgba(0,0,0,0.6); display: none; z-index: 20; }
+  .modal .panel { max-width: 520px; margin: 120px auto; }
+  .qitem { border-bottom: 1px solid #c9b896; padding: 8px 0; }
+  .qitem.dim { color: #777; }
+  #invGrid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+  .slot { width: 64px; height: 64px; background: #e8dcc0; border: 2px solid #8b5a2b; border-radius: 6px; position: relative; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+  .slot canvas { image-rendering: pixelated; }
+  .badge { position: absolute; right: 2px; bottom: 2px; background: #7a3b22; color: #fff; font-size: 12px; padding: 1px 5px; border-radius: 8px; }
+  #controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: flex-start; margin-top: 12px; }
+  #dpad { display: grid; grid-template-columns: repeat(3, 48px); gap: 3px; margin-left: auto; }
+  .dpad-btn { width: 48px; height: 48px; padding: 0; font-size: 20px; }
+  .dpad-center { background: #2e7d32; font-size: 14px; }
+  #log { background: #2a2016; border: 2px solid #8b5a2b; border-radius: 8px; padding: 8px 12px; margin-top: 10px; min-height: 24px; font-size: 14px; }
+  #hudLL { background: #b78ce0; }
+  #skillBar { display: flex; gap: 8px; justify-content: center; margin-top: 10px; flex-wrap: wrap; }
+  #skillBar2 { display: none; gap: 8px; justify-content: center; margin-top: 6px; flex-wrap: wrap; }
+  #artBar { display: flex; gap: 8px; justify-content: center; margin-top: 6px; flex-wrap: wrap; }
+  .skill-slot { position: relative; width: 76px; background: #2a2016; border: 2px solid #8b5a2b; border-radius: 8px; padding: 4px 2px 2px; cursor: pointer; user-select: none; -webkit-user-select: none; touch-action: none; overflow: hidden; }
+  .skill-icon { display: block; margin: 0 auto; width: 44px; height: 44px; image-rendering: auto; }
+  .skill-name { font-size: 10px; text-align: center; color: #f5eeda; line-height: 1.15; min-height: 23px; }
+  .skill-key { position: absolute; top: 2px; left: 4px; font-size: 10px; font-weight: bold; color: #ffd94a; text-shadow: 1px 1px 0 #000; }
+  .skill-cd { position: absolute; left: 0; right: 0; bottom: 0; background: rgba(10, 6, 20, 0.72); pointer-events: none; }
+  .skill-cdt { position: absolute; top: 16px; left: 0; right: 0; text-align: center; font-size: 20px; font-weight: bold; color: #fff; text-shadow: 2px 2px 0 #000; pointer-events: none; }
+  .skill-lock { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(12, 10, 8, 0.78); color: #ffb0a0; font-size: 12px; font-weight: bold; display: flex; align-items: center; justify-content: center; text-align: center; }
+  #panelSkills { top: 12px; max-height: 460px; overflow-y: auto; }
+  #panelSects { top: 12px; max-height: 460px; overflow-y: auto; }
+  #panelPets { top: 12px; max-height: 460px; overflow-y: auto; }
+  #panelRealms, #panelFate, #panelDongPhu, #panelRift { top: 12px; max-height: 460px; overflow-y: auto; }
+  #realmTimer { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); background: rgba(26,16,40,0.88); color: #ffd94a; border: 2px solid #8a6fd0; border-radius: 8px; padding: 4px 14px; font-weight: bold; font-size: 15px; display: none; z-index: 6; white-space: nowrap; }
+  #panelBoss { top: 12px; max-height: 460px; overflow-y: auto; }
+  .boss-row { border-bottom: 1px solid #c9b896; padding: 8px 0; font-size: 14px; }
+  .boss-drop { font-size: 13px; color: #4a3826; }
+  #bossBanner { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); max-width: 92%; background: rgba(64, 12, 12, 0.94); color: #ffd9a0; border: 2px solid #c0392b; border-radius: 8px; padding: 8px 18px; font-weight: bold; font-size: 15px; text-align: center; z-index: 30; pointer-events: none; display: none; }
+  #riftBanner { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); max-width: 92%; background: rgba(38, 8, 64, 0.94); color: #e3c8ff; border: 2px solid #8a4fd0; border-radius: 8px; padding: 8px 18px; font-weight: bold; font-size: 15px; text-align: center; z-index: 29; pointer-events: none; display: none; }
+  #festBanner { position: absolute; top: 52px; left: 50%; transform: translateX(-50%); max-width: 92%; background: rgba(84, 52, 8, 0.94); color: #ffe9b0; border: 2px solid #c9a227; border-radius: 8px; padding: 8px 18px; font-weight: bold; font-size: 15px; text-align: center; z-index: 30; pointer-events: none; display: none; }
+  .wd-swatch { display: inline-block; width: 14px; height: 14px; border: 1px solid #3a2a1a; border-radius: 3px; vertical-align: -2px; margin-right: 2px; }
+  #panelCult { top: 12px; max-height: 460px; overflow-y: auto; }
+  .sect-row { display: flex; gap: 10px; align-items: flex-start; border-bottom: 1px solid #c9b896; padding: 8px 0; font-size: 14px; }
+  .sect-chip { flex: none; width: 22px; height: 22px; border-radius: 50%; border: 2px solid #3a2a1a; margin-top: 2px; }
+  .skill-row { display: flex; gap: 10px; align-items: flex-start; border-bottom: 1px solid #c9b896; padding: 8px 0; font-size: 14px; }
+  .skill-row .skill-icon { flex: none; background: #2a2016; border-radius: 6px; }
+  .shop-row { display: flex; gap: 10px; align-items: center; border-bottom: 1px solid #c9b896; padding: 6px 0; font-size: 14px; }
+  .shop-row canvas { flex: none; background: #2a2016; border-radius: 6px; image-rendering: pixelated; }
+  #invInfo { font-size: 13px; margin-bottom: 8px; }
+  #log div { margin: 2px 0; }
+  #err { color: #ff8a7a; text-align: center; min-height: 20px; }
+</style>
+</head>
+<body>
+<h1>Phàm Nhân Tu Đạo</h1>
+<div class="sub">Từ phàm nhân vô danh, một bước lên tiên.</div>
+<div id="err"></div>
+
+<div id="screen-register" class="screen">
+  <div class="panel">
+    <h2>Đăng kí tài khoản</h2>
+    <p>Đây là màn hình đầu tiên của game. Tài khoản lưu trên máy của bạn (mật khẩu chỉ lưu dạng băm).</p>
+    <form id="formRegister">
+      <label>Tên tài khoản</label>
+      <input id="regUser" type="text" placeholder="Ví dụ: tieu_pham_01" autocomplete="username">
+      <label>Mật khẩu</label>
+      <input id="regPass" type="password" placeholder="Ít nhất 4 ký tự" autocomplete="new-password">
+      <div class="err" id="regErr"></div>
+      <button type="submit">Đăng kí</button>
+    </form>
+    <p>Đã có tài khoản? <button class="link" id="toLogin">Đăng nhập</button></p>
+  </div>
+</div>
+
+<div id="screen-login" class="screen" style="display:none">
+  <div class="panel">
+    <h2>Đăng nhập</h2>
+    <form id="formLogin">
+      <label>Tên tài khoản</label>
+      <input id="loginUser" type="text" autocomplete="username">
+      <label>Mật khẩu</label>
+      <input id="loginPass" type="password" autocomplete="current-password">
+      <div class="err" id="loginErr"></div>
+      <button type="submit">Đăng nhập</button>
+    </form>
+    <p>Chưa có tài khoản? <button class="link" id="toRegister">Đăng kí</button></p>
+  </div>
+</div>
+
+<div id="screen-create" class="screen" style="display:none">
+  <div class="panel">
+    <h2>Tạo nhân vật phàm nhân</h2>
+    <form id="formCreate">
+      <label>Tên nhân vật</label>
+      <input id="crName" type="text" placeholder="Ví dụ: Lâm Phàm">
+      <label>Giới tính</label>
+      <div class="radios">
+        <label><input type="radio" name="crGender" value="nam" checked> Nam</label>
+        <label><input type="radio" name="crGender" value="nu"> Nữ</label>
+      </div>
+      <label>Xuất thân phàm nhân</label>
+      <div class="radios">
+        <label><input type="radio" name="crOrigin" value="nong_dan" checked> Nông dân (HP cao)</label>
+        <label><input type="radio" name="crOrigin" value="tho_san"> Thợ săn (công cao)</label>
+        <label><input type="radio" name="crOrigin" value="thu_sinh"> Thư sinh (thổ nạp nhanh)</label>
+      </div>
+      <label>Tạo hình nhân vật</label>
+      <div id="crLooks" class="looks"></div>
+      <input type="hidden" id="crLook" value="">
+      <div class="lookprev"><img id="crLookImg" alt="Xem trước tạo hình"><div id="crLookName"></div></div>
+      <div class="err" id="crErr"></div>
+      <button type="submit">Bắt đầu hành trình</button>
+    </form>
+  </div>
+</div>
+
+<div id="screen-game" class="screen" style="display:none; max-width: 820px;">
+  <div id="hud">
+    <b id="hudName">—</b>
+    <span>HP <span id="hudHpText"></span></span>
+    <div class="bar"><div id="hudHp" style="width:100%"></div></div>
+    <span>Tu vi <span id="hudTuViText"></span></span>
+    <div class="bar"><div id="hudTuVi" style="width:0%"></div></div>
+    <span>Linh lực <span id="hudLLText"></span></span>
+    <div class="bar"><div id="hudLL" style="width:100%"></div></div>
+    <span title="Linh Thạch"><canvas id="hudLtIcon" width="16" height="16" style="vertical-align:-3px"></canvas> <span id="hudCoins"></span></span>
+    <span id="hudAtk"></span>
+    <span id="hudPet"></span>
+    <span id="hudSeason"></span>
+  </div>
+  <div id="gameWrap">
+    <canvas id="gameCanvas" width="768" height="576"></canvas>
+    <div id="dialogueBox" class="overlay">
+      <b id="dlgName"></b>
+      <p id="dlgText"></p>
+      <div id="dlgActions"></div>
+      <button id="dlgNext">Tiếp tục</button>
+      <button id="dlgClose">Đóng</button>
+    </div>
+    <div id="panelQuests" class="overlay">
+      <h3 style="margin-top:0">Nhiệm vụ</h3>
+      <div id="questList"></div>
+      <button id="questClose">Đóng</button>
+    </div>
+    <div id="panelInv" class="overlay">
+      <h3 style="margin-top:0">Túi đồ (bấm vào vật phẩm để dùng, rê chuột xem mô tả)</h3>
+      <div id="invInfo"></div>
+      <div id="invGrid"></div>
+      <button id="invClose" style="margin-top:10px">Đóng</button>
+    </div>
+    <div id="panelShop" class="overlay">
+      <h3 style="margin-top:0">Lò rèn của Thiết Cường</h3>
+      <div id="shopList"></div>
+      <button id="shopClose" style="margin-top:10px">Đóng</button>
+    </div>
+    <div id="panelBooks" class="overlay">
+      <h3 style="margin-top:0">Tủ sách làng Thanh Khê</h3>
+      <div id="booksList"></div>
+      <button id="booksClose" style="margin-top:10px">Đóng</button>
+    </div>
+    <div id="panelArtShop" class="overlay">
+      <h3 style="margin-top:0">Tiệm pháp khí của Lý lão</h3>
+      <div id="artShopList"></div>
+      <button id="artShopClose" style="margin-top:10px">Đóng</button>
+    </div>
+    <div id="panelAlchemy" class="overlay">
+      <h3 style="margin-top:0">Đan Lô của Lý lão</h3>
+      <div id="alchemyList"></div>
+      <button id="alchemyClose" style="margin-top:10px">Đóng</button>
+    </div>
+    <div id="panelTalisman" class="overlay">
+      <h3 style="margin-top:0">Bàn Phù của Diệp Phù Sinh</h3>
+      <div id="talismanList"></div>
+      <button id="talismanClose" style="margin-top:10px">Đóng</button>
+    </div>
+    <div id="panelSkills" class="overlay">
+      <h3 style="margin-top:0">Kỹ năng</h3>
+      <div id="skillList"></div>
+      <button id="skillClose" style="margin-top:10px">Đóng</button>
+    </div>
+    <div id="panelSects" class="overlay">
+      <h3 style="margin-top:0">Tông Môn — Sơn Môn Đại Hội</h3>
+      <div id="sectSummary"></div>
+      <div id="sectRank"></div>
+      <div id="sectShop"></div>
+      <div id="sectList"></div>
+      <button id="sectClose" style="margin-top:10px">Đóng</button>
+    </div>
+    <div id="panelPets" class="overlay">
+      <h3 style="margin-top:0">Linh thú — Chuồng thú đồng hành</h3>
+      <div id="petSummary"></div>
+      <div id="petList"></div>
+      <button id="petClose" style="margin-top:10px">Đóng</button>
+    </div>
+    <div id="realmTimer"></div>
+    <div id="panelRealms" class="overlay">
+      <h3 style="margin-top:0">Bí Cảnh</h3>
+      <div id="realmBody"></div>
+      <button id="btnEnterRealm">Vào bí cảnh</button>
+      <button id="realmClose" style="margin-left:8px">Đóng</button>
+    </div>
+    <div id="riftBanner"></div>
+    <div id="panelRift" class="overlay">
+      <h3 style="margin-top:0">Vết Nứt Hư Không — Sự kiện hậu Trúc Cơ</h3>
+      <div id="riftBody"></div>
+      <button id="btnEnterRift">Vào vết nứt</button>
+      <button id="riftClose" style="margin-left:8px">Đóng</button>
+    </div>
+    <div id="panelFate" class="overlay">
+      <h3 id="fateTitle" style="margin-top:0">Kỳ ngộ!</h3>
+      <p id="fateText"></p>
+      <button id="fateEnter">Vào ngay</button>
+      <button id="fateSkip" style="margin-left:8px">Bỏ qua (mất)</button>
+    </div>
+    <div id="panelBoss" class="overlay">
+      <h3 style="margin-top:0">Boss Yêu Thú — Lịch hồi sinh &amp; bảng rơi</h3>
+      <div id="bossSummary"></div>
+      <div id="bossList"></div>
+      <button id="bossClose" style="margin-top:10px">Đóng</button>
+    </div>
+    <div id="panelTournament" class="overlay">
+      <h3 style="margin-top:0">Đại Hội Tu Tiên — Mười tông giao lưu tỉ thí</h3>
+      <div id="tournBody"></div>
+      <button id="btnTournRegister" style="margin-top:10px">Ghi danh bảng đã chọn</button>
+      <button id="btnTournFight" style="margin-top:10px">Vào trận (Võ Đài Đại Hội)</button>
+      <button id="btnTournForfeit" style="margin-top:10px">Bỏ cuộc</button>
+      <button id="tournClose" style="margin-top:10px">Đóng</button>
+    </div>
+    <div id="panelWardrobe" class="overlay" style="top:12px; max-height:460px; overflow-y:auto">
+      <h3 style="margin-top:0">Tủ Đồ — Y phục &amp; lễ hội</h3>
+      <div id="wardrobeBody"></div>
+      <button id="wardrobeClose" style="margin-top:10px">Đóng</button>
+    </div>
+    <div id="festBanner"></div>
+    <div id="panelBeastTide" class="overlay">
+      <h3 style="margin-top:0">Thú Triều Thủ Hộ Làng — Nhiệm vụ tông môn (từ Trúc Cơ)</h3>
+      <div id="tideBody"></div>
+      <button id="btnTideJoin" style="margin-top:10px">Nhận nhiệm vụ thủ thành</button>
+      <button id="btnTideForfeit" style="margin-top:10px">Bỏ thủ thành</button>
+      <button id="tideClose" style="margin-top:10px">Đóng</button>
+    </div>
+    <div id="panelEscort" class="overlay">
+      <h3 style="margin-top:0">Hộ Tống Thương Đội — Mã Vạn Lai</h3>
+      <div id="escortBody"></div>
+      <button id="btnEscortStart" style="margin-top:10px">Nhận hộ tống (tại Mã Vạn Lai, Rừng Thanh Sơn)</button>
+      <button id="btnEscortForfeit" style="margin-top:10px">Bỏ chuyến hộ tống</button>
+      <button id="escortClose" style="margin-top:10px">Đóng</button>
+    </div>
+    <div id="panelAuction" class="overlay">
+      <h3 style="margin-top:0">Phiên Đấu Giá Liên Tông — Kim Vạn Thông</h3>
+      <div id="auctionBody"></div>
+      <button id="btnAuctionEnter" style="margin-top:10px">Vào sàn đấu giá</button>
+      <button id="btnAuctionBid" style="margin-top:10px">Trả giá (+1 bước)</button>
+      <button id="btnAuctionCloseLot" style="margin-top:10px">Chốt giá (trả Linh Thạch, nhận vật phẩm)</button>
+      <button id="btnAuctionPass" style="margin-top:10px">Bỏ qua lô này</button>
+      <button id="auctionClose" style="margin-top:10px">Đóng</button>
+    </div>
+    <div id="panelSeasonBoard" class="overlay">
+      <h3 style="margin-top:0">Bảng Xếp Hạng Tu Sĩ Theo Mùa — Thẩm Ký</h3>
+      <div id="seasonBody"></div>
+      <button id="seasonClose" style="margin-top:10px">Đóng</button>
+    </div>
+    <div id="panelCompanion" class="overlay">
+      <h3 style="margin-top:0">Đệ Tử Đi Cùng — Bạn tu cùng tông</h3>
+      <div id="companionBody"></div>
+      <button id="btnCompToggle" style="margin-top:10px">Gọi đồng hành đi cùng</button>
+      <button id="companionClose" style="margin-top:10px">Đóng</button>
+    </div>
+    <div id="panelAffinity" class="overlay">
+      <h3 style="margin-top:0">Hảo Cảm NPC — Làng nhớ người chơi</h3>
+      <div id="affinityBody"></div>
+      <button id="affinityClose" style="margin-top:10px">Đóng</button>
+    </div>
+    <div id="panelFormation" class="overlay">
+      <h3 style="margin-top:0">Trận Kỳ — Cờ trận của Cửu Cung Trận Tông</h3>
+      <div id="formationBody"></div>
+      <button id="btnFormTuKhi" style="margin-top:10px">Cắm Tụ Khí Trận</button>
+      <button id="btnFormHoThe" style="margin-top:10px">Cắm Hộ Thể Trận</button>
+      <button id="btnFormKhonThu" style="margin-top:10px">Cắm Khốn Thú Trận</button>
+      <button id="btnFormDissolve" style="margin-top:10px">Thu trận</button>
+      <button id="formationClose" style="margin-top:10px">Đóng</button>
+    </div>
+    <div id="panelDongPhu" class="overlay">
+      <h3 style="margin-top:0">Động Phủ — Phủ riêng &amp; Linh Điền</h3>
+      <div id="dongPhuBody"></div>
+      <button id="dongPhuClose" style="margin-top:10px">Đóng</button>
+    </div>
+    <div id="bossBanner"></div>
+    <div id="panelCult" class="overlay">
+      <h3 style="margin-top:0">Tu hành — Đột phá cảnh giới</h3>
+      <div id="cultBody"></div>
+      <button id="btnBreakGo" style="margin-top:10px">Đột phá</button>
+      <button id="cultClose" style="margin-top:10px">Đóng</button>
+    </div>
+    <div id="panelDemon" class="overlay">
+      <h3 style="margin-top:0">Thức Hải — Tâm Ma Kiếp</h3>
+      <div id="demonBody"></div>
+      <button id="demonClose" style="margin-top:10px">Tạm lui (tâm ma vẫn chờ ở mốc này)</button>
+    </div>
+  </div>
+  <div id="skillBar"></div>
+  <div id="skillBar2"></div>
+  <div id="artBar"></div>
+  <div id="controls">
+    <div>
+      <button id="btnMeditate">Thổ nạp (T)</button>
+      <button id="btnAutoMed">Tự thổ nạp: TẮT</button>
+      <button id="btnGfx">Đồ hoạ: Cao</button>
+      <button id="btnSnd">Âm thanh: Bật</button>
+      <button id="btnAttack">Đánh (Space)</button>
+      <button id="btnFly">Ngự Kiếm (F): Khóa</button>
+      <button id="btnAutoAtk">Đánh tự động: TẮT</button>
+      <button id="btnBreak">Đột phá</button>
+      <button id="btnSkills">Kỹ năng</button>
+      <button id="btnSects">Tông Môn</button>
+      <button id="btnPets">Linh thú</button>
+      <button id="btnCapture">Thu phục</button>
+      <button id="btnRealms">Bí Cảnh</button>
+      <button id="btnBoss">Boss</button>
+      <button id="btnTournament">Đại Hội</button>
+      <button id="btnBeastTide">Thú Triều</button>
+      <button id="btnEscort">Hộ Tống</button>
+      <button id="btnAuction">Đấu Giá</button>
+      <button id="btnCompanion">Đi Cùng</button>
+      <button id="btnAffinity">Hảo Cảm</button>
+      <button id="btnFormation">Trận Kỳ</button>
+      <button id="btnSeasonBoard">Bảng Mùa</button>
+      <button id="btnWardrobe">Tủ đồ</button>
+      <button id="btnInv">Túi đồ</button>
+      <button id="btnQuests">Nhiệm vụ</button>
+      <button id="btnSave">Lưu</button>
+      <button id="btnLogout">Đăng xuất</button>
+    </div>
+    <div id="dpad">
+      <button class="dpad-btn" data-dir="-1,-1">↖</button>
+      <button class="dpad-btn" data-dir="0,-1">↑</button>
+      <button class="dpad-btn" data-dir="1,-1">↗</button>
+      <button class="dpad-btn" data-dir="-1,0">←</button>
+      <button class="dpad-btn dpad-center" id="btnInteract">E</button>
+      <button class="dpad-btn" data-dir="1,0">→</button>
+      <button class="dpad-btn" data-dir="-1,1">↙</button>
+      <button class="dpad-btn" data-dir="0,1">↓</button>
+      <button class="dpad-btn" data-dir="1,1">↘</button>
+    </div>
+  </div>
+  <div id="log"></div>
+  <p style="color:#c9b896; font-size:13px">Di chuyển: WASD / phím mũi tên (đi chéo bằng 2 phím) hoặc D-pad. Tương tác: E. Đánh: Space (combo 3 đòn). Thổ nạp: T. Chiêu thức: phím 1–5 hoặc bấm ô chiêu dưới màn hình (giữ lâu ô chiêu để xem mô tả). Pháp bảo có chiêu kích hoạt: phím 6/7. Qua cổng Nam Môn xuống phía nam là bãi quái.</p>
+</div>
+
+<div id="modalKyNgo" class="modal">
+  <div class="panel">
+    <h2>Kỳ ngộ: Giếng cổ phát sáng!</h2>
+    <p>Dưới đáy giếng, một luồng linh khí xông lên. Linh căn của bạn lộ ra:</p>
+    <h3 id="kyRootName"></h3>
+    <p id="kyRootDesc"></p>
+    <button id="kyClose">Tiếp tục hành trình</button>
+  </div>
+</div>
+
+<div id="modalBreak" class="modal">
+  <div class="panel">
+    <h2>Đột phá!</h2>
+    <p id="breakText"></p>
+    <button id="breakClose">Tiếp tục</button>
+  </div>
+</div>
+
+<script src="js/sprites.js"></script>
+<script src="js/maps.js"></script>
+<script src="js/logic.js"></script>
+<script src="js/anticheat.js"></script>
+<script src="js/story.js"></script>
+<script src="js/skills.js"></script>
+<script src="js/skill-fx.js"></script>
+<script src="js/weapons.js"></script>
+<script src="js/artifacts.js"></script>
+<script src="js/alchemy.js"></script>
+<script src="js/talismans.js"></script>
+<script src="js/realms.js"></script>
+<script src="js/sects.js"></script>
+<script src="js/sect-points.js"></script>
+<script src="js/manuals.js"></script>
+<script src="js/flight.js"></script>
+<script src="js/sect-arc.js"></script>
+<script src="js/pets.js"></script>
+<script src="js/bosses.js"></script>
+<script src="js/monster-ai.js"></script>
+<script src="js/artifact-ai.js"></script>
+<script src="js/yeu-dan-ai.js"></script>
+<script src="js/herb-icons-ai.js"></script>
+<script src="js/talisman-icons-ai.js"></script>
+<script src="js/manual-icons-ai.js"></script>
+<script src="js/hero-ai.js"></script>
+<script src="js/hero-realm.js"></script>
+<script src="js/realm-costumes.js"></script>
+<script src="js/costume-ai.js"></script>
+<script src="js/npc-ai.js"></script>
+<script src="js/pet-ai.js"></script>
+<script src="js/clouds.js"></script>
+<script src="js/realm-ambient.js"></script>
+<script src="js/sound.js"></script>
+<script src="js/secret-realms.js"></script>
+<script src="js/rift-events.js"></script>
+<script src="js/tournament.js"></script>
+<script src="js/beast-tide.js"></script>
+<script src="js/escort.js"></script>
+<script src="js/auction.js"></script>
+<script src="js/companion.js"></script>
+<script src="js/season-board.js"></script>
+<script src="js/inner-demon.js"></script>
+<script src="js/library.js"></script>
+<script src="js/affinity.js"></script>
+<script src="js/formation.js"></script>
+<script src="js/dong-phu.js"></script>
+<script src="js/wardrobe.js"></script>
+<script src="js/smooth.js"></script>
+<script src="js/net.js"></script>
+<script src="js/controls.js"></script>
+<script src="js/game.js"></script>
+</body>
+</html>
