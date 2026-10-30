@@ -1,0 +1,2654 @@
+{
+ "meo_rung": {
+  "cao/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "cao/move": {
+   "distinct": 60,
+   "strayViolations": 8,
+   "groundDevMax": 1
+  },
+  "cao/attack": {
+   "distinct": 60,
+   "strayViolations": 18,
+   "groundDevMax": 0
+  },
+  "cao/hit": {
+   "distinct": 58,
+   "strayViolations": 0,
+   "groundDevMax": 1
+  },
+  "cao/death": {
+   "distinct": 60,
+   "strayViolations": 3,
+   "groundDevMax": 0
+  },
+  "trung/idle": {
+   "distinct": 60,
+   "strayViolations": 158,
+   "groundDevMax": 0
+  },
+  "trung/move": {
+   "distinct": 60,
+   "strayViolations": 168,
+   "groundDevMax": 2
+  },
+  "trung/attack": {
+   "distinct": 60,
+   "strayViolations": 47,
+   "groundDevMax": 0
+  },
+  "trung/hit": {
+   "distinct": 58,
+   "strayViolations": 14,
+   "groundDevMax": 0
+  },
+  "trung/death": {
+   "distinct": 60,
+   "strayViolations": 52,
+   "groundDevMax": 0
+  }
+ },
+ "cop_con": {
+  "cao/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "cao/move": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "cao/attack": {
+   "distinct": 60,
+   "strayViolations": 13,
+   "groundDevMax": 0
+  },
+  "cao/hit": {
+   "distinct": 58,
+   "strayViolations": 0,
+   "groundDevMax": 1
+  },
+  "cao/death": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/move": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/attack": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/hit": {
+   "distinct": 58,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/death": {
+   "distinct": 60,
+   "strayViolations": 1,
+   "groundDevMax": 0
+  }
+ },
+ "ech_xanh": {
+  "cao/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "cao/move": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 1
+  },
+  "cao/attack": {
+   "distinct": 60,
+   "strayViolations": 7,
+   "groundDevMax": 1
+  },
+  "cao/hit": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 1
+  },
+  "cao/death": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/move": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/attack": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/hit": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/death": {
+   "distinct": 60,
+   "strayViolations": 1,
+   "groundDevMax": 0
+  }
+ },
+ "vit_troi": {
+  "cao/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "cao/move": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "cao/attack": {
+   "distinct": 60,
+   "strayViolations": 41,
+   "groundDevMax": 5
+  },
+  "cao/hit": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 1
+  },
+  "cao/death": {
+   "distinct": 60,
+   "strayViolations": 25,
+   "groundDevMax": 0
+  },
+  "trung/idle": {
+   "distinct": 60,
+   "strayViolations": 120,
+   "groundDevMax": 0
+  },
+  "trung/move": {
+   "distinct": 60,
+   "strayViolations": 118,
+   "groundDevMax": 2
+  },
+  "trung/attack": {
+   "distinct": 60,
+   "strayViolations": 8,
+   "groundDevMax": 2
+  },
+  "trung/hit": {
+   "distinct": 60,
+   "strayViolations": 31,
+   "groundDevMax": 2
+  },
+  "trung/death": {
+   "distinct": 60,
+   "strayViolations": 1,
+   "groundDevMax": 0
+  }
+ },
+ "soc_nau": {
+  "cao/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "cao/move": {
+   "distinct": 60,
+   "strayViolations": 1,
+   "groundDevMax": 1
+  },
+  "cao/attack": {
+   "distinct": 60,
+   "strayViolations": 4,
+   "groundDevMax": 1
+  },
+  "cao/hit": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 1
+  },
+  "cao/death": {
+   "distinct": 60,
+   "strayViolations": 3,
+   "groundDevMax": 0
+  },
+  "trung/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/move": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 2
+  },
+  "trung/attack": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 2
+  },
+  "trung/hit": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/death": {
+   "distinct": 60,
+   "strayViolations": 1,
+   "groundDevMax": 0
+  }
+ },
+ "ran_luc_linh": {
+  "cao/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "cao/move": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "cao/attack": {
+   "distinct": 60,
+   "strayViolations": 55,
+   "groundDevMax": 0
+  },
+  "cao/hit": {
+   "distinct": 60,
+   "strayViolations": 32,
+   "groundDevMax": 0
+  },
+  "cao/death": {
+   "distinct": 59,
+   "strayViolations": 1,
+   "groundDevMax": 0
+  },
+  "trung/idle": {
+   "distinct": 60,
+   "strayViolations": 56,
+   "groundDevMax": 0
+  },
+  "trung/move": {
+   "distinct": 60,
+   "strayViolations": 54,
+   "groundDevMax": 0
+  },
+  "trung/attack": {
+   "distinct": 60,
+   "strayViolations": 4,
+   "groundDevMax": 0
+  },
+  "trung/hit": {
+   "distinct": 60,
+   "strayViolations": 2,
+   "groundDevMax": 0
+  },
+  "trung/death": {
+   "distinct": 59,
+   "strayViolations": 8,
+   "groundDevMax": 0
+  }
+ },
+ "khi_linh": {
+  "cao/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "cao/move": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 1
+  },
+  "cao/attack": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "cao/hit": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 1
+  },
+  "cao/death": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/move": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/attack": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/hit": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/death": {
+   "distinct": 60,
+   "strayViolations": 2,
+   "groundDevMax": 0
+  }
+ },
+ "soi_rung": {
+  "cao/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "cao/move": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 1
+  },
+  "cao/attack": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 1
+  },
+  "cao/hit": {
+   "distinct": 58,
+   "strayViolations": 2,
+   "groundDevMax": 1
+  },
+  "cao/death": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/move": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/attack": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/hit": {
+   "distinct": 58,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/death": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  }
+ },
+ "thiet_tru": {
+  "cao/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "cao/move": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 1
+  },
+  "cao/attack": {
+   "distinct": 60,
+   "strayViolations": 22,
+   "groundDevMax": 1
+  },
+  "cao/hit": {
+   "distinct": 58,
+   "strayViolations": 0,
+   "groundDevMax": 1
+  },
+  "cao/death": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/move": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/attack": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/hit": {
+   "distinct": 58,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/death": {
+   "distinct": 60,
+   "strayViolations": 1,
+   "groundDevMax": 0
+  }
+ },
+ "ngan_lang": {
+  "cao/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "cao/move": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 1
+  },
+  "cao/attack": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "cao/hit": {
+   "distinct": 58,
+   "strayViolations": 0,
+   "groundDevMax": 1
+  },
+  "cao/death": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/move": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/attack": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/hit": {
+   "distinct": 58,
+   "strayViolations": 0,
+   "groundDevMax": 2
+  },
+  "trung/death": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  }
+ },
+ "rua_nui": {
+  "cao/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "cao/move": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 1
+  },
+  "cao/attack": {
+   "distinct": 60,
+   "strayViolations": 9,
+   "groundDevMax": 0
+  },
+  "cao/hit": {
+   "distinct": 58,
+   "strayViolations": 0,
+   "groundDevMax": 1
+  },
+  "cao/death": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/move": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 2
+  },
+  "trung/attack": {
+   "distinct": 60,
+   "strayViolations": 16,
+   "groundDevMax": 0
+  },
+  "trung/hit": {
+   "distinct": 58,
+   "strayViolations": 1,
+   "groundDevMax": 2
+  },
+  "trung/death": {
+   "distinct": 60,
+   "strayViolations": 6,
+   "groundDevMax": 0
+  }
+ },
+ "ca_chep_do": {
+  "cao/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "cao/move": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "cao/attack": {
+   "distinct": 60,
+   "strayViolations": 16,
+   "groundDevMax": 2
+  },
+  "cao/hit": {
+   "distinct": 60,
+   "strayViolations": 2,
+   "groundDevMax": 2
+  },
+  "cao/death": {
+   "distinct": 59,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/move": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/attack": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 2
+  },
+  "trung/hit": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 2
+  },
+  "trung/death": {
+   "distinct": 59,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  }
+ },
+ "de_trang": {
+  "cao/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "cao/move": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 1
+  },
+  "cao/attack": {
+   "distinct": 60,
+   "strayViolations": 134,
+   "groundDevMax": 7
+  },
+  "cao/hit": {
+   "distinct": 58,
+   "strayViolations": 30,
+   "groundDevMax": 1
+  },
+  "cao/death": {
+   "distinct": 60,
+   "strayViolations": 3,
+   "groundDevMax": 0
+  },
+  "trung/idle": {
+   "distinct": 60,
+   "strayViolations": 120,
+   "groundDevMax": 0
+  },
+  "trung/move": {
+   "distinct": 60,
+   "strayViolations": 72,
+   "groundDevMax": 16
+  },
+  "trung/attack": {
+   "distinct": 60,
+   "strayViolations": 7,
+   "groundDevMax": 16
+  },
+  "trung/hit": {
+   "distinct": 58,
+   "strayViolations": 30,
+   "groundDevMax": 2
+  },
+  "trung/death": {
+   "distinct": 60,
+   "strayViolations": 2,
+   "groundDevMax": 0
+  }
+ },
+ "cho_co": {
+  "cao/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "cao/move": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "cao/attack": {
+   "distinct": 60,
+   "strayViolations": 36,
+   "groundDevMax": 0
+  },
+  "cao/hit": {
+   "distinct": 58,
+   "strayViolations": 0,
+   "groundDevMax": 1
+  },
+  "cao/death": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/move": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/attack": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/hit": {
+   "distinct": 58,
+   "strayViolations": 0,
+   "groundDevMax": 2
+  },
+  "trung/death": {
+   "distinct": 60,
+   "strayViolations": 3,
+   "groundDevMax": 0
+  }
+ },
+ "buom_linh": {
+  "cao/idle": {
+   "distinct": 60,
+   "strayViolations": 31,
+   "groundDevMax": 0
+  },
+  "cao/move": {
+   "distinct": 60,
+   "strayViolations": 9,
+   "groundDevMax": 20
+  },
+  "cao/attack": {
+   "distinct": 60,
+   "strayViolations": 35,
+   "groundDevMax": 5
+  },
+  "cao/hit": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 1
+  },
+  "cao/death": {
+   "distinct": 60,
+   "strayViolations": 12,
+   "groundDevMax": 0
+  },
+  "trung/idle": {
+   "distinct": 60,
+   "strayViolations": 10,
+   "groundDevMax": 0
+  },
+  "trung/move": {
+   "distinct": 60,
+   "strayViolations": 14,
+   "groundDevMax": 18
+  },
+  "trung/attack": {
+   "distinct": 60,
+   "strayViolations": 75,
+   "groundDevMax": 24
+  },
+  "trung/hit": {
+   "distinct": 60,
+   "strayViolations": 59,
+   "groundDevMax": 4
+  },
+  "trung/death": {
+   "distinct": 60,
+   "strayViolations": 26,
+   "groundDevMax": 0
+  }
+ },
+ "ho_ly": {
+  "cao/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "cao/move": {
+   "distinct": 60,
+   "strayViolations": 28,
+   "groundDevMax": 0
+  },
+  "cao/attack": {
+   "distinct": 60,
+   "strayViolations": 11,
+   "groundDevMax": 0
+  },
+  "cao/hit": {
+   "distinct": 58,
+   "strayViolations": 0,
+   "groundDevMax": 1
+  },
+  "cao/death": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/move": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 2
+  },
+  "trung/attack": {
+   "distinct": 60,
+   "strayViolations": 15,
+   "groundDevMax": 0
+  },
+  "trung/hit": {
+   "distinct": 58,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/death": {
+   "distinct": 60,
+   "strayViolations": 3,
+   "groundDevMax": 0
+  }
+ },
+ "nai_sao": {
+  "cao/idle": {
+   "distinct": 60,
+   "strayViolations": 88,
+   "groundDevMax": 0
+  },
+  "cao/move": {
+   "distinct": 60,
+   "strayViolations": 54,
+   "groundDevMax": 1
+  },
+  "cao/attack": {
+   "distinct": 60,
+   "strayViolations": 83,
+   "groundDevMax": 1
+  },
+  "cao/hit": {
+   "distinct": 58,
+   "strayViolations": 54,
+   "groundDevMax": 1
+  },
+  "cao/death": {
+   "distinct": 60,
+   "strayViolations": 17,
+   "groundDevMax": 0
+  },
+  "trung/idle": {
+   "distinct": 60,
+   "strayViolations": 47,
+   "groundDevMax": 0
+  },
+  "trung/move": {
+   "distinct": 60,
+   "strayViolations": 39,
+   "groundDevMax": 4
+  },
+  "trung/attack": {
+   "distinct": 60,
+   "strayViolations": 14,
+   "groundDevMax": 18
+  },
+  "trung/hit": {
+   "distinct": 58,
+   "strayViolations": 57,
+   "groundDevMax": 20
+  },
+  "trung/death": {
+   "distinct": 60,
+   "strayViolations": 1,
+   "groundDevMax": 0
+  }
+ },
+ "hac_trang": {
+  "cao/idle": {
+   "distinct": 60,
+   "strayViolations": 26,
+   "groundDevMax": 0
+  },
+  "cao/move": {
+   "distinct": 58,
+   "strayViolations": 27,
+   "groundDevMax": 2
+  },
+  "cao/attack": {
+   "distinct": 58,
+   "strayViolations": 26,
+   "groundDevMax": 2
+  },
+  "cao/hit": {
+   "distinct": 58,
+   "strayViolations": 15,
+   "groundDevMax": 2
+  },
+  "cao/death": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/move": {
+   "distinct": 58,
+   "strayViolations": 12,
+   "groundDevMax": 2
+  },
+  "trung/attack": {
+   "distinct": 58,
+   "strayViolations": 36,
+   "groundDevMax": 22
+  },
+  "trung/hit": {
+   "distinct": 58,
+   "strayViolations": 21,
+   "groundDevMax": 2
+  },
+  "trung/death": {
+   "distinct": 60,
+   "strayViolations": 15,
+   "groundDevMax": 0
+  }
+ },
+ "cong_xanh": {
+  "cao/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "cao/move": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "cao/attack": {
+   "distinct": 60,
+   "strayViolations": 35,
+   "groundDevMax": 7
+  },
+  "cao/hit": {
+   "distinct": 60,
+   "strayViolations": 38,
+   "groundDevMax": 2
+  },
+  "cao/death": {
+   "distinct": 60,
+   "strayViolations": 2,
+   "groundDevMax": 0
+  },
+  "trung/idle": {
+   "distinct": 60,
+   "strayViolations": 60,
+   "groundDevMax": 0
+  },
+  "trung/move": {
+   "distinct": 60,
+   "strayViolations": 1,
+   "groundDevMax": 2
+  },
+  "trung/attack": {
+   "distinct": 60,
+   "strayViolations": 2,
+   "groundDevMax": 8
+  },
+  "trung/hit": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 8
+  },
+  "trung/death": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  }
+ },
+ "cu_meo": {
+  "cao/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "cao/move": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "cao/attack": {
+   "distinct": 60,
+   "strayViolations": 81,
+   "groundDevMax": 6
+  },
+  "cao/hit": {
+   "distinct": 60,
+   "strayViolations": 2,
+   "groundDevMax": 1
+  },
+  "cao/death": {
+   "distinct": 60,
+   "strayViolations": 1,
+   "groundDevMax": 0
+  },
+  "trung/idle": {
+   "distinct": 60,
+   "strayViolations": 4,
+   "groundDevMax": 0
+  },
+  "trung/move": {
+   "distinct": 60,
+   "strayViolations": 47,
+   "groundDevMax": 2
+  },
+  "trung/attack": {
+   "distinct": 60,
+   "strayViolations": 56,
+   "groundDevMax": 4
+  },
+  "trung/hit": {
+   "distinct": 60,
+   "strayViolations": 188,
+   "groundDevMax": 2
+  },
+  "trung/death": {
+   "distinct": 60,
+   "strayViolations": 13,
+   "groundDevMax": 0
+  }
+ },
+ "bao_dom": {
+  "cao/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "cao/move": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "cao/attack": {
+   "distinct": 60,
+   "strayViolations": 16,
+   "groundDevMax": 1
+  },
+  "cao/hit": {
+   "distinct": 58,
+   "strayViolations": 0,
+   "groundDevMax": 1
+  },
+  "cao/death": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/move": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 2
+  },
+  "trung/attack": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/hit": {
+   "distinct": 58,
+   "strayViolations": 0,
+   "groundDevMax": 2
+  },
+  "trung/death": {
+   "distinct": 60,
+   "strayViolations": 1,
+   "groundDevMax": 0
+  }
+ },
+ "te_te": {
+  "cao/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "cao/move": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 1
+  },
+  "cao/attack": {
+   "distinct": 60,
+   "strayViolations": 3,
+   "groundDevMax": 1
+  },
+  "cao/hit": {
+   "distinct": 58,
+   "strayViolations": 0,
+   "groundDevMax": 1
+  },
+  "cao/death": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/move": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/attack": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 2
+  },
+  "trung/hit": {
+   "distinct": 58,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/death": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  }
+ },
+ "ca_koi": {
+  "cao/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "cao/move": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "cao/attack": {
+   "distinct": 60,
+   "strayViolations": 124,
+   "groundDevMax": 0
+  },
+  "cao/hit": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 1
+  },
+  "cao/death": {
+   "distinct": 59,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/move": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/attack": {
+   "distinct": 60,
+   "strayViolations": 33,
+   "groundDevMax": 0
+  },
+  "trung/hit": {
+   "distinct": 60,
+   "strayViolations": 1,
+   "groundDevMax": 2
+  },
+  "trung/death": {
+   "distinct": 59,
+   "strayViolations": 6,
+   "groundDevMax": 0
+  }
+ },
+ "ran_hoa": {
+  "cao/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "cao/move": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "cao/attack": {
+   "distinct": 60,
+   "strayViolations": 57,
+   "groundDevMax": 0
+  },
+  "cao/hit": {
+   "distinct": 60,
+   "strayViolations": 3,
+   "groundDevMax": 0
+  },
+  "cao/death": {
+   "distinct": 59,
+   "strayViolations": 1,
+   "groundDevMax": 0
+  },
+  "trung/idle": {
+   "distinct": 60,
+   "strayViolations": 15,
+   "groundDevMax": 0
+  },
+  "trung/move": {
+   "distinct": 60,
+   "strayViolations": 11,
+   "groundDevMax": 0
+  },
+  "trung/attack": {
+   "distinct": 60,
+   "strayViolations": 44,
+   "groundDevMax": 0
+  },
+  "trung/hit": {
+   "distinct": 60,
+   "strayViolations": 4,
+   "groundDevMax": 0
+  },
+  "trung/death": {
+   "distinct": 59,
+   "strayViolations": 3,
+   "groundDevMax": 0
+  }
+ },
+ "khi_vang": {
+  "cao/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 1
+  },
+  "cao/move": {
+   "distinct": 60,
+   "strayViolations": 7,
+   "groundDevMax": 1
+  },
+  "cao/attack": {
+   "distinct": 60,
+   "strayViolations": 11,
+   "groundDevMax": 1
+  },
+  "cao/hit": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 1
+  },
+  "cao/death": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 2
+  },
+  "trung/move": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 2
+  },
+  "trung/attack": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/hit": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/death": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  }
+ },
+ "ngua_con": {
+  "cao/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "cao/move": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 1
+  },
+  "cao/attack": {
+   "distinct": 60,
+   "strayViolations": 75,
+   "groundDevMax": 1
+  },
+  "cao/hit": {
+   "distinct": 58,
+   "strayViolations": 28,
+   "groundDevMax": 1
+  },
+  "cao/death": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/idle": {
+   "distinct": 60,
+   "strayViolations": 31,
+   "groundDevMax": 0
+  },
+  "trung/move": {
+   "distinct": 60,
+   "strayViolations": 27,
+   "groundDevMax": 0
+  },
+  "trung/attack": {
+   "distinct": 60,
+   "strayViolations": 4,
+   "groundDevMax": 0
+  },
+  "trung/hit": {
+   "distinct": 58,
+   "strayViolations": 3,
+   "groundDevMax": 0
+  },
+  "trung/death": {
+   "distinct": 60,
+   "strayViolations": 1,
+   "groundDevMax": 0
+  }
+ },
+ "doi_linh": {
+  "cao/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "cao/move": {
+   "distinct": 58,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "cao/attack": {
+   "distinct": 58,
+   "strayViolations": 91,
+   "groundDevMax": 5
+  },
+  "cao/hit": {
+   "distinct": 58,
+   "strayViolations": 22,
+   "groundDevMax": 4
+  },
+  "cao/death": {
+   "distinct": 60,
+   "strayViolations": 30,
+   "groundDevMax": 0
+  },
+  "trung/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/move": {
+   "distinct": 58,
+   "strayViolations": 21,
+   "groundDevMax": 2
+  },
+  "trung/attack": {
+   "distinct": 58,
+   "strayViolations": 88,
+   "groundDevMax": 2
+  },
+  "trung/hit": {
+   "distinct": 58,
+   "strayViolations": 100,
+   "groundDevMax": 2
+  },
+  "trung/death": {
+   "distinct": 60,
+   "strayViolations": 44,
+   "groundDevMax": 0
+  }
+ },
+ "ho_ba_duoi": {
+  "cao/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "cao/move": {
+   "distinct": 60,
+   "strayViolations": 16,
+   "groundDevMax": 1
+  },
+  "cao/attack": {
+   "distinct": 60,
+   "strayViolations": 7,
+   "groundDevMax": 0
+  },
+  "cao/hit": {
+   "distinct": 58,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "cao/death": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/move": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/attack": {
+   "distinct": 60,
+   "strayViolations": 14,
+   "groundDevMax": 0
+  },
+  "trung/hit": {
+   "distinct": 58,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/death": {
+   "distinct": 60,
+   "strayViolations": 3,
+   "groundDevMax": 0
+  }
+ },
+ "quy_linh": {
+  "cao/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "cao/move": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 1
+  },
+  "trung/move": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 2
+  },
+  "cao/attack": {
+   "distinct": 60,
+   "strayViolations": 30,
+   "groundDevMax": 1
+  },
+  "trung/attack": {
+   "distinct": 60,
+   "strayViolations": 41,
+   "groundDevMax": 4
+  },
+  "cao/hit": {
+   "distinct": 60,
+   "strayViolations": 17,
+   "groundDevMax": 2
+  },
+  "trung/hit": {
+   "distinct": 60,
+   "strayViolations": 11,
+   "groundDevMax": 0
+  },
+  "cao/death": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/death": {
+   "distinct": 60,
+   "strayViolations": 7,
+   "groundDevMax": 0
+  }
+ },
+ "bach_hac": {
+  "cao/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "cao/move": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "cao/attack": {
+   "distinct": 60,
+   "strayViolations": 59,
+   "groundDevMax": 2
+  },
+  "cao/hit": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 1
+  },
+  "cao/death": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/move": {
+   "distinct": 60,
+   "strayViolations": 4,
+   "groundDevMax": 0
+  },
+  "trung/attack": {
+   "distinct": 60,
+   "strayViolations": 66,
+   "groundDevMax": 0
+  },
+  "trung/hit": {
+   "distinct": 60,
+   "strayViolations": 11,
+   "groundDevMax": 2
+  },
+  "trung/death": {
+   "distinct": 60,
+   "strayViolations": 1,
+   "groundDevMax": 0
+  }
+ },
+ "giao_xa": {
+  "cao/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "cao/move": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "cao/attack": {
+   "distinct": 60,
+   "strayViolations": 22,
+   "groundDevMax": 0
+  },
+  "cao/hit": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 1
+  },
+  "cao/death": {
+   "distinct": 59,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/move": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/attack": {
+   "distinct": 60,
+   "strayViolations": 3,
+   "groundDevMax": 0
+  },
+  "trung/hit": {
+   "distinct": 60,
+   "strayViolations": 3,
+   "groundDevMax": 0
+  },
+  "trung/death": {
+   "distinct": 59,
+   "strayViolations": 7,
+   "groundDevMax": 0
+  }
+ },
+ "ky_lan_con": {
+  "cao/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "cao/move": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 1
+  },
+  "cao/attack": {
+   "distinct": 60,
+   "strayViolations": 12,
+   "groundDevMax": 0
+  },
+  "cao/hit": {
+   "distinct": 58,
+   "strayViolations": 0,
+   "groundDevMax": 1
+  },
+  "cao/death": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/move": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/attack": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/hit": {
+   "distinct": 58,
+   "strayViolations": 0,
+   "groundDevMax": 2
+  },
+  "trung/death": {
+   "distinct": 60,
+   "strayViolations": 2,
+   "groundDevMax": 0
+  }
+ },
+ "lang_vuong_con": {
+  "cao/idle": {
+   "distinct": 60,
+   "strayViolations": 75,
+   "groundDevMax": 0
+  },
+  "cao/move": {
+   "distinct": 60,
+   "strayViolations": 20,
+   "groundDevMax": 1
+  },
+  "cao/attack": {
+   "distinct": 60,
+   "strayViolations": 5,
+   "groundDevMax": 1
+  },
+  "cao/hit": {
+   "distinct": 58,
+   "strayViolations": 19,
+   "groundDevMax": 1
+  },
+  "cao/death": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/idle": {
+   "distinct": 60,
+   "strayViolations": 4,
+   "groundDevMax": 0
+  },
+  "trung/move": {
+   "distinct": 60,
+   "strayViolations": 5,
+   "groundDevMax": 2
+  },
+  "trung/attack": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/hit": {
+   "distinct": 58,
+   "strayViolations": 0,
+   "groundDevMax": 2
+  },
+  "trung/death": {
+   "distinct": 60,
+   "strayViolations": 1,
+   "groundDevMax": 0
+  }
+ },
+ "diep_linh": {
+  "cao/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "cao/move": {
+   "distinct": 58,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "cao/attack": {
+   "distinct": 58,
+   "strayViolations": 44,
+   "groundDevMax": 0
+  },
+  "cao/hit": {
+   "distinct": 58,
+   "strayViolations": 142,
+   "groundDevMax": 1
+  },
+  "cao/death": {
+   "distinct": 60,
+   "strayViolations": 4,
+   "groundDevMax": 0
+  },
+  "trung/idle": {
+   "distinct": 60,
+   "strayViolations": 164,
+   "groundDevMax": 0
+  },
+  "trung/move": {
+   "distinct": 58,
+   "strayViolations": 160,
+   "groundDevMax": 0
+  },
+  "trung/attack": {
+   "distinct": 58,
+   "strayViolations": 2,
+   "groundDevMax": 0
+  },
+  "trung/hit": {
+   "distinct": 58,
+   "strayViolations": 8,
+   "groundDevMax": 0
+  },
+  "trung/death": {
+   "distinct": 60,
+   "strayViolations": 3,
+   "groundDevMax": 0
+  }
+ },
+ "phuong_con": {
+  "cao/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "cao/move": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "cao/attack": {
+   "distinct": 60,
+   "strayViolations": 72,
+   "groundDevMax": 2
+  },
+  "cao/hit": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 1
+  },
+  "cao/death": {
+   "distinct": 60,
+   "strayViolations": 1,
+   "groundDevMax": 0
+  },
+  "trung/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/move": {
+   "distinct": 60,
+   "strayViolations": 25,
+   "groundDevMax": 2
+  },
+  "trung/attack": {
+   "distinct": 60,
+   "strayViolations": 21,
+   "groundDevMax": 2
+  },
+  "trung/hit": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/death": {
+   "distinct": 60,
+   "strayViolations": 2,
+   "groundDevMax": 0
+  }
+ },
+ "hau_vuong_con": {
+  "cao/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 1
+  },
+  "cao/move": {
+   "distinct": 60,
+   "strayViolations": 3,
+   "groundDevMax": 1
+  },
+  "cao/attack": {
+   "distinct": 60,
+   "strayViolations": 24,
+   "groundDevMax": 1
+  },
+  "cao/hit": {
+   "distinct": 60,
+   "strayViolations": 3,
+   "groundDevMax": 1
+  },
+  "cao/death": {
+   "distinct": 60,
+   "strayViolations": 1,
+   "groundDevMax": 0
+  },
+  "trung/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/move": {
+   "distinct": 60,
+   "strayViolations": 8,
+   "groundDevMax": 2
+  },
+  "trung/attack": {
+   "distinct": 60,
+   "strayViolations": 46,
+   "groundDevMax": 0
+  },
+  "trung/hit": {
+   "distinct": 60,
+   "strayViolations": 36,
+   "groundDevMax": 2
+  },
+  "trung/death": {
+   "distinct": 60,
+   "strayViolations": 20,
+   "groundDevMax": 0
+  }
+ },
+ "bang_long_con": {
+  "cao/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "cao/move": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 1
+  },
+  "cao/attack": {
+   "distinct": 60,
+   "strayViolations": 32,
+   "groundDevMax": 0
+  },
+  "cao/hit": {
+   "distinct": 58,
+   "strayViolations": 0,
+   "groundDevMax": 1
+  },
+  "cao/death": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/move": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 2
+  },
+  "trung/attack": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/hit": {
+   "distinct": 58,
+   "strayViolations": 0,
+   "groundDevMax": 2
+  },
+  "trung/death": {
+   "distinct": 60,
+   "strayViolations": 1,
+   "groundDevMax": 0
+  }
+ },
+ "loi_ho": {
+  "cao/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "cao/move": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 1
+  },
+  "cao/attack": {
+   "distinct": 60,
+   "strayViolations": 20,
+   "groundDevMax": 0
+  },
+  "cao/hit": {
+   "distinct": 58,
+   "strayViolations": 0,
+   "groundDevMax": 1
+  },
+  "cao/death": {
+   "distinct": 60,
+   "strayViolations": 1,
+   "groundDevMax": 0
+  },
+  "trung/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/move": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 2
+  },
+  "trung/attack": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/hit": {
+   "distinct": 58,
+   "strayViolations": 0,
+   "groundDevMax": 2
+  },
+  "trung/death": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  }
+ },
+ "ung_linh": {
+  "cao/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "cao/move": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 1
+  },
+  "cao/attack": {
+   "distinct": 60,
+   "strayViolations": 13,
+   "groundDevMax": 5
+  },
+  "cao/hit": {
+   "distinct": 60,
+   "strayViolations": 1,
+   "groundDevMax": 1
+  },
+  "cao/death": {
+   "distinct": 60,
+   "strayViolations": 30,
+   "groundDevMax": 0
+  },
+  "trung/idle": {
+   "distinct": 60,
+   "strayViolations": 133,
+   "groundDevMax": 0
+  },
+  "trung/move": {
+   "distinct": 60,
+   "strayViolations": 40,
+   "groundDevMax": 2
+  },
+  "trung/attack": {
+   "distinct": 60,
+   "strayViolations": 45,
+   "groundDevMax": 12
+  },
+  "trung/hit": {
+   "distinct": 60,
+   "strayViolations": 11,
+   "groundDevMax": 2
+  },
+  "trung/death": {
+   "distinct": 60,
+   "strayViolations": 53,
+   "groundDevMax": 0
+  }
+ },
+ "hoa_phuong": {
+  "cao/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "cao/move": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "cao/attack": {
+   "distinct": 60,
+   "strayViolations": 31,
+   "groundDevMax": 1
+  },
+  "cao/hit": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 1
+  },
+  "cao/death": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/move": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/attack": {
+   "distinct": 60,
+   "strayViolations": 71,
+   "groundDevMax": 0
+  },
+  "trung/hit": {
+   "distinct": 60,
+   "strayViolations": 2,
+   "groundDevMax": 2
+  },
+  "trung/death": {
+   "distinct": 60,
+   "strayViolations": 5,
+   "groundDevMax": 0
+  }
+ },
+ "thanh_quy": {
+  "cao/idle": {
+   "distinct": 60,
+   "strayViolations": 154,
+   "groundDevMax": 0
+  },
+  "cao/move": {
+   "distinct": 60,
+   "strayViolations": 22,
+   "groundDevMax": 1
+  },
+  "cao/attack": {
+   "distinct": 60,
+   "strayViolations": 15,
+   "groundDevMax": 1
+  },
+  "cao/hit": {
+   "distinct": 58,
+   "strayViolations": 9,
+   "groundDevMax": 1
+  },
+  "cao/death": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/idle": {
+   "distinct": 60,
+   "strayViolations": 120,
+   "groundDevMax": 0
+  },
+  "trung/move": {
+   "distinct": 60,
+   "strayViolations": 12,
+   "groundDevMax": 2
+  },
+  "trung/attack": {
+   "distinct": 60,
+   "strayViolations": 7,
+   "groundDevMax": 0
+  },
+  "trung/hit": {
+   "distinct": 58,
+   "strayViolations": 8,
+   "groundDevMax": 2
+  },
+  "trung/death": {
+   "distinct": 60,
+   "strayViolations": 7,
+   "groundDevMax": 0
+  }
+ },
+ "ngu_sac_phuong": {
+  "cao/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "cao/move": {
+   "distinct": 58,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "cao/attack": {
+   "distinct": 58,
+   "strayViolations": 14,
+   "groundDevMax": 0
+  },
+  "cao/hit": {
+   "distinct": 58,
+   "strayViolations": 4,
+   "groundDevMax": 0
+  },
+  "cao/death": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/idle": {
+   "distinct": 60,
+   "strayViolations": 18,
+   "groundDevMax": 0
+  },
+  "trung/move": {
+   "distinct": 58,
+   "strayViolations": 5,
+   "groundDevMax": 0
+  },
+  "trung/attack": {
+   "distinct": 58,
+   "strayViolations": 37,
+   "groundDevMax": 0
+  },
+  "trung/hit": {
+   "distinct": 58,
+   "strayViolations": 81,
+   "groundDevMax": 0
+  },
+  "trung/death": {
+   "distinct": 60,
+   "strayViolations": 6,
+   "groundDevMax": 0
+  }
+ },
+ "thanh_long_con": {
+  "cao/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "cao/move": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 1
+  },
+  "cao/attack": {
+   "distinct": 60,
+   "strayViolations": 7,
+   "groundDevMax": 0
+  },
+  "cao/hit": {
+   "distinct": 58,
+   "strayViolations": 0,
+   "groundDevMax": 1
+  },
+  "cao/death": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/move": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/attack": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/hit": {
+   "distinct": 58,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/death": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  }
+ },
+ "bach_ho_linh": {
+  "cao/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "cao/move": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 1
+  },
+  "cao/attack": {
+   "distinct": 60,
+   "strayViolations": 23,
+   "groundDevMax": 2
+  },
+  "cao/hit": {
+   "distinct": 58,
+   "strayViolations": 0,
+   "groundDevMax": 1
+  },
+  "cao/death": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/move": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 2
+  },
+  "trung/attack": {
+   "distinct": 60,
+   "strayViolations": 57,
+   "groundDevMax": 0
+  },
+  "trung/hit": {
+   "distinct": 58,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/death": {
+   "distinct": 60,
+   "strayViolations": 5,
+   "groundDevMax": 0
+  }
+ },
+ "kim_xi_dieu": {
+  "cao/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "cao/move": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "cao/attack": {
+   "distinct": 60,
+   "strayViolations": 28,
+   "groundDevMax": 1
+  },
+  "cao/hit": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "cao/death": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/move": {
+   "distinct": 60,
+   "strayViolations": 7,
+   "groundDevMax": 0
+  },
+  "trung/attack": {
+   "distinct": 60,
+   "strayViolations": 34,
+   "groundDevMax": 0
+  },
+  "trung/hit": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/death": {
+   "distinct": 60,
+   "strayViolations": 2,
+   "groundDevMax": 0
+  }
+ },
+ "kim_ke": {
+  "cao/idle": {
+   "distinct": 60,
+   "strayViolations": 121,
+   "groundDevMax": 0
+  },
+  "cao/move": {
+   "distinct": 58,
+   "strayViolations": 0,
+   "groundDevMax": 1
+  },
+  "cao/attack": {
+   "distinct": 58,
+   "strayViolations": 62,
+   "groundDevMax": 9
+  },
+  "cao/hit": {
+   "distinct": 58,
+   "strayViolations": 0,
+   "groundDevMax": 1
+  },
+  "cao/death": {
+   "distinct": 60,
+   "strayViolations": 16,
+   "groundDevMax": 0
+  },
+  "trung/idle": {
+   "distinct": 60,
+   "strayViolations": 83,
+   "groundDevMax": 4
+  },
+  "trung/move": {
+   "distinct": 58,
+   "strayViolations": 0,
+   "groundDevMax": 2
+  },
+  "trung/attack": {
+   "distinct": 58,
+   "strayViolations": 154,
+   "groundDevMax": 6
+  },
+  "trung/hit": {
+   "distinct": 58,
+   "strayViolations": 157,
+   "groundDevMax": 4
+  },
+  "trung/death": {
+   "distinct": 60,
+   "strayViolations": 15,
+   "groundDevMax": 0
+  }
+ },
+ "tho_ngoc": {
+  "cao/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "cao/move": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 1
+  },
+  "cao/attack": {
+   "distinct": 58,
+   "strayViolations": 2,
+   "groundDevMax": 0
+  },
+  "cao/hit": {
+   "distinct": 58,
+   "strayViolations": 19,
+   "groundDevMax": 1
+  },
+  "cao/death": {
+   "distinct": 60,
+   "strayViolations": 1,
+   "groundDevMax": 0
+  },
+  "trung/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/move": {
+   "distinct": 60,
+   "strayViolations": 59,
+   "groundDevMax": 0
+  },
+  "trung/attack": {
+   "distinct": 58,
+   "strayViolations": 60,
+   "groundDevMax": 0
+  },
+  "trung/hit": {
+   "distinct": 58,
+   "strayViolations": 53,
+   "groundDevMax": 0
+  },
+  "trung/death": {
+   "distinct": 60,
+   "strayViolations": 39,
+   "groundDevMax": 0
+  }
+ },
+ "soi_con": {
+  "cao/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "cao/move": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 1
+  },
+  "cao/attack": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "cao/hit": {
+   "distinct": 58,
+   "strayViolations": 0,
+   "groundDevMax": 1
+  },
+  "cao/death": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/move": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 2
+  },
+  "trung/attack": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/hit": {
+   "distinct": 58,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/death": {
+   "distinct": 60,
+   "strayViolations": 1,
+   "groundDevMax": 0
+  }
+ },
+ "lon_linh": {
+  "cao/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "cao/move": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 1
+  },
+  "cao/attack": {
+   "distinct": 60,
+   "strayViolations": 13,
+   "groundDevMax": 0
+  },
+  "cao/hit": {
+   "distinct": 58,
+   "strayViolations": 0,
+   "groundDevMax": 1
+  },
+  "cao/death": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/move": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/attack": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/hit": {
+   "distinct": 58,
+   "strayViolations": 0,
+   "groundDevMax": 2
+  },
+  "trung/death": {
+   "distinct": 60,
+   "strayViolations": 1,
+   "groundDevMax": 0
+  }
+ },
+ "linh_ke": {
+  "cao/idle": {
+   "distinct": 60,
+   "strayViolations": 54,
+   "groundDevMax": 0
+  },
+  "cao/move": {
+   "distinct": 60,
+   "strayViolations": 24,
+   "groundDevMax": 1
+  },
+  "cao/attack": {
+   "distinct": 60,
+   "strayViolations": 172,
+   "groundDevMax": 3
+  },
+  "cao/hit": {
+   "distinct": 60,
+   "strayViolations": 19,
+   "groundDevMax": 2
+  },
+  "cao/death": {
+   "distinct": 60,
+   "strayViolations": 4,
+   "groundDevMax": 0
+  },
+  "trung/idle": {
+   "distinct": 60,
+   "strayViolations": 178,
+   "groundDevMax": 8
+  },
+  "trung/move": {
+   "distinct": 60,
+   "strayViolations": 118,
+   "groundDevMax": 6
+  },
+  "trung/attack": {
+   "distinct": 60,
+   "strayViolations": 93,
+   "groundDevMax": 8
+  },
+  "trung/hit": {
+   "distinct": 60,
+   "strayViolations": 36,
+   "groundDevMax": 2
+  },
+  "trung/death": {
+   "distinct": 60,
+   "strayViolations": 37,
+   "groundDevMax": 0
+  }
+ },
+ "thanh_linh_xa": {
+  "cao/idle": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/idle": {
+   "distinct": 60,
+   "strayViolations": 2,
+   "groundDevMax": 0
+  },
+  "cao/move": {
+   "distinct": 60,
+   "strayViolations": 0,
+   "groundDevMax": 0
+  },
+  "trung/move": {
+   "distinct": 60,
+   "strayViolations": 2,
+   "groundDevMax": 0
+  },
+  "cao/attack": {
+   "distinct": 60,
+   "strayViolations": 67,
+   "groundDevMax": 6
+  },
+  "trung/attack": {
+   "distinct": 60,
+   "strayViolations": 8,
+   "groundDevMax": 4
+  },
+  "cao/hit": {
+   "distinct": 60,
+   "strayViolations": 14,
+   "groundDevMax": 1
+  },
+  "trung/hit": {
+   "distinct": 60,
+   "strayViolations": 9,
+   "groundDevMax": 2
+  },
+  "cao/death": {
+   "distinct": 60,
+   "strayViolations": 6,
+   "groundDevMax": 0
+  },
+  "trung/death": {
+   "distinct": 60,
+   "strayViolations": 1,
+   "groundDevMax": 0
+  }
+ }
+}
