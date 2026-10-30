@@ -1,0 +1,49 @@
+{
+ "tiers": {
+  "cao": "assets/yeu-dan-ai",
+  "trung": "assets/yeu-dan-md"
+ },
+ "types": {
+  "yeu_dan_1": {
+   "cellCao": 192,
+   "cellTrung": 120
+  },
+  "yeu_dan_2": {
+   "cellCao": 192,
+   "cellTrung": 120
+  },
+  "yeu_dan_3": {
+   "cellCao": 192,
+   "cellTrung": 120
+  }
+ },
+ "audit": {
+  "yeu_dan_1": {
+   "src": "media-generation-yeu-dan-v7-cap1-0-0e448ed9-e130-48d1-86b3-96d4bc5f5116.webp",
+   "comps": 10,
+   "opaquePx": 1262025,
+   "crop": [
+    1269,
+    1294
+   ]
+  },
+  "yeu_dan_2": {
+   "src": "media-generation-yeu-dan-v7-cap2-0-a1ad2a28-3927-4ab2-94f3-c312fe04d786.webp",
+   "comps": 40,
+   "opaquePx": 1322955,
+   "crop": [
+    1456,
+    1242
+   ]
+  },
+  "yeu_dan_3": {
+   "src": "media-generation-yeu-dan-v7-cap3-0-4ef38447-cf78-448d-b6d9-e5c9935bb80e.webp",
+   "comps": 2,
+   "opaquePx": 1293155,
+   "crop": [
+    1317,
+    1343
+   ]
+  }
+ }
+}

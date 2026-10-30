@@ -1,0 +1,236 @@
+{
+ "tiers": {
+  "cao": "assets/artifacts-ai",
+  "trung": "assets/artifacts-md"
+ },
+ "types": {
+  "ho_lo_thu_yeu": {
+   "cellCao": 192,
+   "cellTrung": 120
+  },
+  "kinh_chieu_yeu": {
+   "cellCao": 192,
+   "cellTrung": 120
+  },
+  "chuong_tran_hon": {
+   "cellCao": 192,
+   "cellTrung": 120
+  },
+  "day_troi_tien": {
+   "cellCao": 192,
+   "cellTrung": 120
+  },
+  "phi_kiem_bao": {
+   "cellCao": 192,
+   "cellTrung": 120
+  },
+  "an_tran_son": {
+   "cellCao": 192,
+   "cellTrung": 120
+  },
+  "thien_la_vong": {
+   "cellCao": 192,
+   "cellTrung": 120
+  },
+  "dinh_hai_than_chau": {
+   "cellCao": 192,
+   "cellTrung": 120
+  },
+  "ngoc_tu_linh": {
+   "cellCao": 192,
+   "cellTrung": 120
+  },
+  "ho_tam_boi": {
+   "cellCao": 192,
+   "cellTrung": 120
+  },
+  "tui_tru_vat": {
+   "cellCao": 192,
+   "cellTrung": 120
+  },
+  "than_hanh_boi": {
+   "cellCao": 192,
+   "cellTrung": 120
+  },
+  "tu_bao_bon": {
+   "cellCao": 192,
+   "cellTrung": 120
+  },
+  "dang_tu_khi": {
+   "cellCao": 192,
+   "cellTrung": 120
+  },
+  "dan_dinh_ngoc": {
+   "cellCao": 192,
+   "cellTrung": 120
+  },
+  "cuu_chuyen_linh_chau": {
+   "cellCao": 192,
+   "cellTrung": 120
+  }
+ },
+ "audit": {
+  "ho_lo_thu_yeu": {
+   "src": "media-generation-phap-bao-v7-sheet1-phap-khi-0-32df3bd6-52f2-4ba4-a8b1-2ad72d7f3d20.png",
+   "cell": 0,
+   "comps": 1,
+   "opaquePx": 90731,
+   "crop": [
+    314,
+    413
+   ]
+  },
+  "kinh_chieu_yeu": {
+   "src": "media-generation-phap-bao-v7-sheet1-phap-khi-0-32df3bd6-52f2-4ba4-a8b1-2ad72d7f3d20.png",
+   "cell": 1,
+   "comps": 1,
+   "opaquePx": 100860,
+   "crop": [
+    388,
+    410
+   ]
+  },
+  "chuong_tran_hon": {
+   "src": "media-generation-phap-bao-v7-sheet1-phap-khi-0-32df3bd6-52f2-4ba4-a8b1-2ad72d7f3d20.png",
+   "cell": 2,
+   "comps": 20,
+   "opaquePx": 78597,
+   "crop": [
+    350,
+    413
+   ]
+  },
+  "day_troi_tien": {
+   "src": "media-generation-phap-bao-v7-sheet1-phap-khi-0-32df3bd6-52f2-4ba4-a8b1-2ad72d7f3d20.png",
+   "cell": 3,
+   "comps": 3,
+   "opaquePx": 99587,
+   "crop": [
+    460,
+    336
+   ]
+  },
+  "phi_kiem_bao": {
+   "src": "media-generation-phap-bao-v7-regen-phi-kiem-bao-0-493a9122-94c9-462e-b180-2743f623f970.webp",
+   "cell": "single",
+   "comps": 59,
+   "opaquePx": 510579,
+   "crop": [
+    1436,
+    1430
+   ],
+   "regen": "art-artifacts-regen2.py"
+  },
+  "an_tran_son": {
+   "src": "media-generation-phap-bao-v7-sheet1-phap-khi-0-32df3bd6-52f2-4ba4-a8b1-2ad72d7f3d20.png",
+   "cell": 5,
+   "comps": 2,
+   "opaquePx": 132312,
+   "crop": [
+    459,
+    408
+   ]
+  },
+  "thien_la_vong": {
+   "src": "media-generation-phap-bao-v7-sheet1-phap-khi-0-32df3bd6-52f2-4ba4-a8b1-2ad72d7f3d20.png",
+   "cell": 6,
+   "comps": 3,
+   "opaquePx": 93973,
+   "crop": [
+    561,
+    416
+   ]
+  },
+  "dinh_hai_than_chau": {
+   "src": "media-generation-phap-bao-v7-sheet1-phap-khi-0-32df3bd6-52f2-4ba4-a8b1-2ad72d7f3d20.png",
+   "cell": 7,
+   "comps": 4,
+   "opaquePx": 128788,
+   "crop": [
+    392,
+    413
+   ]
+  },
+  "ngoc_tu_linh": {
+   "src": "media-generation-phap-bao-v7-sheet1-phap-khi-0-32df3bd6-52f2-4ba4-a8b1-2ad72d7f3d20.png",
+   "cell": 8,
+   "comps": 2,
+   "opaquePx": 69577,
+   "crop": [
+    399,
+    339
+   ]
+  },
+  "ho_tam_boi": {
+   "src": "media-generation-phap-bao-v7-sheet2-bao-vat-0-72e7fdb2-d2bf-412e-a4bb-6bcdc6030027.png",
+   "cell": 0,
+   "comps": 1,
+   "opaquePx": 62662,
+   "crop": [
+    265,
+    426
+   ]
+  },
+  "tui_tru_vat": {
+   "src": "media-generation-phap-bao-v7-sheet2-bao-vat-0-72e7fdb2-d2bf-412e-a4bb-6bcdc6030027.png",
+   "cell": 1,
+   "comps": 1,
+   "opaquePx": 136524,
+   "crop": [
+    438,
+    425
+   ]
+  },
+  "than_hanh_boi": {
+   "src": "media-generation-phap-bao-v7-regen-than-hanh-bo-0-6f30f347-4b45-4d4c-9481-f0316a6e54ef.webp",
+   "cell": "single",
+   "comps": 72,
+   "opaquePx": 579825,
+   "crop": [
+    1266,
+    1600
+   ],
+   "regen": "art-artifacts-regen2.py"
+  },
+  "tu_bao_bon": {
+   "src": "media-generation-phap-bao-v7-sheet2-bao-vat-0-72e7fdb2-d2bf-412e-a4bb-6bcdc6030027.png",
+   "cell": 3,
+   "comps": 3,
+   "opaquePx": 153389,
+   "crop": [
+    525,
+    397
+   ]
+  },
+  "dang_tu_khi": {
+   "src": "media-generation-phap-bao-v7-sheet2-bao-vat-0-72e7fdb2-d2bf-412e-a4bb-6bcdc6030027.png",
+   "cell": 4,
+   "comps": 8,
+   "opaquePx": 74414,
+   "crop": [
+    410,
+    384
+   ]
+  },
+  "dan_dinh_ngoc": {
+   "src": "media-generation-phap-bao-v7-sheet2-bao-vat-0-72e7fdb2-d2bf-412e-a4bb-6bcdc6030027.png",
+   "cell": 5,
+   "comps": 4,
+   "opaquePx": 73678,
+   "crop": [
+    332,
+    366
+   ]
+  },
+  "cuu_chuyen_linh_chau": {
+   "src": "media-generation-phap-bao-v7-sheet2-bao-vat-0-72e7fdb2-d2bf-412e-a4bb-6bcdc6030027.png",
+   "cell": 6,
+   "comps": 4,
+   "opaquePx": 89288,
+   "crop": [
+    521,
+    423
+   ]
+  }
+ }
+}
