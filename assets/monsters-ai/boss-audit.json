@@ -1,0 +1,1361 @@
+{
+ "frames": 5400,
+ "ok": 5400,
+ "violations": 0,
+ "violation_keys": [],
+ "empty_frames": 70,
+ "md5_mismatch": [],
+ "distinct_min": 19,
+ "sheets": {
+  "cao/boss_lang_vuong/right-idle": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_lang_vuong/right-move": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_lang_vuong/right-attack": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_lang_vuong/right-hit": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_lang_vuong/right-death": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_lang_vuong/front-idle": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_lang_vuong/front-move": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_lang_vuong/front-attack": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_lang_vuong/front-hit": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_lang_vuong/front-death": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_lang_vuong/back-idle": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_lang_vuong/back-move": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_lang_vuong/back-attack": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_lang_vuong/back-hit": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_lang_vuong/back-death": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_son_quan/right-idle": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_son_quan/right-move": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_son_quan/right-attack": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_son_quan/right-hit": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_son_quan/right-death": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_son_quan/front-idle": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_son_quan/front-move": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_son_quan/front-attack": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_son_quan/front-hit": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_son_quan/front-death": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_son_quan/back-idle": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_son_quan/back-move": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_son_quan/back-attack": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_son_quan/back-hit": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_son_quan/back-death": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_xa_vuong/right-idle": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_xa_vuong/right-move": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_xa_vuong/right-attack": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_xa_vuong/right-hit": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_xa_vuong/right-death": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_xa_vuong/front-idle": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_xa_vuong/front-move": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_xa_vuong/front-attack": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_xa_vuong/front-hit": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_xa_vuong/front-death": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_xa_vuong/back-idle": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_xa_vuong/back-move": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_xa_vuong/back-attack": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_xa_vuong/back-hit": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_xa_vuong/back-death": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_hau_vuong/right-idle": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_hau_vuong/right-move": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_hau_vuong/right-attack": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_hau_vuong/right-hit": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_hau_vuong/right-death": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_hau_vuong/front-idle": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_hau_vuong/front-move": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_hau_vuong/front-attack": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_hau_vuong/front-hit": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_hau_vuong/front-death": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_hau_vuong/back-idle": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_hau_vuong/back-move": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_hau_vuong/back-attack": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_hau_vuong/back-hit": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_hau_vuong/back-death": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_thiet_bi/right-idle": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_thiet_bi/right-move": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_thiet_bi/right-attack": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_thiet_bi/right-hit": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_thiet_bi/right-death": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_thiet_bi/front-idle": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_thiet_bi/front-move": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_thiet_bi/front-attack": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_thiet_bi/front-hit": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_thiet_bi/front-death": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_thiet_bi/back-idle": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_thiet_bi/back-move": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_thiet_bi/back-attack": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_thiet_bi/back-hit": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_thiet_bi/back-death": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_co_mang/right-idle": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_co_mang/right-move": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_co_mang/right-attack": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_co_mang/right-hit": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_co_mang/right-death": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_co_mang/front-idle": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_co_mang/front-move": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_co_mang/front-attack": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_co_mang/front-hit": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_co_mang/front-death": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_co_mang/back-idle": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_co_mang/back-move": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_co_mang/back-attack": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_co_mang/back-hit": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_co_mang/back-death": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_ho_vuong/right-idle": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_ho_vuong/right-move": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_ho_vuong/right-attack": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_ho_vuong/right-hit": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_ho_vuong/right-death": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_ho_vuong/front-idle": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_ho_vuong/front-move": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_ho_vuong/front-attack": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_ho_vuong/front-hit": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_ho_vuong/front-death": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_ho_vuong/back-idle": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_ho_vuong/back-move": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_ho_vuong/back-attack": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_ho_vuong/back-hit": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_ho_vuong/back-death": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_thiet_bi_ma/right-idle": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_thiet_bi_ma/right-move": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_thiet_bi_ma/right-attack": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_thiet_bi_ma/right-hit": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_thiet_bi_ma/right-death": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_thiet_bi_ma/front-idle": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_thiet_bi_ma/front-move": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_thiet_bi_ma/front-attack": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_thiet_bi_ma/front-hit": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_thiet_bi_ma/front-death": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_thiet_bi_ma/back-idle": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_thiet_bi_ma/back-move": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_thiet_bi_ma/back-attack": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_thiet_bi_ma/back-hit": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/boss_thiet_bi_ma/back-death": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/son_quan/right-idle": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/son_quan/right-move": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/son_quan/right-attack": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/son_quan/right-hit": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/son_quan/right-death": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/son_quan/front-idle": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/son_quan/front-move": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/son_quan/front-attack": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/son_quan/front-hit": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/son_quan/front-death": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/son_quan/back-idle": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/son_quan/back-move": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/son_quan/back-attack": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/son_quan/back-hit": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "cao/son_quan/back-death": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_lang_vuong/right-idle": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_lang_vuong/right-move": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_lang_vuong/right-attack": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_lang_vuong/right-hit": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_lang_vuong/right-death": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_lang_vuong/front-idle": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_lang_vuong/front-move": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_lang_vuong/front-attack": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_lang_vuong/front-hit": {
+   "distinct": 19,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_lang_vuong/front-death": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_lang_vuong/back-idle": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_lang_vuong/back-move": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_lang_vuong/back-attack": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_lang_vuong/back-hit": {
+   "distinct": 19,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_lang_vuong/back-death": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_son_quan/right-idle": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_son_quan/right-move": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_son_quan/right-attack": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_son_quan/right-hit": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_son_quan/right-death": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_son_quan/front-idle": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_son_quan/front-move": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_son_quan/front-attack": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_son_quan/front-hit": {
+   "distinct": 19,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_son_quan/front-death": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_son_quan/back-idle": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_son_quan/back-move": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_son_quan/back-attack": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_son_quan/back-hit": {
+   "distinct": 19,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_son_quan/back-death": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_xa_vuong/right-idle": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_xa_vuong/right-move": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_xa_vuong/right-attack": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_xa_vuong/right-hit": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_xa_vuong/right-death": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_xa_vuong/front-idle": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_xa_vuong/front-move": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_xa_vuong/front-attack": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_xa_vuong/front-hit": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_xa_vuong/front-death": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_xa_vuong/back-idle": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_xa_vuong/back-move": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_xa_vuong/back-attack": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_xa_vuong/back-hit": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_xa_vuong/back-death": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_hau_vuong/right-idle": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_hau_vuong/right-move": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_hau_vuong/right-attack": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_hau_vuong/right-hit": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_hau_vuong/right-death": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_hau_vuong/front-idle": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_hau_vuong/front-move": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_hau_vuong/front-attack": {
+   "distinct": 19,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_hau_vuong/front-hit": {
+   "distinct": 19,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_hau_vuong/front-death": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_hau_vuong/back-idle": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_hau_vuong/back-move": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_hau_vuong/back-attack": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_hau_vuong/back-hit": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_hau_vuong/back-death": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_thiet_bi/right-idle": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_thiet_bi/right-move": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_thiet_bi/right-attack": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_thiet_bi/right-hit": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_thiet_bi/right-death": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_thiet_bi/front-idle": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_thiet_bi/front-move": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_thiet_bi/front-attack": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_thiet_bi/front-hit": {
+   "distinct": 19,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_thiet_bi/front-death": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_thiet_bi/back-idle": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_thiet_bi/back-move": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_thiet_bi/back-attack": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_thiet_bi/back-hit": {
+   "distinct": 19,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_thiet_bi/back-death": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_co_mang/right-idle": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_co_mang/right-move": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_co_mang/right-attack": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_co_mang/right-hit": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_co_mang/right-death": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_co_mang/front-idle": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_co_mang/front-move": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_co_mang/front-attack": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_co_mang/front-hit": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_co_mang/front-death": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_co_mang/back-idle": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_co_mang/back-move": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_co_mang/back-attack": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_co_mang/back-hit": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_co_mang/back-death": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_ho_vuong/right-idle": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_ho_vuong/right-move": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_ho_vuong/right-attack": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_ho_vuong/right-hit": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_ho_vuong/right-death": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_ho_vuong/front-idle": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_ho_vuong/front-move": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_ho_vuong/front-attack": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_ho_vuong/front-hit": {
+   "distinct": 19,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_ho_vuong/front-death": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_ho_vuong/back-idle": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_ho_vuong/back-move": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_ho_vuong/back-attack": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_ho_vuong/back-hit": {
+   "distinct": 19,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_ho_vuong/back-death": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_thiet_bi_ma/right-idle": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_thiet_bi_ma/right-move": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_thiet_bi_ma/right-attack": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_thiet_bi_ma/right-hit": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_thiet_bi_ma/right-death": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_thiet_bi_ma/front-idle": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_thiet_bi_ma/front-move": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_thiet_bi_ma/front-attack": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_thiet_bi_ma/front-hit": {
+   "distinct": 19,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_thiet_bi_ma/front-death": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_thiet_bi_ma/back-idle": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_thiet_bi_ma/back-move": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_thiet_bi_ma/back-attack": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_thiet_bi_ma/back-hit": {
+   "distinct": 19,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/boss_thiet_bi_ma/back-death": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/son_quan/right-idle": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/son_quan/right-move": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/son_quan/right-attack": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/son_quan/right-hit": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/son_quan/right-death": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/son_quan/front-idle": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/son_quan/front-move": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/son_quan/front-attack": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/son_quan/front-hit": {
+   "distinct": 19,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/son_quan/front-death": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/son_quan/back-idle": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/son_quan/back-move": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/son_quan/back-attack": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/son_quan/back-hit": {
+   "distinct": 19,
+   "groundDev": 0,
+   "badComp": 0
+  },
+  "trung/son_quan/back-death": {
+   "distinct": 20,
+   "groundDev": 0,
+   "badComp": 0
+  }
+ }
+}
