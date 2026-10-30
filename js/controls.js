@@ -29,6 +29,16 @@
 
   var ZOOM_MIN = 0.6, ZOOM_MAX = 2.0;
 
+  // Vùng chạm tối thiểu (px) — lệnh Bui 12:34 ngày 2026-10-30 (nút nhỏ gọn
+  // hơn): hình nút VẼ có thể nhỏ hơn mức này, nhưng hộp chạm hiệu dụng
+  // không bao giờ dưới MIN_TOUCH để không bấm hụt trên điện thoại. Các nút
+  // vẽ bằng "mặt" (face) nhỏ nằm giữa hộp chạm trong suốt (xem place()).
+  var MIN_TOUCH = 40;
+  function touchHit(visualPx) {
+    visualPx = +visualPx || 0;
+    return Math.max(visualPx, MIN_TOUCH);
+  }
+
   // Các hành động gán được phím PC. 'move' = 4 hướng; còn lại là hành động
   // bấm (fire). Mặc định PHẢI y hệt phím cứng hiện tại trong game.js.
   var KEY_ACTIONS = [
@@ -233,45 +243,51 @@
    * Toạ độ theo TỈ LỆ của hộp khung game (#gameWrap): x, y = tâm phần tử
    * theo bề ngang/dọc của hộp; d = đường kính theo bề NHỎ hơn của hộp.
    * Cùng một bảng số này lái cả CSS thực tế (JS đặt px theo tỉ lệ) lẫn
-   * ảnh xem trước — sửa 1 chỗ, cả hai cùng đổi. */
+   * ảnh xem trước — sửa 1 chỗ, cả hai cùng đổi.
+   * THU NHỎ theo lệnh Bui 12:34 ngày 2026-10-30 (bản cũ 07:11 bị chê TO,
+   * che nhiều khung hình): mọi d giảm ~25–35% — Đánh ngang 0.185->0.13 /
+   * dọc 0.165->0.115 (vẫn to nhất cụm), chiêu 0.125->0.088 / 0.11->0.078,
+   * joystick + D-pad 0.34->0.24 / 0.30->0.21, zoom 0.095->0.07 / 0.085->
+   * 0.062. Cụm chiêu ép sát góc dưới-phải quanh nút Đánh, joystick gọn ở
+   * góc dưới-trái; hộp chạm giữ >= 40px nhờ mặt vẽ nhỏ hơn hộp (MIN_TOUCH). */
   var LAYOUTS = {
     landscape: {
       label: 'Màn hình NGANG',
-      joy: { x: 0.085, y: 0.76, d: 0.34 },
-      dpad: { x: 0.085, y: 0.76, d: 0.34 },
-      // Vòng cung nút chiêu quanh góc dưới-phải: Đánh to nhất ở tâm cung.
+      joy: { x: 0.095, y: 0.78, d: 0.24 },
+      dpad: { x: 0.095, y: 0.78, d: 0.24 },
+      // Vòng cung nút chiêu ôm sát góc dưới-phải: Đánh to nhất ở tâm cung.
       skills: [
-        { id: 'attack', x: 0.918, y: 0.76, d: 0.185 },
-        { id: 'skill1', x: 0.838, y: 0.635, d: 0.125 },
-        { id: 'skill2', x: 0.762, y: 0.755, d: 0.125 },
-        { id: 'skill3', x: 0.838, y: 0.885, d: 0.125 },
-        { id: 'skill4', x: 0.925, y: 0.545, d: 0.115 },
-        { id: 'skill5', x: 0.945, y: 0.62, d: 0.115 },
-        { id: 'interact', x: 0.945, y: 0.885, d: 0.115 }
+        { id: 'attack', x: 0.925, y: 0.78, d: 0.13 },
+        { id: 'skill1', x: 0.83, y: 0.66, d: 0.088 },
+        { id: 'skill2', x: 0.775, y: 0.79, d: 0.088 },
+        { id: 'skill3', x: 0.845, y: 0.90, d: 0.088 },
+        { id: 'skill4', x: 0.895, y: 0.615, d: 0.082 },
+        { id: 'skill5', x: 0.958, y: 0.675, d: 0.082 },
+        { id: 'interact', x: 0.95, y: 0.90, d: 0.082 }
       ],
-      zoomIn: { x: 0.955, y: 0.335, d: 0.095 },
-      zoomOut: { x: 0.955, y: 0.455, d: 0.095 },
-      zoomReset: { x: 0.955, y: 0.575, d: 0.095 },
+      zoomIn: { x: 0.955, y: 0.335, d: 0.07 },
+      zoomOut: { x: 0.955, y: 0.455, d: 0.07 },
+      zoomReset: { x: 0.955, y: 0.575, d: 0.07 },
       hudSlot: { x: 0.89, y: 0.14, d: 0.26 }, // ô chừa HUD phụ góc trên-phải (minimap khi có)
       padHint: { x: 0.5, y: 0.035 }
     },
     portrait: {
       label: 'Màn hình DỌC',
       // Hàng điều khiển dồn ở khoang dưới (deck) của khung dọc.
-      joy: { x: 0.16, y: 0.885, d: 0.30 },
-      dpad: { x: 0.16, y: 0.885, d: 0.30 },
+      joy: { x: 0.15, y: 0.89, d: 0.21 },
+      dpad: { x: 0.15, y: 0.89, d: 0.21 },
       skills: [
-        { id: 'attack', x: 0.845, y: 0.885, d: 0.165 },
-        { id: 'skill1', x: 0.685, y: 0.815, d: 0.11 },
-        { id: 'skill2', x: 0.655, y: 0.93, d: 0.11 },
-        { id: 'skill3', x: 0.845, y: 0.755, d: 0.11 },
-        { id: 'skill4', x: 0.94, y: 0.795, d: 0.105 },
-        { id: 'skill5', x: 0.94, y: 0.945, d: 0.105 },
-        { id: 'interact', x: 0.72, y: 0.755, d: 0.105 }
+        { id: 'attack', x: 0.85, y: 0.89, d: 0.115 },
+        { id: 'skill1', x: 0.70, y: 0.845, d: 0.078 },
+        { id: 'skill2', x: 0.685, y: 0.935, d: 0.078 },
+        { id: 'skill3', x: 0.85, y: 0.795, d: 0.078 },
+        { id: 'skill4', x: 0.945, y: 0.845, d: 0.075 },
+        { id: 'skill5', x: 0.945, y: 0.94, d: 0.075 },
+        { id: 'interact', x: 0.715, y: 0.78, d: 0.075 }
       ],
-      zoomIn: { x: 0.945, y: 0.075, d: 0.085 },
-      zoomOut: { x: 0.945, y: 0.165, d: 0.085 },
-      zoomReset: { x: 0.945, y: 0.255, d: 0.085 },
+      zoomIn: { x: 0.945, y: 0.075, d: 0.062 },
+      zoomOut: { x: 0.945, y: 0.165, d: 0.062 },
+      zoomReset: { x: 0.945, y: 0.255, d: 0.062 },
       hudSlot: { x: 0.135, y: 0.07, d: 0.24 }, // ô chừa HUD phụ góc trên-trái (minimap nhỏ)
       padHint: { x: 0.5, y: 0.03 }
     }
@@ -439,18 +455,21 @@
     '#ctlOverlay.on{display:block}',
     '#ctlOverlay .ctl-el{position:absolute;pointer-events:auto;touch-action:none;user-select:none;-webkit-user-select:none}',
     '#ctlJoyZone{left:0;bottom:0;width:46%;height:58%;pointer-events:auto;touch-action:none}',
-    '#ctlJoy{border:2px solid rgba(245,238,218,.55);background:rgba(26,20,14,.38);border-radius:50%;display:none}',
-    '#ctlJoyKnob{position:absolute;left:50%;top:50%;width:44%;height:44%;margin:-22% 0 0 -22%;background:rgba(245,238,218,.5);border:2px solid rgba(26,20,14,.5);border-radius:50%}',
+    '#ctlJoy{border:2px solid rgba(245,238,218,.55);background:rgba(26,20,14,.28);border-radius:50%;display:none}',
+    '#ctlJoyKnob{position:absolute;left:50%;top:50%;width:44%;height:44%;margin:-22% 0 0 -22%;background:rgba(245,238,218,.45);border:2px solid rgba(26,20,14,.5);border-radius:50%}',
     '#ctlDpad{display:none}',
-    '#ctlDpad .dpb{position:absolute;background:rgba(26,20,14,.5);color:#f5eeda;border:2px solid rgba(245,238,218,.55);border-radius:10px;font-weight:bold;display:flex;align-items:center;justify-content:center}',
-    '#ctlDpad .dpb.on{background:rgba(122,59,34,.75)}',
-    '.ctl-skill{background:rgba(26,20,14,.55);color:#f5eeda;border:2px solid #c9a227;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;line-height:1.1;padding:2px}',
+    '#ctlDpad .dpb{position:absolute;display:flex;align-items:center;justify-content:center}',
+    '#ctlDpad .dpface{background:rgba(26,20,14,.38);color:#f5eeda;border:2px solid rgba(245,238,218,.55);border-radius:9px;font-weight:bold;display:flex;align-items:center;justify-content:center;pointer-events:none;box-sizing:border-box}',
+    '#ctlDpad .dpb.on .dpface{background:rgba(122,59,34,.7)}',
+    '.ctl-skill{background:transparent;border:none}',
+    '.ctl-skill .ctl-face{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:rgba(26,20,14,.40);color:#f5eeda;border:2px solid #c9a227;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;line-height:1.05;padding:1px;pointer-events:none;box-sizing:border-box}',
     '.ctl-skill .sn{font-weight:bold;pointer-events:none}',
     '.ctl-skill .sk{color:#ffd94a;pointer-events:none}',
-    '.ctl-skill.on{background:rgba(122,59,34,.8)}',
-    '.ctl-skill.big{border-color:#ffd94a;background:rgba(64,32,16,.65)}',
+    '.ctl-skill.on .ctl-face{background:rgba(122,59,34,.72)}',
+    '.ctl-skill.big .ctl-face{border-color:#ffd94a;background:rgba(64,32,16,.5)}',
     '#ctlZoom{position:absolute;pointer-events:none}',
-    '.ctl-zbtn{position:absolute;pointer-events:auto;background:rgba(26,20,14,.55);color:#f5eeda;border:2px solid rgba(245,238,218,.55);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;touch-action:none;user-select:none;-webkit-user-select:none}',
+    '.ctl-zbtn{position:absolute;pointer-events:auto;background:transparent;touch-action:none;user-select:none;-webkit-user-select:none}',
+    '.ctl-zbtn .ctl-zface{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:rgba(26,20,14,.40);color:#f5eeda;border:2px solid rgba(245,238,218,.55);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;pointer-events:none;box-sizing:border-box}',
     '#ctlPadHint{display:none;background:rgba(26,20,14,.72);color:#ffe9a8;border:1px solid #c9a227;border-radius:14px;padding:2px 10px;font-size:12px;white-space:nowrap;transform:translateX(-50%)}',
     '#ctlToast{position:fixed;top:14px;left:50%;transform:translateX(-50%);background:rgba(26,20,14,.92);color:#ffe9a8;border:2px solid #c9a227;border-radius:8px;padding:8px 16px;z-index:99;display:none;font-size:14px}',
     'body.pnt-pt #gameWrap{padding-bottom:200px}',
@@ -511,7 +530,8 @@
     var dpad = mk('div', 'ctlDpad', 'ctl-el');
     [['up', '↑', 1, 0], ['left', '←', 0, 1], ['right', '→', 2, 1], ['down', '↓', 1, 2]].forEach(function (b) {
       var btn = mk('div', null, 'dpb');
-      btn.textContent = b[1];
+      btn.innerHTML = '<span class="dpface"></span>';
+      btn.querySelector('.dpface').textContent = b[1];
       btn.setAttribute('data-dir', b[0]);
       btn._gx = b[2]; btn._gy = b[3];
       dpad.appendChild(btn);
@@ -531,7 +551,7 @@
       b.setAttribute('data-act', d.id);
       var nm = d.name;
       if (d.id.indexOf('skill') === 0) nm = skillShortName(d.id, d.name);
-      b.innerHTML = '<span class="sn"></span><span class="sk"></span>';
+      b.innerHTML = '<span class="ctl-face"><span class="sn"></span><span class="sk"></span></span>';
       b.querySelector('.sn').textContent = nm;
       b.querySelector('.sk').textContent = d.key;
       skills.appendChild(b);
@@ -539,7 +559,8 @@
     var zoomBox = mk('div', 'ctlZoom');
     [['zoomIn', '+'], ['zoomOut', '−'], ['zoomReset', '1:1']].forEach(function (z) {
       var zb = mk('div', 'ctl' + z[0][0].toUpperCase() + z[0].slice(1), 'ctl-zbtn');
-      zb.textContent = z[1];
+      zb.innerHTML = '<span class="ctl-zface"></span>';
+      zb.querySelector('.ctl-zface').textContent = z[1];
       zb.setAttribute('data-zoom', z[0]);
       zoomBox.appendChild(zb);
     });
@@ -553,16 +574,22 @@
 
   /* ---------- Định vị theo LAYOUTS ---------- */
   function place(el, spec, W, H, minDim) {
-    var d = spec.d * minDim * settings.touch.size;
-    el.style.width = d + 'px';
-    el.style.height = d + 'px';
-    el.style.left = (spec.x * W - d / 2) + 'px';
-    el.style.top = (spec.y * H - d / 2) + 'px';
-    el.style.fontSize = Math.max(10, d * 0.16) + 'px';
+    var d = spec.d * minDim * settings.touch.size; // cỡ VẼ thật của mặt nút
+    var hit = touchHit(d); // hộp chạm: không bao giờ dưới MIN_TOUCH (40px)
+    el.style.width = hit + 'px';
+    el.style.height = hit + 'px';
+    el.style.left = (spec.x * W - hit / 2) + 'px';
+    el.style.top = (spec.y * H - hit / 2) + 'px';
+    var face = el.querySelector ? (el.querySelector('.ctl-face') || el.querySelector('.ctl-zface')) : null;
+    if (face) {
+      face.style.width = d + 'px';
+      face.style.height = d + 'px';
+      face.style.fontSize = Math.max(11, d * 0.3) + 'px'; // ký hiệu zoom (+/−/1:1)
+    }
     var sn = el.querySelector ? el.querySelector('.sn') : null;
-    if (sn) sn.style.fontSize = Math.max(9, d * 0.17) + 'px';
+    if (sn) sn.style.fontSize = Math.max(9, d * 0.18) + 'px';
     var sk = el.querySelector ? el.querySelector('.sk') : null;
-    if (sk) sk.style.fontSize = Math.max(8, d * 0.14) + 'px';
+    if (sk) sk.style.fontSize = Math.max(10, d * 0.17) + 'px'; // số phím/hồi chiêu giữ đọc rõ ở cỡ mới
   }
   function applyLayout() {
     var wrap = $('gameWrap');
@@ -591,14 +618,20 @@
         els.joy.style.left = (c.x - d / 2) + 'px'; els.joy.style.top = (c.y - d / 2) + 'px';
       }
     } else {
-      var dd = L.dpad.d * minDim * settings.touch.size;
-      var cx = L.dpad.x * W, cy = L.dpad.y * H, cell = dd / 3;
-      els.dpad.style.left = (cx - dd / 2) + 'px'; els.dpad.style.top = (cy - dd / 2) + 'px';
-      els.dpad.style.width = dd + 'px'; els.dpad.style.height = dd + 'px';
+      var dd = L.dpad.d * minDim * settings.touch.size; // cỡ VẼ toàn cụm D-pad
+      var hitD = Math.max(dd, MIN_TOUCH * 3); // lưới chạm: mỗi ô >= MIN_TOUCH
+      var cx = L.dpad.x * W, cy = L.dpad.y * H, cell = hitD / 3, vcell = dd / 3;
+      els.dpad.style.left = (cx - hitD / 2) + 'px'; els.dpad.style.top = (cy - hitD / 2) + 'px';
+      els.dpad.style.width = hitD + 'px'; els.dpad.style.height = hitD + 'px';
       Array.prototype.forEach.call(els.dpad.children, function (b) {
         b.style.left = (b._gx * cell) + 'px'; b.style.top = (b._gy * cell) + 'px';
         b.style.width = cell + 'px'; b.style.height = cell + 'px';
-        b.style.fontSize = (cell * 0.42) + 'px';
+        var fc = b.querySelector ? b.querySelector('.dpface') : null;
+        if (fc) {
+          var fs = Math.max(24, vcell - 4);
+          fc.style.width = fs + 'px'; fc.style.height = fs + 'px';
+          fc.style.fontSize = (fs * 0.45) + 'px';
+        }
       });
     }
     Array.prototype.forEach.call(els.skills.children, function (b) {
@@ -1132,6 +1165,7 @@
     axesVec: axesVec, PAD_PAGES: PAD_PAGES, PAD_PAGE_NAMES: PAD_PAGE_NAMES, padSkillDesc: padSkillDesc,
     PAD_DEADZONE: PAD_DEADZONE,
     LAYOUTS: LAYOUTS, pickLayout: pickLayout,
+    MIN_TOUCH: MIN_TOUCH, touchHit: touchHit,
     ZOOM_MIN: ZOOM_MIN, ZOOM_MAX: ZOOM_MAX,
     clampZoom: clampZoom, stepZoom: stepZoom, pinchZoom: pinchZoom,
     defaultSettings: defaultSettings, normalizeSettings: normalizeSettings,

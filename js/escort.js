@@ -80,17 +80,17 @@
   // y0; chặng 1: hàng 0) hoặc điểm đích (chặng 2: Trạm Buôn).
   var LEGS = [
     { mapId: 'map2', name: 'Rừng Thanh Sơn', destName: 'Cổng Rừng',
-      waypoints: [[17, 14], [18, 11], [19, 8], [19, 4], [19, 1]],
+      waypoints: [[29, 22], [30, 19], [31, 16], [31, 12], [31, 9]],
       ambushAt: 2, ambushTypes: ['soi_rung'],
-      ambushSpawns: [[16, 5], [22, 5], [16, 11], [22, 11], [19, 4]] },
+      ambushSpawns: [[28, 13], [34, 13], [28, 19], [34, 19], [31, 12]] },
     { mapId: 'map1', name: 'Làng Thanh Khê', destName: 'Cổng Bắc',
-      waypoints: [[19, 28], [19, 24], [19, 20], [19, 16], [19, 13], [19, 10], [19, 4], [19, 0]],
+      waypoints: [[31, 36], [31, 32], [31, 28], [31, 24], [31, 21], [31, 18], [31, 12], [31, 8]],
       ambushAt: 2, ambushTypes: ['soi_con', 'lon_rung'],
-      ambushSpawns: [[16, 17], [22, 17], [16, 23], [22, 23], [19, 24]] },
+      ambushSpawns: [[28, 25], [34, 25], [28, 31], [34, 31], [31, 32]] },
     { mapId: 'map3', name: 'Chân Núi Thanh Phong', destName: 'Trạm Buôn Chân Núi',
-      waypoints: [[19, 28], [19, 23], [19, 20]],
+      waypoints: [[31, 36], [31, 31], [31, 28]],
       ambushAt: 1, ambushTypes: ['khi_mat_do', 'soi_rung'],
-      ambushSpawns: [[15, 19], [23, 19], [16, 26], [22, 26], [19, 27]] }
+      ambushSpawns: [[27, 27], [35, 27], [28, 34], [34, 34], [31, 35]] }
   ];
 
   function num(v, d) { v = +v; return isFinite(v) ? v : d; }

@@ -64,7 +64,7 @@
     TOURN = global.PNT_TOURNAMENT || null;
   }
 
-  var KEEPER = { id: 'ghi_bang_su', name: 'Thẩm Ký', title: 'Thư Lại Giữ Bảng Xếp Hạng Tu Sĩ', mapId: 'map3', x: 33, y: 14, sprite: 'hoc_tro' };
+  var KEEPER = { id: 'ghi_bang_su', name: 'Thẩm Ký', title: 'Thư Lại Giữ Bảng Xếp Hạng Tu Sĩ', mapId: 'map3', x: 45, y: 22, sprite: 'hoc_tro' } // V10: + offset map (12,8);
   var SEASON_NAMES = ['Xuân', 'Hạ', 'Thu', 'Đông'];
   var TOURN_POINTS = { quan_quan: 100, a_quan: 60, hang_ba: 40, hang_tu: 25, tu_ket: 15, tham_gia: 5 };
   var TIDE_PER_WAVE = 10, TIDE_WIN_BONUS = 30, REALM_POINTS = 20;

@@ -38,7 +38,7 @@
   #gameCanvas { width: 768px; max-width: 100%; height: auto; display: block; background: #74bd49; border: 3px solid #8b5a2b; border-radius: 8px; image-rendering: pixelated; }
   .overlay { position: absolute; left: 12px; right: 12px; background: rgba(245, 238, 218, 0.97); color: #2a2016; border: 3px solid #8b5a2b; border-radius: 8px; padding: 12px; display: none; z-index: 5; }
   #dialogueBox { bottom: 12px; }
-  #panelQuests, #panelInv, #panelShop, #panelBooks, #panelArtShop, #panelAlchemy, #panelTalisman, #panelTournament, #panelBeastTide, #panelEscort, #panelAuction, #panelSeasonBoard, #panelAffinity { top: 12px; max-height: 420px; overflow-y: auto; }
+  #panelQuests, #panelInv, #panelShop, #panelBooks, #panelArtShop, #panelAlchemy, #panelTalisman, #panelTournament, #panelBeastTide, #panelEscort, #panelAuction, #panelSeasonBoard, #panelAffinity, #panelBestiary, #panelLegend { top: 12px; max-height: 420px; overflow-y: auto; }
   .modal { position: fixed; left: 0; right: 0; top: 0; bottom: 0; background: rgba(0,0,0,0.6); display: none; z-index: 20; }
   .modal .panel { max-width: 520px; margin: 120px auto; }
   .qitem { border-bottom: 1px solid #c9b896; padding: 8px 0; }
@@ -53,15 +53,15 @@
   .dpad-center { background: #2e7d32; font-size: 14px; }
   #log { background: #2a2016; border: 2px solid #8b5a2b; border-radius: 8px; padding: 8px 12px; margin-top: 10px; min-height: 24px; font-size: 14px; }
   #hudLL { background: #b78ce0; }
-  #skillBar { display: flex; gap: 8px; justify-content: center; margin-top: 10px; flex-wrap: wrap; }
-  #skillBar2 { display: none; gap: 8px; justify-content: center; margin-top: 6px; flex-wrap: wrap; }
-  #artBar { display: flex; gap: 8px; justify-content: center; margin-top: 6px; flex-wrap: wrap; }
-  .skill-slot { position: relative; width: 76px; background: #2a2016; border: 2px solid #8b5a2b; border-radius: 8px; padding: 4px 2px 2px; cursor: pointer; user-select: none; -webkit-user-select: none; touch-action: none; overflow: hidden; }
-  .skill-icon { display: block; margin: 0 auto; width: 44px; height: 44px; image-rendering: auto; }
-  .skill-name { font-size: 10px; text-align: center; color: #f5eeda; line-height: 1.15; min-height: 23px; }
+  #skillBar { display: flex; gap: 6px; justify-content: center; margin-top: 8px; flex-wrap: wrap; }
+  #skillBar2 { display: none; gap: 6px; justify-content: center; margin-top: 5px; flex-wrap: wrap; }
+  #artBar { display: flex; gap: 6px; justify-content: center; margin-top: 5px; flex-wrap: wrap; }
+  .skill-slot { position: relative; width: 60px; background: #2a2016; border: 2px solid #8b5a2b; border-radius: 8px; padding: 3px 2px 2px; cursor: pointer; user-select: none; -webkit-user-select: none; touch-action: none; overflow: hidden; }
+  .skill-icon { display: block; margin: 0 auto; width: 34px; height: 34px; image-rendering: auto; }
+  .skill-name { font-size: 10px; text-align: center; color: #f5eeda; line-height: 1.15; min-height: 21px; }
   .skill-key { position: absolute; top: 2px; left: 4px; font-size: 10px; font-weight: bold; color: #ffd94a; text-shadow: 1px 1px 0 #000; }
   .skill-cd { position: absolute; left: 0; right: 0; bottom: 0; background: rgba(10, 6, 20, 0.72); pointer-events: none; }
-  .skill-cdt { position: absolute; top: 16px; left: 0; right: 0; text-align: center; font-size: 20px; font-weight: bold; color: #fff; text-shadow: 2px 2px 0 #000; pointer-events: none; }
+  .skill-cdt { position: absolute; top: 12px; left: 0; right: 0; text-align: center; font-size: 17px; font-weight: bold; color: #fff; text-shadow: 2px 2px 0 #000; pointer-events: none; }
   .skill-lock { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(12, 10, 8, 0.78); color: #ffb0a0; font-size: 12px; font-weight: bold; display: flex; align-items: center; justify-content: center; text-align: center; }
   #panelSkills { top: 12px; max-height: 460px; overflow-y: auto; }
   #panelSects { top: 12px; max-height: 460px; overflow-y: auto; }
@@ -296,6 +296,11 @@
       <div id="seasonBody"></div>
       <button id="seasonClose" style="margin-top:10px">Đóng</button>
     </div>
+    <div id="panelLegend" class="overlay">
+      <h3 style="margin-top:0">Bia Truyền Kỳ Thanh Sơn — Thẩm Ký</h3>
+      <div id="legendBody"></div>
+      <button id="legendClose" style="margin-top:10px">Đóng</button>
+    </div>
     <div id="panelCompanion" class="overlay">
       <h3 style="margin-top:0">Đệ Tử Đi Cùng — Bạn tu cùng tông</h3>
       <div id="companionBody"></div>
@@ -315,6 +320,16 @@
       <button id="btnFormKhonThu" style="margin-top:10px">Cắm Khốn Thú Trận</button>
       <button id="btnFormDissolve" style="margin-top:10px">Thu trận</button>
       <button id="formationClose" style="margin-top:10px">Đóng</button>
+    </div>
+    <div id="panelBestiary" class="overlay">
+      <h3 style="margin-top:0">Thiên Cơ Đồ Giám — Sổ tay hành trình</h3>
+      <div id="bestiaryBody"></div>
+      <button id="bestiaryClose" style="margin-top:10px">Đóng</button>
+    </div>
+    <div id="panelFair" class="overlay">
+      <h3 style="margin-top:0">Chợ Phiên Thanh Khê — Sạp thương đội Mã Vạn Lai</h3>
+      <div id="fairBody"></div>
+      <button id="fairClose" style="margin-top:10px">Đóng</button>
     </div>
     <div id="panelDongPhu" class="overlay">
       <h3 style="margin-top:0">Động Phủ — Phủ riêng &amp; Linh Điền</h3>
@@ -360,7 +375,10 @@
       <button id="btnCompanion">Đi Cùng</button>
       <button id="btnAffinity">Hảo Cảm</button>
       <button id="btnFormation">Trận Kỳ</button>
+      <button id="btnBestiary">Đồ Giám</button>
+      <button id="btnFair">Chợ Phiên</button>
       <button id="btnSeasonBoard">Bảng Mùa</button>
+      <button id="btnLegend">Truyền Kỳ</button>
       <button id="btnWardrobe">Tủ đồ</button>
       <button id="btnInv">Túi đồ</button>
       <button id="btnQuests">Nhiệm vụ</button>
@@ -447,6 +465,9 @@
 <script src="js/library.js"></script>
 <script src="js/affinity.js"></script>
 <script src="js/formation.js"></script>
+<script src="js/bestiary.js"></script>
+<script src="js/market-fair.js"></script>
+<script src="js/legend-board.js"></script>
 <script src="js/dong-phu.js"></script>
 <script src="js/wardrobe.js"></script>
 <script src="js/smooth.js"></script>

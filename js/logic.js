@@ -180,7 +180,7 @@
       name: name, gender: gender, origin: originId,
       hp: o.hp, maxHp: o.hp, atk: o.atk, def: o.def, rate: o.rate,
       tuVi: 0, tuViMax: TIERS[0].need, tier: 0, realm: TIERS[0].realm,
-      root: null, linhThach: 0, inventory: [], x: 19, y: 9, dir: 'down'
+      root: null, linhThach: 0, inventory: [], x: 31, y: 17, dir: 'down' // V10: start map1 (19,9) + offset mở rộng (12,8)
     };
     // TẠO HÌNH NV01–NV12 (Bui duyệt hết 06:06 30/10/2026): trường 'look'
     // chỉ tồn tại khi người chơi chọn mẫu NV đúng giới; save cũ không có

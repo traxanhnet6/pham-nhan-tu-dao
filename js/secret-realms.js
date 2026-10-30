@@ -49,7 +49,7 @@
     maxPerSession: 1,
     maxPerDay: 2,
     gateMap: 'map1',
-    gate: { x: 21, y: 7 }, // ô sân đá ngay cạnh giếng cổ (19,7) ở Thanh Khê trấn
+    gate: { x: 33, y: 15 }, // ô sân đá ngay cạnh giếng cổ (31,15) ở Thanh Khê trấn — V10: + offset map (12,8)
     bossSpawn: { x: 12, y: 3 },
     bossType: 'lon_mong_sat',
     bossName: 'Khích Linh Cự Thú',
@@ -979,7 +979,7 @@
     o.maxPerSession = 1;
     o.maxPerDay = 2;
     o.gateMap = 'map1';
-    o.gate = { x: 21, y: 7 }; // cùng khe nứt cạnh giếng cổ — phiên nào mở thì vào cảnh đó
+    o.gate = { x: 33, y: 15 }; // cùng khe nứt cạnh giếng cổ — phiên nào mở thì vào cảnh đó (V10: + offset (12,8))
     return o;
   }
   var POOL = [

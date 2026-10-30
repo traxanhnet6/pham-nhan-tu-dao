@@ -56,9 +56,11 @@
   //   season    400  = thưởng hạng 1 cuối mùa
   //   sectRank  400  = thưởng LT thăng cấp bậc đệ tử cao nhất
   //   sell      1300 = giá thu mua cao nhất (pháp bảo 1250 / vũ khí 1200)
+  //   codex     200  = mốc Đồ Giám lớn nhất 150 (js/bestiary.js)
   var GAIN_CAPS = {
     quest: 300, questTuVi: 150, monster: 1000, realm: 250, realmTuVi: 320,
-    tourn: 3000, tide: 400, escort: 200, season: 400, sectRank: 400, sell: 1300
+    tourn: 3000, tide: 400, escort: 200, season: 400, sectRank: 400, sell: 1300,
+    codex: 200
   };
 
   // ---------- Tra cứu lười các module khác (mẫu chung của dự án) ----------

@@ -72,7 +72,7 @@
   function num(v, d) { v = +v; return isFinite(v) ? v : d; }
 
   // ---------- Hằng số khung ----------
-  var STEWARD = { id: 'chap_su_dai_hoi', name: 'Hàn Sơn', title: 'Chấp Sự Đại Hội', mapId: 'map3', x: 28, y: 12 };
+  var STEWARD = { id: 'chap_su_dai_hoi', name: 'Hàn Sơn', title: 'Chấp Sự Đại Hội', mapId: 'map3', x: 40, y: 20 } // V10: + offset map (12,8) — dòng này là STEWARD Hàn Sơn;
   // Võ đài riêng: người chơi vào đài ở đầu TÂY (playerStart), đối thủ
   // đứng đầu ĐÔNG (x,y của ARENA). ring = toàn bộ bệ đài kể cả vành rào
   // — ô người chơi ra khỏi ring khi đang đấu = xuống đài = thua.
@@ -80,7 +80,7 @@
     mapId: 'map_dai_hoi', name: 'Võ Đài Đại Hội',
     x: 44, y: 19,
     playerStart: { x: 15, y: 19 },
-    returnPoint: { mapId: 'map3', x: 28, y: 13 },
+    returnPoint: { mapId: 'map3', x: 40, y: 21 }, // V10: + offset map (12,8)
     ring: { x0: 12, y0: 11, x1: 47, y1: 28 },
     gate: { x: 29, y: 38 }
   };
@@ -260,8 +260,8 @@
     blocked: { W: 1, H: 1, T: 1, S: 1, L: 1, F: 1, o: 1, E: 1, R: 1 },
     start: { x: 29, y: 33 },
     portals: [
-      { x: 29, y: 38, to: 'map3', tx: 28, ty: 13, name: 'Về Quảng Trường' },
-      { x: 30, y: 38, to: 'map3', tx: 28, ty: 13, name: 'Về Quảng Trường' }
+      { x: 29, y: 38, to: 'map3', tx: 40, ty: 21, name: 'Về Quảng Trường' },
+      { x: 30, y: 38, to: 'map3', tx: 40, ty: 21, name: 'Về Quảng Trường' }
     ],
     npcs: buildAudience(),
     zones: [], monsters: [], herbs: [],

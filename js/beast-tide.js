@@ -72,10 +72,10 @@
   function num(v, d) { v = +v; return isFinite(v) ? v : d; }
 
   // ---------- Hằng số khung ----------
-  var STEWARD = { id: 'chap_su_thu_trieu', name: 'Vệ Trường Không', title: 'Chấp Sự Thủ Triều', mapId: 'map1', x: 22, y: 13 };
+  var STEWARD = { id: 'chap_su_thu_trieu', name: 'Vệ Trường Không', title: 'Chấp Sự Thủ Triều', mapId: 'map1', x: 34, y: 21 }; // V10: (22,13) + offset map (12,8)
   // Cổng Nam Môn map 1: tường ở hàng 14, miệng cổng x19-20. Thú đi bộ
   // lên miệng cổng (hàng 15) trong dải x17-22 là coi như đã chạm cổng.
-  var GATE = { mapId: 'map1', x: 19, y: 14, w: 2, breachY: 15, breachX0: 17, breachX1: 22 };
+  var GATE = { mapId: 'map1', x: 31, y: 22, w: 2, breachY: 23, breachX0: 29, breachX1: 34 }; // V10: + offset map (12,8)
   var SESSIONS = [11 * 60 + 30, 20 * 60 + 30]; // 11:30 và 20:30, phút từ 00:00 giờ địa phương
   var DUR_MIN = 45;         // mỗi phiên mở nhận nhiệm vụ 45 phút
   var MIN_RANK = 2;         // Trúc Cơ
@@ -85,7 +85,7 @@
   var REWARD = { perWaveLt: 40, perWaveMerit: 5, winLt: 160, winMerit: 20, joinLt: 10 };
   var LEADER_TYPE = 'lon_mong_sat';
   var LEADER_NAME = 'Yêu Vương Hống Sơn';
-  var LEADER_SLOT = { x: 19, y: 30 };
+  var LEADER_SLOT = { x: 31, y: 38 }; // V10: (19,30) + offset map (12,8)
 
   // ---------- 6 đợt thú (tăng dần về số lượng + sức loài) ----------
   var WAVES = [
@@ -98,8 +98,8 @@
   ];
   // Điểm tràn vào ở bãi nam map 1 (đã kiểm ô đi được trong maps.js).
   var SPAWN_SLOTS = [
-    { x: 12, y: 28 }, { x: 16, y: 29 }, { x: 20, y: 28 }, { x: 24, y: 29 }, { x: 28, y: 28 },
-    { x: 14, y: 31 }, { x: 26, y: 31 }, { x: 18, y: 32 }, { x: 22, y: 27 }, { x: 30, y: 30 }
+    { x: 24, y: 36 }, { x: 28, y: 37 }, { x: 32, y: 36 }, { x: 36, y: 37 }, { x: 40, y: 36 },
+    { x: 26, y: 39 }, { x: 38, y: 39 }, { x: 30, y: 40 }, { x: 34, y: 35 }, { x: 42, y: 38 }
   ];
   // Hàng đứng của 10 đệ tử đồng minh: trước cổng, hàng 17, trải x11-29.
   function allyPost(i) { return { x: 11 + i * 2, y: 17 }; }

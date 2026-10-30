@@ -118,11 +118,17 @@
       { id: 'dai_phu', x: 22, y: 7 },
       { id: 'hoc_tro', x: 23, y: 8 },
       { id: 'tho_ren', x: 12, y: 8 },
-      { id: 'linh_gac', x: 18, y: 15 },
-      { id: 'linh_gac2', x: 21, y: 15, sprite: 'linh_gac', name: 'A Báo', role: 'Lính gác cổng Nam Môn (ca đêm)' },
+      // Playtest thật 12:46 30/10: hai lính gác lùi xuống hàng sân cổng
+      // (y 15->16) và Dì Tư rời ô đường (20,11)->(21,11): hàng đáp cổng
+      // trống hoàn toàn, họng Nam Môn + đường chợ->giếng giữ hành lang
+      // >= 2 ô, không NPC nào đứng giữa lối duy nhất (luật L8 trong
+      // tools/audit-layout.js). Lính gác giữ nguyên cột 18/21 vì cột 17
+      // phạm L2 với bãi gà thỏ phía nam (spawn cách NPC >= 3 ô).
+      { id: 'linh_gac', x: 18, y: 16 },
+      { id: 'linh_gac2', x: 21, y: 16, sprite: 'linh_gac', name: 'A Báo', role: 'Lính gác cổng Nam Môn (ca đêm)' },
       { id: 'chap_su_thu_trieu', x: 22, y: 13 },
       { id: 'tieu_thuong', x: 24, y: 11 },
-      { id: 'le_su', x: 20, y: 11, sprite: 'chu_quan', name: 'Dì Tư', role: 'Người lo lễ hội làng Thanh Khê' }
+      { id: 'le_su', x: 21, y: 11, sprite: 'chu_quan', name: 'Dì Tư', role: 'Người lo lễ hội làng Thanh Khê' }
     ],
     zones: [
       { id: 'ga_tho', name: 'Bãi Gà Thỏ', rects: [[4, 15, 55, 21]], types: ['ga_rung', 'tho_hoang'] },
@@ -1304,6 +1310,308 @@
     }
   });
   var MAPS = { map1: MAP, map2: MAP2, map3: MAP3, map4: MAP4, map5: MAP5, map6: MAP6, map7: MAP7, map8: MAP8, map9: MAP9, map10: MAP10, map11: MAP11, map12: MAP12, map13: MAP13, map14: MAP14 };
+  // ---- MỞ RỘNG MAP V10 (lệnh Bui 12:33 + bổ sung 12:37 ngày 2026-10-30) ----
+  // Mỗi map thế giới chính +24 cột/+16 hàng (56x40 -> 80x56, 64x44 -> 88x60,
+  // 72x48 -> 96x64; diện tích +78..100%). Toàn bộ nội dung cũ (tile, NPC,
+  // cổng + điểm rơi, spawn, sào boss, dược, biển, khu quái) dịch (+12,+8)
+  // để giữ nguyên căn chỉnh tương đối; ảnh nền assets/map*-bg-v7.png được
+  // nới cùng offset (ô cũ dán ở (+384,+256)px, vành mới lấp bằng mảng địa
+  // hình lấy mẫu từ chính nền map đó — xem tools/expand-bg-v10.py).
+  // Đất mới KHÔNG lấp trống: rải CỤM SINH CẢNH quái theo loài (sói rìa
+  // rừng, lợn gần nước/trảng trống, rắn cạnh bụi/đá, khỉ cạnh rừng, gà/thỏ
+  // đất trống) — tổng spawn mới giữ mật độ/100 ô ở 85% mật độ cũ: map rộng
+  // ra để THƯA và thoáng hơn, không nhồi thêm quái. Chỉ số/tỉ lệ rơi của
+  // quái không đổi. Khối này chạy TRƯỚC 2 hậu xử lý (luật quái đất + đường
+  // vào bãi quái) ở dưới để chúng áp trên bố cục mới. Instance (bí cảnh,
+  // động phủ, đấu trường) KHÔNG qua khối này.
+  var EXP_DX = 12, EXP_DY = 8, EXP_DW = 24, EXP_DH = 16;
+  var EXP_LAYOUT_V = 2; // phiên bản bố cục — game.js dịch save cũ 1 lần theo cờ này
+  // Vùng cây danh lam KHÔNG bị luật quái đất dọn (khai ở đây vì khối mở
+  // rộng chạy trước; clearMonsterHabitats ở dưới dùng chung biến này):
+  // Cây Cổ Thụ Linh Khí map 4 — spawn vành không được có hộp lang thang
+  // ±4 chạm vùng này (kiểm QD trong test-smoke tính cả cây giữ lại).
+  var KEEP_TREES = { map4: [[50, 27, 52, 28]] }; // tọa độ MỚI: (38,19)-(40,20) cũ + (12,8)
+  // Vành đất mới: [xác suất ký tự A, ký tự A, xác suất ký tự B, ký tự B]
+  // theo mật độ rải trang trí gốc của từng map.
+  var EXP_RING = {
+    map1: [0.10, 'T', 0.035, 'o'], map2: [0.34, 'T', 0.05, 'o'],
+    map3: [0.30, 'T', 0.06, 'o'], map4: [0.10, 'T', 0.03, 'o'],
+    map5: [0.22, 'T', 0.03, 'o'], map6: [0.16, 'T', 0.03, 'o'],
+    map7: [0.08, 'o', 0.03, 'T'], map8: [0.10, 'T', 0.025, 'o'],
+    map9: [0.12, 'T', 0.025, 'o'], map10: [0.08, 'T', 0.025, 'o'],
+    map11: [0.10, 'T', 0.025, 'o'], map12: [0.09, 'o', 0.0, 'T'],
+    map13: [0.12, 'o', 0.0, 'T'], map14: [0.06, 'T', 0.025, 'o']
+  };
+  var EXP_WORLD_IDS = ['map1', 'map2', 'map3', 'map4', 'map5', 'map6', 'map7', 'map8', 'map9', 'map10', 'map11', 'map12', 'map13', 'map14'];
+  function expShiftPt(p) { if (p) { p.x += EXP_DX; p.y += EXP_DY; } }
+  function expShiftRect(r) { r[0] += EXP_DX; r[1] += EXP_DY; r[2] += EXP_DX; r[3] += EXP_DY; }
+  function expExpandTiles(map) {
+    var ow = map.w, oh = map.h, nw = ow + EXP_DW, nh = oh + EXP_DH;
+    var th = EXP_RING[map.id] || [0.10, 'T', 0.03, 'o'];
+    var salt = (map.id.length * 131 + ow * 7 + oh) | 0;
+    var rows = [], y, x;
+    for (y = 0; y < nh; y++) {
+      var row = [];
+      for (x = 0; x < nw; x++) {
+        if (x >= EXP_DX && x < EXP_DX + ow && y >= EXP_DY && y < EXP_DY + oh) { row.push(map.tiles[y - EXP_DY][x - EXP_DX]); continue; }
+        var r1 = hash01(x + salt, y + salt * 3);
+        row.push(r1 < th[0] ? th[1] : (r1 < th[0] + th[2] ? th[3] : '.'));
+      }
+      rows.push(row);
+    }
+    function walkAt(cx, cy) { return cx >= 0 && cy >= 0 && cx < nw && cy < nh && !map.blocked[rows[cy][cx]]; }
+    function bfsReached() {
+      var seen = {}, q = [], xx, yy;
+      for (yy = 0; yy < oh; yy++) for (xx = 0; xx < ow; xx++) {
+        var nx = xx + EXP_DX, ny = yy + EXP_DY, k = nx + ',' + ny;
+        if (walkAt(nx, ny) && !seen[k]) { seen[k] = 1; q.push([nx, ny]); }
+      }
+      while (q.length) {
+        var c = q.pop();
+        [[0, -1], [1, 0], [0, 1], [-1, 0]].forEach(function (d) {
+          var ax = c[0] + d[0], ay = c[1] + d[1], k2 = ax + ',' + ay;
+          if (!seen[k2] && walkAt(ax, ay)) { seen[k2] = 1; q.push([ax, ay]); }
+        });
+      }
+      return seen;
+    }
+    // Đất mới phải thông với vùng cũ: túi đất đi được nào bị cô lập (rải
+    // cây/đá/vách cũ bịt) thì khoét tuyến rẻ nhất (chỉ đổi T/o/W -> '.')
+    // bằng dvDijkstra (khai báo ở khối đường vào phía dưới, đã hoist).
+    var reached = bfsReached();
+    for (y = 0; y < nh; y++) for (x = 0; x < nw; x++) {
+      if (!walkAt(x, y) || reached[x + ',' + y]) continue;
+      var srcs = [];
+      Object.keys(reached).forEach(function (k) { var p = k.split(','); srcs.push([+p[0], +p[1]]); });
+      var tx0 = x, ty0 = y;
+      var path = dvDijkstra(nw, nh, srcs, function (cx, cy) {
+        var ch = rows[cy][cx];
+        if (!map.blocked[ch]) return 1;
+        if (ch === 'T') return 7; if (ch === 'o') return 11; if (ch === 'W') return 25;
+        return Infinity;
+      }, function (cx, cy) { return cx === tx0 && cy === ty0; });
+      if (path) path.forEach(function (c) { if (map.blocked[rows[c[1]][c[0]]]) rows[c[1]][c[0]] = '.'; });
+      reached = bfsReached();
+    }
+    map.tiles = rows.map(function (r) { return r.join(''); });
+    map.w = nw; map.h = nh;
+  }
+  function expShiftMap(map) {
+    expExpandTiles(map);
+    expShiftPt(map.start); expShiftPt(map.well); expShiftPt(map.bossSpawn); expShiftPt(map.gate);
+    if (typeof map.wildY === 'number') map.wildY += EXP_DY;
+    (map.portals || []).forEach(function (p) { p.x += EXP_DX; p.y += EXP_DY; p.tx += EXP_DX; p.ty += EXP_DY; });
+    (map.npcs || []).forEach(expShiftPt);
+    (map.monsters || []).forEach(expShiftPt);
+    (map.herbs || []).forEach(expShiftPt);
+    (map.props || []).forEach(expShiftPt);
+    (map.zones || []).forEach(function (z) { (z.rects || []).forEach(expShiftRect); });
+    (map.bossLairs || []).forEach(function (l) { expShiftPt(l); if (l.rect) expShiftRect(l.rect); });
+  }
+  function expEntriesOf(mapId) {
+    var out = [], seen = {};
+    function add(x, y) { var k = x + ',' + y; if (!seen[k]) { seen[k] = 1; out.push({ x: x, y: y }); } }
+    var mp = MAPS[mapId];
+    if (mp.start) add(mp.start.x, mp.start.y);
+    EXP_WORLD_IDS.concat(Object.keys(MAPS)).forEach(function (id) {
+      (MAPS[id].portals || []).forEach(function (p) { if (p.to === mapId) add(p.tx, p.ty); });
+    });
+    return out;
+  }
+  // Rải cụm sinh cảnh + dược vào vành đất mới. Luật cứng khi đặt (khớp
+  // audit-layout L1-L4, L7b): spawn cách cổng/điểm rơi/NPC/start/giếng/sào
+  // >= 5 ô Chebyshev (an toàn cả luật hộp lang thang ±4), cách spawn khác
+  // >= 2, tâm cụm cách nhau >= 12 Manhattan, thành viên chỉ đứng trên đất
+  // vành (không lấn vùng cũ) và thuộc đúng zone chứa loài đó (rect zone
+  // được nới đúng bằng hộp thành viên của cụm).
+  function expScatterClusters(map, oldCount, oldArea, entries) {
+    var nw = map.w, nh = map.h;
+    var targetTotal = Math.floor(oldCount * (nw * nh / oldArea) * 0.85);
+    var toAdd = targetTotal - oldCount;
+    var rows = map.tiles;
+    function walkAt(cx, cy) { return cx >= 1 && cy >= 1 && cx < nw - 1 && cy < nh - 1 && !map.blocked[rows[cy][cx]]; }
+    function inRing(cx, cy) { return cx < EXP_DX || cx >= EXP_DX + (nw - EXP_DW) || cy < EXP_DY || cy >= EXP_DY + (nh - EXP_DH); }
+    function cheb(ax, ay, bx, by) { return Math.max(Math.abs(ax - bx), Math.abs(ay - by)); }
+    var safe = [];
+    (map.portals || []).forEach(function (p) { safe.push([p.x, p.y]); });
+    (map.npcs || []).forEach(function (n) { safe.push([n.x, n.y]); });
+    entries.forEach(function (e) { safe.push([e.x, e.y]); });
+    if (map.well) safe.push([map.well.x, map.well.y]);
+    if (map.gate) safe.push([map.gate.x, map.gate.y]);
+    if (map.bossSpawn) safe.push([map.bossSpawn.x, map.bossSpawn.y]);
+    (map.bossLairs || []).forEach(function (l) { safe.push([l.x, l.y]); });
+    var land = []; // điểm hạ cánh/start/exit — luật L3 khắt khe nhất
+    entries.forEach(function (e) { land.push([e.x, e.y]); });
+    if (map.exit) land.push([map.exit.x, map.exit.y]);
+    function farSafe(x, y, d) { for (var i = 0; i < safe.length; i++) if (cheb(x, y, safe[i][0], safe[i][1]) < d) return false; return true; }
+    function farLand(x, y) { for (var i = 0; i < land.length; i++) { if (Math.abs(x - land[i][0]) <= 4 && Math.abs(y - land[i][1]) <= 4) return false; } return true; }
+    function farSpawn(x, y, d) { for (var i = 0; i < map.monsters.length; i++) if (cheb(x, y, map.monsters[i].x, map.monsters[i].y) < d) return false; return true; }
+    function habitatScore(type, x, y) {
+      var aT = 0, aR = 0, aO = 0, aC = 0, open = 0;
+      [[0, -1], [1, 0], [0, 1], [-1, 0]].forEach(function (d) {
+        var ch = rows[y + d[1]][x + d[0]];
+        if (ch === 'T') aT++; else if (ch === 'R') aR++; else if (ch === 'o') aO++; else if (ch === 'C') aC++;
+        if (!map.blocked[ch]) open++;
+      });
+      if (type === 'ga_rung' || type === 'tho_hoang') return aC * 2 + (open === 4 ? 2 : open);
+      if (type === 'ran_luc') return (aT + aO) * 2 + aR;
+      if (type === 'lon_rung' || type === 'lon_mong_sat') return aR * 2 + (open === 4 ? 1 : 0);
+      if (type === 'khi_mat_do') return aT * 2 + aO;
+      return aT * 2 + open; // soi_rung / soi_con: rìa rừng
+    }
+    var types = [];
+    (map.monsters || []).forEach(function (m) { if (m.type !== 'son_quan' && types.indexOf(m.type) < 0) types.push(m.type); });
+    function zoneFor(type) {
+      for (var i = 0; i < (map.zones || []).length; i++) if (map.zones[i].types.indexOf(type) >= 0) return map.zones[i];
+      return null;
+    }
+    // Luật bãi liên mạch (kiểm DV trong test-smoke): mọi spawn của một
+    // zone phải cùng một thành phần đất đi được — cụm vành chỉ được mọc
+    // SÁT bãi nhà (tâm cách rect zone <= 8 ô Chebyshev; vùng kiểm DV nới
+    // rect +3 / spawn +5 / giãn +2 nên 8 ô vẫn nối liền mạch) để bãi
+    // nới rộng tự nhiên vào đất mới, không thành ốc đảo tách rời.
+    function nearZone(x, y, zone) {
+      for (var i = 0; i < zone.rects.length; i++) {
+        var r = zone.rects[i];
+        var dx = Math.max(r[0] - x, 0, x - r[2]), dy = Math.max(r[1] - y, 0, y - r[3]);
+        if (Math.max(dx, dy) <= 8) return true;
+      }
+      return false;
+    }
+    // Bản sao đúng phép kiểm DV của test-smoke (dvRegion + dvComp):
+    // vùng = rect zone +3, mọi spawn +5, ô đường/quảng trường/cổng
+    // trong hộp bao rect +3, tất cả giãn +2; spawn cũ + cụm ứng viên
+    // phải cùng một thành phần đi được trong vùng đó.
+    function zoneLinked(zone, candMembers) {
+      var spawns = map.monsters.filter(function (m) { return m.zone === zone.id; });
+      if (!spawns.length) return true;
+      function dvW(x, y) { return x >= 0 && y >= 0 && x < nw && y < nh && !map.blocked[rows[y][x]]; }
+      var set = {};
+      function put(x, y) { if (x >= 0 && y >= 0 && x < nw && y < nh) set[x + ',' + y] = 1; }
+      var bx0 = 1e9, by0 = 1e9, bx1 = -1, by1 = -1;
+      zone.rects.forEach(function (r) {
+        bx0 = Math.min(bx0, r[0]); by0 = Math.min(by0, r[1]); bx1 = Math.max(bx1, r[2]); by1 = Math.max(by1, r[3]);
+        for (var y = r[1] - 3; y <= r[3] + 3; y++) for (var x = r[0] - 3; x <= r[2] + 3; x++) put(x, y);
+      });
+      spawns.forEach(function (t) { for (var y = t.y - 5; y <= t.y + 5; y++) for (var x = t.x - 5; x <= t.x + 5; x++) put(x, y); });
+      candMembers.forEach(function (t) { for (var y = t[1] - 5; y <= t[1] + 5; y++) for (var x = t[0] - 5; x <= t[0] + 5; x++) put(x, y); });
+      for (var y2 = by0 - 3; y2 <= by1 + 3; y2++) for (var x2 = bx0 - 3; x2 <= bx1 + 3; x2++) {
+        if (x2 < 0 || y2 < 0 || x2 >= nw || y2 >= nh) continue;
+        var ch = rows[y2][x2];
+        if (ch === '#' || ch === 'Q' || ch === 'G') put(x2, y2);
+      }
+      var region = {};
+      Object.keys(set).forEach(function (k) {
+        var p = k.split(','), px = +p[0], py = +p[1];
+        for (var dy = -2; dy <= 2; dy++) for (var dx = -2; dx <= 2; dx++) {
+          var nx = px + dx, ny = py + dy;
+          if (nx >= 0 && ny >= 0 && nx < nw && ny < nh) region[nx + ',' + ny] = 1;
+        }
+      });
+      var seen = {}, q = [[spawns[0].x, spawns[0].y]];
+      if (!region[spawns[0].x + ',' + spawns[0].y] || !dvW(spawns[0].x, spawns[0].y)) return false;
+      seen[spawns[0].x + ',' + spawns[0].y] = 1;
+      while (q.length) {
+        var c = q.pop();
+        [[0, -1], [1, 0], [0, 1], [-1, 0]].forEach(function (d) {
+          var nx = c[0] + d[0], ny = c[1] + d[1], k = nx + ',' + ny;
+          if (!seen[k] && region[k] && dvW(nx, ny)) { seen[k] = 1; q.push([nx, ny]); }
+        });
+      }
+      for (var i = 0; i < spawns.length; i++) if (!seen[spawns[i].x + ',' + spawns[i].y]) return false;
+      for (var j = 0; j < candMembers.length; j++) if (!seen[candMembers[j][0] + ',' + candMembers[j][1]]) return false;
+      return true;
+    }
+    var rejectedCenters = {};
+    // Giữ TỈ LỆ LOÀI của map: cụm vành của mỗi loài không vượt quá tỉ
+    // lệ loài đó trong bầy gốc (làm tròn lên, tối thiểu 2) — nếu không,
+    // loài yếu dễ đặt (đất trống/rìa rừng) sẽ lấn át và kéo atk trung
+    // bình của map tụt dưới chặng trước (luật tiến trình L7).
+    var oldByType = {}, addedByType = {};
+    (map.monsters || []).forEach(function (m) { oldByType[m.type] = (oldByType[m.type] || 0) + 1; });
+    function capOf(type) { return Math.max(2, Math.ceil(toAdd * (oldByType[type] || 0) / Math.max(1, oldCount))); }
+    var centers = [], added = 0, ci = 0, skipRun = 0;
+    while (added < toAdd && types.length) {
+      var type = types[ci % types.length]; ci++;
+      if ((addedByType[type] || 0) >= capOf(type)) { if (++skipRun > types.length * 2) break; continue; }
+      var zone = zoneFor(type); if (!zone) continue;
+      var best = null, bestScore = -1;
+      for (var y = 1; y < nh - 1; y++) for (var x = 1; x < nw - 1; x++) {
+        if (!inRing(x, y) || rows[y][x] !== '.' || !walkAt(x, y)) continue;
+        if (rejectedCenters[x + ',' + y]) continue;
+        if (!nearZone(x, y, zone)) continue;
+        if (!farSafe(x, y, 5) || !farLand(x, y) || !farSpawn(x, y, 3)) continue;
+        if (Math.min(Math.abs(x - EXP_DX), Math.abs(x - (EXP_DX + nw - EXP_DW - 1)), Math.abs(y - EXP_DY), Math.abs(y - (EXP_DY + nh - EXP_DH - 1))) < 3 && (x >= EXP_DX && x < EXP_DX + nw - EXP_DW && y >= EXP_DY && y < EXP_DY + nh - EXP_DH)) continue; // tâm không sát biên vùng cũ (giữ hộp cụm trong vành)
+        var okC = true;
+        for (var c2 = 0; c2 < centers.length; c2++) if (Math.abs(x - centers[c2][0]) + Math.abs(y - centers[c2][1]) < 12) { okC = false; break; }
+        if (!okC) continue;
+        var sc = habitatScore(type, x, y) * 1000 - (x * 7 + y * 13) % 97;
+        if (sc > bestScore) { bestScore = sc; best = [x, y]; }
+      }
+      if (!best) break;
+      centers.push(best);
+      var want = Math.min(3 + (centers.length % 3 === 0 ? 2 : centers.length % 2), toAdd - added); // cụm 3-5 con
+      want = Math.min(want, capOf(type) - (addedByType[type] || 0)); // không vượt hạn tỉ lệ loài dù cụm to
+      var members = [];
+      var cand = [[0, 0], [1, 0], [-1, 0], [0, 1], [0, -1], [1, 1], [-1, -1], [1, -1], [-1, 1], [2, 0], [-2, 0], [0, 2], [0, -2], [2, 1], [1, 2], [-2, -1], [-1, -2], [2, -1], [-1, 2], [1, -2], [-2, 1], [2, 2], [-2, 2], [2, -2], [-2, -2]];
+      for (var k = 0; k < cand.length && members.length < want; k++) {
+        var mx = best[0] + cand[k][0], my = best[1] + cand[k][1];
+        if (mx < 1 || my < 1 || mx >= nw - 1 || my >= nh - 1) continue;
+        if (!inRing(mx, my) || rows[my][mx] !== '.' || !walkAt(mx, my)) continue;
+        if (!farSafe(mx, my, 3) || !farLand(mx, my) || !farSpawn(mx, my, 2)) continue;
+        // Hộp lang thang ±4 của spawn vành không được chạm vùng cây giữ
+        // lại (KEEP_TREES) — luật quái đất không dọn cây ở đó nên hộp sẽ
+        // còn cây chắn, phạm kiểm QD.
+        var keepHit = false;
+        ((typeof KEEP_TREES !== 'undefined' && KEEP_TREES[map.id]) || []).forEach(function (r) {
+          if (mx + 4 >= r[0] && mx - 4 <= r[2] && my + 4 >= r[1] && my - 4 <= r[3]) keepHit = true;
+        });
+        if (keepHit) continue;
+        if (map.monsters.some(function (mm) { return mm.x === mx && mm.y === my; })) continue;
+        // Thành viên cùng cụm chưa push vào map.monsters (chốt sau kiểm
+        // DV) — phải tự giữ khoảng cách >= 2 với nhau (luật L4).
+        if (members.some(function (mm) { return cheb(mx, my, mm[0], mm[1]) < 2; })) continue;
+        members.push([mx, my]);
+      }
+      // Kiểm DV thật trước khi chốt cụm: mọi spawn của zone (cũ + cụm
+      // mới) phải cùng thành phần đi được trong vùng kiểm (rect +3,
+      // spawn +5, giãn +2, tính cả ô đường/quảng trường/cổng trong hộp
+      // bao rect) — cụm nào nối không liền thì bỏ, không đẩy số.
+      if (members.length && !zoneLinked(zone, members)) { rejectedCenters[best[0] + ',' + best[1]] = 1; members = []; }
+      if (members.length) {
+        skipRun = 0;
+        addedByType[type] = (addedByType[type] || 0) + members.length;
+        members.forEach(function (mm) { map.monsters.push({ type: type, x: mm[0], y: mm[1], zone: zone.id }); added++; });
+        var rx0 = 1e9, ry0 = 1e9, rx1 = -1, ry1 = -1;
+        members.forEach(function (mm) { rx0 = Math.min(rx0, mm[0]); ry0 = Math.min(ry0, mm[1]); rx1 = Math.max(rx1, mm[0]); ry1 = Math.max(ry1, mm[1]); });
+        zone.rects.push([rx0, ry0, rx1, ry1]);
+      }
+    }
+    // Dược vành mới: 2-5 điểm theo lượng spawn thêm, dùng dược sẵn có của map.
+    var herbItems = [];
+    (map.herbs || []).forEach(function (h) { herbItems.push(h.item); });
+    if (herbItems.length) {
+      var herbWant = Math.min(5, 2 + Math.floor(toAdd / 6)), herbAdded = 0;
+      var hItem = herbItems[0];
+      for (var hy = 1; hy < nh - 1 && herbAdded < herbWant; hy++) for (var hx = 1; hx < nw - 1 && herbAdded < herbWant; hx++) {
+        if (!inRing(hx, hy) || rows[hy][hx] !== '.' || !walkAt(hx, hy)) continue;
+        if (!farSafe(hx, hy, 3)) continue;
+        if (hash01(hx * 3 + 17, hy * 5 + (map.id.length * 29)) > 0.055) continue;
+        if ((map.herbs || []).some(function (h) { return cheb(hx, hy, h.x, h.y) < 4; })) continue;
+        map.herbs.push({ x: hx, y: hy, item: hItem }); herbAdded++;
+      }
+    }
+  }
+  var EXP_STATS = {};
+  EXP_WORLD_IDS.forEach(function (id) {
+    var mp = MAPS[id]; if (!mp) return;
+    EXP_STATS[id] = { count: (mp.monsters || []).length, area: mp.w * mp.h };
+    expShiftMap(mp);
+  });
+  EXP_WORLD_IDS.forEach(function (id) {
+    var mp = MAPS[id]; if (!mp) return;
+    expScatterClusters(mp, EXP_STATS[id].count, EXP_STATS[id].area, expEntriesOf(id));
+  });
   // ---- Luật quái đất (Bui 21:18 2026-10-29): cây 'T' CHẶN ĐI BỘ nên quái
   // đi dưới đất không thể sống ở khu có cây chắn. Vùng sống của mỗi con quái
   // đất = hộp ±4 ô quanh điểm spawn (đúng biên lang thang trong game.js:
@@ -1312,9 +1620,9 @@
   // Hậu xử lý dữ liệu: trong các hộp đó, ô 'T' đổi thành đất đi được '.'
   // trên LƯỚI LOGIC; tranh nền vẫn còn cây ở những ô đó — va chạm theo lưới
   // logic là chuẩn đã chấp nhận của dự án (đi dưới tán cây).
-  // Ngoại lệ duy nhất: Cây Cổ Thụ Linh Khí map 4 (38..40, 19..20) là cây
+  // Ngoại lệ duy nhất: Cây Cổ Thụ Linh Khí map 4 (50..52, 27..28) là cây
   // danh lam có biển tên riêng — thân cây phải chặn như giếng cổ 'E'.
-  var KEEP_TREES = { map4: [[38, 19, 40, 20]] };
+  // (KEEP_TREES khai ở khối EXPAND V10 phía trên — khối đó chạy trước.)
   function clearMonsterHabitats(map) {
     var centers = [];
     (map.monsters || []).forEach(function (m) { centers.push([m.x, m.y]); });
@@ -1627,7 +1935,7 @@
     }
     return null;
   }
-  var api = { MAP: MAP, MAP2: MAP2, MAP3: MAP3, MAP4: MAP4, MAP5: MAP5, MAP6: MAP6, MAP7: MAP7, MAP8: MAP8, MAP9: MAP9, MAP10: MAP10, MAP11: MAP11, MAP12: MAP12, MAP13: MAP13, MAP14: MAP14, MAPS: MAPS, HIGH_CHAIN: HIGH_CHAIN, REALMS: REALMS, realmById: realmById, realmRankOf: realmRankOf, realmGate: realmGate, getMap: getMap, isBlocked: isBlocked, isBlockedIn: isBlockedIn, tileAt: tileAt, zoneAt: zoneAt };
+  var api = { MAP: MAP, MAP2: MAP2, MAP3: MAP3, MAP4: MAP4, MAP5: MAP5, MAP6: MAP6, MAP7: MAP7, MAP8: MAP8, MAP9: MAP9, MAP10: MAP10, MAP11: MAP11, MAP12: MAP12, MAP13: MAP13, MAP14: MAP14, MAPS: MAPS, HIGH_CHAIN: HIGH_CHAIN, REALMS: REALMS, realmById: realmById, realmRankOf: realmRankOf, realmGate: realmGate, getMap: getMap, isBlocked: isBlocked, isBlockedIn: isBlockedIn, tileAt: tileAt, zoneAt: zoneAt, EXP_LAYOUT_V: EXP_LAYOUT_V, EXP_DX: EXP_DX, EXP_DY: EXP_DY };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else if (typeof window !== 'undefined') window.PNT_MAPS = api;
 })();

@@ -27,6 +27,9 @@
   var LIB = (typeof window !== 'undefined') ? window.PNT_LIBRARY : null; // Tàng Kinh Các (js/library.js)
   var AFF = (typeof window !== 'undefined') ? window.PNT_AFFINITY : null; // Hảo cảm NPC (js/affinity.js)
   var FM = (typeof window !== 'undefined') ? window.PNT_FORMATION : null; // Trận kỳ (js/formation.js)
+  var BX = (typeof window !== 'undefined') ? window.PNT_BESTIARY : null; // Thiên Cơ Đồ Giám (js/bestiary.js)
+  var FAIR = (typeof window !== 'undefined') ? window.PNT_MARKET_FAIR : null; // Chợ Phiên Thanh Khê (js/market-fair.js)
+  var LG = (typeof window !== 'undefined') ? window.PNT_LEGEND_BOARD : null; // Bia Truyền Kỳ Thanh Sơn (js/legend-board.js)
   var DM = (typeof window !== 'undefined') ? window.PNT_DEMON : null;
   var SM = (typeof window !== 'undefined') ? window.PNT_SMOOTH : null;
   var BOS = (typeof window !== 'undefined') ? window.PNT_BOSSES : null;
@@ -63,11 +66,57 @@
   var ACC_KEY = 'pnt-accounts-v1';
   var SAVE_PREFIX = 'pnt-save-';
   var accounts = {};
-  try { accounts = JSON.parse(localStorage.getItem(ACC_KEY) || '{}'); } catch (e) { accounts = {}; }
-  function saveAccounts() { try { localStorage.setItem(ACC_KEY, JSON.stringify(accounts)); } catch (e) {} }
+  // ----- Kho tài khoản: đọc THẲNG từ localStorage mỗi lần cần -----
+  // VÁ LỖI MẤT TÀI KHOẢN SAU F5 (playtest live 12:46 ngày 2026-10-30):
+  // bản cũ nạp kho tài khoản 1 LẦN lúc mở trang vào bộ nhớ rồi mỗi lần
+  // đăng kí lại ghi ĐÈ cả kho bằng bản chụp đó. Trang/tab nào mở TRƯỚC
+  // (bản chụp chưa có tài khoản mới) mà đăng kí SAU sẽ âm thầm xoá mọi
+  // tài khoản đã đăng kí ở tab khác sau khi nó mở — tải lại trang là
+  // "Tài khoản không tồn tại." dù không hề có lệnh xoá nào. Bản vá:
+  // (1) ghi theo kiểu GỘP với kho đang có trong storage, (2) đăng nhập
+  // làm mới từ storage trước khi kiểm, (3) ghi xong đọc lại kiểm chứng,
+  // hỏng thì trả false để handler BÁO LỖI thay vì nuốt im lặng như cũ,
+  // (4) JSON kho hỏng thì giữ bản thô ở khoá '.corrupt' thay vì coi như
+  // kho rỗng (mất trắng mọi tài khoản mà không để lại dấu vết).
+  function readStoredAccounts() {
+    var raw = null;
+    try { raw = localStorage.getItem(ACC_KEY); } catch (e) { return null; }
+    if (!raw) return {};
+    try {
+      var obj = JSON.parse(raw);
+      return (obj && typeof obj === 'object' && !Array.isArray(obj)) ? obj : {};
+    } catch (e) {
+      try { localStorage.setItem(ACC_KEY + '.corrupt', raw); } catch (e2) {}
+      return {};
+    }
+  }
+  accounts = readStoredAccounts() || {};
+  function saveAccounts() {
+    try {
+      var stored = readStoredAccounts();
+      if (stored === null) return false;
+      var merged = {};
+      Object.keys(stored).forEach(function (k) { merged[k] = stored[k]; });
+      Object.keys(accounts).forEach(function (k) { merged[k] = accounts[k]; });
+      localStorage.setItem(ACC_KEY, JSON.stringify(merged));
+      var back = readStoredAccounts();
+      if (!back) return false;
+      for (var k in accounts) { if (Object.prototype.hasOwnProperty.call(accounts, k) && !back[k]) return false; }
+      accounts = merged;
+      return true;
+    } catch (e) { return false; }
+  }
+  // Bổ sung vào bản bộ nhớ mọi tài khoản đã có trong storage mà phiên
+  // này chưa biết (đăng kí ở tab/cửa sổ khác sau khi trang này mở) —
+  // chỉ THÊM, không ghi đè bản ghi đang có trong bộ nhớ.
+  function refreshAccounts() {
+    var stored = readStoredAccounts();
+    if (stored === null) return;
+    Object.keys(stored).forEach(function (k) { if (!accounts[k]) accounts[k] = stored[k]; });
+  }
   var currentAccount = null, ch = null, qs = null, flags = {};
   var curMapId = 'map1';
-  var mapEntry = { mapId: 'map1', tx: 19, ty: 9 }; // điểm vào map hiện tại (Thổ Độn Phù độn về đây)
+  var mapEntry = { mapId: 'map1', tx: 31, ty: 17 }; // điểm vào map hiện tại (Thổ Độn Phù độn về đây) — V10: start map1 + offset (12,8)
   function curMap() { return (M.MAPS && M.MAPS[curMapId]) || M.MAP; }
   var px = 0, py = 0, dir = 'down', moving = false, walkTimer = 0, walkFrameIdx = 0;
   var monsters = [], herbs = [], floaters = [], skillFx = null;
@@ -479,6 +528,31 @@
       localStorage.setItem(SAVE_PREFIX + currentAccount, L.serialize(currentAccount, ch, qs, flags));
     } catch (e) {}
   }
+  // MIGRATION BỐ CỤC V10 (lệnh Bui 12:33 2026-10-30): 14 map thế giới
+  // chính mở rộng +24x+16 ô, toàn bộ nội dung dịch (+12,+8). Save ghi
+  // trước V10 chưa có cờ flags.layoutV: nếu nhân vật đang ở map thế
+  // giới (hoặc mapId trống/lạ — game tự rơi về map1) thì dịch tọa độ ô
+  // (x, y) và điểm ảnh (px, py) đúng 1 lần rồi đóng cờ; đang ở map
+  // instance (bí cảnh / động phủ / đấu trường — có mặt trong M.MAPS
+  // nhưng không khớp mẫu map1..map14) thì giữ nguyên. Nhân vật tạo sau
+  // V10 được đóng cờ ngay lúc tạo nên không bao giờ bị dịch oan, và cờ
+  // đã đóng thì nạp lại bao nhiêu lần cũng không dịch lặp.
+  function migrateLayoutV10(data) {
+    if (!data || !data.character) return;
+    var fl = data.flags || (data.flags = {});
+    var v = (M && M.EXP_LAYOUT_V) || 2;
+    if (fl.layoutV === v) return;
+    var c = data.character, dx = (M && M.EXP_DX) || 12, dy = (M && M.EXP_DY) || 8;
+    var mid = c.mapId || '';
+    var isWorld = /^map([1-9]|1[0-4])$/.test(mid) || !mid || !(M && M.MAPS && M.MAPS[mid]);
+    if (isWorld) {
+      if (typeof c.x === 'number') c.x += dx;
+      if (typeof c.y === 'number') c.y += dy;
+      if (typeof c.px === 'number') c.px += dx * TILE;
+      if (typeof c.py === 'number') c.py += dy * TILE;
+    }
+    fl.layoutV = v;
+  }
   function loadSave(username) {
     try {
       if (AC) {
@@ -496,6 +570,7 @@
         // Lớp c: kiểm hợp lệ theo dữ liệu game thật (item lạ, tầng
         // vượt mốc nhiệm vụ, LT/tu vi ngoài trần...) — sửa + ghi log.
         AC.validateSave(data);
+        migrateLayoutV10(data);
         if (res.status === 'restored') {
           pendingAhackNotice = 'Phát hiện bản lưu bị thay đổi/hỏng — đã khôi phục từ bản dự phòng gần nhất. Nhân vật của bạn vẫn an toàn.';
         }
@@ -504,9 +579,15 @@
       var raw = localStorage.getItem(SAVE_PREFIX + username);
       if (!raw) return null;
       var data2 = L.deserialize(raw);
+      if (data2) migrateLayoutV10(data2);
       return data2 && data2.character ? data2 : null;
     } catch (e) { return null; }
   }
+  // V10 (lệnh Bui 12:33 2026-10-30): tỉ lệ cỡ vẽ LƯỚI (mức Thấp) theo
+  // hạng quái — đồng bộ với dispW mới trong js/monster-ai.js. Lưới gốc
+  // 32 ô x hệ số 3 = 96px (Sơn Quân 48 ô = 144px); nhân hệ số này để
+  // hạng nhỏ/trung/lớn/Sơn Quân hiện đúng 72/84/96/150px như đường AI.
+  var MON_GRID_SCALE = { ga_rung: 0.75, tho_hoang: 0.75, soi_con: 0.875, ran_luc: 0.875, khi_mat_do: 0.875, son_quan: 150 / 144 };
   function makeMonster(type, x, y, extra) {
     var mm = L.newMonster(type, x, y);
     mm.sx = x; mm.sy = y; mm.tx = x; mm.ty = y; mm.moveT = 0; mm.respawnAt = 0;
@@ -649,6 +730,8 @@
     if (COMP) { COMP.ensure(flags); syncCompEnt(true); } // save cũ chưa có đồng hành: chưa chiêu mộ
     if (AFF) { AFF.ensure(flags); } // save cũ chưa có hảo cảm: khởi tạo lười
     if (SB) SB.ensure(flags, Date.now()); // save cũ: khởi tạo Bảng Mùa (flags.seasonBoard), sang quý mới thì lưu mùa cũ vào lịch sử — giữ Date.now() trần: test SB khóa chuỗi nối dây này; các đường CÓ THƯỞNG của SB (claim/note*) đều qua gameNow() chống lùi giờ
+    if (BX) BX.ensure(flags); // save cũ: khởi tạo Thiên Cơ Đồ Giám (flags.bestiary)
+    if (LG) LG.ensure(flags); // save cũ: khởi tạo Bia Truyền Kỳ (flags.legendBoard)
     if (ALCH) { ALCH.ensureAlchemy(ch); ALCH.syncSectRecipes(ch, qs, flags); } // save cũ: thêm ch.alchemy + đồng bộ phương Đan Hà đã đạt
     if (FLIGHT) FLIGHT.ensure(flags); // save cũ: thêm flags.flight (kiếm đã đúc linh)
     if (SECTP) { SECTP.ensure(ch); SECTP.bind(ch, flags); } // save cũ: thêm ch.congHien (0 điểm) + bind API PNT_SECT cho các hệ khác
@@ -1078,6 +1161,12 @@
         if (sbNote.ok) toast('Bảng mùa: +' + sbNote.added + ' điểm (' + TOURN.placementLabel(res.result.placement) + ' Đại Hội) — tổng mùa ' + sbNote.total + ' điểm.');
       }
       if (rw && SECTP) announceSectPoints(SECTP.onTournamentFinish(ch, flags, res.result.placement)); // cống hiến theo hạng, chốt cùng lúc phát thưởng nên đúng 1 lần/kỳ
+      // BIA TRUYỀN KỲ (js/legend-board.js): chỉ quán quân mới khắc bia.
+      if (LG && res.result.placement === 'quan_quan') {
+        var lgKey = (flags.tourn && flags.tourn.lastResult && flags.tourn.lastResult.sessionKey) || ('tourn-' + gameNow());
+        var lgNote = LG.noteTournament(flags, 'quan_quan', lgKey, TOURN.bracketById(res.result.bracket) ? TOURN.bracketById(res.result.bracket).name : '', gameNow());
+        if (lgNote.ok) toast('Bia Truyền Kỳ: khắc thêm dấu mốc — Quán quân Đại Hội!');
+      }
       var bname = TOURN.bracketById(res.result.bracket) ? TOURN.bracketById(res.result.bracket).name : '';
       toast('Đại Hội (' + bname + ') kết thúc: ' + TOURN.placementLabel(res.result.placement) + '! Quán quân kỳ này: ' + res.result.champion + '.');
       if (SND) { SND.sfx('quest_complete'); if (res.result.placement === 'quan_quan') SND.sfx('tourn_cheer'); }
@@ -1312,6 +1401,11 @@
     if (SB && result) {
       var sbTide = SB.noteTide(flags, result.wavesCleared, result.outcome, result.sessionKey, gameNow());
       if (sbTide.ok) toast('Bảng mùa: +' + sbTide.added + ' điểm (Thú Triều giữ ' + result.wavesCleared + '/6 đợt) — tổng mùa ' + sbTide.total + ' điểm.');
+    }
+    // BIA TRUYỀN KỲ (js/legend-board.js): chỉ thắng trọn mới khắc bia.
+    if (LG && result.outcome === 'win') {
+      var lgTide = LG.noteTide(flags, 'win', result.sessionKey || ('tide-' + gameNow()), result.wavesCleared, gameNow());
+      if (lgTide.ok) toast('Bia Truyền Kỳ: khắc thêm dấu mốc — Thủ thành Thú Triều thắng trọn!');
     }
     var tt = BT.titleText(flags);
     if (result.outcome === 'win') {
@@ -1720,6 +1814,170 @@
     if (f) toast('Đã thu trận.');
     updateHUD(); saveGame(); renderFormationPanel();
   }
+  // ---------- Panel Thiên Cơ Đồ Giám (js/bestiary.js) ----------
+  function openBestiaryPanel() {
+    renderBestiaryPanel();
+    $('panelBestiary').style.display = 'block';
+  }
+  function renderBestiaryPanel() {
+    if (!BX || !ch || !$('bestiaryBody')) return;
+    function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
+    // Khớp sổ với túi đồ hiện tại: vũ khí/pháp bảo mua/chế/rơi theo
+    // đường không qua hook rơi, thú đang sở hữu, mốc chết boss cũ.
+    var apis = { petSpecies: [], weaponIds: [], artifactIds: [], bossKills: flags.bossKills || {} };
+    if (ch.pets && Array.isArray(ch.pets.owned)) apis.petSpecies = ch.pets.owned.map(function (p) { return p.sp; });
+    if (W) apis.weaponIds = W.weaponEntries(ch).map(function (e) { return e.id; });
+    if (ART) apis.artifactIds = ART.artifactEntries(ch).map(function (e) { return e.id; });
+    BX.syncFromCharacter(flags, ch, apis);
+    var b = BX.ensure(flags);
+    var totals = {
+      monsters: L ? Object.keys(L.MONSTERS).length : 0,
+      bosses: BOS ? BOS.BOSSES.length : 0,
+      pets: PETS ? Object.keys(PETS.SPECIES).length : 0,
+      pills: ALCH ? Object.keys(ALCH.PILLS).length : 0,
+      realms: SR ? SR.POOL.length : 0,
+      weapons: W ? Object.keys(W.WEAPONS).length : 0,
+      artifacts: ART ? Object.keys(ART.ARTIFACTS).length : 0,
+      npcs: ST ? Object.keys(ST.NPCS).length : 0
+    };
+    var sum = BX.summary(flags, totals);
+    var html = '<p>Sổ tay của Lục Tiểu Lục (sạp chợ làng Thanh Khê, map 1) — tự ghi những gì bạn đã thật sự gặp. Trang chưa gặp hiện “???”, không tiết lộ trước. Điểm Đồ Giám chỉ để nhận thưởng mốc, không phải tiền, không đổi giữa chừng.</p>';
+    html += '<div class="qitem"><b>Điểm Đồ Giám: ' + sum.points + ' / ' + BX.maxPoints(totals) + '</b>' +
+      (sum.titles.length ? '<br>Danh hiệu đã nhận: ' + sum.titles.map(esc).join(' · ') : '') + '</div>';
+    // Quái: trang mở khi hạ 1, chi tiết khi hạ đủ 10.
+    var monHtml = Object.keys(L.MONSTERS).map(function (id) {
+      var def = L.MONSTERS[id], n = b.kills[id] || 0;
+      if (!n) return '??? (chưa gặp)';
+      if (n < BX.DETAIL_KILLS) return esc(def.name) + ' — đã hạ ' + n + ' con (đủ ' + BX.DETAIL_KILLS + ' con mở chi tiết)';
+      return esc(def.name) + ' — đã hạ ' + n + ' con · HP ' + def.hp + ' · công ' + def.atk;
+    }).join('<br>');
+    html += '<div class="qitem"><b>Quái đã hạ: ' + sum.monsters.seen + '/' + totals.monsters + ' loài (chi tiết ' + sum.monsters.detail + ' loài)</b><br>' + monHtml + '</div>';
+    var bossHtml = BOS.BOSSES.map(function (def) {
+      return b.bosses[def.id] ? esc(def.name) + ' — đã thắng (' + esc(def.lairName || '') + ')' : '??? (chưa thắng)';
+    }).join('<br>');
+    html += '<div class="qitem"><b>Boss đã thắng: ' + sum.bosses.won + '/' + totals.bosses + '</b><br>' + bossHtml + '</div>';
+    var petHtml = Object.keys(PETS.SPECIES).map(function (id) {
+      var def = PETS.SPECIES[id];
+      return b.pets[id] ? esc(def.name) + ' (' + PETS.GRADES[def.grade].name + ' phẩm)' : '??? (chưa thu phục)';
+    }).join('<br>');
+    html += '<div class="qitem"><b>Linh thú đã thu phục: ' + sum.pets.owned + '/' + totals.pets + '</b><br>' + petHtml + '</div>';
+    var pillHtml = Object.keys(ALCH.PILLS).map(function (id) {
+      return b.pills[id] ? esc(ALCH.PILLS[id].name) : '??? (chưa luyện)';
+    }).join(' · ');
+    html += '<div class="qitem"><b>Đan đã luyện: ' + sum.pills.brewed + '/' + totals.pills + '</b><br>' + pillHtml + '</div>';
+    var realmHtml = SR.POOL.map(function (def) {
+      var e = b.realms[def.id];
+      if (!e || !e.entered) return '??? (chưa vào)';
+      return esc(def.name) + (e.completed ? ' — đã hoàn thành lượt' : ' — đã vào, chưa hoàn thành lượt');
+    }).join('<br>');
+    html += '<div class="qitem"><b>Bí cảnh đã vào: ' + sum.realms.entered + '/' + totals.realms + ' (hoàn thành ' + sum.realms.completed + ' cảnh)</b><br>' + realmHtml + '</div>';
+    var weapHtml = Object.keys(W.WEAPONS).map(function (id) {
+      return b.weapons[id] ? esc(W.WEAPONS[id].name) : '??? (chưa sở hữu)';
+    }).join(' · ');
+    html += '<div class="qitem"><b>Vũ khí đã sở hữu: ' + sum.weapons.owned + '/' + totals.weapons + '</b><br>' + weapHtml + '</div>';
+    var artHtml = Object.keys(ART.ARTIFACTS).map(function (id) {
+      return b.artifacts[id] ? esc(ART.ARTIFACTS[id].name) : '??? (chưa sở hữu)';
+    }).join(' · ');
+    html += '<div class="qitem"><b>Pháp bảo đã sở hữu: ' + sum.artifacts.owned + '/' + totals.artifacts + '</b><br>' + artHtml + '</div>';
+    var npcHtml = Object.keys(ST.NPCS).map(function (id) {
+      return b.npcs[id] ? esc(ST.NPCS[id].name) + ' — ' + esc(ST.NPCS[id].title || '') : '??? (chưa gặp)';
+    }).join('<br>');
+    html += '<div class="qitem"><b>NPC đã gặp: ' + sum.npcs.met + '/' + totals.npcs + '</b><br>' + npcHtml + '</div>';
+    var cl = BX.claimable(flags);
+    if (cl.length) {
+      html += '<div class="qitem"><b>Thưởng mốc đang chờ nhận:</b><br>' + cl.map(function (m) {
+        return m.pts + ' điểm — “' + esc(m.title) + '”: +' + m.lt + ' Linh Thạch' + (m.item ? ' + ' + esc(L.ITEMS[m.item.id] ? L.ITEMS[m.item.id].name : m.item.id) + ' ×' + m.item.n : '') +
+          ' <button data-bx-claim="' + m.pts + '">Nhận thưởng</button>';
+      }).join('<br>') + '</div>';
+    } else {
+      var nx = BX.nextMilestone(flags);
+      html += '<p>' + (nx ? 'Mốc kế: ' + nx.milestone.pts + ' điểm (“' + esc(nx.milestone.title) + '”, +' + nx.milestone.lt + ' Linh Thạch) — còn thiếu ' + nx.need + ' điểm.' : 'Đã nhận hết mọi mốc Đồ Giám.') + '</p>';
+    }
+    if (sum.claimed.length) {
+      html += '<p>Đã nhận: ' + sum.claimed.map(function (pts) {
+        var m = BX.milestoneByPts(pts); return pts + ' điểm (“' + esc(m.title) + '”, +' + m.lt + ' Linh Thạch)';
+      }).join(' · ') + '.</p>';
+    }
+    html += '<p><i>Ghi chú trung thực: sổ chỉ tính từ khi ra đời đối với quái đã hạ, đan đã luyện và NPC đã gặp — save cũ không lưu sẵn các số này nên sổ không bịa lại quá khứ. Thú, vũ khí, pháp bảo và mốc boss cũ thì khớp lại được từ túi đồ và mốc chết boss nên vẫn giữ trang.</i></p>';
+    $('bestiaryBody').innerHTML = html;
+    var btns = $('bestiaryBody').querySelectorAll('[data-bx-claim]');
+    for (var i = 0; i < btns.length; i++) {
+      (function (btn) {
+        btn.addEventListener('click', function () {
+          var pts = +btn.getAttribute('data-bx-claim');
+          var res = BX.claim(flags, pts, ch);
+          if (res.ok) {
+            if (res.item && L) L.addItem(ch, res.item.id, res.item.n);
+            toast('Thiên Cơ Đồ Giám: mốc ' + pts + ' điểm — nhận danh hiệu “' + res.title + '” +' + res.lt + ' Linh Thạch' + (res.item ? ' + quà kèm' : '') + '!');
+            if (SND) SND.sfx('quest_complete');
+          } else {
+            toast('Chưa nhận được thưởng mốc này.');
+          }
+          updateHUD(); saveGame(); renderBestiaryPanel();
+        });
+      })(btns[i]);
+    }
+  }
+  // ---------- Panel Chợ Phiên Thanh Khê (js/market-fair.js) ----------
+  function openFairPanel() {
+    renderFairPanel();
+    $('panelFair').style.display = 'block';
+  }
+  function renderFairPanel() {
+    if (!FAIR || !ch || !$('fairBody')) return;
+    function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
+    var now = new Date(gameNow());
+    var f = FAIR.ensure(flags, now);
+    var open = FAIR.isOpen(now);
+    var st = FAIR.stallsFor(now);
+    var atVillage = curMapId === FAIR.KEEPER.mapId;
+    var html = '<p>Chợ phiên của thương đội Mã Vạn Lai — <b>mỗi Chủ nhật, tại quảng trường làng Thanh Khê (map 1)</b>, Lục Tiểu Lục coi sạp. 6 sạp xoay vòng theo tuần, bán hết trong ngày thì thôi; ngoài Chủ nhật chỉ xem trước sạp của phiên tới.</p>';
+    html += '<div class="qitem"><b>Phiên ' + (open ? 'ĐANG MỞ hôm nay' : 'tới: Chủ nhật ' + st.date.getDate() + '/' + (st.date.getMonth() + 1)) + '</b> · Linh Thạch của bạn: <b>' + (ch.linhThach | 0) + '</b>' +
+      (!atVillage ? '<br><span style="color:#b03a2e"><b>Bạn đang không ở làng — về quảng trường làng (map 1) mới mua/bán được.</b></span>' : '') + '</div>';
+    html += '<div class="qitem"><b>Sạp phiên (' + st.slots.length + ' món):</b><br>' + st.slots.map(function (slot) {
+      var rem = FAIR.remaining(flags, slot.id, now);
+      var canBuy = open && atVillage && rem > 0 && (ch.linhThach | 0) >= slot.price;
+      return esc(FAIR.itemName(slot.id)) + (slot.fairOnly ? ' <i>(chỉ có ở phiên)</i>' : '') +
+        ' — ' + slot.price + ' Linh Thạch · còn ' + rem + '/' + slot.stock +
+        (canBuy ? ' <button data-fair-buy="' + slot.id + '">Mua</button>' :
+          ' <button disabled>' + (!open ? 'Ngoài phiên' : (!atVillage ? 'Xa làng' : (rem <= 0 ? 'Hết hàng' : 'Thiếu Linh Thạch'))) + '</button>');
+    }).join('<br>') + '</div>';
+    var bbHtml = FAIR.BUYBACK.map(function (def) {
+      var have = L ? L.countItem(ch, def.id) : 0;
+      var sold = f.buyback[def.id] | 0;
+      var ltLeft = FAIR.BUYBACK_CAP_LT - (f.buybackLt | 0);
+      var canSell = open && atVillage && have > 0 && sold < def.cap && ltLeft >= def.price;
+      return esc(FAIR.itemName(def.id)) + ' — phiên thu ' + def.price + ' Linh Thạch/món · đã bán ' + sold + '/' + def.cap +
+        ' · bạn có ' + have +
+        (canSell ? ' <button data-fair-sell="' + def.id + '">Bán 1</button>' : ' <button disabled>' + (!open ? 'Ngoài phiên' : (!atVillage ? 'Xa làng' : (have <= 0 ? 'Không có hàng' : (sold >= def.cap ? 'Hết hạn mức món' : 'Hết hạn mức phiên')))) + '</button>');
+    }).join('<br>');
+    html += '<div class="qitem"><b>Thu mua phiên (hạn mức cả phiên: ' + FAIR.BUYBACK_CAP_LT + ' Linh Thạch, đã thu ' + (f.buybackLt | 0) + '):</b><br>' + bbHtml + '</div>';
+    $('fairBody').innerHTML = html;
+    var buys = $('fairBody').querySelectorAll('[data-fair-buy]');
+    for (var i = 0; i < buys.length; i++) {
+      (function (btn) {
+        btn.addEventListener('click', function () {
+          var r = FAIR.buy(flags, ch, btn.getAttribute('data-fair-buy'), new Date(gameNow()), curMapId);
+          if (r.ok) { if (SND) SND.sfx('shop_buy'); toast('Chợ phiên: đã mua ' + r.name + ' −' + r.price + ' Linh Thạch.'); }
+          else toast('Không mua được: ' + r.reason + '.');
+          updateHUD(); saveGame(); renderFairPanel();
+        });
+      })(buys[i]);
+    }
+    var sells = $('fairBody').querySelectorAll('[data-fair-sell]');
+    for (var j = 0; j < sells.length; j++) {
+      (function (btn) {
+        btn.addEventListener('click', function () {
+          var raw = FAIR.sellback(flags, ch, btn.getAttribute('data-fair-sell'), 1, new Date(gameNow()), curMapId);
+          var gain = raw.ok && AC ? AC.guardGain('sell', raw.gain) : (raw.ok ? raw.gain : 0);
+          if (raw.ok && AC && gain !== raw.gain) { ch.linhThach -= (raw.gain - gain); }
+          if (raw.ok) { if (SND) SND.sfx('shop_sell'); toast('Chợ phiên: đã bán ' + raw.n + ' ' + raw.name + ' (+' + gain + ' Linh Thạch).'); }
+          else toast('Không bán được: ' + raw.reason + '.');
+          updateHUD(); saveGame(); renderFairPanel();
+        });
+      })(sells[j]);
+    }
+  }
   function openSeasonPanel() {
     renderSeasonPanel();
     $('panelSeasonBoard').style.display = 'block';
@@ -1771,6 +2029,33 @@
         });
       })(btns[i]);
     }
+  }
+  // ---------- Panel Bia Truyền Kỳ Thanh Sơn (js/legend-board.js) ----------
+  function openLegendPanel() {
+    renderLegendPanel();
+    $('panelLegend').style.display = 'block';
+  }
+  function renderLegendPanel() {
+    if (!LG || !ch) return;
+    function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
+    var list = LG.entries(flags);
+    var html = '<p>Bia đá ở quảng trường Chân Núi Thanh Phong (map 3), do thư lại Thẩm Ký giữ — cùng người giữ Bảng Mùa, nhưng bia này KHÔNG reset theo mùa và KHÔNG thưởng: nó chỉ khắc dấu mốc cả đời. Độ kiếp thành công, quán quân Đại Hội, thủ thành thắng trọn, lễ bái sư, lần đầu hạ boss — mỗi mốc khắc đúng 1 lần.</p>';
+    if (list.length) {
+      html += '<div class="qitem"><b>Dấu mốc của bạn (' + list.length + ')</b><br>' + list.map(function (e) {
+        return esc(e.title) + ' — ' + esc(e.detail) + (e.at ? ' · ' + esc(LG.fmtDate(e.at)) : '');
+      }).join('<br>') + '</div>';
+    } else {
+      html += '<div class="qitem">Bia của bạn còn trắng — độ kiếp, vô địch một kỳ Đại Hội, giữ trọn một phiên Thú Triều, bái nhập tông môn hay hạ một boss thế giới lần đầu, Thẩm Ký sẽ khắc ngay lên đây.</div>';
+    }
+    html += '<div class="qitem"><b>Dòng khắc cũ (đã mờ)</b><br>' + LG.OLD_LINES.map(function (o) { return esc(o.text); }).join('<br>') + '</div>';
+    var hall = (flags.tourn && Array.isArray(flags.tourn.hall)) ? flags.tourn.hall : [];
+    if (hall.length) {
+      html += '<div class="qitem"><b>Quán quân Đại Hội các kỳ gần nhất (sổ của Thẩm Ký)</b><br>' + hall.map(function (h) {
+        var bn = (TOURN && TOURN.bracketById(h.bracket)) ? TOURN.bracketById(h.bracket).name : h.bracket;
+        return esc(h.champion) + (h.isPlayer ? ' (bạn)' : '') + ' — ' + esc(bn);
+      }).join('<br>') + '</div>';
+    }
+    $('legendBody').innerHTML = html;
   }
   function tideRewardText(list) {
     return (list || []).map(function (r) {
@@ -1908,7 +2193,7 @@
     }
   }
   // ---------- Sự kiện thú dữ tấn công làng (đợt quái ở bãi hoang nam map 1) ----------
-  var EV_SPOTS = [[17, 26], [19, 27], [21, 26], [18, 28], [20, 28], [22, 27], [16, 27], [19, 25]];
+  var EV_SPOTS = [[29, 34], [31, 35], [33, 34], [30, 36], [32, 36], [34, 35], [28, 35], [31, 33]]; // V10: + offset map (12,8)
   function spawnEventWave() {
     var wave = L.beastWave(flags);
     if (!wave) return;
@@ -1968,6 +2253,8 @@
     if (BOS && m.worldBoss) {
       var bdefK = BOS.bossById(m.worldBoss);
       BOS.recordKill(flags, m.worldBoss, gameNow()); // đồng hồ đơn điệu: lùi giờ không làm boss hồi sinh sớm
+      // BIA TRUYỀN KỲ (js/legend-board.js): lần đầu hạ boss mới khắc bia.
+      if (LG && bdefK) { var lgBoss = LG.noteBossFirst(flags, m.worldBoss, bdefK.name, gameNow()); if (lgBoss.ok) toast('Bia Truyền Kỳ: khắc thêm dấu mốc — lần đầu hạ ' + bdefK.name + '!'); }
       delete bossAnnounced[m.worldBoss];
       if (bdefK) {
         var rsK = BOS.stateOf(bdefK, flags, qs, Date.now()).respawnAt;
@@ -1976,6 +2263,16 @@
       saveGame();
     } else if (BOS && m.boss && m.type === 'son_quan') {
       if (BOS.deathOf(flags, 'son_quan') == null) { BOS.recordKill(flags, 'son_quan', Date.now()); saveGame(); }
+      // BIA TRUYỀN KỲ: Sơn Quân là boss cốt truyện chương 7 — lần đầu hạ cũng khắc bia như boss thế giới.
+      if (LG) { var lgSq = LG.noteBossFirst(flags, 'son_quan', 'Sơn Quân', gameNow()); if (lgSq.ok) toast('Bia Truyền Kỳ: khắc thêm dấu mốc — lần đầu hạ Sơn Quân!'); }
+    }
+    // THIÊN CƠ ĐỒ GIÁM (js/bestiary.js): funnel hạ quái duy nhất —
+    // boss thế giới chỉ mở trang boss, boss cốt truyện vừa tính số
+    // hạ loài vừa mở trang boss, quái thường chỉ tính số hạ loài.
+    if (BX) {
+      if (m.worldBoss) BX.noteKill(flags, m.type, { worldBoss: true, bossId: m.worldBoss });
+      else if (m.boss) BX.noteKill(flags, m.type, { bossId: m.type });
+      else BX.noteKill(flags, m.type);
     }
     if (m.boss) saveGame();
     // Linh thú: thú xuất chiến còn sống ăn EXP theo quái vừa hạ + lăn rơi
@@ -2280,6 +2577,7 @@
     if (!m) { toast('Không có quái nào gần để thu phục.'); return; }
     var r = PETS.tryCapture(ch, m, Math.random);
     if (r.ok) {
+      if (BX) BX.notePet(flags, r.pet.sp); // Đồ Giám: thu phục 1 lần là mở trang thú
       toast('Thu phục thành công ' + PETS.species(r.pet.sp).name + ' (' + PETS.GRADES[PETS.species(r.pet.sp).grade].name + ' phẩm)! Nó đã vào chuồng — mở panel Linh thú để cho xuất chiến.');
       m.hp = 0; m.dying = true; m.deadT = 0.7; // thu phục = quái biến mất, không thưởng hạ quái
       if (SND) SND.sfx('quest_complete');
@@ -2338,7 +2636,7 @@
       row('🥚 <b>Trứng ' + ed.name + '</b> (' + PETS.GRADES[ed.grade].name + ' phẩm, hệ ' + PETS.ELEMS[ed.elem] + ') — ấp ' + pct + '% (' + Math.floor(e.prog) + '/' + e.need + 's)',
         pct >= 100 ? 'Cho nở!' : null, function () {
           var r = PETS.hatchEgg(ch, i);
-          if (r.ok) { toast('Trứng nở thành ' + ed.name + '!'); syncPetEnt(false); }
+          if (r.ok) { if (BX) BX.notePet(flags, e.sp); toast('Trứng nở thành ' + ed.name + '!'); syncPetEnt(false); }
           else toast('Chuồng đã đầy, chưa nở được.');
           renderPetPanel(); updateHUD(); saveGame();
         });
@@ -2499,7 +2797,13 @@
     var u = $('regUser').value.trim(), p = $('regPass').value;
     var r = L.registerAccount(accounts, u, p);
     if (!r.ok) { $('regErr').textContent = r.error; return; }
-    saveAccounts();
+    if (!saveAccounts()) {
+      // Storage từ chối ghi (bị chặn/hết quota): tài khoản mới chỉ có
+      // trong bộ nhớ phiên này, tải lại trang là mất — PHẢI báo rõ,
+      // tuyệt đối không hiện "Đăng kí thành công" như bản cũ.
+      $('regErr').textContent = 'Không lưu được tài khoản trên trình duyệt này (lưu trữ bị chặn hoặc đã đầy). Hãy tắt chế độ chặn lưu trữ/đổi trình duyệt rồi đăng kí lại.';
+      return;
+    }
     $('regErr').textContent = '';
     $('loginUser').value = u;
     toast('Đăng kí thành công! Mời đăng nhập.');
@@ -2510,6 +2814,7 @@
   $('formLogin').addEventListener('submit', function (e) {
     e.preventDefault();
     var u = $('loginUser').value.trim(), p = $('loginPass').value;
+    refreshAccounts(); // nạp thêm tài khoản đã đăng kí ở tab/cửa sổ khác sau khi trang này mở
     var r = L.loginAccount(accounts, u, p);
     if (!r.ok) { $('loginErr').textContent = r.error; return; }
     currentAccount = u;
@@ -2579,6 +2884,7 @@
     ch = L.createCharacter(name, gender, origin, look || undefined);
     qs = L.newQuestState();
     flags = {};
+    flags.layoutV = (M && M.EXP_LAYOUT_V) || 2; // nhân vật tạo sau V10: đã ở bố cục mới, không migration
     L.acceptQuest(qs, 'q_chinh_1');
     saveGame();
     startGame();
@@ -2819,6 +3125,7 @@
     renderDlgActions();
     $('dialogueBox').style.display = 'block';
     L.recordEvent(qs, ch, { type: 'talk', target: npc.id });
+    if (BX) BX.noteNpc(flags, npc.id); // Đồ Giám: trò chuyện 1 lần là mở trang NPC
     updateHUD(); saveGame();
   }
   function renderDlgActions() {
@@ -3068,6 +3375,27 @@
       aub.textContent = 'Phiên Đấu Giá Liên Tông: xem bảng đấu giá';
       aub.onclick = function () { closeDialogue(); openAuctionPanel(); };
       box.appendChild(aub);
+    }
+    // --- THIÊN CƠ ĐỒ GIÁM: Lục Tiểu Lục mở sổ tay hành trình ---
+    if (BX && nid === BX.KEEPER.id) {
+      var bxb = document.createElement('button');
+      bxb.textContent = 'Thiên Cơ Đồ Giám: xem sổ tay hành trình';
+      bxb.onclick = function () { closeDialogue(); openBestiaryPanel(); };
+      box.appendChild(bxb);
+    }
+    // --- CHỢ PHIÊN: Lục Tiểu Lục coi sạp phiên của thương đội Mã ---
+    if (FAIR && nid === FAIR.KEEPER.id) {
+      var frb = document.createElement('button');
+      frb.textContent = 'Chợ Phiên Thanh Khê: xem sạp phiên';
+      frb.onclick = function () { closeDialogue(); openFairPanel(); };
+      box.appendChild(frb);
+    }
+    // --- BIA TRUYỀN KỲ: Thẩm Ký mở bia đá (cùng người giữ Bảng Mùa) ---
+    if (LG && nid === LG.KEEPER.id) {
+      var lgb = document.createElement('button');
+      lgb.textContent = 'Bia Truyền Kỳ: xem dấu mốc';
+      lgb.onclick = function () { closeDialogue(); openLegendPanel(); };
+      box.appendChild(lgb);
     }
     // --- ĐỒNG HÀNH: đại diện của tông đã bái nhập mới có nút mời —
     // KHÔNG chen vào dialogueLinesFor (đại diện tông còn có thoại nhiệm
@@ -3819,7 +4147,7 @@
     if (!res || !res.ok) return;
     if (res.teleport) {
       if (res.teleport.sameMap) {
-        var e = (mapEntry && mapEntry.mapId === curMapId) ? mapEntry : { tx: 19, ty: 9 };
+        var e = (mapEntry && mapEntry.mapId === curMapId) ? mapEntry : { tx: 31, ty: 17 }; // V10: mặc định = start map1 mới
         px = e.tx * TILE + 16; py = e.ty * TILE + 28;
         moveTarget = null; snapCamera();
         floaters.push({ x: px, y: py - 70, txt: 'Thổ độn!', color: '#c9a86a', t: 1 });
@@ -4048,6 +4376,7 @@
         b.onclick = function () {
           var res = ALCH.brew(ch, id);
           if (res.ok) {
+            if (BX) BX.notePill(flags, id); // Đồ Giám: luyện 1 lần là mở trang đan
             if (SND) SND.sfx('use_item');
             toast('Luyện thành công ' + pill.name + '! (tỉ lệ ' + res.rate + '%)');
             L.recordEvent(qs, ch, { type: 'brew', target: id });
@@ -4819,7 +5148,7 @@
     }
     if (curMapId === 'map3') {
       var tx = Math.floor(px / TILE), ty = Math.floor(py / TILE);
-      if (tx >= 38 && tx <= 48 && ty >= 22 && ty <= 25) return 'dai_vong_van';
+      if (tx >= 50 && tx <= 60 && ty >= 30 && ty <= 33) return 'dai_vong_van'; // V10: đài (38..48, 22..25) + offset map (12,8)
     }
     // Độ Kiếp Đài: cả map 14 là đài độ kiếp trên đỉnh Đại Sơn (js/maps.js).
     if (curMapId === 'map14') return 'do_kiep_dai';
@@ -5107,6 +5436,8 @@
       spawnEffect({ skill: 'ban_phuoc', fxSkill: 'ban_phuoc', follow: true, x: px, y: py, dur: 2.2, cosmetic: true });
       if (SK) { SK.ensureState(ch); ch.ll = SK.maxLinhLuc(ch); checkUnlockNotices(); refreshSkillIcons(); }
       L.recordEvent(qs, ch, { type: 'breakthrough' });
+      // BIA TRUYỀN KỲ (js/legend-board.js): độ kiếp thành công khắc bia theo cảnh giới đạt được.
+      if (LG) { var lgTrib = LG.noteTribulation(flags, r.realm, r.formName, r.tanked, gameNow()); if (lgTrib.ok) toast('Bia Truyền Kỳ: khắc thêm dấu mốc — độ kiếp thành công lên ' + r.realm + '!'); }
       if (bh) bh.textContent = 'Độ kiếp thành công — Thiên Đạo ban phước!';
       $('breakText').textContent = 'Bạn đã sống sót qua lôi kiếp ' + r.formName + ' (' + r.tanked + ' đạo chịu trọn), đột phá lên ' + r.realm + '! Nhận Thiên Đạo Ấn thứ ' + r.thienDaoAn + ' (mỗi ấn +2% HP và +2% công vĩnh viễn). Luyện thể: +' + r.temper.maxHp + ' HP tối đa, +' + r.temper.def + ' thủ, +' + r.temper.atk + ' công. Thiên Đạo ban phước hồi đầy HP và linh lực.';
     } else {
@@ -5348,6 +5679,15 @@
   });
   var seasonClose = $('seasonClose');
   if (seasonClose) seasonClose.addEventListener('click', function () { $('panelSeasonBoard').style.display = 'none'; });
+  // Bia Truyền Kỳ: nút thanh công cụ + nút đóng panel (js/legend-board.js).
+  var btnLegend = $('btnLegend');
+  if (btnLegend) btnLegend.addEventListener('click', function () {
+    var p = $('panelLegend');
+    if (p && p.style.display === 'block') p.style.display = 'none';
+    else openLegendPanel();
+  });
+  var legendClose = $('legendClose');
+  if (legendClose) legendClose.addEventListener('click', function () { $('panelLegend').style.display = 'none'; });
   var btnCompToggle = $('btnCompToggle');
   if (btnCompToggle) btnCompToggle.addEventListener('click', function () {
     if (!COMP) return;
@@ -5375,6 +5715,24 @@
   });
   var formationClose = $('formationClose');
   if (formationClose) formationClose.addEventListener('click', function () { $('panelFormation').style.display = 'none'; });
+  // THIÊN CƠ ĐỒ GIÁM: nút mở panel + đóng panel.
+  var btnBestiary = $('btnBestiary');
+  if (btnBestiary) btnBestiary.addEventListener('click', function () {
+    var p = $('panelBestiary');
+    if (p && p.style.display === 'block') p.style.display = 'none';
+    else openBestiaryPanel();
+  });
+  var bestiaryClose = $('bestiaryClose');
+  if (bestiaryClose) bestiaryClose.addEventListener('click', function () { $('panelBestiary').style.display = 'none'; });
+  // CHỢ PHIÊN: nút mở panel + đóng panel.
+  var btnFair = $('btnFair');
+  if (btnFair) btnFair.addEventListener('click', function () {
+    var p = $('panelFair');
+    if (p && p.style.display === 'block') p.style.display = 'none';
+    else openFairPanel();
+  });
+  var fairClose = $('fairClose');
+  if (fairClose) fairClose.addEventListener('click', function () { $('panelFair').style.display = 'none'; });
   var btnFormTuKhi = $('btnFormTuKhi');
   if (btnFormTuKhi) btnFormTuKhi.addEventListener('click', function () { placeFormation('tu_khi'); });
   var btnFormHoThe = $('btnFormHoThe');
@@ -7088,7 +7446,7 @@
           var drewGrid = false;
           if (SM && S.monsterFramePx) {
             var spM = SM.splitFrame(fF, 20, !m.dying);
-            var mScaleR = 3 * (m.scale || 1);
+            var mScaleR = 3 * (m.scale || 1) * (MON_GRID_SCALE[m.type] || 1);
             var keyMA = 'mon|' + m.type + '|' + act + '|' + mGridDir + '|' + spM.i0 + '|' + mScaleR;
             var keyMB = 'mon|' + m.type + '|' + act + '|' + mGridDir + '|' + spM.i1 + '|' + mScaleR;
             var entMA = { key: keyMA, gen: null }, entMB = { key: keyMB, gen: null };
@@ -7103,13 +7461,13 @@
           var mPxGrid = S.monsterFramePx ? S.monsterFramePx(m.type, act, fIdx, mDir === 'back' ? 'front' : mDir) : null;
           if (mPxGrid) {
             var mSizeP = mPxGrid.length;
-            var mPxP = Math.round(mSizeP * 3 * (m.scale || 1));
-            S.drawPixelsToCanvas(ctx, mPxGrid, m.x * TILE + 16 - mPxP / 2 - camX, m.y * TILE + 28 - mPxP - camY, 3 * (m.scale || 1));
+            var mPxP = Math.round(mSizeP * 3 * (m.scale || 1) * (MON_GRID_SCALE[m.type] || 1));
+            S.drawPixelsToCanvas(ctx, mPxGrid, m.x * TILE + 16 - mPxP / 2 - camX, m.y * TILE + 28 - mPxP - camY, 3 * (m.scale || 1) * (MON_GRID_SCALE[m.type] || 1));
             mPxW = mPxP; mPxH = mPxP;
           } else {
             var mGrid = S.monsterFrame(m.type, act, fIdx, mDir === 'back' ? 'front' : mDir);
             var mSize = mGrid.length;
-            var msc = 3 * (m.scale || 1);
+            var msc = 3 * (m.scale || 1) * (MON_GRID_SCALE[m.type] || 1);
             var mPx = mSize * msc;
             S.drawGridToCanvas(ctx, mGrid, m.x * TILE + 16 - mPx / 2 - camX, m.y * TILE + 28 - mPx - camY, msc);
             mPxW = mPx; mPxH = mPx;
@@ -7948,6 +8306,7 @@
     updateHUD(); saveGame();
   }
   function completeRealmRun(run) {
+    if (BX) BX.noteRealmComplete(flags, (run && run.realmId) || 'liet_khach'); // Đồ Giám: hoàn thành lượt bí cảnh
     var realmWasRewarded = !!(flags.sr && flags.sr.run && flags.sr.run.rewarded);
     SR.markRewarded(flags);
     if (SB && !realmWasRewarded) {
@@ -7963,7 +8322,7 @@
     var run = SR.clearRun(flags);
     var timerEl = $('realmTimer'); if (timerEl) timerEl.style.display = 'none';
     if (!run) return false;
-    var rt = run.returnTo || { mapId: 'map1', x: 19, y: 12 };
+    var rt = run.returnTo || { mapId: 'map1', x: 31, y: 20 }; // V10: điểm về dự phòng (19,12) + offset (12,8)
     switchMap(rt.mapId, rt.x, rt.y);
     if (reason) toast(reason);
     saveGame();
@@ -7981,6 +8340,7 @@
       if (!chk.ok) return chk;
       var r = SR.beginRun(flags, now, !!flags.kyNgo, realmReturnPoint());
       if (!r.ok) return r;
+      if (BX) BX.noteRealmEnter(flags, 'liet_khach'); // Đồ Giám: vào bí cảnh định kỳ
       $('panelRealms').style.display = 'none';
       var mp0 = SR.REALM_MAPS[SR.SCHEDULED.mapId];
       switchMap(SR.SCHEDULED.mapId, mp0.start.x, mp0.start.y);
@@ -7993,6 +8353,7 @@
     if (!chk2.ok) return chk2;
     var r2 = SR.beginRealmRun(openDef.id, flags, now, opts, realmReturnPoint());
     if (!r2.ok) return r2;
+    if (BX) BX.noteRealmEnter(flags, openDef.id); // Đồ Giám: vào bí cảnh kỳ ngộ
     $('panelRealms').style.display = 'none';
     var mp = SR.REALM_MAPS[openDef.mapId];
     switchMap(openDef.mapId, mp.start.x, mp.start.y);
@@ -8594,6 +8955,8 @@
         if (!SECT) return null;
         var r = SECT.join(flags, qs, id);
         if (r.ok) {
+          // BIA TRUYỀN KỲ (js/legend-board.js): lễ bái sư là dấu mốc cả đời.
+          if (LG) { var lgSect = LG.noteSectJoin(flags, id, SECT.sectById(id) ? SECT.sectById(id).name : id, gameNow()); if (lgSect.ok) toast('Bia Truyền Kỳ: khắc thêm dấu mốc — bái nhập tông môn!'); }
           L.addItem(ch, r.token, 1);
           if (DP) { DP.stampOwner(flags, DP.ownerKeyOf(currentAccount, ch)); DP.ensure(flags); DP.takeGrantNotice(flags); }
           updateHUD(); saveGame();
@@ -8639,7 +9002,7 @@
       alchemyBrew: function (id) {
         if (!ALCH) return null;
         var r = ALCH.brew(ch, id);
-        if (r.ok) { L.recordEvent(qs, ch, { type: 'brew', target: id }); renderQuestPanel(); }
+        if (r.ok) { if (BX) BX.notePill(flags, id); L.recordEvent(qs, ch, { type: 'brew', target: id }); renderQuestPanel(); }
         updateHUD(); saveGame();
         return r;
       },

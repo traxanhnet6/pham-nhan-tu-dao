@@ -247,7 +247,7 @@
   }
 
   // ================= PHẦN C — LỄ + PHÁP BẢO LỄ =================
-  var FEST_NPC = { id: 'le_su', name: 'Dì Tư', title: 'Người lo lễ hội làng Thanh Khê', sprite: 'chu_quan', mapId: 'map1', x: 20, y: 11 };
+  var FEST_NPC = { id: 'le_su', name: 'Dì Tư', title: 'Người lo lễ hội làng Thanh Khê', sprite: 'chu_quan', mapId: 'map1', x: 33, y: 19 } // V10: + offset map (12,8), rồi +1 ô đông khi Dì Tư rời ô đường (playtest 12:46);
   // Ngày lễ ÂM LỊCH quy ra dương lịch theo năm (gần đúng, tra lịch vạn
   // niên 2025–2032). Ngoài bảng: dùng ngày của năm gần nhất trong bảng.
   var LUNAR_DATES = {
