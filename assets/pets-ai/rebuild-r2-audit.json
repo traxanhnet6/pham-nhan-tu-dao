@@ -1,0 +1,598 @@
+{
+ "nai_sao": {
+  "audit": {
+   "cao/front-idle": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "trung/front-idle": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "cao/front-move": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "trung/front-move": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "cao/front-attack": {
+    "distinct": 59,
+    "strayViolations": 0,
+    "groundDevMax": 1
+   },
+   "trung/front-attack": {
+    "distinct": 59,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "cao/right-idle": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "trung/right-idle": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "cao/right-move": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "trung/right-move": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "cao/right-attack": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "trung/right-attack": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "cao/right-hit": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "trung/right-hit": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "cao/right-death": {
+    "distinct": 60,
+    "strayViolations": 8,
+    "groundDevMax": 0
+   },
+   "trung/right-death": {
+    "distinct": 60,
+    "strayViolations": 6,
+    "groundDevMax": 0
+   },
+   "cao/back-idle": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "trung/back-idle": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "cao/back-move": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 1
+   },
+   "trung/back-move": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "cao/back-attack": {
+    "distinct": 60,
+    "strayViolations": 30,
+    "groundDevMax": 0
+   },
+   "trung/back-attack": {
+    "distinct": 60,
+    "strayViolations": 13,
+    "groundDevMax": 0
+   },
+   "cao/back-hit": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 1
+   },
+   "trung/back-hit": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 2
+   },
+   "cao/back-death": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "trung/back-death": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   }
+  },
+  "bridgeRepairs": {
+   "trung/front-idle": 0,
+   "trung/front-move": 0,
+   "trung/front-attack": 0,
+   "trung/right-idle": 0,
+   "trung/right-move": 0,
+   "trung/right-attack": 0,
+   "trung/right-hit": 0,
+   "trung/right-death": 0,
+   "trung/back-idle": 0,
+   "trung/back-move": 0,
+   "trung/back-attack": 0,
+   "trung/back-hit": 0,
+   "trung/back-death": 0
+  }
+ },
+ "ran_hoa": {
+  "audit": {
+   "cao/front-idle": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "trung/front-idle": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "cao/front-move": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "trung/front-move": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "cao/front-attack": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "trung/front-attack": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "cao/right-idle": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "trung/right-idle": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "cao/right-move": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "trung/right-move": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "cao/right-attack": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "trung/right-attack": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "cao/right-hit": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "trung/right-hit": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "cao/right-death": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "trung/right-death": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "cao/back-idle": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "trung/back-idle": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "cao/back-move": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "trung/back-move": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 2
+   },
+   "cao/back-attack": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 2
+   },
+   "trung/back-attack": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 2
+   },
+   "cao/back-hit": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 1
+   },
+   "trung/back-hit": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "cao/back-death": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "trung/back-death": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   }
+  },
+  "bridgeRepairs": {
+   "trung/front-idle": 0,
+   "trung/front-move": 0,
+   "trung/front-attack": 0,
+   "trung/right-idle": 0,
+   "trung/right-move": 0,
+   "trung/right-attack": 0,
+   "trung/right-hit": 0,
+   "trung/right-death": 0,
+   "trung/back-idle": 0,
+   "trung/back-move": 0,
+   "trung/back-attack": 0,
+   "trung/back-hit": 0,
+   "trung/back-death": 0
+  }
+ },
+ "ca_koi": {
+  "audit": {
+   "cao/front-idle": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 2
+   },
+   "trung/front-idle": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 2
+   },
+   "cao/front-move": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 5
+   },
+   "trung/front-move": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 2
+   },
+   "cao/front-attack": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 4
+   },
+   "trung/front-attack": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 2
+   },
+   "cao/right-idle": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "trung/right-idle": {
+    "distinct": 60,
+    "strayViolations": 13,
+    "groundDevMax": 0
+   },
+   "cao/right-move": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "trung/right-move": {
+    "distinct": 60,
+    "strayViolations": 7,
+    "groundDevMax": 0
+   },
+   "cao/right-attack": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "trung/right-attack": {
+    "distinct": 60,
+    "strayViolations": 9,
+    "groundDevMax": 2
+   },
+   "cao/right-hit": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "trung/right-hit": {
+    "distinct": 60,
+    "strayViolations": 11,
+    "groundDevMax": 2
+   },
+   "cao/right-death": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "trung/right-death": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "cao/back-idle": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "trung/back-idle": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "cao/back-move": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "trung/back-move": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "cao/back-attack": {
+    "distinct": 60,
+    "strayViolations": 3,
+    "groundDevMax": 0
+   },
+   "trung/back-attack": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "cao/back-hit": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 1
+   },
+   "trung/back-hit": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "cao/back-death": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "trung/back-death": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   }
+  },
+  "bridgeRepairs": {
+   "trung/front-idle": 0,
+   "trung/front-move": 0,
+   "trung/front-attack": 0,
+   "trung/right-idle": 0,
+   "trung/right-move": 0,
+   "trung/right-attack": 0,
+   "trung/right-hit": 0,
+   "trung/right-death": 0,
+   "trung/back-idle": 0,
+   "trung/back-move": 0,
+   "trung/back-attack": 0,
+   "trung/back-hit": 0,
+   "trung/back-death": 0
+  }
+ },
+ "quy_linh": {
+  "audit": {
+   "cao/front-idle": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "trung/front-idle": {
+    "distinct": 60,
+    "strayViolations": 4,
+    "groundDevMax": 0
+   },
+   "cao/front-move": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "trung/front-move": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 2
+   },
+   "cao/front-attack": {
+    "distinct": 59,
+    "strayViolations": 7,
+    "groundDevMax": 1
+   },
+   "trung/front-attack": {
+    "distinct": 59,
+    "strayViolations": 12,
+    "groundDevMax": 2
+   },
+   "cao/right-idle": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "trung/right-idle": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "cao/right-move": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "trung/right-move": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "cao/right-attack": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "trung/right-attack": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "cao/right-hit": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "trung/right-hit": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "cao/right-death": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "trung/right-death": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "cao/back-idle": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "trung/back-idle": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "cao/back-move": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 1
+   },
+   "trung/back-move": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "cao/back-attack": {
+    "distinct": 60,
+    "strayViolations": 1,
+    "groundDevMax": 0
+   },
+   "trung/back-attack": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "cao/back-hit": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 1
+   },
+   "trung/back-hit": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "cao/back-death": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   },
+   "trung/back-death": {
+    "distinct": 60,
+    "strayViolations": 0,
+    "groundDevMax": 0
+   }
+  },
+  "bridgeRepairs": {
+   "trung/front-idle": 0,
+   "trung/front-move": 0,
+   "trung/front-attack": 0,
+   "trung/right-idle": 0,
+   "trung/right-move": 0,
+   "trung/right-attack": 0,
+   "trung/right-hit": 0,
+   "trung/right-death": 0,
+   "trung/back-idle": 0,
+   "trung/back-move": 0,
+   "trung/back-attack": 0,
+   "trung/back-hit": 0,
+   "trung/back-death": 0
+  }
+ }
+}

@@ -1149,6 +1149,7 @@
       id: cfg.id, name: cfg.name, bg: cfg.bg, w: cfg.w, h: cfg.h,
       tiles: built.tiles, blocked: BLOCKED,
       start: { x: built.cx - 1, y: cfg.h - 2 },
+      realm: cfg.realm, // mục 28: giữ lại realm để cân bằng chặng cao đọc rank của map (trước đây highMap đánh rơi trường này, chỉ giữ reqRealm)
       reqRealm: realmGate(cfg.realm),
       portals: [], npcs: [], zones: cfg.zones, bossLairs: cfg.lairs || [],
       monsters: [], herbs: [], props: []

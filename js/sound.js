@@ -7,6 +7,13 @@
 //     nhiệm vụ, nhặt đồ, dùng đan, cổng, hái dược, kỳ ngộ giếng cổ.
 //   - Nhạc nền ngũ cung + không khí theo map (làng / rừng / núi), chuyển
 //     map liền mạch không cắt phựt; lớp trầm khi giao chiến boss.
+//   - Lượt 31/10 (lệnh Bui "Tạo âm thanh cho game phù hợp"): lớp GIAI
+//     ĐIỆU SÁNG TÁC theo NGỮ CẢNH (MUSIC_CONTEXTS: login/làng/dã
+//     ngoại/giao chiến/boss/bí cảnh/sơn môn) gảy Karplus-Strong +
+//     sáo trúc + chuông + trống trận, crossfade khi đổi ngữ cảnh;
+//     lớp sinh cảnh biome (lửa/sấm xa/gió lạnh) cho map 10/11/12;
+//     lấp nốt các khoảnh khắc câm: dọn xong bí cảnh, đấu giá, bái
+//     nhập tông, sang mùa, mở Đồ Giám lần đầu, tiếng bước chân.
 // Kỹ thuật: AudioContext chỉ khởi tạo LƯỜI sau tương tác đầu tiên của
 // người chơi (chính sách autoplay); tắt tiếng = im hoàn toàn ngay; mọi
 // hàm công khai đều tự nuốt lỗi — game chạy bình thường khi không có
@@ -38,7 +45,11 @@
     use_item: 1, portal: 1, meditate: 1, gather: 1, artifact_cast: 1,
     tourn_drum: 1, tourn_cheer: 1, fly_whoosh: 1, revive: 1, formation: 1,
     shop_buy: 1, shop_sell: 1, plant: 1, water: 1, capture_miss: 1, break_fail: 1,
-    ice_tick: 1, fire_tick: 1, zap_small: 1, boom_small: 1
+    ice_tick: 1, fire_tick: 1, zap_small: 1, boom_small: 1,
+    // Lượt âm thanh 31/10: lấp các khoảnh khắc từng câm (QA (e) 02:38) +
+    // bước chân đồng bộ chu kỳ đi (QA (e) 00:31).
+    realm_clear: 1, auction_bid: 1, auction_win: 1, sect_join: 1,
+    season_change: 1, codex_open: 1, footstep: 1
   };
   // Tiếng tung chiêu theo id skill (thanh skill trong skills.js).
   // QA 15:16 30/10: 10 chiêu cảnh giới cao có bản tiếng RIÊNG ở
@@ -47,7 +58,21 @@
   var SKILL_SOUNDS = {
     combo: 1, kiem_khi: 1, toan_phong: 1, thien_can: 1, luu_tinh: 1, ngu_kiem: 1,
     xuyen_van: 1, linh_khien: 1, dan_hoa: 1, than_loi: 1, phan_than: 1,
-    tran_ap: 1, linh_vuc: 1, kiem_tran: 1, loi_kiep: 1, pha_huyen: 1
+    tran_ap: 1, linh_vuc: 1, kiem_tran: 1, loi_kiep: 1, pha_huyen: 1,
+    // Lượt 31/10: 32 chiêu BÍ TỊCH (js/manuals.js — 10 tuyệt học tông,
+    // 6 chiêu ký danh boss, 3 chiêu hiếm, 5 cơ bản, 6 phổ thông ngũ
+    // hành, 2 phổ thông chung) trước đây KHÔNG có entry nào nên
+    // skill() trả false = tung chiêu mà CÂM. Nay đủ tiếng riêng.
+    tp_kiem_tran: 1, hp_ngu_hanh: 1, tc_pha_son: 1, dh_dan_hoa: 1,
+    vt_hao_lenh: 1, tphu_kiem_tran: 1, cc_khon_tran: 1, kc_bat_hoai: 1,
+    nd_thuc_cot: 1, ha_han_tien: 1,
+    boss_lang_hao: 1, boss_ho_gam: 1, boss_xa_thuc: 1, boss_thiet_bi: 1,
+    boss_co_mang: 1, boss_ma_vuong: 1,
+    rare_van_kiem: 1, rare_cuu_u: 1, rare_hoi_xuan: 1,
+    cb_thanh_khe: 1, cb_liet_phong: 1, cb_thiet_bo: 1, cb_tat_phong: 1, cb_dan_khi: 1,
+    pq_hoa_cau: 1, pq_thuy_tien: 1, pq_bang_tien: 1, pq_loi_kich: 1,
+    pq_phong_nhan: 1, pq_tho_thu: 1,
+    gen_phi_hoa: 1, gen_luu_sa: 1
   };
   // Thiên Căn Thần Thông: tiếng riêng theo 8 hệ linh căn.
   var ROOT_SOUNDS = {
@@ -69,9 +94,9 @@
     // riêng Xích Diệm (map10) trầm nóng, Lôi Trì (map12) chói + gió giật.
     map8: { root: 329.63, scale: [0, 2, 4, 7, 9], chord: [0, 4, 7], bright: 1200, wind: 0.050, bird: 0, insects: 0 },
     map9: { root: 293.66, scale: [0, 2, 4, 7, 9], chord: [0, 4, 7], bright: 1000, wind: 0.055, bird: 0, insects: 0 },
-    map10: { root: 164.81, scale: [0, 3, 5, 7, 10], chord: [0, 3, 7], bright: 430, wind: 0.030, bird: 0, insects: 0 },
-    map11: { root: 246.94, scale: [0, 2, 3, 7, 9], chord: [0, 3, 7], bright: 900, wind: 0.060, bird: 0, insects: 0 },
-    map12: { root: 349.23, scale: [0, 2, 4, 7, 9], chord: [0, 4, 7], bright: 1650, wind: 0.075, bird: 0, insects: 0 },
+    map10: { root: 164.81, scale: [0, 3, 5, 7, 10], chord: [0, 3, 7], bright: 430, wind: 0.030, bird: 0, insects: 0, fire: 1 },
+    map11: { root: 246.94, scale: [0, 2, 3, 7, 9], chord: [0, 3, 7], bright: 900, wind: 0.060, bird: 0, insects: 0, cold: 1 },
+    map12: { root: 349.23, scale: [0, 2, 4, 7, 9], chord: [0, 4, 7], bright: 1650, wind: 0.075, bird: 0, insects: 0, thunder: 1 },
     map13: { root: 311.13, scale: [0, 2, 4, 7, 9], chord: [0, 4, 7], bright: 1400, wind: 0.080, bird: 0, insects: 0 },
     map14: { root: 392.00, scale: [0, 2, 4, 7, 9], chord: [0, 4, 7], bright: 1750, wind: 0.095, bird: 0, insects: 0 },
     // Động phủ riêng của người chơi: yên tĩnh, ấm, gần như không gió.
@@ -104,6 +129,83 @@
   }
 
   // ==================================================================
+  // NHẠC THEO NGỮ CẢNH — GIAI ĐIỆU SÁNG TÁC (lượt 31/10, lệnh Bui
+  // "Tạo âm thanh cho game phù hợp"). Trước đây nhạc nền chỉ là pad +
+  // gió + nốt gảy NGẪU NHIÊN thưa — không giai điệu, không phân biệt
+  // được đang yên bình hay đang giao chiến. Nay mỗi ngữ cảnh có một
+  // MOTIF giai điệu viết sẵn theo BẬC thang ngũ cung (degree), nên tự
+  // chuyển được sang root/scale của mọi map (bản sắc từng map vẫn do
+  // MAP_THEMES + pad/gió giữ). Quy ước mảng bước (mỗi phần tử = 1
+  // step dài stepDur giây): -1 = nghỉ; 0..4 = bậc thang; 5..9 = các
+  // bậc đó ở quãng tám trên; riêng -2 = nốt chệch nửa cung DƯỚI gốc
+  // (chỉ motif boss dùng để tạo căng thẳng ngoài thang).
+  //   lead: 'flute' sáo trúc (sine + vibrato + hơi thở), 'pluck' đàn
+  //         gảy Karplus-Strong, 'alt' luân phiên pluck/sáo theo vòng.
+  //   drum: 'D' trống lớn, 'd' trống nhỏ, 's' chũm chọe nhỏ, -1 nghỉ.
+  //   bellEvery: điểm chuông khẽ mỗi bấy nhiêu step (0 = không).
+  //   echo: phát lại nốt gảy 2 lần vọng (chỉ bí cảnh).
+  // ==================================================================
+  var MUSIC_CONTEXTS = {
+    login: { // màn đăng nhập: sáo thưa, thanh bình, chưa có trống/bass
+      stepDur: 0.46, steps: 32, lead: 'flute', bellEvery: 0, echo: 0,
+      melody: [4, -1, -1, 3, -1, -1, 2, -1, 1, -1, -1, 2, -1, -1, -1, -1,
+               3, -1, -1, 4, -1, -1, 5, -1, 4, -1, 3, 2, 1, -1, 0, -1],
+      bass: null, drum: null
+    },
+    village: { // làng Thanh Khê: motif "về làng", gảy + sáo luân phiên
+      stepDur: 0.44, steps: 32, lead: 'alt', bellEvery: 0, echo: 0,
+      melody: [2, -1, 3, 4, -1, -1, 3, 2, 1, -1, 2, -1, -1, -1, -1, -1,
+               4, -1, 3, 2, 1, -1, 2, 3, 2, -1, 1, -1, 0, -1, -1, -1],
+      bass: [0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+             0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+      drum: null
+    },
+    wild: { // dã ngoại/rừng/núi: gảy thưa, thiên nhiên, không trống
+      stepDur: 0.42, steps: 32, lead: 'pluck', bellEvery: 0, echo: 0,
+      melody: [0, -1, -1, 2, -1, -1, 3, -1, -1, 2, -1, -1, 1, -1, -1, -1,
+               2, -1, -1, 3, -1, 4, -1, -1, 3, -1, 2, 1, 0, -1, -1, -1],
+      bass: null, drum: null
+    },
+    combat: { // giao chiến thường: trống hành quân + bass pulse + motif ngắn
+      stepDur: 0.26, steps: 16, lead: 'pluck', bellEvery: 0, echo: 0,
+      melody: [0, -1, 0, 1, 0, -1, 0, -1, 2, -1, 1, 0, -1, 0, 1, -1],
+      bass: [0, -1, -1, -1, 0, -1, -1, -1, 0, -1, -1, -1, 0, -1, 1, -1],
+      drum: ['D', -1, 'd', -1, 'D', -1, 'd', -1, 'D', -1, 'd', -1, 'D', -1, 'd', 'd']
+    },
+    boss: { // boss: trống dồn, bass có nốt chệch -2, motif tối trầm
+      stepDur: 0.23, steps: 16, lead: 'pluck', bellEvery: 0, echo: 0,
+      melody: [0, 0, -1, 0, -1, 0, -1, -1, -2, -1, 0, -1, 0, -1, 1, -1],
+      bass: [0, -1, 0, -1, 0, -1, 0, -1, -2, -1, 0, -1, 0, 0, -1, -1],
+      drum: ['D', -1, -1, 'D', -1, -1, 'D', -1, 'D', -1, -1, 'D', 'd', 'd', 'D', 's']
+    },
+    realm: { // bí cảnh: rất thưa, gảy có vọng, chuông khẽ — huyền bí
+      stepDur: 0.55, steps: 32, lead: 'pluck', bellEvery: 16, echo: 1,
+      melody: [4, -1, -1, -1, -1, -1, -1, 3, -1, -1, -1, -1, -1, 2, -1, -1,
+               -1, -1, -1, -1, 1, -1, -1, -1, -1, -1, 0, -1, -1, -1, -1, -1],
+      bass: [0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+             -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+      drum: null
+    },
+    sect: { // sơn môn / võ đài: trang nghiêm, chuông điểm đầu mỗi nửa vòng
+      stepDur: 0.48, steps: 32, lead: 'pluck', bellEvery: 16, echo: 0,
+      melody: [0, -1, -1, -1, 2, -1, 3, -1, 4, -1, -1, 3, -1, 2, -1, -1,
+               0, -1, -1, -1, 2, -1, 1, -1, 2, -1, 3, -1, -1, -1, 0, -1],
+      bass: [0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+             0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+      drum: null
+    }
+  };
+  // Suy ngữ cảnh nền TỪ MAP (phần không phụ thuộc trạng thái giao
+  // chiến): hàm thuần dữ liệu để test đọc trực tiếp.
+  function baseContextFor(mapId) {
+    var id = mapId || 'map1';
+    if (id === 'map1' || id === 'dong_phu') return 'village';
+    if (id.indexOf('realm_') === 0) return 'realm';
+    if (id.indexOf('sonmon_') === 0 || id === 'map_dai_hoi') return 'sect';
+    return 'wild';
+  }
+
+  // ==================================================================
   // TRẠNG THÁI ENGINE
   // ==================================================================
   var ctx = null, master = null, musicBus = null, sfxBus = null, noiseBuf = null;
@@ -113,8 +215,20 @@
   var activeVoices = 0, MAX_VOICES = 12;
   var lastPlay = {};            // throttle theo khóa tiếng
   var musicNodes = null;        // { padOsc[], padGain, windSrc, windGain, windFilter }
-  var schedTimer = null, nextNoteIn = 1.5, bossPulseIn = 0;
+  var schedTimer = null; // (nextNoteIn/bossPulseIn của khung cũ đã bỏ: giai điệu + nhịp boss nay do lớp ngữ cảnh lo)
   var progIdx = 0, progIn = PROG_SEC; // vị trí trong vòng chuyển hợp âm của pad
+  // Lớp giai điệu theo NGỮ CẢNH: ctxName = ngữ cảnh ĐANG phát,
+  // ctxWanted = ngữ cảnh đích theo trạng thái game (resolveContext),
+  // ctxPending = đích đang chờ crossfade xong mới áp. Giai điệu chạy
+  // trên ctxGain riêng (nối vào musicBus) để crossfade 2 lớp độc lập
+  // với pad/gió (hai lớp đó không bao giờ cắt, như trước).
+  var ctxGain = null;
+  var ctxName = 'login', ctxWanted = 'login', ctxPending = null, ctxApplyAt = 0;
+  var ctxStepIdx = 0, ctxNextT = 0, ctxRound = 0; // ctxRound: đếm vòng giai điệu (cho lead 'alt')
+  var mapSeen = false;          // setMap đã gọi ít nhất 1 lần (trước đó = đang ở màn đăng nhập)
+  var combatOn = false, combatFreshAt = 0; // giao chiến thường; tự hết hạn sau 6s không có đòn mới
+  var ksCache = {}, ksCount = 0; // bộ đệm Karplus-Strong theo tần số đã làm tròn
+  var CTX_LEVEL = 0.85;          // mức tổng của lớp giai điệu trên musicBus
   var delegatedClickArmed = false;
 
   function nowMs() { return (typeof Date !== 'undefined' && Date.now) ? Date.now() : 0; }
@@ -402,6 +516,13 @@
     tone({ type: 'sine', f0: f, t: t, dur: dur || 0.5, vol: vol, a: 0.008 });
     tone({ type: 'triangle', f0: f * 2, t: t, dur: (dur || 0.5) * 0.5, vol: vol * 0.3, a: 0.006 });
   }
+  // Chuông/đồng khánh: tổng hợp cộng các partial phi hài (1, 2.02,
+  // 2.74, 3.76) tắt dần theo bậc — dùng cho các mốc trang trọng/thắng.
+  function bell(t, f, vol, dur, bus) {
+    [1, 2.02, 2.74, 3.76].forEach(function (p, i) {
+      tone({ type: 'sine', f0: f * p, t: t, dur: (dur || 1.2) * (1 - i * 0.18), vol: vol / (i + 1), a: 0.005, bus: bus || sfxBus });
+    });
+  }
   var SFX_FNS = {
     swing: function () { noiseHit({ dur: 0.09, vol: 0.16, type: 'bandpass', f0: 1500, f1: 480, q: 1.1 }); },
     swing_miss: function () { noiseHit({ dur: 0.13, vol: 0.09, type: 'bandpass', f0: 950, f1: 320, q: 1 }); },
@@ -557,6 +678,49 @@
       noiseHit({ t: t, dur: 1.15, vol: 0.13, type: 'bandpass', f0: 750, f1: 1350, q: 0.7 });
       noiseHit({ t: t + 0.18, dur: 0.8, vol: 0.09, type: 'bandpass', f0: 1500, q: 0.9 });
       [523.25, 659.25, 783.99, 1046.5].forEach(function (f, i) { pluck(t + 0.08 + i * 0.13, f, 0.11, 0.6); });
+    },
+    realm_clear: function () { // DỌN XONG BÍ CẢNH: chuông thắng + ngũ cung đi lên + hợp âm giữ (QA (e) 02:38 — trước đây khoảnh khắc thưởng lớn nhất game câm hoàn toàn)
+      var t = V();
+      bell(t, 523.25, 0.20, 1.6);
+      [523.25, 659.25, 783.99, 1046.5].forEach(function (f, i) { pluck(t + 0.12 + i * 0.1, f, 0.15, 0.8); });
+      tone({ type: 'triangle', f0: 261.63, t: t + 0.1, dur: 1.1, vol: 0.05 });
+      tone({ type: 'triangle', f0: 392.0, t: t + 0.1, dur: 1.1, vol: 0.05 });
+      noiseHit({ t: t + 0.1, dur: 0.8, vol: 0.04, type: 'highpass', f0: 6500 });
+    },
+    auction_bid: function () { // TRẢ GIÁ đấu giá: "ting" gọn — một nhịp kim loại sáng, nghe là biết giá vừa nhích
+      var t = V();
+      tone({ type: 'triangle', f0: 2093.0, t: t, dur: 0.06, vol: 0.10 });
+      tone({ type: 'triangle', f0: 1567.98, t: t + 0.045, dur: 0.09, vol: 0.09 });
+      tone({ type: 'sine', f0: 2637.0, t: t + 0.02, dur: 0.05, vol: 0.035 });
+    },
+    auction_win: function () { // GÕ BÚA THẮNG LÔ: chuông vui hai nhịp + gảy đi lên (QA (e) 02:38 — trước đây thắng lô câm)
+      var t = V();
+      bell(t, 783.99, 0.16, 1.1);
+      bell(t + 0.16, 1046.5, 0.13, 1.3);
+      [523.25, 659.25, 783.99, 1046.5].forEach(function (f, i) { pluck(t + 0.05 + i * 0.08, f, 0.12, 0.6); });
+    },
+    sect_join: function () { // BÁI NHẬP TÔNG: chuông trang nghiêm trầm + hợp âm tông chậm (mục 49 hàng chờ — tiếng cuối cùng còn thiếu)
+      var t = V();
+      bell(t, 392.0, 0.22, 2.0);
+      [392.0, 523.25, 587.33].forEach(function (f, i) { pluck(t + 0.18 + i * 0.16, f, 0.13, 0.9); });
+      bell(t + 0.72, 1174.66, 0.05, 1.0);
+    },
+    season_change: function () { // SANG MÙA MỚI (Bảng Mùa đổi quý): chuông nhỏ hai nốt + gió đổi chiều quét qua
+      var t = V();
+      bell(t, 659.25, 0.10, 0.9);
+      bell(t + 0.22, 783.99, 0.09, 1.1);
+      noiseHit({ t: t, dur: 0.7, vol: 0.06, type: 'bandpass', f0: 500, f1: 1500, q: 0.9, a: 0.08 });
+    },
+    codex_open: function () { // MỞ ĐỒ GIÁM LẦN ĐẦU: tiếng giở sổ — giấy quét + gảy khẽ một nốt như lật trang đầu
+      var t = V();
+      noiseHit({ t: t, dur: 0.14, vol: 0.10, type: 'bandpass', f0: 900, f1: 2400, q: 0.8 });
+      noiseHit({ t: t + 0.05, dur: 0.1, vol: 0.06, type: 'lowpass', f0: 700 });
+      pluck(t + 0.1, 880.0, 0.08, 0.4);
+    },
+    footstep: function () { // BƯỚC CHÂN: bụp trầm rất khẽ + ma sát đất — gọi đúng nhịp chân chạm đất của vòng di chuyển, có biến thiên nhẹ
+      var t = V();
+      noiseHit({ t: t, dur: 0.05, vol: 0.045, type: 'lowpass', f0: rnd(420, 560) });
+      tone({ type: 'sine', f0: rnd(88, 102), f1: 58, t: t, dur: 0.045, vol: 0.028 });
     }
   };
   function sfx(name, opts) {
@@ -564,9 +728,11 @@
       var fn = SFX_FNS[name];
       if (!fn) return false;
       var minMs = (name === 'ui_click') ? 40 : (name === 'coin' ? 160 : (name === 'hit_small' ? 70 :
+        (name === 'footstep' ? 90 :
         (name === 'shop_buy' || name === 'shop_sell' ? 90 :
         (name === 'plant' || name === 'water' ? 80 :
-        (name === 'capture_miss' ? 120 : (name === 'break_fail' ? 200 : 30))))));
+        (name === 'realm_clear' || name === 'sect_join' || name === 'auction_win' || name === 'season_change' ? 300 :
+        (name === 'capture_miss' ? 120 : (name === 'break_fail' ? 200 : 30))))))));
       if (!gate('sfx:' + name, minMs, name === 'breakthrough' || name === 'player_death' || name === 'break_fail')) return false;
       fn();
       return true;
@@ -702,6 +868,183 @@
       noiseHit({ t: t, dur: 0.3, vol: 0.1, type: 'bandpass', f0: 800, f1: 2400, q: 1.2 });
       return;
     }
+    // ---- 32 chiêu bí tịch (lượt 31/10): mỗi chiêu một bản tiếng
+    // riêng theo đúng mech + khí chất trong manuals.js. ----
+    if (id === 'tp_kiem_tran') { // phong kiếm giáng cắm quanh mục tiêu: gió quét + 6 keng thưa hơn kiếm trận Thiên Điều
+      noiseHit({ t: t, dur: 0.4, vol: 0.16, type: 'bandpass', f0: 500, f1: 1500, q: 1.4 });
+      for (var tp = 0; tp < 6; tp++) tone({ type: 'triangle', f0: rnd(1500, 2300), t: t + 0.06 + tp * rnd(0.045, 0.07), dur: 0.15, vol: 0.11 });
+      return;
+    }
+    if (id === 'hp_ngu_hanh') { // ngũ hành luân chuyển: 5 nốt gảy 5 "màu" nối vòng
+      [523.25, 587.33, 659.25, 783.99, 880.0].forEach(function (f, i) { pluck(t + i * 0.07, f, 0.14, 0.5); });
+      noiseHit({ t: t, dur: 0.35, vol: 0.08, type: 'bandpass', f0: 800, f1: 1600, q: 1.2 });
+      return;
+    }
+    if (id === 'tc_pha_son') { // chùy phá sơn nện đất nứt đường thẳng: bụp ngàn cân + nứt toác + đá đội
+      tone({ type: 'sine', f0: 84, f1: 36, t: t, dur: 0.42, vol: 0.36 });
+      noiseHit({ t: t + 0.02, dur: 0.3, vol: 0.24, type: 'lowpass', f0: 300 });
+      noiseHit({ t: t + 0.1, dur: 0.22, vol: 0.16, type: 'bandpass', f0: 260, f1: 700, q: 1.1 });
+      return;
+    }
+    if (id === 'dh_dan_hoa') { // đan hỏa liệu nguyên: lửa lò nén bùng tại điểm + khánh lò khẽ
+      noiseHit({ t: t, dur: 0.4, vol: 0.3, type: 'lowpass', f0: 560, f1: 180, a: 0.015 });
+      tone({ type: 'sine', f0: 104, f1: 44, t: t, dur: 0.34, vol: 0.28 });
+      bell(t + 0.05, 1567.98, 0.05, 0.7);
+      return;
+    }
+    if (id === 'vt_hao_lenh') { // hào lệnh vạn thú: tiếng hiệu trầm + nhịp gảy dồn như bầy thú xúm lại
+      tone({ type: 'sawtooth', f0: 196, f1: 147, t: t, dur: 0.4, vol: 0.1, filter: { type: 'lowpass', f: 700 } });
+      noiseHit({ t: t, dur: 0.3, vol: 0.14, type: 'lowpass', f0: 500 });
+      [392.0, 392.0, 523.25].forEach(function (f, i) { pluck(t + 0.12 + i * 0.09, f, 0.12, 0.4); });
+      return;
+    }
+    if (id === 'tphu_kiem_tran') { // kim phù hóa kiếm: giấy cháy xì + phù kiếm keng vàng
+      noiseHit({ t: t, dur: 0.2, vol: 0.16, type: 'bandpass', f0: 1400, f1: 3200, q: 1.0 });
+      for (var tf = 0; tf < 5; tf++) tone({ type: 'triangle', f0: rnd(1900, 2600), t: t + 0.1 + tf * rnd(0.04, 0.06), dur: 0.14, vol: 0.1 });
+      bell(t, 2093.0, 0.04, 0.5);
+      return;
+    }
+    if (id === 'cc_khon_tran') { // cửu cung khốn trận: ù trận dâng + chuông trận trầm + quét khí níu chân
+      tone({ type: 'sine', f0: 174.61, t: t, dur: 0.7, vol: 0.12 });
+      tone({ type: 'sine', f0: 261.63, t: t + 0.1, dur: 0.6, vol: 0.08 });
+      noiseHit({ t: t, dur: 0.6, vol: 0.1, type: 'bandpass', f0: 900, f1: 300, q: 1.3 });
+      bell(t + 0.02, 587.33, 0.06, 1.0);
+      return;
+    }
+    if (id === 'kc_bat_hoai') { // kim cang bất hoại: chuông đồng trầm vang + thân khiên dựng chắc
+      bell(t, 392.0, 0.16, 1.4);
+      tone({ type: 'sine', f0: 130.81, f1: 196.0, t: t, dur: 0.5, vol: 0.12 });
+      noiseHit({ t: t, dur: 0.25, vol: 0.08, type: 'lowpass', f0: 500 });
+      return;
+    }
+    if (id === 'nd_thuc_cot') { // chướng độc phun: xì độc + bong bóng độc sôi khẽ
+      noiseHit({ t: t, dur: 0.35, vol: 0.2, type: 'bandpass', f0: 700, f1: 300, q: 0.9 });
+      for (var nd = 0; nd < 4; nd++) tone({ type: 'sine', f0: rnd(300, 520), f1: rnd(120, 200), t: t + 0.05 + nd * rnd(0.05, 0.09), dur: 0.09, vol: 0.07 });
+      return;
+    }
+    if (id === 'ha_han_tien') { // hàn tiễn: vút lạnh + tinh thể leng keng ở đuôi
+      noiseHit({ t: t, dur: 0.26, vol: 0.2, type: 'bandpass', f0: 1000, f1: 3600, q: 1.3 });
+      tone({ type: 'sine', f0: rnd(2900, 3400), t: t + 0.12, dur: 0.16, vol: 0.07 });
+      tone({ type: 'sine', f0: 1174.66, f1: 880.0, t: t, dur: 0.3, vol: 0.05 });
+      return;
+    }
+    if (id === 'boss_lang_hao') { // huyết nguyệt lang hào: tiếng hú vút lên rồi sóng chấn quanh thân
+      tone({ type: 'sine', f0: 440, f1: 880, t: t, dur: 0.5, vol: 0.13 });
+      tone({ type: 'sine', f0: 883, f1: 660, t: t + 0.5, dur: 0.3, vol: 0.1 });
+      noiseHit({ t: t + 0.15, dur: 0.4, vol: 0.16, type: 'lowpass', f0: 400 });
+      return;
+    }
+    if (id === 'boss_ho_gam') { // hổ gầm trấn núi dội xuống vùng: gầm trầm lớn + đất rung
+      tone({ type: 'sawtooth', f0: 110, f1: 65, t: t, dur: 0.55, vol: 0.2, filter: { type: 'lowpass', f: 500 } });
+      tone({ type: 'sine', f0: 58, f1: 34, t: t, dur: 0.6, vol: 0.32 });
+      noiseHit({ t: t, dur: 0.45, vol: 0.2, type: 'lowpass', f0: 260 });
+      return;
+    }
+    if (id === 'boss_xa_thuc') { // xà thực hồn: rít dài + tia độc nhảy 3 nốt
+      noiseHit({ t: t, dur: 0.3, vol: 0.16, type: 'highpass', f0: 3200 });
+      [659.25, 587.33, 523.25].forEach(function (f, i) { tone({ type: 'square', f0: f, t: t + 0.08 + i * 0.08, dur: 0.07, vol: 0.045, filter: { type: 'lowpass', f: 1600 } }); });
+      return;
+    }
+    if (id === 'boss_thiet_bi') { // thiết bì trùng kích: lao như cối xay — gió rít + sắt ma sát mặt đất
+      noiseHit({ t: t, dur: 0.4, vol: 0.24, type: 'bandpass', f0: 600, f1: 2400, q: 1.2 });
+      noiseHit({ t: t + 0.05, dur: 0.35, vol: 0.14, type: 'bandpass', f0: 1800, q: 2.5 });
+      tone({ type: 'sine', f0: 96, f1: 60, t: t, dur: 0.3, vol: 0.2 });
+      return;
+    }
+    if (id === 'boss_co_mang') { // cổ mãng bàn long: thân cuộn ù trầm + khí xiết quanh vòng
+      tone({ type: 'sine', f0: 82, t: t, dur: 0.75, vol: 0.2 });
+      noiseHit({ t: t, dur: 0.7, vol: 0.13, type: 'bandpass', f0: 300, f1: 620, q: 1.5 });
+      noiseHit({ t: t + 0.35, dur: 0.35, vol: 0.1, type: 'bandpass', f0: 620, f1: 300, q: 1.5 });
+      return;
+    }
+    if (id === 'boss_ma_vuong') { // diệt thế chùy: nặng nhất dàn bí tịch — chùy + lửa + đất cùng lúc
+      tone({ type: 'sine', f0: 72, f1: 30, t: t, dur: 0.6, vol: 0.42 });
+      noiseHit({ t: t, dur: 0.5, vol: 0.3, type: 'lowpass', f0: 480, f1: 150, a: 0.02 });
+      noiseHit({ t: t + 0.04, dur: 0.3, vol: 0.2, type: 'lowpass', f0: 260 });
+      bell(t + 0.02, 98.0 * 8, 0.05, 0.8);
+      return;
+    }
+    if (id === 'rare_van_kiem') { // vạn kiếm quy tông: mưa keng dày nhất + điểm chuông kết
+      for (var vk = 0; vk < 12; vk++) tone({ type: 'triangle', f0: rnd(1700, 2700), t: t + vk * rnd(0.025, 0.045), dur: 0.16, vol: 0.11 });
+      tone({ type: 'sine', f0: 130, f1: 65, t: t + 0.4, dur: 0.26, vol: 0.2 });
+      bell(t + 0.42, 1567.98, 0.07, 1.0);
+      return;
+    }
+    if (id === 'rare_cuu_u') { // cửu u hàn diệm: lửa lạnh nhảy 5 nốt — cháy xì xen tinh thể băng
+      [880.0, 783.99, 880.0, 1046.5, 783.99].forEach(function (f, i) {
+        tone({ type: 'sine', f0: f * 2, t: t + i * 0.07, dur: 0.12, vol: 0.06 });
+        noiseHit({ t: t + i * 0.07, dur: 0.06, vol: 0.07, type: 'bandpass', f0: 1200, q: 1.5 });
+      });
+      return;
+    }
+    if (id === 'rare_hoi_xuan') { // hồi xuân chú: sinh cơ dâng — gảy đi lên + nước nguồn + gió xuân
+      [392.0, 523.25, 659.25, 783.99].forEach(function (f, i) { pluck(t + i * 0.08, f, 0.13, 0.6); });
+      noiseHit({ t: t, dur: 0.5, vol: 0.1, type: 'lowpass', f0: 700, f1: 1100 });
+      return;
+    }
+    if (id === 'cb_thanh_khe') { // kiếm quyết vỡ lòng: vút mỏng + gảy một nốt quê nhà
+      SFX_FNS.swing();
+      pluck(t + 0.04, 523.25, 0.09, 0.4);
+      return;
+    }
+    if (id === 'cb_liet_phong') { // liệt phong chưởng: quạt gió quanh thân
+      noiseHit({ t: t, dur: 0.35, vol: 0.2, type: 'bandpass', f0: 400, f1: 1300, q: 1.3 });
+      return;
+    }
+    if (id === 'cb_thiet_bo') { // thiết bố sam: vải căng + khiên trầm nhẹ
+      noiseHit({ t: t, dur: 0.18, vol: 0.12, type: 'bandpass', f0: 900, q: 0.8 });
+      tone({ type: 'sine', f0: 196, f1: 261.63, t: t, dur: 0.35, vol: 0.1 });
+      return;
+    }
+    if (id === 'cb_tat_phong') { // tật phong bộ: hai lớp vút nhanh nối nhau
+      noiseHit({ t: t, dur: 0.16, vol: 0.18, type: 'bandpass', f0: 800, f1: 2600, q: 1.4 });
+      noiseHit({ t: t + 0.1, dur: 0.14, vol: 0.12, type: 'bandpass', f0: 1200, f1: 3000, q: 1.4 });
+      return;
+    }
+    if (id === 'cb_dan_khi') { // dẫn khí quyết (bị động): chỉ là tiếng tụ khí khẽ nếu bị gọi
+      tone({ type: 'sine', f0: 329.63, f1: 440.0, t: t, dur: 0.4, vol: 0.07 });
+      return;
+    }
+    if (id === 'pq_hoa_cau') { // hỏa cầu thuật: cầu lửa nhỏ bay — bùng gọn
+      noiseHit({ t: t, dur: 0.3, vol: 0.22, type: 'lowpass', f0: 600, f1: 220, a: 0.01 });
+      tone({ type: 'sine', f0: 110, f1: 55, t: t, dur: 0.25, vol: 0.2 });
+      return;
+    }
+    if (id === 'pq_thuy_tien') { // thủy tiễn: tên nước vút + tóe nước
+      noiseHit({ t: t, dur: 0.24, vol: 0.2, type: 'bandpass', f0: 700, f1: 2200, q: 1.1 });
+      noiseHit({ t: t + 0.1, dur: 0.15, vol: 0.1, type: 'lowpass', f0: 900 });
+      return;
+    }
+    if (id === 'pq_bang_tien') { // băng tiễn: vút + tinh thể vỡ ở cuối
+      noiseHit({ t: t, dur: 0.24, vol: 0.18, type: 'bandpass', f0: 900, f1: 3000, q: 1.2 });
+      tone({ type: 'sine', f0: rnd(2600, 3200), t: t + 0.14, dur: 0.12, vol: 0.06 });
+      return;
+    }
+    if (id === 'pq_loi_kich') { // lôi kích: chớp gọn nhảy tia
+      noiseHit({ t: t, dur: 0.07, vol: 0.26, type: 'highpass', f0: 2400 });
+      tone({ type: 'sine', f0: 98, f1: 45, t: t, dur: 0.3, vol: 0.26 });
+      return;
+    }
+    if (id === 'pq_phong_nhan') { // phong nhận: lưỡi gió mỏng sắc
+      noiseHit({ t: t, dur: 0.22, vol: 0.22, type: 'bandpass', f0: 1100, f1: 2800, q: 1.6 });
+      return;
+    }
+    if (id === 'pq_tho_thu') { // thổ thứ: gai đất đội lên nhọn — nứt đất gọn + bụp
+      noiseHit({ t: t, dur: 0.2, vol: 0.2, type: 'lowpass', f0: 350 });
+      tone({ type: 'sine', f0: 90, f1: 50, t: t, dur: 0.22, vol: 0.22 });
+      noiseHit({ t: t + 0.06, dur: 0.1, vol: 0.12, type: 'bandpass', f0: 500, q: 1.2 });
+      return;
+    }
+    if (id === 'gen_phi_hoa') { // phi hoa trích diệp: lá hoa bay — gió nhẹ + gảy thanh
+      noiseHit({ t: t, dur: 0.3, vol: 0.14, type: 'bandpass', f0: 600, f1: 1800, q: 1.0 });
+      pluck(t + 0.05, 783.99, 0.1, 0.45); pluck(t + 0.14, 659.25, 0.09, 0.45);
+      return;
+    }
+    if (id === 'gen_luu_sa') { // lưu sa chưởng: cát chảy xào + bụp trầm
+      noiseHit({ t: t, dur: 0.4, vol: 0.18, type: 'bandpass', f0: 1500, f1: 500, q: 0.8 });
+      tone({ type: 'sine', f0: 100, f1: 55, t: t, dur: 0.3, vol: 0.2 });
+      return;
+    }
     SFX_FNS.swing(); // skill lạ: rơi về tiếng vút kiếm
   }
   function skill(id, root) {
@@ -709,6 +1052,154 @@
       if (!SKILL_SOUNDS[id]) return false;
       if (!gate('skill:' + id, 60, id === 'thien_can')) return false;
       skillSound(id, root);
+      return true;
+    } catch (e) { return false; }
+  }
+
+  // ==================================================================
+  // ENGINE GIAI ĐIỆU THEO NGỮ CẢNH (chạy trên ctxGain -> musicBus)
+  // ==================================================================
+  // Bậc thang -> số semitone so với gốc: -2 là nốt chệch nửa cung
+  // dưới gốc (motif boss); 0.. = bậc trong thang, tràn bậc cuốn lên
+  // quãng tám theo đúng thang của map hiện tại.
+  function degSemi(scale, deg) {
+    if (deg === -2) return -1;
+    var n = scale.length || 5;
+    return scale[((deg % n) + n) % n] + 12 * Math.floor(deg / n);
+  }
+  function degFreq(th, deg, octMul) {
+    return th.root * (octMul || 1) * Math.pow(2, degSemi(th.scale, deg) / 12);
+  }
+  // Đàn gảy Karplus-Strong: render sẵn buffer cho từng tần số (dây
+  // rung tắt dần vật lý), cache tối đa ~48 tần số — lúc phát chỉ là
+  // BufferSource + gain nên rất nhẹ CPU.
+  function ksBuffer(freq) {
+    var key = Math.round(freq);
+    if (ksCache[key]) return ksCache[key];
+    var sr = ctx.sampleRate, len = Math.floor(sr * 1.4);
+    var buf = ctx.createBuffer(1, len, sr);
+    var d = buf.getChannelData(0);
+    var N = Math.max(2, Math.round(sr / freq));
+    var i;
+    for (i = 0; i <= N && i < len; i++) d[i] = Math.random() * 2 - 1;
+    for (i = N + 1; i < len; i++) d[i] = 0.5 * (d[i - N] + d[i - N - 1]) * 0.996;
+    if (ksCount > 48) { ksCache = {}; ksCount = 0; }
+    ksCache[key] = buf; ksCount++;
+    return buf;
+  }
+  function playPluckKS(t, freq, vol) {
+    var src = ctx.createBufferSource();
+    src.buffer = ksBuffer(freq);
+    var fl = ctx.createBiquadFilter(); fl.type = 'lowpass'; fl.frequency.value = 3400;
+    var g = ctx.createGain();
+    g.gain.setValueAtTime(vol, t);
+    g.gain.setTargetAtTime(0.0001, t + 1.05, 0.12); // cắt đuôi buffer, tránh chồng vòng sau
+    src.connect(fl); fl.connect(g); g.connect(ctxGain);
+    src.start(t); src.stop(t + 1.45);
+  }
+  // Sáo trúc: sine có vibrato nhẹ trễ + hài 2 khẽ + hơi thở bandpass.
+  function playFlute(t, freq, vol, dur) {
+    var g = ctx.createGain();
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(vol, t + 0.07);
+    g.gain.setValueAtTime(vol, t + Math.max(0.08, dur - 0.12));
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    var o = ctx.createOscillator(); o.type = 'sine'; o.frequency.value = freq;
+    var o2 = ctx.createOscillator(); o2.type = 'sine'; o2.frequency.value = freq * 2;
+    var g2 = ctx.createGain(); g2.gain.value = 0.18;
+    var vib = ctx.createOscillator(); vib.frequency.value = 5.2;
+    var vibG = ctx.createGain(); vibG.gain.value = 0; // vibrato chỉ vào sau khi nốt đã đứng
+    vib.connect(vibG); vibG.connect(o.detune);
+    vibG.gain.setValueAtTime(0, t);
+    vibG.gain.linearRampToValueAtTime(6, t + 0.22); // ±6 cent
+    o.connect(g); o2.connect(g2); g2.connect(g); g.connect(ctxGain);
+    o.start(t); o.stop(t + dur + 0.05); o2.start(t); o2.stop(t + dur + 0.05);
+    vib.start(t); vib.stop(t + dur + 0.05);
+    // hơi thở: nhiễu bandpass quanh 2x tần số, rất khẽ, đầu nốt
+    var ns = ctx.createBufferSource(); ns.buffer = noiseBuf; ns.loop = true;
+    var nf = ctx.createBiquadFilter(); nf.type = 'bandpass'; nf.frequency.value = Math.min(6000, freq * 2); nf.Q.value = 1.4;
+    var ng = ctx.createGain();
+    ng.gain.setValueAtTime(vol * 0.22, t);
+    ng.gain.exponentialRampToValueAtTime(0.0001, t + 0.18);
+    ns.connect(nf); nf.connect(ng); ng.connect(ctxGain);
+    ns.start(t, Math.random() * 0.7); ns.stop(t + 0.2);
+  }
+  // Trống trận: màng trống = sine rơi cao độ + da trống = nhiễu trầm.
+  function playWarDrum(t, big) {
+    tone({ type: 'sine', f0: big ? 118 : 150, f1: big ? 46 : 68, t: t, dur: big ? 0.3 : 0.18, vol: big ? 0.5 : 0.3, a: 0.006, bus: ctxGain });
+    noiseHit({ t: t, dur: big ? 0.12 : 0.07, vol: big ? 0.16 : 0.1, type: 'lowpass', f0: 800, bus: ctxGain });
+  }
+  function scheduleCtxStep(def, idx, t) {
+    var th = theme();
+    // Trống trước (xương nhịp), rồi bass, rồi giai điệu, chuông điểm.
+    if (def.drum) {
+      var dk = def.drum[idx % def.drum.length];
+      if (dk === 'D') playWarDrum(t, true);
+      else if (dk === 'd') playWarDrum(t, false);
+      else if (dk === 's') noiseHit({ t: t, dur: 0.09, vol: 0.05, type: 'highpass', f0: 6200, bus: ctxGain });
+    }
+    if (def.bass) {
+      var bd = def.bass[idx % def.bass.length];
+      if (bd != null && bd >= -2) playPluckKS(t, degFreq(th, bd, 0.5), 0.20);
+    }
+    var md = def.melody[idx % def.melody.length];
+    if (md != null && md >= -2) {
+      var f = degFreq(th, md, 1);
+      var lead = def.lead;
+      if (lead === 'alt') lead = (ctxRound % 2 === 0) ? 'pluck' : 'flute';
+      if (lead === 'flute') playFlute(t, f, 0.105, def.stepDur * 2.1);
+      else {
+        playPluckKS(t, f, 0.15);
+        if (def.echo) { // bí cảnh: vọng lại 2 lần xa dần (không cần DelayNode)
+          playPluckKS(t + def.stepDur * 0.9, f, 0.06);
+          playPluckKS(t + def.stepDur * 1.8, f, 0.028);
+        }
+      }
+    }
+    if (def.bellEvery && idx % def.bellEvery === 0) bell(t, th.root * 2, ctxName === 'realm' ? 0.035 : 0.055, 2.2, ctxGain);
+    if (idx === def.steps - 1) ctxRound++;
+  }
+  // Ngữ cảnh đích theo trạng thái game: boss > giao chiến > theo map;
+  // chưa từng setMap = vẫn ở màn đăng nhập.
+  function resolveContext() {
+    if (bossOn) return 'boss';
+    if (combatOn) return 'combat';
+    if (!mapSeen) return 'login';
+    return baseContextFor(curMap);
+  }
+  // Đích thay đổi -> crossfade lớp giai điệu: hạ ctxGain về 0 (hằng
+  // số 0.3s), tới hạn ctxApplyAt thì scheduler đổi motif + nâng lại.
+  function refreshContext() {
+    var want = resolveContext();
+    ctxWanted = want;
+    if (!ctx || !ctxGain) { ctxName = want; ctxPending = null; return; }
+    if (want === ctxName) { ctxPending = null; return; }
+    if (want === ctxPending) return;
+    ctxPending = want;
+    ctxApplyAt = ctx.currentTime + 0.85;
+    try { ctxGain.gain.setTargetAtTime(0.0001, ctx.currentTime, 0.3); } catch (e) {}
+  }
+  // Giao chiến thường: game.js gọi mỗi khi có đòn trúng (cả hai
+  // chiều); tự hết hạn trong schedulerTick sau 6 giây yên ắng.
+  function setCombat(on) {
+    try {
+      if (on) { combatFreshAt = nowMs(); if (!combatOn) { combatOn = true; refreshContext(); } }
+      else if (combatOn) { combatOn = false; refreshContext(); }
+      return true;
+    } catch (e) { return false; }
+  }
+  // Ép ngữ cảnh thủ công (vd màn hình đặc biệt); các sự kiện map/
+  // boss/combat kế tiếp sẽ tự suy lại như thường.
+  function setContext(name) {
+    try {
+      if (!MUSIC_CONTEXTS[name]) return false;
+      ctxWanted = name;
+      if (!ctx || !ctxGain) { ctxName = name; ctxPending = null; return true; }
+      if (name !== ctxName) {
+        ctxPending = name;
+        ctxApplyAt = ctx.currentTime + 0.85;
+        ctxGain.gain.setTargetAtTime(0.0001, ctx.currentTime, 0.3);
+      }
       return true;
     } catch (e) { return false; }
   }
@@ -744,7 +1235,15 @@
       lfo.connect(lfoG); lfoG.connect(wf.frequency);
       wsrc.connect(wf); wf.connect(wg); wg.connect(musicBus);
       wsrc.start(); lfo.start();
-      musicNodes = { oscs: oscs, padGain: padGain, padFilter: padFilter, windGain: wg };
+      // Lớp giai điệu theo ngữ cảnh: gain riêng để crossfade motif
+      // mà không đụng pad/gió. Khởi phát thẳng ngữ cảnh hiện tại
+      // (không fade ở lần đầu — chưa có gì để fade từ đó).
+      ctxGain = ctx.createGain(); ctxGain.gain.value = 0;
+      ctxGain.connect(musicBus);
+      ctxName = resolveContext(); ctxWanted = ctxName; ctxPending = null;
+      ctxStepIdx = 0; ctxRound = 0; ctxNextT = ctx.currentTime + 0.15;
+      ctxGain.gain.setTargetAtTime(CTX_LEVEL, ctx.currentTime, 0.8);
+      musicNodes = { oscs: oscs, padGain: padGain, padFilter: padFilter, windGain: wg, ctxGain: ctxGain };
       applyTheme(0.1);
       schedTimer = setInterval(schedulerTick, 280);
       if (schedTimer && schedTimer.unref) schedTimer.unref(); // Node test: đừng giữ tiến trình
@@ -781,16 +1280,25 @@
           });
         }
       }
-      // Giai điệu ngũ cung thưa: pluck ngẫu nhiên trên thang của map.
-      nextNoteIn -= dt;
-      if (nextNoteIn <= 0) {
-        nextNoteIn = rnd(1.6, 4.2);
-        if (Math.random() < 0.75) {
-          var semi = th.scale[Math.floor(Math.random() * th.scale.length)];
-          var oct = Math.random() < 0.3 ? 2 : 1;
-          var f = th.root * oct * Math.pow(2, semi / 12);
-          tone({ type: 'sine', f0: f, t: t + 0.05, dur: 1.1, vol: 0.055, a: 0.01, bus: musicBus });
-          tone({ type: 'triangle', f0: f * 2, t: t + 0.05, dur: 0.5, vol: 0.016, a: 0.01, bus: musicBus });
+      // GIAI ĐIỆU THEO NGỮ CẢNH (thay cho nốt gảy ngẫu nhiên cũ):
+      // lên lịch từng step của motif trong cửa sổ 0,5s tới; tới hạn
+      // crossfade thì đổi ngữ cảnh đang phát + bắt đầu vòng mới.
+      if (ctxGain) {
+        if (combatOn && nowMs() - combatFreshAt > 6000) { combatOn = false; refreshContext(); }
+        if (ctxPending && t >= ctxApplyAt) {
+          ctxName = ctxPending; ctxPending = null;
+          ctxStepIdx = 0; ctxRound = 0; ctxNextT = t + 0.06;
+          ctxGain.gain.setTargetAtTime(CTX_LEVEL, t, 0.45);
+        }
+        if (!ctxPending) {
+          var cdef = MUSIC_CONTEXTS[ctxName] || MUSIC_CONTEXTS.wild;
+          if (ctxNextT < t - 0.1) ctxNextT = t + 0.05; // vừa tắt tiếng/bật lại: nhảy tới hiện tại, không dồn nốt quá khứ
+          var guardN = 0;
+          while (ctxNextT < t + 0.5 && guardN++ < 8) {
+            scheduleCtxStep(cdef, ctxStepIdx, ctxNextT);
+            ctxStepIdx = (ctxStepIdx + 1) % cdef.steps;
+            ctxNextT += cdef.stepDur;
+          }
         }
       }
       // Chim hót ở làng (map1): vài tiếng líu lo lác đác, rất khẽ.
@@ -803,30 +1311,41 @@
       if (th.insects && Math.random() < 0.16) {
         for (var i = 0; i < 3; i++) tone({ type: 'sine', f0: 4300, t: t + i * 0.07, dur: 0.03, vol: 0.006, a: 0.004, bus: musicBus });
       }
-      // Lớp trầm giao chiến boss: nhịp trống sub đều + nốt căng thẳng.
-      if (bossOn) {
-        bossPulseIn -= dt;
-        if (bossPulseIn <= 0) {
-          bossPulseIn = 0.92;
-          tone({ type: 'sine', f0: 55, f1: 36, t: t + 0.03, dur: 0.32, vol: 0.3, a: 0.008, bus: musicBus });
-          if (Math.random() < 0.4) tone({ type: 'triangle', f0: th.root * Math.pow(2, 1 / 12) / 2, t: t + 0.03, dur: 0.8, vol: 0.03, a: 0.02, bus: musicBus });
-        }
+      // Lớp sinh cảnh theo biome (QA (e) 00:31 — trước đây 12/14 map
+      // chỉ có gió): lửa reo thưa ở Xích Diệm, sấm xa thưa ở Lôi Trì,
+      // gió rít lạnh ở Hàn Băng Cốc. Mọi tiếng đều khẽ hơn hẳn tiếng
+      // chiêu cùng họ nên không lẫn nhau.
+      if (th.fire && Math.random() < 0.10) {
+        noiseHit({ t: t + 0.03, dur: rnd(0.08, 0.16), vol: 0.02, type: 'lowpass', f0: rnd(700, 1100), bus: musicBus });
+        if (Math.random() < 0.5) noiseHit({ t: t + rnd(0.1, 0.25), dur: 0.06, vol: 0.012, type: 'bandpass', f0: rnd(1200, 2000), q: 2, bus: musicBus });
       }
+      if (th.thunder && Math.random() < 0.012) {
+        noiseHit({ t: t + 0.03, dur: 1.3, vol: 0.045, type: 'lowpass', f0: 220, a: 0.25, bus: musicBus });
+        tone({ type: 'sine', f0: 52, f1: 38, t: t + 0.05, dur: 1.1, vol: 0.035, a: 0.2, bus: musicBus });
+      }
+      if (th.cold && Math.random() < 0.06) {
+        noiseHit({ t: t + 0.03, dur: rnd(0.5, 0.9), vol: 0.011, type: 'bandpass', f0: 2400, f1: 3400, q: 1.6, a: 0.15, bus: musicBus });
+      }
+      // Lớp trầm giao chiến boss ngày xưa (nhịp sub 0,92s) nay do
+      // ngữ cảnh 'boss' của lớp giai điệu đảm nhiệm (trống + bass) —
+      // bossOn chỉ còn lái resolveContext + độ trầm của pad.
     } catch (e) {}
   }
   function setMap(id) {
     try {
       curMap = id || 'map1';
+      mapSeen = true;
       if (ctx && musicNodes) applyTheme(1.4); // chỉ đổi tông/lớp — nhạc không cắt
+      refreshContext(); // giai điệu crossfade sang ngữ cảnh của map mới
     } catch (e) {}
   }
   function bossFight(on) {
     try {
       bossOn = !!on;
-      if (bossOn) bossPulseIn = 0;
       if (ctx && musicNodes) { // pad trầm xuống một chút khi vào trận boss
         musicNodes.padFilter.frequency.setTargetAtTime(bossOn ? Math.min(500, theme().bright) : theme().bright, ctx.currentTime, 0.8);
       }
+      refreshContext();
     } catch (e) {}
   }
   function stopAll() {
@@ -835,6 +1354,8 @@
       if (ctx && ctx.close) ctx.close();
     } catch (e) {}
     ctx = null; musicNodes = null; bossOn = false; progIdx = 0; progIn = PROG_SEC;
+    ctxGain = null; ctxName = 'login'; ctxWanted = 'login'; ctxPending = null;
+    ctxStepIdx = 0; ctxRound = 0; mapSeen = false; combatOn = false; ksCache = {}; ksCount = 0;
   }
 
   // ==================================================================
@@ -851,7 +1372,8 @@
   function setMusicVol(v) { try { musicTrim = Math.max(0, Math.min(1, +v || 0)); applyLevels(); return true; } catch (e) { return false; } }
   function setSfxVol(v) { try { sfxTrim = Math.max(0, Math.min(1, +v || 0)); applyLevels(); return true; } catch (e) { return false; } }
   function getState() {
-    return { level: level, musicVol: musicTrim, sfxVol: sfxTrim, hasCtx: hasCtx(), map: curMap, boss: bossOn, activeVoices: activeVoices, progIdx: progIdx, progSec: PROG_SEC };
+    return { level: level, musicVol: musicTrim, sfxVol: sfxTrim, hasCtx: hasCtx(), map: curMap, boss: bossOn, activeVoices: activeVoices, progIdx: progIdx, progSec: PROG_SEC,
+      context: ctxWanted, musicContext: ctxName, combat: combatOn };
   }
 
   var api = {
@@ -860,11 +1382,13 @@
     SKILL_SOUNDS: SKILL_SOUNDS, ROOT_SOUNDS: ROOT_SOUNDS,
     MAP_THEMES: MAP_THEMES, LEVELS: LEVELS,
     PROG_DEGREES: PROG_DEGREES, PROG_SEC: PROG_SEC, chordSemis: chordSemis,
+    MUSIC_CONTEXTS: MUSIC_CONTEXTS, baseContextFor: baseContextFor,
     unlock: unlock, hasCtx: hasCtx, getState: getState,
     voiceDefined: function (type, occ) { return !!(VOICES[type] && VOICE_OCCASIONS.indexOf(occ) >= 0); },
     setLevel: setLevel, setMusicVol: setMusicVol, setSfxVol: setSfxVol,
     voice: voice, sfx: sfx, skill: skill,
-    setMap: setMap, bossFight: bossFight, stopAll: stopAll
+    setMap: setMap, bossFight: bossFight, stopAll: stopAll,
+    setCombat: setCombat, setContext: setContext
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else if (typeof window !== 'undefined') window.PNT_SOUND = api;

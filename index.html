@@ -132,6 +132,13 @@
      của MỌI panel, cạnh nút thu nhỏ "—" (— dạt sang right:42px, không
      chồng), vùng chạm 32px, một cơ chế gắn chung injectXButtons. */
   .x-btn { position: absolute; top: 6px; right: 6px; width: 32px; height: 32px; min-width: 32px; padding: 0; margin: 0; font-size: 16px; line-height: 1; background: #7a3b22; color: #fff; border: 1px solid #5a2a16; border-radius: 6px; z-index: 2; cursor: pointer; }
+  /* Strip thông báo sự kiện dùng CHUNG nút —/✕ (lượt sửa 31/10): chừa
+     khoảng phải cho 2 nút để chữ không bị đè; nút phải nhận sự kiện
+     bấm ngay cả trên strip đặt pointer-events:none (rift/boss). */
+  .has-strip-btns { padding-right: 84px; }
+  .has-strip-btns .min-btn, .has-strip-btns .x-btn { pointer-events: auto; }
+  .has-strip-btns .min-btn { top: 4px; right: 42px; }
+  .has-strip-btns .x-btn { top: 4px; right: 6px; width: 26px; height: 26px; min-width: 26px; font-size: 13px; }
   .modal .panel { position: relative; }
   /* Thanh nhanh thay bức tường nút (lệnh Bui 20:16): Menu + 2 nút
      hành động tròn cạnh cụm chiêu; mọi nút chức năng nằm trong
@@ -140,6 +147,10 @@
   #btnMenu { font-weight: bold; padding: 10px 18px; }
   .quick-act { border-radius: 999px; padding: 9px 15px; }
   .menu-sec { margin: 12px 0 4px; color: #7a3b22; font-weight: bold; }
+  /* QA 13:46 30/10 (mục 31): 4 nhóm thanh công cụ gập được (details/summary),
+     nhãn mới thay 4 nhóm cũ; nút chưa đủ điều kiện chỉ MỜ (opacity do
+     game.js đặt, theo mẫu nút khóa Ngự Kiếm), không ẩn nên vẫn đủ 31 nút. */
+  .menu-group > summary.menu-sec { cursor: pointer; }
   .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(102px, 1fr)); gap: 6px; }
   .menu-grid button { margin: 0; padding: 9px 4px; font-size: 13px; width: 100%; }
   .bar { width: 200px; height: 16px; background: #400000; border: 1px solid #000; border-radius: 4px; overflow: hidden; }
@@ -160,6 +171,10 @@
      dài phải cuộn trong panel; bề ngang tối đa 560px, hai bên luôn hở
      lề để thấy map phía sau. */
   .overlay { position: absolute; left: 50%; transform: translateX(-50%); width: calc(100% - 20px); max-width: 560px; max-height: 78%; overflow-y: auto; background: rgba(245, 238, 218, 0.97); color: #2a2016; border: 3px solid #8b5a2b; border-radius: 8px; padding: 12px; display: none; z-index: 5; }
+  /* QA 13:46 30/10 (mục 30): panel mở ở map có quái KHÔNG tạm dừng thế
+     giới — viền đỏ + dải cảnh báo để người chơi biết quái vẫn đánh. */
+  .overlay.panel-danger { outline: 3px solid #c0392b; outline-offset: -2px; }
+  .overlay.panel-danger::before { content: 'Cảnh báo: thế giới vẫn chạy — quái vẫn tấn công khi panel đang mở!'; display: block; background: #c0392b; color: #fff; font-weight: bold; font-size: 13px; padding: 4px 8px; margin: -12px -12px 8px -12px; border-radius: 5px 5px 0 0; }
   #dialogueBox { bottom: 12px; top: auto; max-height: 55%; }
   #panelQuests, #panelInv, #panelShop, #panelBooks, #panelArtShop, #panelAlchemy, #panelTalisman, #panelTournament, #panelBeastTide, #panelEscort, #panelAuction, #panelSeasonBoard, #panelAffinity, #panelBestiary, #panelLegend, #panelCompanion, #panelFormation, #panelFair, #panelTide, #panelDongPhu, #panelMenu, #panelCharacter, #panelWorldMap { top: 10px; }
   .modal { position: fixed; left: 0; right: 0; top: 0; bottom: 0; background: rgba(0,0,0,0.6); display: none; z-index: 20; }
@@ -527,48 +542,61 @@
     </div>
     <div id="panelMenu" class="overlay">
       <h3 style="margin-top:0">Menu — Chức năng</h3>
-      <div class="menu-sec">Chiến đấu & Sự kiện</div>
-      <div class="menu-grid">
-        <button id="btnAttack">Đánh (Space)</button>
-        <button id="btnSkills">Kỹ năng</button>
-        <button id="btnCapture">Thu phục</button>
-        <button id="btnFormation">Trận Kỳ</button>
-        <button id="btnRealms">Bí Cảnh</button>
-        <button id="btnBoss">Boss</button>
-        <button id="btnTournament">Đại Hội</button>
-        <button id="btnBeastTide">Thú Triều</button>
-        <button id="btnEscort">Hộ Tống</button>
-        <button id="btnAuction">Đấu Giá</button>
-        <button id="btnTide">Tiết Khí</button>
-      </div>
-      <div class="menu-sec">Nhân vật</div>
-      <div class="menu-grid">
-        <button id="btnInv">Túi đồ</button>
-        <button id="btnQuests">Nhiệm vụ</button>
-        <button id="btnSects">Tông Môn</button>
-        <button id="btnPets">Linh thú</button>
-        <button id="btnWardrobe">Tủ đồ</button>
-        <button id="btnBestiary">Đồ Giám</button>
-        <button id="btnFair">Chợ Phiên</button>
-      </div>
-      <div class="menu-sec">Xã hội</div>
-      <div class="menu-grid">
-        <button id="btnCompanion">Đi Cùng</button>
-        <button id="btnAffinity">Hảo Cảm</button>
-        <button id="btnSeasonBoard">Bảng Mùa</button>
-        <button id="btnLegend">Truyền Kỳ</button>
-        <button id="btnWorldMap">Bản đồ</button>
-      </div>
-      <div class="menu-sec">Hệ thống & Bật/Tắt</div>
-      <div class="menu-grid">
-        <button id="btnMeditate">Thổ nạp (T)</button>
-        <button id="btnAutoMed">Tự thổ nạp: TẮT</button>
-        <button id="btnAutoAtk">Đánh tự động: TẮT</button>
-        <button id="btnGfx">Đồ hoạ: Cao</button>
-        <button id="btnSnd">Âm thanh: Bật</button>
-        <button id="btnSave">Lưu</button>
-        <button id="btnLogout">Đăng xuất</button>
-      </div>
+      <!-- QA 13:46 30/10 (mục 31): 31 nút = 30 nút tĩnh dưới đây + nút
+           "Điều khiển & Màn hình" do js/controls.js chèn ĐẦU nhóm Hệ thống.
+           Không bớt chức năng nào, chỉ sắp lại thành 4 nhóm gập được. -->
+      <details class="menu-group" open>
+        <summary class="menu-sec">Chiến đấu</summary>
+        <div class="menu-grid">
+          <button id="btnAttack">Đánh (Space)</button>
+          <button id="btnSkills">Kỹ năng</button>
+          <button id="btnCapture">Thu phục</button>
+          <button id="btnFormation">Trận Kỳ</button>
+          <button id="btnRealms">Bí Cảnh</button>
+          <button id="btnBoss">Boss</button>
+          <button id="btnTournament">Đại Hội</button>
+          <button id="btnBeastTide">Thú Triều</button>
+          <button id="btnEscort">Hộ Tống</button>
+          <button id="btnAuction">Đấu Giá</button>
+          <button id="btnTide">Tiết Khí</button>
+        </div>
+      </details>
+      <details class="menu-group" open>
+        <summary class="menu-sec">Tu hành</summary>
+        <div class="menu-grid">
+          <button id="btnMeditate">Thổ nạp (T)</button>
+          <button id="btnAutoMed">Tự thổ nạp: TẮT</button>
+          <button id="btnSects">Tông Môn</button>
+          <button id="btnPets">Linh thú</button>
+        </div>
+      </details>
+      <details class="menu-group" open>
+        <summary class="menu-sec">Túi &amp; Xã hội</summary>
+        <div class="menu-grid">
+          <button id="btnInv">Túi đồ</button>
+          <button id="btnQuests">Nhiệm vụ</button>
+          <button id="btnWardrobe">Tủ đồ</button>
+          <button id="btnBestiary">Đồ Giám</button>
+          <button id="btnFair">Chợ Phiên</button>
+          <button id="btnCompanion">Đi Cùng</button>
+          <button id="btnAffinity">Hảo Cảm</button>
+          <button id="btnSeasonBoard">Bảng Mùa</button>
+          <button id="btnLegend">Truyền Kỳ</button>
+          <button id="btnWorldMap">Bản đồ</button>
+        </div>
+      </details>
+      <details class="menu-group" open>
+        <summary class="menu-sec">Hệ thống</summary>
+        <div class="menu-grid" id="menuSysGrid">
+          <!-- Nút "Điều khiển & Màn hình" được js/controls.js chèn làm nút
+               ĐẦU TIÊN của lưới này (không còn nằm cuối sau Đăng xuất). -->
+          <button id="btnAutoAtk">Đánh tự động: TẮT</button>
+          <button id="btnGfx">Đồ hoạ: Cao</button>
+          <button id="btnSnd">Âm thanh: Bật</button>
+          <button id="btnSave">Lưu</button>
+          <button id="btnLogout">Đăng xuất</button>
+        </div>
+      </details>
       <button id="menuClose" style="margin-top:12px">Đóng</button>
     </div>
     <div id="panelCharacter" class="overlay">
@@ -615,7 +643,7 @@
     </div>
   </div>
   <div id="log"></div>
-  <p style="color:#c9b896; font-size:13px">Di chuyển: WASD / phím mũi tên (đi chéo bằng 2 phím), D-pad, hoặc bấm vào mặt đất để đi tới. Tương tác / lật thoại: E (Space cũng lật thoại khi đang nói chuyện). Đánh: Space (combo 3 đòn). Thổ nạp: T. Chiêu thức: phím 1–5 và các phím riêng theo cảnh giới (8/9/0/Q/R/V/G/H/J/K) hoặc bấm ô chiêu dưới màn hình (giữ lâu ô chiêu để xem mô tả). Pháp bảo có chiêu kích hoạt: phím 6/7. Ngự kiếm bay / hạ cánh: F (từ Trúc Cơ, sau chuỗi nhiệm vụ ngự kiếm của tông môn). Phù nhanh: B. Túi đồ: I hoặc nút Túi đồ. Đóng hộp thoại / panel trên cùng: Esc. Phóng to/thu nhỏ: nút +/−, cuộn chuột, chụm 2 ngón trên điện thoại; chạm bản đồ nhỏ để mở bản đồ thế giới. Đổi phím bấm, bật/tắt lớp cảm ứng và tay cầm: panel Điều khiển &amp; Màn hình. Qua cổng Nam Môn xuống phía nam là bãi quái.</p>
+  <p style="color:#c9b896; font-size:13px">Di chuyển: WASD / phím mũi tên (đi chéo bằng 2 phím), D-pad, hoặc bấm vào mặt đất để đi tới. Tương tác / lật thoại: E (Space cũng lật thoại khi đang nói chuyện). Đánh: Space (combo 3 đòn). Thổ nạp: T. Chiêu thức: phím 1–5 và các phím riêng theo cảnh giới (8/9/0/Q/R/V/G/H/J/K) hoặc bấm ô chiêu dưới màn hình (giữ lâu ô chiêu để xem mô tả). Pháp bảo có chiêu kích hoạt: phím 6/7. Ngự kiếm bay / hạ cánh: F (từ Trúc Cơ, sau chuỗi nhiệm vụ ngự kiếm của tông môn). Phù nhanh: B. Túi đồ: I hoặc nút Túi đồ. Nhiệm vụ: Q khi chiêu Q chưa mở khóa (từ Kim Đan trở đi, Q là chiêu Ngũ Lôi Oanh Đỉnh) hoặc nút Nhiệm vụ. Đóng hộp thoại / panel trên cùng: Esc. Phóng to/thu nhỏ: nút +/−, cuộn chuột, chụm 2 ngón trên điện thoại; chạm bản đồ nhỏ để mở bản đồ thế giới. Đổi phím bấm, bật/tắt lớp cảm ứng và tay cầm: panel Điều khiển &amp; Màn hình. Qua cổng Nam Môn xuống phía nam là bãi quái.</p>
 </div>
 
 <div id="modalKyNgo" class="modal">
@@ -703,6 +731,7 @@
 <script src="js/smooth.js"></script>
 <script src="js/net.js"></script>
 <script src="js/controls.js"></script>
+<script src="js/high-balance.js"></script>
 <script src="js/game.js"></script>
 </body>
 </html>

@@ -1198,12 +1198,22 @@
     document.body.appendChild(m);
     m.addEventListener('click', function (e) { if (e.target === m) toggleSettingsPanel(false); });
     $('ctlClose').addEventListener('click', function () { toggleSettingsPanel(false); });
-    var controlsBar = $('controls');
-    if (controlsBar && !$('btnControls')) {
+    // QA 13:46 30/10 (mục 31): nút này thuộc ĐẦU nhóm Hệ thống trong
+    // panelMenu, không còn nằm cuối #controls sau Đăng xuất. Chỉ khi
+    // HTML cũ chưa có lưới hệ thống mới rơi về #controls như trước.
+    var sysGrid = $('menuSysGrid');
+    if (sysGrid && !$('btnControls')) {
       var btn = mk('button', 'btnControls');
       btn.textContent = 'Điều khiển & Màn hình';
       btn.addEventListener('click', function () { toggleSettingsPanel(true); });
-      controlsBar.appendChild(btn);
+      sysGrid.insertBefore(btn, sysGrid.firstChild);
+    }
+    var controlsBar = $('controls');
+    if (!sysGrid && controlsBar && !$('btnControls')) {
+      var btn2 = mk('button', 'btnControls');
+      btn2.textContent = 'Điều khiển & Màn hình';
+      btn2.addEventListener('click', function () { toggleSettingsPanel(true); });
+      controlsBar.appendChild(btn2);
     }
   }
 
