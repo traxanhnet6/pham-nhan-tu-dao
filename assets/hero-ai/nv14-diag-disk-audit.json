@@ -1,0 +1,963 @@
+{
+ "set": "nu/nv14diag",
+ "tiers": {
+  "cao": {
+   "strips": {
+    "down_left-idle": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      185,
+      185
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 32
+    },
+    "down_left-slash1": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      185,
+      185
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 31
+    },
+    "down_left-slash2": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      185,
+      185
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 31
+    },
+    "down_left-slash3": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      185,
+      185
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 34
+    },
+    "down_left-walk": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      185,
+      186
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 31
+    },
+    "down_right-idle": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      185,
+      185
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 31
+    },
+    "down_right-slash1": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      185,
+      185
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 31
+    },
+    "down_right-slash2": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      185,
+      185
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 31
+    },
+    "down_right-slash3": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      185,
+      185
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 34
+    },
+    "down_right-walk": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      185,
+      186
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 30
+    },
+    "up_left-idle": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      185,
+      185
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 10
+    },
+    "up_left-slash1": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      185,
+      185
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 23
+    },
+    "up_left-slash2": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      185,
+      185
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 23
+    },
+    "up_left-slash3": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      185,
+      185
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 22
+    },
+    "up_left-walk": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      185,
+      186
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 14
+    },
+    "up_right-idle": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      185,
+      185
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 14
+    },
+    "up_right-slash1": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      185,
+      185
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 29
+    },
+    "up_right-slash2": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      185,
+      185
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 22
+    },
+    "up_right-slash3": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      185,
+      185
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 40
+    },
+    "up_right-walk": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      185,
+      186
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 14
+    }
+   },
+   "frames": 1200,
+   "bad_frames": 0
+  },
+  "trung": {
+   "strips": {
+    "down_left-idle": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      117,
+      117
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 22
+    },
+    "down_left-slash1": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      117,
+      117
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 20
+    },
+    "down_left-slash2": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      117,
+      117
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 22
+    },
+    "down_left-slash3": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      117,
+      117
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 22
+    },
+    "down_left-walk": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      115,
+      117
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 20
+    },
+    "down_right-idle": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      117,
+      117
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 18
+    },
+    "down_right-slash1": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      117,
+      117
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 20
+    },
+    "down_right-slash2": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      117,
+      117
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 20
+    },
+    "down_right-slash3": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      117,
+      117
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 20
+    },
+    "down_right-walk": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      115,
+      117
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 22
+    },
+    "up_left-idle": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      115,
+      115
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 14
+    },
+    "up_left-slash1": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [
+      {
+       "f": 23,
+       "components": 3,
+       "big": 2
+      },
+      {
+       "f": 24,
+       "components": 3,
+       "big": 2
+      },
+      {
+       "f": 25,
+       "components": 3,
+       "big": 2
+      },
+      {
+       "f": 26,
+       "components": 3,
+       "big": 2
+      },
+      {
+       "f": 27,
+       "components": 3,
+       "big": 2
+      },
+      {
+       "f": 28,
+       "components": 3,
+       "big": 2
+      },
+      {
+       "f": 29,
+       "components": 3,
+       "big": 2
+      },
+      {
+       "f": 30,
+       "components": 3,
+       "big": 2
+      },
+      {
+       "f": 31,
+       "components": 3,
+       "big": 2
+      },
+      {
+       "f": 32,
+       "components": 3,
+       "big": 2
+      },
+      {
+       "f": 33,
+       "components": 3,
+       "big": 2
+      },
+      {
+       "f": 34,
+       "components": 3,
+       "big": 2
+      }
+     ],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      115,
+      115
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 22
+    },
+    "up_left-slash2": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [
+      {
+       "f": 24,
+       "components": 3,
+       "big": 2
+      },
+      {
+       "f": 25,
+       "components": 3,
+       "big": 2
+      },
+      {
+       "f": 26,
+       "components": 3,
+       "big": 2
+      },
+      {
+       "f": 27,
+       "components": 3,
+       "big": 2
+      },
+      {
+       "f": 28,
+       "components": 3,
+       "big": 2
+      },
+      {
+       "f": 29,
+       "components": 3,
+       "big": 2
+      },
+      {
+       "f": 30,
+       "components": 3,
+       "big": 2
+      },
+      {
+       "f": 31,
+       "components": 3,
+       "big": 2
+      },
+      {
+       "f": 32,
+       "components": 3,
+       "big": 2
+      },
+      {
+       "f": 33,
+       "components": 3,
+       "big": 2
+      },
+      {
+       "f": 34,
+       "components": 3,
+       "big": 2
+      }
+     ],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      115,
+      115
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 24
+    },
+    "up_left-slash3": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [
+      {
+       "f": 24,
+       "components": 3,
+       "big": 2
+      },
+      {
+       "f": 26,
+       "components": 3,
+       "big": 2
+      },
+      {
+       "f": 27,
+       "components": 3,
+       "big": 2
+      },
+      {
+       "f": 28,
+       "components": 3,
+       "big": 2
+      },
+      {
+       "f": 29,
+       "components": 3,
+       "big": 2
+      },
+      {
+       "f": 30,
+       "components": 3,
+       "big": 2
+      },
+      {
+       "f": 31,
+       "components": 3,
+       "big": 2
+      },
+      {
+       "f": 32,
+       "components": 3,
+       "big": 2
+      },
+      {
+       "f": 33,
+       "components": 3,
+       "big": 2
+      },
+      {
+       "f": 34,
+       "components": 3,
+       "big": 2
+      },
+      {
+       "f": 35,
+       "components": 3,
+       "big": 2
+      },
+      {
+       "f": 36,
+       "components": 3,
+       "big": 2
+      },
+      {
+       "f": 37,
+       "components": 3,
+       "big": 2
+      },
+      {
+       "f": 38,
+       "components": 3,
+       "big": 2
+      },
+      {
+       "f": 39,
+       "components": 3,
+       "big": 2
+      },
+      {
+       "f": 40,
+       "components": 3,
+       "big": 2
+      },
+      {
+       "f": 41,
+       "components": 3,
+       "big": 2
+      },
+      {
+       "f": 42,
+       "components": 3,
+       "big": 2
+      },
+      {
+       "f": 43,
+       "components": 3,
+       "big": 2
+      },
+      {
+       "f": 44,
+       "components": 3,
+       "big": 2
+      },
+      {
+       "f": 45,
+       "components": 3,
+       "big": 2
+      },
+      {
+       "f": 46,
+       "components": 3,
+       "big": 2
+      },
+      {
+       "f": 47,
+       "components": 3,
+       "big": 2
+      },
+      {
+       "f": 48,
+       "components": 3,
+       "big": 2
+      }
+     ],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      115,
+      115
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 24
+    },
+    "up_left-walk": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [
+      {
+       "f": 21,
+       "components": 5,
+       "big": 2
+      },
+      {
+       "f": 22,
+       "components": 2,
+       "big": 2
+      },
+      {
+       "f": 24,
+       "components": 3,
+       "big": 2
+      },
+      {
+       "f": 31,
+       "components": 4,
+       "big": 2
+      },
+      {
+       "f": 34,
+       "components": 5,
+       "big": 4
+      },
+      {
+       "f": 35,
+       "components": 4,
+       "big": 4
+      },
+      {
+       "f": 36,
+       "components": 4,
+       "big": 2
+      },
+      {
+       "f": 48,
+       "components": 3,
+       "big": 2
+      },
+      {
+       "f": 50,
+       "components": 4,
+       "big": 3
+      },
+      {
+       "f": 51,
+       "components": 2,
+       "big": 2
+      },
+      {
+       "f": 52,
+       "components": 8,
+       "big": 3
+      },
+      {
+       "f": 56,
+       "components": 2,
+       "big": 2
+      },
+      {
+       "f": 59,
+       "components": 2,
+       "big": 2
+      }
+     ],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      115,
+      115
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 16
+    },
+    "up_right-idle": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      115,
+      115
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 14
+    },
+    "up_right-slash1": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      115,
+      115
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 20
+    },
+    "up_right-slash2": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      115,
+      115
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 20
+    },
+    "up_right-slash3": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      115,
+      115
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 22
+    },
+    "up_right-walk": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [
+      {
+       "f": 22,
+       "components": 5,
+       "big": 2
+      },
+      {
+       "f": 25,
+       "components": 3,
+       "big": 2
+      },
+      {
+       "f": 37,
+       "components": 6,
+       "big": 3
+      },
+      {
+       "f": 38,
+       "components": 4,
+       "big": 3
+      },
+      {
+       "f": 39,
+       "components": 6,
+       "big": 3
+      },
+      {
+       "f": 40,
+       "components": 3,
+       "big": 2
+      },
+      {
+       "f": 41,
+       "components": 6,
+       "big": 3
+      },
+      {
+       "f": 42,
+       "components": 3,
+       "big": 2
+      },
+      {
+       "f": 43,
+       "components": 5,
+       "big": 2
+      },
+      {
+       "f": 44,
+       "components": 4,
+       "big": 3
+      },
+      {
+       "f": 45,
+       "components": 4,
+       "big": 3
+      },
+      {
+       "f": 46,
+       "components": 4,
+       "big": 3
+      },
+      {
+       "f": 47,
+       "components": 7,
+       "big": 4
+      },
+      {
+       "f": 49,
+       "components": 4,
+       "big": 2
+      },
+      {
+       "f": 51,
+       "components": 4,
+       "big": 2
+      },
+      {
+       "f": 52,
+       "components": 2,
+       "big": 2
+      }
+     ],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      115,
+      115
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 16
+    }
+   },
+   "frames": 1200,
+   "bad_frames": 76
+  }
+ },
+ "problems": []
+}

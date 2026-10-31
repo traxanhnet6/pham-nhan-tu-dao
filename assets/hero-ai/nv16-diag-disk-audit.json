@@ -1,0 +1,777 @@
+{
+ "set": "nam/nv16diag",
+ "tiers": {
+  "cao": {
+   "strips": {
+    "down_left-idle": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      185,
+      185
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 20
+    },
+    "down_left-slash1": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      185,
+      185
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 19
+    },
+    "down_left-slash2": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      185,
+      185
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 19
+    },
+    "down_left-slash3": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      185,
+      185
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 19
+    },
+    "down_left-walk": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      185,
+      186
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 27
+    },
+    "down_right-idle": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      185,
+      185
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 20
+    },
+    "down_right-slash1": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [
+      {
+       "f": 1,
+       "components": 2,
+       "big": 2
+      },
+      {
+       "f": 2,
+       "components": 5,
+       "big": 2
+      },
+      {
+       "f": 3,
+       "components": 5,
+       "big": 2
+      },
+      {
+       "f": 4,
+       "components": 5,
+       "big": 2
+      },
+      {
+       "f": 5,
+       "components": 5,
+       "big": 2
+      },
+      {
+       "f": 6,
+       "components": 5,
+       "big": 2
+      },
+      {
+       "f": 7,
+       "components": 5,
+       "big": 2
+      }
+     ],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      185,
+      185
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 20
+    },
+    "down_right-slash2": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [
+      {
+       "f": 51,
+       "components": 5,
+       "big": 2
+      },
+      {
+       "f": 52,
+       "components": 5,
+       "big": 2
+      },
+      {
+       "f": 53,
+       "components": 5,
+       "big": 2
+      },
+      {
+       "f": 54,
+       "components": 5,
+       "big": 2
+      },
+      {
+       "f": 55,
+       "components": 5,
+       "big": 2
+      }
+     ],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      185,
+      185
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 20
+    },
+    "down_right-slash3": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [
+      {
+       "f": 1,
+       "components": 2,
+       "big": 2
+      },
+      {
+       "f": 2,
+       "components": 5,
+       "big": 2
+      },
+      {
+       "f": 3,
+       "components": 5,
+       "big": 2
+      },
+      {
+       "f": 4,
+       "components": 5,
+       "big": 2
+      },
+      {
+       "f": 5,
+       "components": 5,
+       "big": 2
+      },
+      {
+       "f": 6,
+       "components": 5,
+       "big": 2
+      },
+      {
+       "f": 7,
+       "components": 5,
+       "big": 2
+      },
+      {
+       "f": 8,
+       "components": 5,
+       "big": 2
+      }
+     ],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      185,
+      185
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 36
+    },
+    "down_right-walk": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      185,
+      186
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 20
+    },
+    "up_left-idle": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      185,
+      185
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 14
+    },
+    "up_left-slash1": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      185,
+      185
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 14
+    },
+    "up_left-slash2": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      185,
+      185
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 14
+    },
+    "up_left-slash3": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      185,
+      185
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 18
+    },
+    "up_left-walk": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      185,
+      186
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 14
+    },
+    "up_right-idle": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      185,
+      185
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 14
+    },
+    "up_right-slash1": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      185,
+      185
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 15
+    },
+    "up_right-slash2": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      185,
+      185
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 15
+    },
+    "up_right-slash3": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      185,
+      185
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 40
+    },
+    "up_right-walk": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      185,
+      186
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 14
+    }
+   },
+   "frames": 1200,
+   "bad_frames": 20
+  },
+  "trung": {
+   "strips": {
+    "down_left-idle": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      117,
+      117
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 20
+    },
+    "down_left-slash1": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [
+      {
+       "f": 7,
+       "components": 2,
+       "big": 2
+      },
+      {
+       "f": 10,
+       "components": 2,
+       "big": 2
+      },
+      {
+       "f": 11,
+       "components": 2,
+       "big": 2
+      },
+      {
+       "f": 13,
+       "components": 2,
+       "big": 2
+      }
+     ],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      117,
+      117
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 22
+    },
+    "down_left-slash2": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [
+      {
+       "f": 40,
+       "components": 2,
+       "big": 2
+      },
+      {
+       "f": 43,
+       "components": 2,
+       "big": 2
+      },
+      {
+       "f": 44,
+       "components": 2,
+       "big": 2
+      },
+      {
+       "f": 45,
+       "components": 2,
+       "big": 2
+      }
+     ],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      117,
+      117
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 20
+    },
+    "down_left-slash3": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [
+      {
+       "f": 10,
+       "components": 2,
+       "big": 2
+      },
+      {
+       "f": 11,
+       "components": 2,
+       "big": 2
+      }
+     ],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      117,
+      117
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 20
+    },
+    "down_left-walk": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      115,
+      117
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 20
+    },
+    "down_right-idle": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      115,
+      115
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 20
+    },
+    "down_right-slash1": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [
+      {
+       "f": 6,
+       "components": 2,
+       "big": 2
+      },
+      {
+       "f": 8,
+       "components": 2,
+       "big": 2
+      },
+      {
+       "f": 10,
+       "components": 2,
+       "big": 2
+      }
+     ],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      115,
+      117
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 22
+    },
+    "down_right-slash2": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [
+      {
+       "f": 42,
+       "components": 2,
+       "big": 2
+      },
+      {
+       "f": 44,
+       "components": 2,
+       "big": 2
+      },
+      {
+       "f": 46,
+       "components": 2,
+       "big": 2
+      }
+     ],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      115,
+      117
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 20
+    },
+    "down_right-slash3": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [
+      {
+       "f": 9,
+       "components": 2,
+       "big": 2
+      },
+      {
+       "f": 10,
+       "components": 2,
+       "big": 2
+      }
+     ],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      115,
+      117
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 22
+    },
+    "down_right-walk": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      115,
+      117
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 22
+    },
+    "up_left-idle": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      115,
+      115
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 16
+    },
+    "up_left-slash1": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      115,
+      117
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 22
+    },
+    "up_left-slash2": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      115,
+      117
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 22
+    },
+    "up_left-slash3": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      115,
+      117
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 22
+    },
+    "up_left-walk": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      115,
+      117
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 14
+    },
+    "up_right-idle": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      115,
+      115
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 16
+    },
+    "up_right-slash1": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      115,
+      117
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 24
+    },
+    "up_right-slash2": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      115,
+      117
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 22
+    },
+    "up_right-slash3": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      115,
+      117
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 26
+    },
+    "up_right-walk": {
+     "frames": 60,
+     "distinct": 60,
+     "detached_frames": [],
+     "empty_frames": [],
+     "md5_mismatch": 0,
+     "ground_rows": [
+      115,
+      117
+     ],
+     "sheet_md5_ok": true,
+     "size_ok": true,
+     "weld_run_max": 16
+    }
+   },
+   "frames": 1200,
+   "bad_frames": 18
+  }
+ },
+ "problems": []
+}
