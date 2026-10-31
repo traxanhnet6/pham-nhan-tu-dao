@@ -75,19 +75,25 @@
   // ----- Vùng sương của map 3 (toạ độ px, ô 32) -----
   // dai: Đài Vọng Vân x38..48, y22..25. them: thềm đá dưới đài x42..52,
   // y27..32. bac: đường đá + bãi luyện công phía bắc đài x30..47, y12..17.
+  // V5 (tích hợp map 3 mở rộng 160x140): cả 3 vùng sương dịch theo neo
+  // EXP_V5_MAP3 (+40,+42) để bám đúng đài vọng vân / thềm / sườn bắc ở
+  // vị trí mới — sương mù là hiệu ứng theo vùng, không được ở lại tọa
+  // độ cũ giữa map đã nới (cổng nghiệm thu A của Bui).
   var MIST_ZONES = [
-    { id: 'dai', x0: 50 * TILE, y0: 30 * TILE, x1: 61 * TILE, y1: 34 * TILE, cx: 55.5 * TILE, cy: 32 * TILE, weight: 1.0, puffs: 5 },
-    { id: 'them', x0: 54 * TILE, y0: 35 * TILE, x1: 65 * TILE, y1: 41 * TILE, cx: 59.5 * TILE, cy: 38 * TILE, weight: 0.65, puffs: 3 },
-    { id: 'bac', x0: 42 * TILE, y0: 20 * TILE, x1: 60 * TILE, y1: 26 * TILE, cx: 51 * TILE, cy: 23 * TILE, weight: 0.45, puffs: 3 }
+    { id: 'dai', x0: 90 * TILE, y0: 72 * TILE, x1: 101 * TILE, y1: 76 * TILE, cx: 95.5 * TILE, cy: 74 * TILE, weight: 1.0, puffs: 5 },
+    { id: 'them', x0: 94 * TILE, y0: 77 * TILE, x1: 105 * TILE, y1: 83 * TILE, cx: 99.5 * TILE, cy: 80 * TILE, weight: 0.65, puffs: 3 },
+    { id: 'bac', x0: 82 * TILE, y0: 62 * TILE, x1: 100 * TILE, y1: 68 * TILE, cx: 91 * TILE, cy: 65 * TILE, weight: 0.45, puffs: 3 }
   ];
   // V9: mở hệ mây cho map 7 (Thập Vạn Đại Sơn · Chi Đỉnh — vùng đỉnh mây).
   // Zones sương của map 7 tính theo ô của map 7 (56x40): quanh đài đá + bia
   // cổ ở bắc-trung (nơi tu luyện tầng 9), biển mây sườn nam và sườn đông.
   // MIST_ZONES của map 3 ở trên giữ nguyên tuyệt đối (test cũ ghim toạ độ).
+  // V5 (tích hợp map 7 mở rộng 160x140): vùng sương map 7 dịch theo neo
+  // EXP_V5_MAP7 (+40,+24) — cùng lý do như MIST_ZONES của map 3 ở trên.
   var MIST_ZONES7 = [
-    { id: 'dinh', x0: 30 * TILE, y0: 11 * TILE, x1: 47 * TILE, y1: 23 * TILE, cx: 38.5 * TILE, cy: 17 * TILE, weight: 1.0, puffs: 5 },
-    { id: 'suon', x0: 28 * TILE, y0: 30 * TILE, x1: 48 * TILE, y1: 46 * TILE, cx: 38 * TILE, cy: 38 * TILE, weight: 0.6, puffs: 3 },
-    { id: 'dong', x0: 50 * TILE, y0: 24 * TILE, x1: 67 * TILE, y1: 39 * TILE, cx: 58 * TILE, cy: 31.5 * TILE, weight: 0.45, puffs: 3 }
+    { id: 'dinh', x0: 70 * TILE, y0: 35 * TILE, x1: 87 * TILE, y1: 47 * TILE, cx: 78.5 * TILE, cy: 41 * TILE, weight: 1.0, puffs: 5 },
+    { id: 'suon', x0: 68 * TILE, y0: 54 * TILE, x1: 88 * TILE, y1: 70 * TILE, cx: 78 * TILE, cy: 62 * TILE, weight: 0.6, puffs: 3 },
+    { id: 'dong', x0: 90 * TILE, y0: 48 * TILE, x1: 107 * TILE, y1: 63 * TILE, cx: 98 * TILE, cy: 55.5 * TILE, weight: 0.45, puffs: 3 }
   ];
   var MAP_IDS = { map3: true, map7: true };
   function zonesFor(mapId) { return mapId === 'map7' ? MIST_ZONES7 : MIST_ZONES; }

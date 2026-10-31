@@ -119,6 +119,420 @@
         personality: 'Dịu dàng, nói năng như hát, thính tai đến mức nghe bước chân là đoán được tâm trạng người ta.',
         past: 'Đệ tử Huyền Âm Cung, ôm đàn đi khắp nơi đàn an hồn cho những làng vừa qua nạn thú dữ. Tới Thanh Khê vì nghe quán trọ nơi đây có một người đàn bà góa vì thú dữ - "khúc an hồn là nợ của cung ta với những làng như vậy".',
         relations: 'Đại diện Huyền Âm Cung ở Sơn Môn Đại Hội; người giao nhiệm vụ "Khúc đàn an hồn".' },
+      gac_son_mon: { name: 'Vệ Thanh Sơn', title: 'Đệ Tử Gác Sơn Môn', age: 24, personality: 'Ít nói, mắt tinh, đứng gác mưa nắng không rời thềm đá', past: 'Đệ tử ngoại môn Thanh Phong Kiếm Tông, tự nguyện xin gác đài vọng sơn ba năm để rèn tâm kiếm', relations: { truong_dinh: 'bạn đồng môn cùng khóa' } },
+      truong_dinh: { name: 'Tống Thanh', title: 'Trưởng Đình Nghỉ Chân', age: 41, personality: 'Điềm đạm, pha trà ngon, nhớ mặt từng lữ khách qua núi', past: 'Vốn là tạp dịch theo đoàn buôn, được tông môn thu lưu trông đình nghỉ giữa dốc đã mười lăm năm', relations: { gac_son_mon: 'đồng môn', tiep_khach: 'chú cháu trong họ' } },
+      tho_san_tay: { name: 'Đỗ Văn Sơn', title: 'Thợ Săn Sườn Tây', age: 35, personality: 'Rắn rỏi, nói câu nào chắc câu ấy, rành núi như lòng bàn tay', past: 'Sinh ở làng dưới núi, săn bắn quanh sườn tây từ năm mười hai tuổi, từng một mình hạ gấu ngựa cứu khách lạc đường', relations: {} },
+      ong_bia: { name: 'Cố Văn Thạch', title: 'Lão Nhân Coi Bia', age: 78, personality: 'Lẩm cẩm mà minh mẫn, chuyện cũ của núi thuộc như cháo', past: 'Cả đời quét lá quanh rừng bia, nghe nói bia cổ là do tổ sư các tông cùng dựng khi lập bãi tuyển', relations: {} },
+      tiep_khach: { name: 'Lý Văn Trà', title: 'Tiểu Thị Tiếp Khách', age: 15, personality: 'Nhanh nhảu, lễ phép, thích kể chuyện tông môn cho khách mới', past: 'Trẻ mồ côi được trưởng đình Tống Thanh nuôi, chạy việc ở đình đón khách dưới chân núi', relations: { truong_dinh: 'chú nuôi', chu_nha_nghi: 'hàng xóm thân thiết' } },
+      chu_nha_nghi: { name: 'Hà Văn Đón', title: 'Chủ Nhà Nghỉ Chân', age: 52, personality: 'Hào sảng, cười to, nấu mì ngon có tiếng khắp chân núi', past: 'Từng là lữ khách kẹt mưa ở chân núi ba ngày, quyết ở lại mở nhà nghỉ cho người lỡ đường', relations: { tiep_khach: 'hàng xóm thân thiết' } },
+      // --- TÍCH HỢP V5 MAP 7 (Chi Đỉnh): 3 NPC mới (README gói map 7 mục 4, nguyên văn) ---
+      nguoi_gac_cong_dinh: { name: 'Cố Trường Thanh', title: 'Người gác cổng Trúc Cơ ở Chi Đỉnh', age: 61,
+        personality: 'Trầm, ít nói, mắt luôn nhìn về phía cổng bắc; tin rằng cổng cảnh giới không phải để khoe, mà để ngăn người chưa đủ sức đi vào chỗ chết.',
+        past: 'Tu hành ở Chi Đỉnh bốn mươi năm, kẹt ở Luyện Khí viên mãn không qua nổi ngưỡng Trúc Cơ; tự nguyện ở lại gác cổng, ghi tên từng người qua cổng vào một quyển sổ đá.',
+        relations: 'Người gác cổng lên Sơn Trung Vân Hải trên Thềm Vọng Vân; ai muốn qua cổng Trúc Cơ đều gặp ông trước.' },
+      co_hai_duoc: { name: 'Lâm Thảo Nhi', title: 'Tu sĩ hái dược ở Lán Hái Dược', age: 24,
+        personality: 'Nhanh nhẹn, thuộc từng bụi linh chi trên sườn tây; nói chuyện hay chen tên cây thuốc.',
+        past: 'Con gái một dược nông dưới trấn, lên Chi Đỉnh hái dược từ năm mười sáu; dựng lán cạnh Linh Tuyền, mùa nào cũng ở lại qua sương tuyết.',
+        relations: 'Người hái dược trú ở Lán Hái Dược phía tây Chi Đỉnh, cạnh Linh Tuyền; hay chỉ chỗ linh chi cho tu sĩ qua đường.' },
+      kiem_tu_ngam_may: { name: 'Giang Hàn', title: 'Đệ tử luyện kiếm ở Đài Ngắm Mây', age: 19,
+        personality: 'Lạnh, ít lời, ngày nào cũng ra đài phía nam luyện kiếm lúc biển mây dâng; tin kiếm ý phải mài ở nơi cao và vắng.',
+        past: 'Đệ tử ngoại môn của Thanh Phong Phái, được cử lên Chi Đỉnh trực đài phía nam một năm; kiếm pháp tiến bộ nhanh từ ngày ở một mình trên đỉnh.',
+        relations: 'Đệ tử trực Đài Ngắm Mây ở rìa nam Chi Đỉnh; người qua đường xuống biển mây thường gặp cậu ta luyện kiếm.' },
+      // --- TÍCH HỢP V5 MAP 10 (Xích Diệm Hoang Nguyên): 4 NPC (README gói map 10 mục 3, nguyên văn) ---
+      tran_viem: { name: 'Trần Viêm', title: 'Đội trưởng Tiền Đồn Xích Diệm', age: 41,
+        personality: 'Cứng cỏi, ít lời, coi tiền đồn như nhà và lính như em ruột.',
+        past: 'Vốn là tán tu Kim Đan lăn lộn ở Xích Diệm mười năm, sau được các tông cử giữ tiền đồn — trạm dừng chân duy nhất giữa Đoạn Long Lĩnh và Hàn Băng Cốc.',
+        relations: 'Chỉ huy tiền đồn Xích Diệm; người đầu tiên tu sĩ gặp khi đặt chân lên hoang nguyên.' },
+      ha_tu: { name: 'Hà Tú', title: 'Đan sư lò dã chiến Tiền Đồn Xích Diệm', age: 29,
+        personality: 'Nhanh nhẹn, mê lửa, nói câu nào cũng quay về đan dược.',
+        past: 'Học đan ở Đan Hà Cốc, xin ra tiền đồn vì chỉ ở Xích Diệm mới có Hỏa Diệm Liên mọc hoang quanh năm.',
+        relations: 'Giữ lò đan dã chiến ở tiền đồn; thu mua Hỏa Diệm Liên và Sơn Tinh của tu sĩ qua đường.' },
+      chu_ba: { name: 'Chu Bá', title: 'Người giữ Miếu Hỏa Thần', age: 71,
+        personality: 'Trầm, tin Hỏa Thần là vị thần duy nhất còn nghe lời khấn ở hoang nguyên này.',
+        past: 'Giữ miếu từ khi tiền đồn còn là bãi đất trống; tương truyền miếu dựng trên miệng hỏa sơn cũ đã ngủ yên trăm năm.',
+        relations: 'Giữ Miếu Hỏa Thần ở thềm đá tây bắc hoang nguyên.' },
+      ly_hoa_van: { name: 'Lý Hỏa Vân', title: 'Người hái Hỏa Diệm Liên ở bờ Hồ Dung Nham', age: 24,
+        personality: 'Liều, thuộc từng luồng khí nóng trên mặt hồ, cười bảo lửa không đốt người biết nể lửa.',
+        past: 'Con gái một gia đình hái thuốc ở chân núi, lên Xích Diệm hái Hỏa Diệm Liên bán cho các lò đan.',
+        relations: 'Thường ở bờ tây Hồ Dung Nham, đầu đê đá; đầu mối tin tức về bãi dược quanh hồ.' },
+      // --- TÍCH HỢP V5 MAP 11 (Hàn Băng Cốc): 3 NPC mới (khối đề xuất trong story-npcs.js của gói) ---
+      tuan_bang_son: { name: 'Lục Hàn Sơn', title: 'Tuần tra băng cốc, giữ Chòi Gác Bắc ở Hàn Băng Cốc', age: 47,
+        personality: 'Ít lời, mắt sắc như dao cạo băng; thuộc từng vết nứt trên mặt hồ đóng băng như thuộc lòng bàn tay.',
+        past: 'Vốn là thợ săn ở chân núi Thanh Sơn, một lần lạc trong bão tuyết được tu sĩ Kim Đan cứu về. Từ đó ở lại cốc giữ chòi gác bắc, mỗi ngày tuần một vòng quanh cốc xem băng nứt, thú dữ và người lạc.',
+        relations: 'Người giữ Chòi Gác Bắc của Hàn Băng Cốc; sổ tuần băng của ông là thứ các đội săn boss đông người đều ghé xem trước khi xuống Thẳm Băng Nam.' },
+      ton_tuyet_nuong: { name: 'Tôn Tuyết Nương', title: 'Dược nữ hái băng tinh hoa ở Lán Hái Dược', age: 29,
+        personality: 'Nhanh nhẹn, cười nói rổn rảng xua tan cái lạnh; tay hái dược nhẹ đến mức băng tinh hoa không vỡ một cánh.',
+        past: 'Con gái út nhà họ Tôn bán dược ở Thanh Khê, theo học Đan Hà Cốc ba năm rồi xin lên Hàn Băng Cốc ở lán hái dược — vì băng tinh hoa và ngọc tủy chi chỉ mọc đúng ở cốc này, hái sai giờ là hỏng cả mẻ đan.',
+        relations: 'Dược nữ ở Lán Hái Dược phía tây Hàn Băng Cốc; hay đổi băng tinh hoa lấy củi khô và tin tức dưới núi với người giữ chòi gác bắc.' },
+      han_ngoc_dao: { name: 'Hàn Ngọc Dao', title: 'Tu sĩ Kim Đan ngắm băng luyện tâm ở Đài Hàn Ngọc', age: 63,
+        personality: 'Điềm tĩnh đến lạnh, nói câu nào cũng như khắc lên băng; tin rằng tâm người tu hành phải trong và lặng như mặt hồ đóng băng ba thước.',
+        past: 'Đệ tử Huyền Âm Cung, kẹt ở Kim Đan trung kỳ mười một năm vì tâm ma lúc đột phá hụt. Nghe nói ngồi nhìn băng ở Hàn Băng Cốc ba mùa đông thì tâm lắng, bà lên đài này ở luôn từ đó, chưa xuống.',
+        relations: 'Tu sĩ ở Đài Hàn Ngọc phía bắc Hàn Băng Cốc; tu sĩ trẻ lên cốc hay ghé xin bà chỉ cách trấn tâm trước khi xuống săn boss ở Sân Băng Vực.' },
+      // --- TÍCH HỢP V5 MAP 12 (Lôi Trì Thiên Khanh): 5 NPC mới (README gói map 12; hồ sơ soạn theo thoại/lore của gói) ---
+      han_ba: { name: 'Hàn Bá', title: 'Người coi Trạm Dừng Chân Thiên Khanh', age: 63,
+        personality: 'Điềm tĩnh, ghi sổ không sót một người qua trạm; thuộc từng cột đá trên Thiên Khanh như thuộc lòng bàn tay.',
+        past: 'Coi Trạm Dừng Chân Thiên Khanh đã bốn mươi năm; sổ trạm của ông là nơi các đội săn tra tin boss hồi sinh.',
+        relations: 'Người coi trạm trên đường ngang giữa khanh — ai lên Đài Lôi Vương hay xuống Sân Săn đều phải qua chỗ ông.' },
+      trinh_vien: { name: 'Trình Viễn', title: 'Người gác Bãi Cột Sét phía tây Thiên Khanh', age: 34,
+        personality: 'Cẩn trọng, nghe tiếng nứt của cột đá là biết sét sắp đánh; ít nói nhưng dặn dò ai cũng kỹ.',
+        past: 'Lính gác thế tập của Bãi Cột Sét — cha và ông nội anh đều gác bãi này, thuộc tiếng nứt của từng cây cột trước khi sét đánh.',
+        relations: 'Người gác Bãi Cột Sét phía tây Thiên Khanh; đệ tử các tông lên luyện thân pháp né sét đều qua anh dặn dò.' },
+      an_tich: { name: 'Ân Tịch', title: 'Người trông Miếu Lôi Thần', age: 58,
+        personality: 'Khẽ tiếng, kính Lôi Thần; tin miếu này không cầu thăng cảnh, chỉ cầu đi qua khanh bình an.',
+        past: 'Đời thủ miếu thứ ba; ở lều sau miếu, mỗi ngày quét thềm và thay dầu đèn đá dù mưa giông cũng không nghỉ.',
+        relations: 'Người trông Miếu Lôi Thần ở Thiên Khanh.' },
+      loi_tam_nuong: { name: 'Lôi Tam Nương', title: 'Thợ săn lôi thú ở Lều Đội Săn', age: 41,
+        personality: 'Dạn dày, sẹo sét hình nhánh cây trên vai trái; mua bán sòng phẳng, chỉ đội săn nào cũng nể.',
+        past: 'Thợ săn lôi thú có tiếng nhất Thiên Khanh; vết sẹo trên vai là do bà đỡ cho học trò trong một cơn giông bất chợt.',
+        relations: 'Đội trưởng đội săn đóng lều ở bờ đông Thiên Khanh, giữa hai hồ lôi.' },
+      tan_hai: { name: 'Tần Hái', title: 'Người hái Thiên Lôi Quả ở bờ Hồ Lôi Tây', age: 52,
+        personality: 'Nhẹ tay, nói khẽ; thuộc từng bụi lôi thảo quanh hồ và chưa từng bị sét đánh trúng lần nào.',
+        past: 'Người hái thuốc dạn dày nhất vùng Hồ Lôi Tây; quả ông hái phơi qua một đêm sương mới đem bán cho các lò đan.',
+        relations: 'Người hái Thiên Lôi Quả ở bờ Hồ Lôi Tây của Thiên Khanh.' },
+      // --- TÍCH HỢP V5 MAP 13 (Tinh Vẫn Chi Địa): 5 NPC mới (README gói map 13; hồ sơ soạn theo thoại/lore của gói) ---
+      mac_quan: { name: 'Mạc Quan Tinh', title: 'Người quan tinh ở Đài Quan Tinh', age: 66,
+        personality: 'Trầm, nói chuyện sao trời như nói chuyện người; ghi chép tinh tượng bốn mươi năm không sót một đêm sao băng lớn.',
+        past: 'Vốn là đệ tử Cửu Cung Trận Tông, bỏ tông về Đài Quan Tinh vì cho rằng tinh tượng mới là trận đồ lớn nhất của trời đất.',
+        relations: 'Người quan tinh ở Đài Quan Tinh phía bắc Tinh Vẫn Chi Địa.' },
+      thach_mo: { name: 'Thạch Thiết Sơn', title: 'Thợ khai tinh thiết ở Trạm Khai Tinh', age: 55,
+        personality: 'Chắc tay, nghe tiếng búa gõ đá là biết đá tốt hay đá rỗng; dặn thợ trẻ từng đường nứt phát sáng.',
+        past: 'Thợ khai tinh thiết lâu năm nhất Trạm Khai Tinh; đá khai ở trạm của ông chở qua đường ngang vào lò Xóm Đúc Tinh thành phôi tốt.',
+        relations: 'Thợ khai tinh thiết ở Trạm Khai Tinh phía tây Tinh Vẫn Chi Địa.' },
+      hoa_duc: { name: 'Hỏa Vân Nương', title: 'Thợ đúc tinh thiết ở Xóm Đúc Tinh', age: 44,
+        personality: 'Mắt nhìn nhiệt lửa chuẩn hơn pháp khí đo; giữ bí quyết luyện tinh thiết bằng lửa dẫn từ đất vẫn thạch, không truyền ra ngoài.',
+        past: 'Lò trưởng của Xóm Đúc Tinh — xóm mọc lên nhờ đá trời, mười lò thì chín lò đúc phôi cho các tông phía dưới núi.',
+        relations: 'Lò trưởng Xóm Đúc Tinh phía đông Tinh Vẫn Chi Địa.' },
+      tong_tram: { name: 'Tống Hành Vân', title: 'Người coi Trạm Dừng Chân Tinh Vẫn', age: 59,
+        personality: 'Từng trải, ghi sổ người qua trạm cẩn thận; trạm của ông có nước suối, ghế đá và tin tức đường vẫn thạch.',
+        past: 'Từng là tiêu sư; giải nghệ sau một chuyến tiêu mất trắng ở Thập Vạn Đại Sơn, về coi Trạm Dừng Chân Tinh Vẫn cho người qua lại.',
+        relations: 'Người coi trạm — điểm dừng cuối trước khi xuống Thung Vẫn Nam.' },
+      lieu_tuyen: { name: 'Liễu Tinh Tuyền', title: 'Người canh Hồ Tinh Quang', age: 47,
+        personality: 'Khẽ tiếng, quý mặt hồ yên; mỗi tối thắp đèn đá quanh thềm cho khách ngắm sao.',
+        past: 'Người canh hồ đời thứ ba; nhà ở quần thể bên thềm Hồ Tinh Quang — hồ không có cá, chỉ có ánh sao đọng lại từ nghìn năm sao rơi.',
+        relations: 'Người canh Hồ Tinh Quang ở Tinh Vẫn Chi Địa.' },
+      // --- TÍCH HỢP V5 MAP 14 (Độ Kiếp Đài): 4 NPC mới (README gói map 14, nguyên văn) ---
+on_dan_thanh: { name: 'Ôn Đan Thanh', title: 'Đan sư Trạm Chuẩn Bị Độ Kiếp', age: 38,
+  personality: 'Điềm đạm, tỉ mỉ, coi mỗi viên đan trao tay như một phần sinh tử của người nhận.',
+  past: 'Đan sư Đan Hà Cốc, tự nguyện lên đỉnh Thập Vạn Đại Sơn giữ trạm chuẩn bị cuối cùng — nơi tu sĩ ghé trước khi bước lên Độ Kiếp Đài.',
+  relations: 'Giữ đan phòng ở Trạm Chuẩn Bị Độ Kiếp; người cuối cùng kiểm tra hành trang cho tu sĩ sắp độ kiếp.' },
+thiet_son: { name: 'Thiết Sơn', title: 'Hộ pháp Quảng Trường Nghênh Kiếp', age: 45,
+  personality: 'Ít nói, đứng đâu như núi ở đó, tin rằng sợ hãi trước lôi kiếp là chuyện thường của người sống.',
+  past: 'Từng độ kiếp tại đài này, sống sót với một thân sẹo sét. Ở lại làm hộ pháp, kéo về không biết bao nhiêu tu sĩ ngã xuống giữa quảng trường.',
+  relations: 'Hộ pháp quảng trường dưới cổng Độ Kiếp Đài; người đầu tiên đỡ tu sĩ vừa đáp cổng.' },
+van_quan_lao: { name: 'Bạch Vân Lão Nhân', title: 'Người giữ Đài Quan Vân Đông', age: 83,
+  personality: 'Thong thả, nói chuyện như đọc thời tiết, thuộc từng đám mây dưới đài như thuộc lòng bàn tay.',
+  past: 'Lên đài từ thời còn trẻ, ở lại hơn sáu mươi năm ghi chép biến đổi của kiếp vân; tương truyền ông nhìn mây là biết ngày mai đài có lôi kiếp hay không.',
+  relations: 'Giữ Đài Quan Vân Đông; đầu mối hỏi han về kiếp vân và thời tiết đỉnh trời.' },
+loi_ky_su: { name: 'Lôi Ký Sử', title: 'Người ghi chép lôi kiếp ở Kiếp Vân Đài', age: 30,
+  personality: 'Cẩn trọng, mê sổ sách, tin rằng mỗi đạo lôi rơi xuống đều đáng được ghi lại tử tế.',
+  past: 'Dòng họ của chàng giữ việc ghi chép lôi kiếp trên đỉnh này đã hai trăm năm; quyển sổ hiện tại là quyển thứ chín.',
+  relations: 'Thường ở Kiếp Vân Đài phía bắc; ghi tên mọi tu sĩ lên đài và kết cục của họ.' },
+      // --- SƠN MÔN THANH PHONG PHÁI (story-blocks.js của gói, nguyên văn) ---
+      ta_thanh_van: { name: 'Tạ Thanh Vân', title: 'Chưởng môn Thanh Phong Phái', age: 41,
+              personality: 'Nghiêm mà ôn hòa, ít nói, trọng tâm tính hơn thiên phú.',
+              past: 'Đệ tử chân truyền đời trước, giữ phái qua những năm mạt pháp linh khí suy tàn; kiếm ý Thanh Phong do ông giữ là mạch cuối cùng chưa đứt.',
+              relations: 'Chưởng môn của người chơi sau khi bái nhập Thanh Phong Phái.' },
+      chap_su_tp: { name: 'Ngô Thủ Lễ', title: 'Chấp sự sơn môn Thanh Phong Phái', age: 52,
+              personality: 'Chu đáo, thuộc làu quy củ, hay lo xa.',
+              past: 'Vào phái từ thời còn thịnh, quản việc tiếp khách và nội vụ sơn môn hơn ba mươi năm.',
+              relations: 'Người đầu tiên đệ tử mới gặp khi bước qua cổng sơn môn.' },
+      de_tu_kiem_dai: { name: 'Trình Dật Phong', title: 'Đệ tử chân truyền — giữ Kiếm Đài', age: 26,
+              personality: 'Thẳng, hiếu thắng lành mạnh, mê kiếm hơn mê danh.',
+              past: 'Mười hai tuổi lên núi, mười năm liền đứng trong ba hạng đầu kỳ khảo kiếm của phái.',
+              relations: 'Sư huynh dẫn dắt đệ tử mới luyện kiếm.' },
+      de_tu_ngoai_mon: { name: 'Lưu Tiểu Mãn', title: 'Đệ tử ngoại môn Thanh Phong Phái', age: 16,
+              personality: 'Lanh lợi, hay cười, chăm chỉ việc vặt.',
+              past: 'Con nhà nông dưới chân núi, mới nhập môn năm ngoái, đang phụ trách linh điền và trúc lâm.',
+              relations: 'Bạn đồng môn gần tuổi nhất của người chơi trong phái.' },
+      thu_mo_tp: { name: 'Cố Kiếm Sinh', title: 'Thủ mộ nhân — giữ Kiếm Mộ', age: 68,
+              personality: 'Trầm, ít lời, nhớ tên từng thanh kiếm trong mộ.',
+              past: 'Từng là đệ tử nội môn; sau một trận chiến mất hết đồng môn, tự xin về giữ Kiếm Mộ suốt bốn mươi năm.',
+              relations: 'Người giữ ký ức của phái; người kể lại truyền thuyết Kiếm Mộ.' },
+      // --- SƠN MÔN HUYỀN PHÁP TÔNG (story-blocks.js của gói, nguyên văn) ---
+      lieu_ngung_suong: { name: 'Liễu Ngưng Sương', title: 'Tông chủ Huyền Pháp Tông', age: 26,
+              personality: 'Lạnh lùng, ít lời, nói như đọc sách; trọng ngộ tính và tâm tĩnh, ghét bị gọi là tiên cô.',
+              past: 'Thiên tài pháp thuật của Huyền Pháp Tông, mười tám tuổi đã kết Ngũ Hành Luân, kế nhiệm tông chủ khi còn rất trẻ; giữ tông qua những năm mạt pháp bằng nề nếp đọc - hiểu - dẫn pháp không một bước tắt.',
+              relations: 'Tông chủ của người chơi sau khi bái nhập Huyền Pháp Tông; trước đó là đại diện giao nhiệm vụ "Ngũ hành thí pháp" ở bãi tuyển.' },
+      thu_cac_hp: { name: 'Lục Thư Ngạn', title: 'Thủ Tàng Kinh Các Huyền Pháp Tông', age: 63,
+              personality: 'Điềm đạm, nhớ từng kệ sách, nói chuyện hay dẫn chương cú trong kinh.',
+              past: 'Vào tông từ năm mười tuổi để chăn sách; sáu mươi năm chưa từng rời Tàng Kinh Các quá ba ngày, thuộc lòng vị trí của hơn bốn nghìn quyển pháp thư.',
+              relations: 'Người giữ kho tri thức của tông; người kể lại chuyện pháp thư và Ngũ Hành Luân.' },
+      chap_su_hp: { name: 'Nghiêm Thủ Chân', title: 'Chấp sự sơn môn Huyền Pháp Tông', age: 54,
+              personality: 'Nguyên tắc, giọng đều đều, việc gì cũng đối chiếu sổ sách ba lần.',
+              past: 'Vốn là đệ tử ngoại môn không có linh căn nổi bật, leo lên bằng sự cẩn trọng; quản nội vụ và tiếp khách của sơn môn hai mươi năm không một lần sai sót.',
+              relations: 'Người đầu tiên đệ tử mới gặp khi bước qua cổng sơn môn Huyền Pháp.' },
+      tran_su_hp: { name: 'Đỗ Trận Sinh', title: 'Trận sư — giữ Trận Đồ Luyện Pháp', age: 45,
+              personality: 'Trầm, nói chậm, mắt luôn nhìn xuống đất như đang đọc mạch linh khí.',
+              past: 'Học pháp không nhanh nhưng học trận cực bền; người duy trì vòng bát quái ở Trận Đồ và hàng rào linh khí quanh sơn môn suốt mười lăm năm.',
+              relations: 'Người hướng dẫn đệ tử mới làm quen Trận Đồ Luyện Pháp.' },
+      de_tu_noi_mon_hp: { name: 'Tô Nguyệt Dao', title: 'Đệ tử chân truyền Huyền Pháp Tông', age: 19,
+              personality: 'Lạnh ngoài, kỹ tính trong; luyện pháp xa, ít nói nhưng câu nào cũng trúng.',
+              past: 'Đệ tử đồng hành đề xuất của Huyền Pháp Tông (story-bible mục 32.4): sở trường Ngũ Hành Pháp đánh xa, được tông chủ đích thân chỉ điểm từ năm mười bốn tuổi.',
+              relations: 'Sư tỷ dẫn dắt đệ tử mới ở Khu Luyện Công.' },
+      de_tu_ngoai_mon_hp: { name: 'Lâm Tiểu Vũ', title: 'Đệ tử ngoại môn Huyền Pháp Tông', age: 16,
+              personality: 'Nhanh nhẹn, hay hỏi, sợ nhất là bị chê tâm loạn.',
+              past: 'Con nhà bán thuốc dưới chân núi, mới nhập môn năm ngoái; phụ trách Vườn Linh Thảo và việc tưới tắm cho các luống dược của tông.',
+              relations: 'Bạn đồng môn gần tuổi nhất của người chơi trong tông.' },
+      // --- SƠN MÔN THIÊN CÔNG PHƯỜNG (story-blocks.js của gói, nguyên văn) ---
+      mac_thiet_tam: { name: 'Mạc Thiết Tâm', title: 'Phường chủ Thiên Công Phường', age: 41, sprite: 'tong_khi',
+          personality: 'Phường chủ Thiên Công Phường.',
+          past: 'Người cục cằn, quý sắt hơn quý lời: một câu nói của ông hiếm khi dài hơn một nhát chùy. Tin rằng khí do tay người, đạo do tâm rèn — tay nghề cẩu thả thì dù linh căn tốt cũng chỉ rèn ra phế phẩm.',
+          relations: 'Người của Thiên Công Phường.' },
+      chap_su_tc: { name: 'Đỗ Trọng Sơn', title: 'Chấp sự Sơn Môn', age: 33, sprite: 'de_tu_phai',
+          personality: 'Chấp sự giữ cổng và tiếp khách đài của phường.',
+          past: 'Sổ sách quặng vào khí ra anh thuộc nằm lòng; khách lạ muốn lên núi phải qua tay anh điểm danh trước.',
+          relations: 'Người của Thiên Công Phường.' },
+      tho_ca_tc: { name: 'Cố Thiết Ngưu', title: 'Thợ cả Lò Rèn', age: 38, sprite: 'de_tu_phai',
+          personality: 'Thợ cả đứng lò lớn, cánh tay to như đùi người thường, cầm Thiên Công Chùy nặng trăm cân như cầm đũa.',
+          past: 'Cả phường có việc gấp đều tìm anh: khí hỏng qua tay anh là sống lại.',
+          relations: 'Người của Thiên Công Phường.' },
+      coi_lo_tc: { name: 'Trịnh Hỏa Nhãn', title: 'Người coi lò', age: 67, sprite: 'dai_phu',
+          personality: 'Lão nhân coi bể tôi và lửa lò đã bốn mươi năm.',
+          past: 'Chỉ liếc màu lửa là biết nhiệt trong lò lệch mấy phân; thợ trẻ nào tôi khí sai giờ đều bị ông gõ đe gọi lại.',
+          relations: 'Người của Thiên Công Phường.' },
+      de_tu_tc: { name: 'Phan Tiểu Luyện', title: 'Đệ tử nội môn Thiên Công', age: 19, sprite: 'de_tu_phai',
+          personality: 'Đệ tử nội môn đang tập rèn tại bãi luyện tay.',
+          past: 'Mơ một ngày tự rèn được thanh kiếm đầu tiên không cong, dù mười thanh gần nhất cong cả mười.',
+          relations: 'Người của Thiên Công Phường.' },
+      de_tu_ngoai_tc: { name: 'Vương Tiểu Chùy', title: 'Đệ tử ngoại môn Thiên Công', age: 16, sprite: 'de_tu_phai',
+          personality: 'Đệ tử ngoại môn mới nhập phường, việc chính là gánh quặng ở bãi vật liệu và trực giếng nước.',
+          past: 'Hay lén xem thợ cả quai chùy rồi về tập vung tay không.',
+          relations: 'Người của Thiên Công Phường.' },
+      // --- SƠN MÔN ĐAN HÀ CỐC (story-blocks.js của gói, nguyên văn) ---
+      tan_duoc_tu: { name: 'Tần Dược Tử', title: 'Cốc chủ Đan Hà Cốc', age: 63,
+              personality: 'Hiền hòa, hay cười, mũi thính lạ thường; gặp ai cũng hít hà đoán người ta vừa ăn gì, hái thuốc gì.',
+              past: 'Trưởng lão luyện đan cả đời của Đan Hà Cốc, cả đời chỉ rời cốc hai lần. Từng suýt làm nổ một lò đan vì mải đọc sách — từ đó ông bắt đệ tử học thuộc câu "lửa nhỏ giữ mạng người" trước cả đan phương đầu tiên.',
+              relations: 'Cốc chủ của người chơi sau khi bái nhập Đan Hà Cốc; bạn già hay thư từ qua lại với Lý lão ở làng Thanh Khê.' },
+      chap_su_dh: { name: 'Hà Thủ Nhân', title: 'Chấp sự sơn môn Đan Hà Cốc', age: 47,
+              personality: 'Chu đáo, nhớ mặt từng người từng ghé cốc, sổ sách gọn như luống dược.',
+              past: 'Vốn là thương khách buôn thuốc, đi qua cốc một lần rồi ở lại ba mươi năm; nay quản việc tiếp khách, kho dược và sảnh giao dịch dưới chân cốc.',
+              relations: 'Người đầu tiên đệ tử mới gặp khi bước qua cổng sơn môn Đan Hà.' },
+      quan_vuon_dh: { name: 'Tôn Thảo Nương', title: 'Quản vườn dược Đan Hà Cốc', age: 58,
+              personality: 'Khó tính với kẻ giẫm lên luống, thuộc tính từng gốc thuốc như thuộc tên con cháu.',
+              past: 'Vào cốc từ năm mười hai tuổi làm chân tưới nước; năm mươi năm sau, cả ba vườn dược của cốc đều qua tay bà sắp luống, chia mương.',
+              relations: 'Người dạy đệ tử mới phân biệt thảo dược và giao việc hái thuốc hằng ngày.' },
+      dan_su_dh: { name: 'Chu Đỉnh Sinh', title: 'Đan sư trưởng lò — giữ Đại Đan Phòng', age: 39,
+              personality: 'Ít nói, nghe tiếng lửa trong lò như nghe nhạc; ghét nhất người mở nắp lò giữa chừng.',
+              past: 'Đệ tử chân truyền của Tần Dược Tử, giữ Đại Đan Lô mười lăm năm chưa hỏng một mẻ nào; tai trái hơi lãng vì năm xưa đứng quá gần một lò phản phệ.',
+              relations: 'Sư huynh dạy luyện đan cho đệ tử mới ở Đan Phòng và Đan Đài lộ thiên.' },
+      de_tu_hai_duoc_dh: { name: 'Lâm Tiểu Chi', title: 'Đệ tử ngoại môn Đan Hà Cốc', age: 15,
+              personality: 'Lanh lợi, mê mùi thuốc, nhớ đường trong vườn dược như nhớ sân nhà.',
+              past: 'Con gái nhà hái thuốc dưới chân núi, mới nhập môn năm ngoái; phụ trách vườn dược chân cốc và việc phơi thuốc ở Sân Phơi.',
+              relations: 'Bạn đồng môn gần tuổi nhất của người chơi trong cốc.' },
+      // --- SƠN MÔN VẠN THÚ MÔN (story-blocks.js của gói, nguyên văn) ---
+      giang_tieu_thu: { name: 'Giang Tiểu Thú', title: 'Chưởng môn Vạn Thú Môn', age: 19,
+              personality: 'Lanh lợi, nói nhanh, cười nhiều; nói chuyện với thú còn nhiều hơn với người, mũi thính lạ thường.',
+              past: 'Mồ côi được sói mẹ trong Thú Viên nuôi lớn; sư phụ — chưởng môn đời trước — bế quan chữa thương dài hạn, truyền ấn môn cho cậu từ năm ngoái. Đệ tử cả môn phục cậu vì đàn thú trong núi chỉ nghe lời một mình cậu.',
+              relations: 'Chưởng môn của người chơi sau khi bái nhập Vạn Thú Môn; cũng là người đại diện môn ở bãi tuyển đệ tử map 3 (tong_thu).' },
+      chap_su_vt: { name: 'Lỗ Bình An', title: 'Chấp sự sơn môn Vạn Thú Môn', age: 52,
+              personality: 'Điềm đạm, chu đáo, nhớ tên từng con thú trong sổ chuồng như nhớ tên đệ tử.',
+              past: 'Vào môn làm chân chăn thú từ năm mười bốn tuổi, leo dần lên chấp sự; quản việc tiếp khách, chuồng trại và sổ thú của cả sơn môn.',
+              relations: 'Người đầu tiên đệ tử mới gặp khi bước qua cổng sơn môn.' },
+      quan_thu_vien: { name: 'Hoắc Sơn Dân', title: 'Quản sự Thú Viên Vạn Thú Môn', age: 58,
+              personality: 'Ít nói, tay thô mà nhẹ, thú dữ đến đâu vào tay ông cũng ngoan.',
+              past: 'Giữ Thú Viên ba mươi năm; thuộc tính nết từng con linh thú trong ba chuồng, con nào bỏ ăn là ông biết trước cả ngày.',
+              relations: 'Người quản Thú Viên; người kể lại chuyện bầy thú và Hồ Tắm Thú.' },
+      thuan_thu_su: { name: 'Tô Tiểu Hoàn', title: 'Đệ tử chân truyền — thuần thú sư', age: 26,
+              personality: 'Hoạt bát, nghiêm khi vào bãi tập, coi linh thú như đồng đội chứ không phải công cụ.',
+              past: 'Lên núi năm mười tuổi, nay phụ trách Bãi Thuần Thú; bài tập vòng tròn và chướng ngại ở bãi đều do cô bày ra.',
+              relations: 'Sư tỉ dẫn dắt đệ tử mới học cách phối hợp chiến đấu cùng linh thú.' },
+      de_tu_chan_thu: { name: 'Trần A Ngưu', title: 'Đệ tử ngoại môn — chăn thú ở Khu Ấp Trứng', age: 16,
+              personality: 'Thật thà, khỏe, mê thú con; việc gì liên quan đến trứng và thú non là xung phong trước.',
+              past: 'Con nhà chăn nuôi dưới chân núi, mới nhập môn năm ngoái; được giao coi Khu Ấp Trứng vì tay ấm, thú con nở ra gặp cậu là không khóc.',
+              relations: 'Bạn đồng môn gần tuổi nhất của người chơi trong phái.' },
+      // --- SƠN MÔN THIÊN PHÙ CÁC (story-blocks.js của gói, nguyên văn) ---
+      diep_phu_sinh: { name: 'Diệp Phù Sinh', title: 'Các chủ Thiên Phù Các', age: 35, gender: 'Nam',
+            personality: 'Nghiêm trang, nói chậm rãi, câu nào cũng cân nhắc như nét bùa; ghét sự hấp tấp — với ông, một nét vội là một lá bùa hỏng',
+            appearance: 'Áo dài xám tro viền vàng kim, tay áo rộng lúc nào cũng phảng phất mùi chu sa; sau lưng dắt một cây bút lông sói cán ngọc không bao giờ rời thân; ngón trỏ tay phải nhuộm đỏ chu sa vì chấm mực quanh năm',
+            origin: 'Xuất thân thư sinh nghèo, từng vẽ bùa bán dạo ở chợ phiên để kiếm tiền mua sách; một đêm mưa vẽ lá bùa trấn cổng làng Thanh Khê liền một hơi không nhấc bút, tà khí tan hết — từ đó danh tiếng nổi lên, được truyền nhân Thiên Phù Các đời trước thu nhận, nay là các chủ đời thứ chín',
+            dream: 'Khắc lại Thiên Phù Chu Ấn hoàn chỉnh lên bia đá trấn sơn — ấn khuyết một góc từ trăm năm trước, ông tin ngày ấn tròn là ngày phù đạo hưng thịnh',
+            secret: 'Cây bút cán ngọc sau lưng là bút của sư phụ truyền lại; ông chỉ dùng nó đúng một lần mỗi năm — vẽ lá bùa trấn cổng đêm giao thừa',
+            relations: ['Đệ tử trong các gọi ông là "Diệp bất cấp" — Diệp không bao giờ vội; ai làm hỏng bùa không bị mắng, chỉ bị bắt chép lại nét đó một trăm lần'],
+            style: 'Nói ít, câu ngắn, mỗi câu như một nét bùa: đặt xuống là dứt khoát; khen ai cũng chỉ gật đầu một cái' },
+      chap_su_tpc: { name: 'Tống Chỉ Nguyên', title: 'Chấp sự Thiên Phù Các', age: 44, gender: 'Nam',
+            personality: 'Chu đáo, nhớ dai; quản việc đón tiếp, điểm danh, phát giấy bùa và chu sa cho đệ tử mới — việc gì qua tay ông cũng có sổ có dấu',
+            appearance: 'Áo nâu gọn gàng, thắt lưng treo chùm chìa khóa đồng và một cuốn sổ tay bìa vải; tay luôn cầm sẵn một xấp giấy bùa trắng chưa vẽ',
+            origin: 'Vốn là người giữ kho giấy ở trấn dưới núi, theo các hai mươi năm; thuộc nằm lòng kho có bao nhiêu xấp giấy, bao nhiêu lạng chu sa như thuộc lòng bàn tay',
+            dream: 'Trước khi về già, tự tay chép xong bộ "Phù Lục Toàn Thư" của các để lưu vào Tàng Phù Các',
+            secret: 'Ông vẫn giữ lá bùa đầu tiên mình vẽ năm mười sáu tuổi — nét run như giun — kẹp trong sổ tay để tự nhắc mình',
+            relations: ['Là người đầu tiên đệ tử mới gặp ở chân núi; câu cửa miệng: "Vào các rồi, việc đầu tiên phải học là… chậm lại"'],
+            style: 'Nói năng rõ ràng từng khoản một; hay kết câu bằng "ghi sổ rồi đấy nhé"' },
+      quan_dan_tpc: { name: 'Đàm Ấn Tâm', title: 'Quản sự Phù Đàn', age: 51, gender: 'Nam',
+            personality: 'Trầm mặc, ít cười, tin rằng phù đàn là nơi nghiêm cẩn nhất sơn môn; canh đàn ba mươi năm chưa để tắt một nén hương nào',
+            appearance: 'Áo dài thâm trầm viền đỏ sẫm, trước ngực đeo một miếng ngọc ấn nhỏ; quanh người luôn có mùi hương trầm và chu sa; bước đi nhẹ như sợ kinh động văn khắc trên đàn',
+            origin: 'Đệ tử đời thứ tám, từng suýt làm cháy nửa Phù Đàn vì một nét bùa lạc trong lễ tế năm trẻ dại — từ đó tự nguyện xin canh đàn chuộc lỗi, canh một mạch ba mươi năm',
+            dream: 'Được thấy các chủ khắc tròn Thiên Phù Chu Ấn trên bia đá giữa đàn trong đời mình',
+            secret: 'Vết sẹo mờ trên mu bàn tay trái là từ vụ cháy năm xưa; ông không bao giờ kể, chỉ lặng lẽ đổi ca canh cho đệ tử trẻ mỗi mùa khô hanh',
+            relations: ['Đệ tử lén gọi ông là "lư hương sống" — đứng đâu là mùi trầm theo đó; các chủ Diệp Phù Sinh mỗi lần lên đàn đều chào ông trước'],
+            style: 'Nói rất khẽ, chậm; mở đầu hay bằng câu "Trên đàn, nói khẽ thôi"' },
+      che_phu_tpc: { name: 'Tề Mặc Quân', title: 'Chế phù sư', age: 38, gender: 'Nữ',
+            personality: 'Nhanh nhẹn, tay còn nhanh hơn miệng; ghét nhất giấy bùa cắt ẩu và chu sa pha loãng — hai thứ đó qua tay cô là bị trả về ngay',
+            appearance: 'Áo ngắn tay xắn cao cho tiện việc, tạp dề vải thô dính vệt chu sa đỏ; sau tai cài một cây bút lông, tay lúc nào cũng vương mùi giấy mới và mực đỏ',
+            origin: 'Con nhà làm giấy ở làng Trúc dưới núi, mười hai tuổi đã biết phân biệt giấy tốt xấu bằng cách… ngửi; được Thiên Phù Các phá lệ thu nhận vì đôi tay chế giấy vẽ bùa đều khéo hiếm có',
+            dream: 'Chế ra một loại giấy bùa từ trúc non và vỏ cây chu sa của chính vườn nhà các — giấy "chu trúc" chịu được lôi phù mà không cháy',
+            secret: 'Xưởng của cô có một ngăn kéo khóa kín chứa toàn bùa hỏng của… các chủ ngày trẻ, cô giữ làm "bùa hộ mệnh" trêu ông',
+            relations: ['Là người duy nhất trong các dám nói thẳng "nét này của các chủ hơi run" — và thường nói đúng'],
+            style: 'Nói nhanh, thẳng, hay chen câu đùa; khen giấy tốt là mắt sáng lên như thấy vàng' },
+      de_tu_vuon_tpc: { name: 'Hàn Tiểu Chỉ', title: 'Đệ tử trông vườn', age: 17, gender: 'Nữ',
+            personality: 'Lanh lợi, hay cười, thuộc tên từng cây chu sa trong vườn như thuộc tên người nhà; mơ một ngày được tự tay vẽ lá bùa đầu tiên bằng chu sa do chính mình trồng',
+            appearance: 'Áo đệ tử xám tro buộc gọn, ống tay xắn cao, đầu đội nón lá rộng vành; ngón tay lúc nào cũng nhuộm đỏ vì nhặt quả chu sa chín',
+            origin: 'Trẻ mồ côi được chấp sự Tống Chỉ Nguyên nhặt về từ chợ phiên bảy năm trước; lớn lên trong vườn nguyên liệu của các, trèo cây hái quả chu sa nhanh hơn khỉ',
+            dream: 'Trồng được cây chu sa trăm năm ngay giữa vườn — cây mà quả của nó chỉ dùng để vẽ bùa trấn sơn',
+            secret: 'Cô lén để dành những quả chu sa to nhất vào một hũ nhỏ chôn dưới gốc cây già nhất vườn, gọi là "kho báu để dành cho lá bùa đầu tiên"',
+            relations: ['Cả các ai cần quả chu sa gấp đều xuống vườn tìm cô; quản sự Đàm Ấn Tâm khó tính là vậy mà gặp cô cũng phải mỉm cười'],
+            style: 'Nói ríu rít như chim, câu nào cũng dính chuyện cây cối trong vườn' },
+      // --- SƠN MÔN CỬU CUNG TRẬN TÔNG (story-blocks.js của gói, nguyên văn) ---
+      au_duong_ky: { name: 'Âu Dương Kỳ', title: 'Tông chủ Cửu Cung Trận Tông', age: 30,
+              personality: 'Nói năng vòng vo như trận đồ, nhìn đâu cũng thấy thế và vị; hiền nhưng làm người đối diện hơi mệt đầu óc.',
+              past: 'Trận sư trẻ nhất từng ngồi ghế tông chủ Cửu Cung: mười tám tuổi phá được tàn trận tổ sư để lại, hai mươi lăm tuổi bày trận giữ cả sơn môn qua một kỳ thú triều mà không mất một đệ tử.',
+              relations: 'Tông chủ của người chơi sau khi bái nhập Cửu Cung Trận Tông; cũng là người xuống núi tuyển đệ tử ở bãi tuyển Thanh Sơn.' },
+      bach_ky_sinh: { name: 'Bạch Kỳ Sinh', title: 'Trận sư trưởng — giữ Đại Trận Đồ', age: 34,
+              personality: 'Điềm tĩnh, nói câu nào cũng như đặt một quân cờ; cười rất ít nhưng không hề lạnh lùng.',
+              past: 'Đệ tử chân truyền đời trước, chuyên trận khốn địch: Cửu Cung Khốn Trận của ông từng nhốt một đầu yêu thú Trúc Cơ suốt ba ngày cho đồng môn rút lui.',
+              relations: 'Người coi giữ Đại Trận Đồ ở quảng trường sơn môn; sư huynh dẫn dắt đệ tử mới học trận.' },
+      chap_su_cc: { name: 'Cố Trường Canh', title: 'Chấp sự sơn môn Cửu Cung Trận Tông', age: 55,
+              personality: 'Cẩn thận đến mức đáng sợ, sổ sách ghi chép theo đúng cửu cung cách; ghét nhất sự tùy tiện.',
+              past: 'Vào tông từ năm mười bốn tuổi, quản nội vụ sơn môn bốn mươi năm; thuộc lòng vị trí từng cột trận nhãn trong tông như thuộc tên người nhà.',
+              relations: 'Người đầu tiên đệ tử mới gặp khi bước qua cổng sơn môn.' },
+      quan_tran_cc: { name: 'Hứa Đăng Đài', title: 'Người giữ Tháp Quan Trận', age: 47,
+              personality: 'Ít nói, mắt rất tinh, quen nhìn xa hơn nói gần; câu cửa miệng là "đứng cao mới thấy thế".',
+              past: 'Trận sư chuyên quan trắc địa thế và linh mạch; mỗi mùa đều lên tháp vẽ lại bản đồ linh khí quanh sơn môn, lệch một nét cũng không chịu.',
+              relations: 'Người giữ tháp quan trận phía đông tầng thượng; người kể lại chuyện địa thế Thanh Sơn.' },
+      thu_cac_cc: { name: 'Nghiêm Thủ Các', title: 'Thủ các Tàng Trận Các', age: 71,
+              personality: 'Khó tính, nhớ dai, coi trận đồ trong các như con cháu trong nhà; ai làm nhăn một góc giấy là bị mắng cả buổi.',
+              past: 'Trận sư đời trước, mù một mắt vì một lần phá trận hỏng thời trẻ; từ đó về giữ các, thuộc lòng hơn ba nghìn quyển trận đồ mà không cần mở mục lục.',
+              relations: 'Người giữ kho trận đồ của tông; người kể lại chuyện tàn trận tổ sư.' },
+      de_tu_cc: { name: 'Tề Tiểu Cung', title: 'Đệ tử ngoại môn — trực Thạch Trận Mê Cung', age: 16,
+              personality: 'Lanh lợi, mê mê cung của tông đến mức thuộc từng ngõ cụt; hay thách người mới đi thi vào tâm trận.',
+              past: 'Lên núi năm ngoái, kỳ khảo nhập môn đi hết Thạch Trận Mê Cung nhanh nhất khóa nên được giao luôn việc trực cửa mê cung.',
+              relations: 'Bạn đồng môn gần tuổi nhất của người chơi trong tông; người dẫn giới thiệu khu luyện trận.' },
+      // --- SƠN MÔN KIM CANG MÔN (story-blocks.js của gói, nguyên văn) ---
+      chap_su_kc: { name: 'Hà Trọng Sơn', title: 'Chấp sự tiếp khách Kim Cang Môn', age: 45,
+          personality: 'Ngược hẳn tông chủ: nói to, cười to, vỗ vai khách đau điếng rồi tự cười. Nhớ mặt khách một lần là nhớ cả đời, ai từng lên núi ông đều gọi được tên. Việc của trạm ông là trấn Tiếp Khách Đài ở chân núi: đón khách, ghi sổ, thử sức kẻ xin nhập môn bằng cách bắt vác bao cát lên hết bậc thang — vác nổi thì mới được gặp tông chủ.',
+          past: 'Vốn là phu khuân vác ở bến đò, vai u thịt bắp, một mình gánh chuyến hàng hai người khiêng. Lên núi xin học vì "muốn mạnh hơn nữa để gánh được nhiều hơn", ở lại ba mươi năm không xuống núi nữa. Ông bảo núi này nặng nhất không phải đá — là khách khứa năm nào cũng đông.',
+          relations: { tong_the: 'Kính tông chủ như núi; là người duy nhất dám nói dài trước mặt ông — vì ông nói thay phần của cả hai.', do_cuong_nghi: 'Bạn rượu thịt ba mươi năm: một người ồn nhất núi, một người tĩnh nhất núi, ngồi chung mâm lại hợp lạ.', de_tu_kc2: 'Hay dúi thêm cơm cho đám đệ tử mới, miệng mắng "ăn thế này thì đứng tấn sao nổi".' } },
+      quan_dai_kc: { name: 'Đỗ Cương Nghị', title: 'Quản Võ Đài Kim Cang Môn', age: 41,
+          personality: 'Ít lời gần bằng tông chủ, nhưng mỗi lời là một điều luật. Giọng đều đều như đếm nhịp trống, nghe một lần là nhớ. Việc của trạm ông là giữ Võ Đài: điểm danh kẻ lên đài, đọc luật trước trận, và nhảy vào giữa hai người đúng khoảnh khắc có kẻ sắp quá tay — ba mươi năm chưa từng chậm một lần.',
+          past: 'Thuở trẻ là kẻ hiếu thắng nhất núi, lên đài không biết thua là gì, cho đến một trận lỡ tay làm đồng môn gãy tay. Từ đó ông tự xin xuống giữ đài, thề "không để ai trên đài này phải gãy thêm cái gì ngoài sự kiêu ngạo". Cây gậy trúc ông cầm chưa từng đánh ai — chỉ gõ xuống đá để dừng trận.',
+          relations: { tong_the: 'Được tông chủ trao gậy giữ đài; hai người hiểu nhau không cần nói hết câu.', ha_trong_son: 'Bạn lâu năm; chỉ có Hà Trọng Sơn mới làm ông phì cười giữa giờ điểm danh được.', ma_thien_quan: 'Thường tranh nhau đệ tử giỏi: một người muốn rèn thêm, một người muốn cho lên đài sớm.' } },
+      huan_luyen_kc: { name: 'Mã Thiên Quân', title: 'Huấn luyện sư Kim Cang Môn', age: 35,
+          personality: 'Tiếng hét vang như chuông đồng, đứng ở Sườn Đá mà chân núi nghe thấy. Khắc nghiệt có tiếng: bắt đệ tử đứng tấn đến run chân, vác tạ đá lên dốc đến khóc. Nhưng đêm nào cũng là ông đi một vòng xem đứa nào chấn thương, tự tay xoa thuốc. Việc của trạm ông là trấn Sườn Đá Luyện Cước và các sân luyện thể: chân là gốc, gốc không vững thì quyền chỉ là múa.',
+          past: 'Đệ tử đầu tiên của Thạch Bất Động. Ngày nhập môn gầy như cây sậy, bị bắt đứng tấn ba tháng không cho học một chiêu — oán thầy đến mức bỏ xuống núi, đi một vòng giang hồ bị người ta đánh cho tỉnh: kẻ thắng ông không nhanh hơn, chỉ đứng vững hơn. Quay về núi xin đứng tấn lại từ đầu, đứng liền ba năm.',
+          relations: { tong_the: 'Thầy ông; câu "chân là gốc" là nguyên văn lời thầy dạy năm xưa, ông chỉ hét to hơn thôi.', do_cuong_nghi: 'Hay tranh đệ tử với quản đài; thua phần nhiều vì luật đài không cãi được.', thach_tieu_nguu: 'Đệ tử ông đang để mắt: sức trâu, chân chưa vững — đúng kiểu ông thích rèn nhất.' } },
+      de_tu_kc: { name: 'Thạch Tiểu Ngưu', title: 'Đệ tử Kim Cang Môn', age: 17,
+          personality: 'Sức khỏe như trâu, ăn một bữa bằng ba người, cười toe toét cả ngày. Đang coi Sân Luyện Thể: xếp cọc mai hoa, đếm tạ đá, buộc lại bao cát cho sư huynh tập. Mơ ước lớn nhất là một lần được đứng giữa Võ Đài cho tông chủ xem — mơ vậy nên tập gấp đôi người khác, dù chân đứng tấn vẫn run.',
+          past: 'Con nhà nông dưới chân núi, mười hai tuổi đã vác được bao lúa người lớn khiêng hai đầu. Lên núi vì nghe chuyện tông chủ tay không đỡ lợn rừng — "người như thế mới đáng học theo". Sư phụ Mã Thiên Quân bắt đứng tấn lại từ đầu; cậu đứng mà ngủ gật được, tỉnh dậy vẫn chưa ngã.',
+          relations: { ma_thien_quan: 'Sư phụ; sợ nhất tiếng hét của thầy, nhưng quý nhất cũng là thầy — đêm chấn thương đầu gối, thầy xoa thuốc không nói một lời mắng.', ha_trong_son: 'Chấp sự hay dúi thêm cơm; cậu gọi là "bát cơm thứ hai của núi Kim Cang".', tong_the: 'Thần tượng từ bé; thuộc lòng chuyện đỡ lợn rừng, kể lại cho đệ tử mới nhập môn nghe đến thuộc lòng thay cậu.' } },
+      // --- SƠN MÔN NGŨ ĐỘC GIÁO (story-blocks.js của gói, nguyên văn) ---
+      duong_tinh_nd: { name: 'Đường Tĩnh', title: 'Giáo chủ Ngũ Độc Giáo', age: 34,
+              personality: 'Điềm tĩnh đến lạnh, nói ít và chậm; bình tĩnh của cô là điều kiện sống còn bên cạnh độc vật.',
+              past: 'Mồ côi vì thú dữ, được giáo chủ đời trước nhặt về từ một làng bị dịch độc thảo. Mười chín tuổi đã tự giải được độc của chính mình trong kỳ khảo luyện độc — từ đó không ai trong giáo dám coi thường tuổi của cô.',
+              relations: 'Giáo chủ của người chơi sau khi bái nhập Ngũ Độc Giáo.' },
+      chap_su_nd: { name: 'Lục Uyên', title: 'Chấp sự sơn môn Ngũ Độc Giáo', age: 48,
+              personality: 'Cẩn thận, nguyên tắc, ghi chép mọi thứ vào sổ; giọng đều đều như đọc dược phương.',
+              past: 'Vốn là dược sư lang thang, suýt chết vì nếm nhầm một cây Độc Tâm Hoa chưa đủ tuổi; được giáo cứu sống rồi ở lại giữ việc nội vụ suốt hai mươi năm.',
+              relations: 'Người đầu tiên đệ tử mới gặp khi bước qua cổng sơn môn; quản ăn ở, sổ độc dược và lịch cho ăn của trại độc vật.' },
+      quan_doc_coc_nd: { name: 'Hà Sương', title: 'Quản sự Độc Cốc', age: 29,
+              personality: 'Ít cười, mắt luôn nhìn mặt nước ao; nói chuyện với Độc Tâm Hoa nhiều hơn với người.',
+              past: 'Sinh ở làng dưới chân núi, cha mất vì hái nhầm độc thảo bán cho thương lái. Cô lên núi học phân biệt thảo dược để không ai trong làng lặp lại chuyện đó.',
+              relations: 'Người giữ Độc Cốc và Ao Độc Tâm; ai muốn hái Độc Tâm Hoa trong cốc đều phải qua mắt cô.' },
+      luyen_doc_su_nd: { name: 'Cổ Phong', title: 'Trưởng lão Lò Luyện Độc', age: 61,
+              personality: 'Khô khan, cầu toàn đến khắc nghiệt với lửa và liều lượng; thương đệ tử theo cách không bao giờ khen.',
+              past: 'Ba mươi năm giữ lò luyện độc của giáo, mười đầu ngón tay chai vì hơi độc và lửa lò. Phương "dĩ độc công độc" của giáo phần lớn do ông chép lại từ tàn phương của các đời trước.',
+              relations: 'Người dạy đệ tử mới nghề luyện độc và giải độc trong giáo.' },
+      de_tu_chan_doc_nd: { name: 'Vệ Tiểu Chu', title: 'Đệ tử chăn độc vật', age: 17,
+              personality: 'Liều mà không ẩu — gan dạ với rắn rết nhưng thuộc làu giờ ăn tính nết từng con trong trại.',
+              past: 'Con nhà chăn dê dưới chân núi, lần đầu lên núi đã chui vào chuồng bọ cạp bắt một con Ngọc Bích Hạt bằng tay không để trả ơn cứu mạng mẹ mình; bị phạt quét trại một tháng rồi ở lại luôn.',
+              relations: 'Bạn đồng môn gần tuổi của người chơi; người dẫn đệ tử mới làm quen với trại độc vật.' },
+      // --- SƠN MÔN HUYỀN ÂM CUNG (story-blocks.js của gói, nguyên văn) ---
+      tieu_uyen_nhi: { name: 'Tiêu Uyển Nhi', title: 'Cung chủ Huyền Âm Cung', age: 24,
+              personality: 'Dịu dàng, nói năng như hát, thính tai đến mức nghe bước chân là đoán được tâm trạng người ta.',
+              past: 'Nhạc tu trẻ nhất từng ngồi ghế cung chủ; ôm đàn đi khắp nơi đàn an hồn cho những làng vừa qua nạn thú dữ, tiếng đàn của cô giữ người ở lại.',
+              relations: 'Cung chủ của người chơi sau khi bái nhập Huyền Âm Cung.' },
+      chap_su_ha: { name: 'Lâm Thính Vũ', title: 'Chấp sự sơn môn Huyền Âm Cung', age: 47,
+              personality: 'Nhẹ nhàng, tỉ mỉ, nhớ âm sắc giọng nói của từng đệ tử.',
+              past: 'Quản việc tiếp khách và nội vụ của cung hơn hai mươi năm; mọi tiếng chuông, tiếng đàn trong cung đều qua tai bà trước.',
+              relations: 'Người đầu tiên đệ tử mới gặp khi bước qua cổng cung.' },
+      quan_nhac_dai: { name: 'Trình Tuyết Trâm', title: 'Người quản Nhạc Đài — Hàn Đàm', age: 31,
+              personality: 'Thanh lãnh, ít cười, nhưng đàn một khúc là cả mặt đàm yên lại.',
+              past: 'Đệ tử chân truyền đời trước; mười năm giữ Nhạc Đài giữa Hàn Đàm, phụ trách các buổi đàn an hồn và lễ nhạc của cung.',
+              relations: 'Người dẫn đệ tử mới ra đảo Nhạc Đài lần đầu.' },
+      nhac_su_ha: { name: 'Giang Nguyệt Cầm', title: 'Nhạc sư — giữ Luyện Âm Trường', age: 38,
+              personality: 'Nghiêm khi dạy, kiên nhẫn khi nghe; không bao giờ chê một tiếng đàn sai, chỉ đàn lại cho nghe.',
+              past: 'Từng là nhạc công cung đình lưu lạc, được cung thu nhận; nay phụ trách dạy nhạc lý và luyện âm cho đệ tử hai viện.',
+              relations: 'Thầy dạy đàn đầu tiên của đệ tử mới trong cung.' },
+      de_tu_huyen_am: { name: 'Tô Tiểu Mai', title: 'Đệ tử ngoại môn Huyền Âm Cung', age: 15,
+              personality: 'Rụt rè, hay đỏ mặt, nhưng ôm đàn là quên hết xung quanh.',
+              past: 'Con gái nhà trồng mai dưới chân núi, mới nhập cung năm ngoái, đang phụ trách vườn mai trúc tuyết và Hàn Tuyền.',
+              relations: 'Bạn đồng môn gần tuổi nhất của người chơi trong cung.' },
+      // --- TÍCH HỢP V5 MAP 9 (Đoạn Long Lĩnh): 5 NPC (README gói map 9; hồ sơ soạn theo thoại/lore của gói) ---
+      phong_gac: { name: 'Đỗ Phong', title: 'Người gác Đài Vọng Long', age: 63,
+        personality: 'Điềm đạm, mắt luôn nhìn về sống núi phía bắc; thuộc từng khúc quanh của Đoạn Long Lĩnh như lòng bàn tay.',
+        past: 'Đệ tử ngoại môn Thanh Phong Phái, tự xin về gác Đài Vọng Long sau khi sư phụ tạ thế trên đỉnh này; ba mươi năm chưa rời đài.',
+        relations: 'Người gác Đài Vọng Long ở đỉnh bắc Đoạn Long Lĩnh; khách lên đỉnh đều nghe ông dặn đường leo và giờ đốt đèn hai bên đường.' },
+      tran_mieu: { name: 'Trần Thủ Nghĩa', title: 'Người trông Miếu Đoạn Long', age: 47,
+        personality: 'Cung kính, nói năng khẽ khàng; coi việc giữ miếu và chỉ đường vào hang Long Cốt là bổn phận thiêng liêng.',
+        past: 'Đời thủ miếu thứ tư; nhà ở Xóm Đá Đông, mỗi ngày leo lên thắp hương từ khi trời chưa sáng.',
+        relations: 'Người trông Miếu Đoạn Long; hương khói ở miếu không cầu tài, chỉ cầu người đi đường núi bình an.' },
+      a_linh: { name: 'Tạ A Lĩnh', title: 'Thợ săn sườn tây Đoạn Long', age: 29,
+        personality: 'Nhanh nhẹn, thính tai; nghe tiếng lá là biết con gì vừa qua, dấu chân sói mới nhìn qua là nhận ra.',
+        past: 'Săn ở sườn tây Đoạn Long từ nhỏ; da sói của anh là nguồn thu mua ổn định của thương đội dưới làng.',
+        relations: 'Thợ săn giỏi nhất vùng chân lĩnh; hay cảnh báo khách qua suối tây về ổ rắn ở bờ đông Hồ Đoạn Long.' },
+      luu_tram: { name: 'Lưu Văn Trạm', title: 'Người coi Trạm Dừng Chân Đoạn Long', age: 52,
+        personality: 'Chu đáo, nhớ sổ người qua trạm không sót một tên; tin tức đường núi ở trạm của ông là tin cậy nhất vùng.',
+        past: 'Từng là tiêu sư; giải nghệ sau một chuyến tiêu mất trắng ở Thập Vạn Đại Sơn, về coi trạm cho người qua lại.',
+        relations: 'Người coi Trạm Dừng Chân ở nam Đoạn Long Lĩnh — điểm dừng cuối trước khi xuống Thung Chân Lĩnh đầy sói.' },
+      thach_khai: { name: 'Thạch Văn Khai', title: 'Người khai đá ở Xóm Đá Đông', age: 44,
+        personality: 'Chắc nịch, nghe tiếng gõ đá là biết đá sống hay đá chết; hai bàn tay chai sần mà chữ viết đẹp nổi tiếng khắp vùng.',
+        past: 'Tổ trưởng thợ đá của Xóm Đá Đông; đá lát thềm các tông quanh vùng đều lấy từ bãi đá của xóm mà ra.',
+        relations: 'Người đứng đầu nghề khai đá ở Xóm Đá Đông, mé đông Đoạn Long Lĩnh; hay chỉ khách ngắm Hồ Liên sen nở quanh năm.' },
+      // --- TÍCH HỢP V5 MAP 8 (Sơn Trung Vân Hải): 4 NPC (README gói map 8, nguyên văn) ---
+      giang_van_tich: { name: 'Giang Vân Tịch', title: 'Tu sĩ ngắm biển mây ở Vọng Hải Đài', age: 41,
+        personality: 'Trầm tĩnh, nói ít mà sâu; tin rằng ngồi yên nhìn mây một buổi sáng còn hơn chạy khắp núi một tháng.',
+        past: 'Đệ tử ngoại môn Thanh Phong Phái năm xưa, đột phá Trúc Cơ thất bại một lần rồi xin lên Sơn Trung Vân Hải giữ đài ngắm mây, mười năm chưa xuống núi.',
+        relations: 'Người giữ Vọng Hải Đài trên đỉnh bắc Sơn Trung Vân Hải; hay chỉ cho tu sĩ mới lên núi chỗ nào mây tan thì thấy được thung dưới.' },
+      mac_van_sinh: { name: 'Mạc Vân Sinh', title: 'Người canh mây ở Lán Gác Mây', age: 58,
+        personality: 'Cẩn thận, thuộc hướng gió và sắc mây như thuộc lòng bàn tay; mây đổi màu là biết trước có biến trên núi.',
+        past: 'Vốn là người đưa tin chạy đường núi cho các trạm trên chuỗi Đại Sơn; về già xin ở lại lán gác phía tây, mỗi sáng ghi sổ mây rồi buộc chim đưa xuống Trạm Mây.',
+        relations: 'Người canh mây ở sườn tây Sơn Trung Vân Hải; sổ mây của ông là thứ người giữ trạm và thợ săn trên núi đều chờ mỗi sáng.' },
+      du_van_lao: { name: 'Du Vân Lão', title: 'Ông lão ngắm hồ ở Bãi Vọng Hồ Mây', age: 71,
+        personality: 'Hiền hòa, hay cười, câu chuyện nào cũng vòng về cái hồ; tin rằng hồ mây này là gương soi của cả ngọn núi.',
+        past: 'Không ai nhớ ông lên núi từ năm nào. Người ta chỉ biết căn chòi bên hồ có đèn sáng suốt mấy chục năm, và cá trong hồ không ai được phép bắt.',
+        relations: 'Người giữ Chòi Vọng Hồ bên Hồ Mây phía đông; khách lên núi hay ghé nghe ông kể chuyện hồ đổi màu trước những trận thú triều.' },
+      tong_van_dinh: { name: 'Tống Vân Đình', title: 'Người giữ Trạm Mây Sơn Trung', age: 45,
+        personality: 'Chu đáo, nhớ mặt từng tu sĩ qua trạm; trạm của ông không bao giờ thiếu nước nóng và củi khô.',
+        past: 'Từng chạy thương đội qua chuỗi Đại Sơn, bị thương trong một trận lở đá được tu sĩ Trúc Cơ cứu; từ đó tình nguyện giữ trạm nghỉ chân này để trả ơn đường núi.',
+        relations: 'Người giữ Trạm Mây ở phía nam Sơn Trung Vân Hải — điểm dừng chân cuối trước khi xuống Rừng Thông Chân Mây đầy sói và lợn mông sắt.' },
+      // --- TÍCH HỢP V5 MAP 5 (Trung Phúc): 2 NPC vành (README gói map 5 mục 3, nguyên văn) ---
+      tho_san_trung_phuc: { name: 'Hà Văn Dũng', title: 'Thợ săn Trung Phúc', age: 41,
+        personality: 'Ít lời, mắt tinh, thuộc từng lối mòn và dấu chân thú trong Trung Phúc.',
+        past: 'Sinh ở làng Thanh Khê, mười lăm năm sống bằng nghề săn trong Đại Sơn; dựng lán ở rừng tây Trung Phúc từ ngày đầu mở đường lên Thâm Xứ.',
+        relations: 'Thợ săn độc hành ở Trung Phúc; người gác phía tây của đường lên Thâm Xứ, hay bán da thú và tin tức về bầy sói cho khách qua đường.' },
+      an_si_trung_phuc: { name: 'Trần Văn Ẩn', title: 'Ẩn sĩ hái thuốc Trung Phúc', age: 67,
+        personality: 'Điềm đạm, nói chậm, chuyện gì cũng quy về dược tính và mùa vụ.',
+        past: 'Từng là dược sư ở trấn dưới núi, chán cảnh tranh đoạt nên lên Trung Phúc dựng đình nghỉ chân, sống bằng hái thuốc và chỉ đường cho người lên núi.',
+        relations: 'Ẩn sĩ ở Đình Nghỉ Chân phía nam Trung Phúc; người kể chuyện phế tích cổ cho khách dừng chân.' },
+      // --- TÍCH HỢP V5 MAP 6 (Thâm Xứ): 4 NPC đất mới (gói map 6, file story-npcs.js, nguyên văn) ---
+      ngo_truong_son: { name: 'Ngô Trường Sơn', title: 'Lính gác vực ở Trạm Gác Vực', age: 41,
+        personality: 'Trầm, ít lời, mắt luôn nhìn xuống vực; nói câu nào chắc câu đó.',
+        past: 'Vốn là lính gác Nam Môn làng Thanh Khê, sau vụ thú triều năm kia thì xin ra trạm gác vực ở Thâm Xứ — nói là trong làng đông người quá, nghe không rõ tiếng vực.',
+        relations: 'Người gác trạm duy nhất ở thềm tây Thâm Xứ; giữ sổ ghi nước sông ngầm dâng hạ từng mùa cho làng.' },
+      ly_thu_hang: { name: 'Lý Thu Hằng', title: 'Người hái dược ở Lán Hái Dược', age: 27,
+        personality: 'Nhanh nhẹn, thuộc từng bụi dược quanh Suối Linh; cười nói luôn miệng nhưng tay hái không ngừng.',
+        past: 'Cháu gái của Đại Phu ở Thảo Dược Cốc, theo ông học nghề dược từ nhỏ; lớn lên xin ra lán dược ở cánh đông Thâm Xứ vì chỉ nơi này mới có linh chi mọc ven suối phát sáng.',
+        relations: 'Người coi Lán Hái Dược và phơi dược cho cả vùng Thâm Xứ; dược nàng hái được chở ngược về làng qua cổng Trung Phúc.' },
+      ha_van_dinh: { name: 'Hà Văn Đỉnh', title: 'Thợ đá giữ Cầu Đá Vực Sâu', age: 48,
+        personality: 'Cục tính, nói năng như đục đá, nhưng ai qua cầu cũng được ông ngó qua một lượt xem có an toàn không.',
+        past: 'Ba đời nhà ông làm thợ đá trên Thập Vạn Đại Sơn. Cầu Đá Vực Sâu là do cha ông bắc, ông giữ việc chắp vá, thay đá nứt cho cây cầu từ năm hai mươi tuổi.',
+        relations: 'Người giữ cầu duy nhất qua khe vực phía nam; quen mặt từng toán người qua cầu xuống vùng vực sâu.' },
+      au_duong_thach: { name: 'Âu Dương Thạch', title: 'Ẩn sĩ bên Đàm U Minh', age: 63,
+        personality: 'Nói chậm, câu nào cũng như nửa câu đố; không hỏi chuyện đời, chỉ hỏi chuyện nước và đá.',
+        past: 'Từng là đệ tử trận tông bỏ núi xuống núi, đi lang thang khắp Thập Vạn Đại Sơn rồi dừng lại bên Đàm U Minh đã mười mấy năm, dựng miếu cổ ở bờ đầm làm chỗ ở.',
+        relations: 'Người ở lâu nhất vùng vực sâu; thỉnh thoảng chỉ cho khách qua đường chỗ nào nước đầm dâng, chỗ nào rắn lục tránh nắng.' },
+      // --- TÍCH HỢP V5 MAP 4 (Thập Vạn Đại Sơn): 3 NPC vành + lõi (README gói map 4 mục 7) ---
+      thu_mieu_dai_son: { name: 'Mạc Thủ Sơn', title: 'Thủ Từ Miếu Sơn Thần', age: 63, personality: 'Trầm tĩnh, nói năng chậm rãi, thuộc từng cơn gió đổi hướng trong núi', past: 'Giữ miếu sơn thần ở lưng chừng Đại Sơn mấy chục năm, người qua núi ai cũng ghé thắp hương trước khi đi tiếp', relations: { tan_hai_son: 'bạn già trong núi', do_dinh_quan: 'hàng xóm núi' } },
+      tan_hai_son: { name: 'Tần Hái Sơn', title: 'Thợ Săn Kiêm Hái Thuốc', age: 45, personality: 'Ít lời, mắt sắc, đi rừng như đi trong sân nhà', past: 'Săn thú và hái thuốc trong Thập Vạn Đại Sơn từ thuở thiếu niên; thuộc dấu chân từng loài thú quanh ba sào dữ', relations: { thu_mieu_dai_son: 'bạn già trong núi' } },
+      do_dinh_quan: { name: 'Đỗ Đình Quán', title: 'Chủ Trạm Dừng Chân', age: 50, personality: 'Niềm nở, nhớ mặt khách qua đường, không tính tiền nước giếng với lữ khách', past: 'Giữ trạm dừng chân cha ông dựng ở cửa ngõ Đại Sơn; trạm từng nuôi cả đoàn thợ săn lẫn đoàn buôn ba ngày lở núi', relations: { tan_hai_son: 'khách quen của trạm' } },
       chap_su_dai_hoi: { name: 'Hàn Sơn', title: 'Chấp Sự Đại Hội', age: 52,
         personality: 'Giọng sang sảng, công tâm, ghét nhất là gian lận; sổ ghi danh của ông không bao giờ sai một chữ.',
         past: 'Cựu đệ tử nội môn Thanh Phong Phái, giải nghệ sau một kỳ đại hội bị thương ở tay. Mười tông cử ông làm chấp sự chung của Đại Hội Tu Tiên vì khắp vùng không ai công bằng hơn.',
@@ -165,6 +579,1509 @@
         relations: 'Hay bám theo người lạ hỏi chuyện trên núi; đầu mối tin tức vỉa hè của xóm.' }
     },
     DIALOGUE: {
+      // --- TÍCH HỢP V5 MAP 4: thoại 3 NPC (README gói map 4 mục 7, nguyên văn) ---
+      thu_mieu_dai_son: {
+        lines: [
+          'Miếu sơn thần này có từ khi chưa ai dám đặt tên cho dãy núi. Qua miếu thì thắp một nén hương, núi sẽ nhớ mặt ngươi.',
+          'Đừng hái cỏ lạ quanh miếu — cỏ mọc trong bóng miếu là của sơn thần, hái về chỉ tổ rước họa.',
+          'Đêm nào gió đổi hướng, chuông miếu tự rung ba tiếng. Đêm ấy dù có nghe ai gọi tên ngoài cửa cũng đừng đáp.'
+        ],
+        greeting: ['Qua núi thì ghé miếu thắp hương đã, trẻ tuổi.'],
+        lore: [
+          'Người xưa kể sơn thần vốn là một thợ săn lạc bầy, chết giữa núi mà hồn không nỡ rời đàn thú.',
+          'Ba sào thú dữ quanh đây đều tránh miếu này ba dặm — thú còn biết kính, người chớ dại.'
+        ],
+        idle: ['Khói hương không tắt thì núi còn yên.', 'Chuông không rung, đêm nay yên giấc.']
+      },
+      tan_hai_son: {
+        lines: [
+          'Hổ gầm ở phía bắc không đáng sợ bằng heo rừng im lặng phía sau lưng. Nhớ lấy.',
+          'Dược trong núi nhiều, nhưng mọc cạnh sào thú dữ cả. Muốn hái thì xem dấu chân trước.',
+          'Da thú đổi được tiền, xương thú đổi được đan. Chỉ có gan là không đổi được — mất là mất hẳn.'
+        ],
+        greeting: ['Vào núi săn hay hái thuốc? Nhìn dấu chân trước khi bước.'],
+        lore: [
+          'Mùa này đàn hươu sao kéo xuống phía tây uống nước — đi săn thì đi sớm, đi muộn chỉ còn dấu chân.',
+          'Hồi ta trẻ, một con hổ gầm giữ cả thung phía bắc. Giờ sào nó vẫn còn, hổ thì không ai gặp lại.'
+        ],
+        idle: ['Dấu chân mới — thú vừa qua đây.', 'Cung còn căng là còn cơm ăn.']
+      },
+      do_dinh_quan: {
+        lines: [
+          'Trạm của ta nhỏ thôi: mái che mưa, bếp còn lửa, chuồng ngựa có cỏ khô. Đi Đại Sơn mà không ghé trạm là tự làm khó mình.',
+          'Nước trong núi đừng uống ở khe lạ — cứ ghé trạm lấy nước giếng, ta không tính tiền người qua đường.',
+          'Đi lên cao thì mang theo áo ấm. Trên ấy sương xuống nhanh, người chưa kịp lạnh đã ướt hết lưng.'
+        ],
+        greeting: ['Ghé trạm nghỉ chân đi — bếp còn lửa, nước còn nóng.'],
+        lore: [
+          'Trạm này cha ta dựng, ta giữ. Người qua núi gửi lại một câu chuyện thay tiền trọ cũng được.',
+          'Có đợt lở núi chắn đường ba ngày, trạm ta nuôi cả đoàn thợ săn lẫn đoàn buôn — từ đó ai qua cũng ghé.'
+        ],
+        idle: ['Bếp còn lửa là trạm còn người.', 'Ngựa ăn no mới đi được đường núi.']
+      },
+      // --- TÍCH HỢP V5 MAP 7: thoại 3 NPC (README gói map 7 mục 4, nguyên văn) ---
+      nguoi_gac_cong_dinh: {
+        lines: [
+          'Cổng này ta gác bốn mươi năm. Người qua được thì ít, người quay đầu thì nhiều — quay đầu không phải nhục, chết cố mới là dại.',
+          'Qua cổng là Sơn Trung Vân Hải, đất của Trúc Cơ. Ngươi chưa đủ hạng thì đứng ở thềm này ngắm mây với ta cũng được.',
+          'Tên ngươi ta ghi vào sổ đá rồi. Qua được hay không, có người nhớ là ngươi đã tới tận đây.'
+        ],
+        greeting: ['Lên được tới Chi Đỉnh là có căn cơ đấy. Ta là Cố Trường Thanh, gác cổng bắc này. Muốn qua cổng Trúc Cơ thì cứ đi thẳng — cổng tự biết ngươi đủ sức hay chưa.'],
+        lore: ['Ngưỡng Trúc Cơ không phải bức tường, nó là cái cân: tu vi chưa đủ nặng thì cân không nhúc nhích. Bia cổ trên đài kia ghi tên những người đầu tiên qua được ngưỡng này.'],
+        idle: ['Sổ đá kỳ này thêm được mấy cái tên. Ít, mà tên nào cũng đáng.'],
+        quest: {}
+      },
+      co_hai_duoc: {
+        lines: [
+          'Linh chi trên đỉnh này mọc sau sương đêm, hái phải đi từ lúc trời chưa sáng, nắng lên là nó cụp xuống đá ngay.',
+          'Linh Tuyền kia nước lạnh mà ngọt, dược tưới bằng nước đó phơi khô vẫn giữ được bảy phần dược tính.',
+          'Sườn tây sói đỉnh tuyết hay xuống uống nước suối lúc chạng vạng. Đi hái dược thì tránh giờ đó ra.'
+        ],
+        greeting: ['Khách lạ lên đỉnh hái dược à? Ta là Lâm Thảo Nhi, ở lán bên kia. Cần linh chi thì cứ hỏi ta, ta thuộc từng bụi trên sườn tây này.'],
+        lore: ['Ngày trước sườn tây toàn thông cổ, dược mọc dưới tán thông thơm mùi nhựa. Người dưới trấn gọi đây là vườn thuốc của trời, chỉ người leo được tới nơi mới hái được.'],
+        idle: ['Đám linh chi phơi trên phên sắp khô rồi, để ta trở mặt chúng kẻo mốc.'],
+        quest: {}
+      },
+      kiem_tu_ngam_may: {
+        lines: [
+          'Kiếm ta luyện lúc mây dâng, vì chỉ khi đó đài này mới vắng hẳn. Kiếm ý cần tĩnh, mà tĩnh nhất là ở rìa trời.',
+          'Ngươi đứng xem cũng được, đừng bước vào vòng kiếm. Vòng này ta vạch bằng mũi kiếm, sâu ba phân đá.',
+          'Một năm ở đài này, ta đổi được ba chiêu kiếm. Ở dưới núi ba năm chắc không đổi nổi một chiêu.'
+        ],
+        greeting: ['Ta là Giang Hàn, trực Đài Ngắm Mây. Xuống phía nam là biển mây và thẳm vân hải — đi ngắm cảnh thì cẩn thận, sói lợn dưới đó không hiền như trên đỉnh đâu.'],
+        lore: ['Đài này dựng từ đời các vị tiền bối gác đỉnh: đứng ở đây nhìn xuống thấy hết biển mây ba phía, có thú triều hay mây độc kéo tới là biết trước nửa ngày.'],
+        idle: ['Mây hôm nay dâng sớm. Luyện nốt đường kiếm này rồi ta vào.'],
+        quest: {}
+      },
+      // --- TÍCH HỢP V5 MAP 5: thoại 2 NPC (README gói map 5 mục 3, nguyên văn) ---
+      tho_san_trung_phuc: {
+        lines: [
+          'Đi tiếp lên bắc là Thâm Xứ. Tầng chưa đủ thì đừng cố — sói trên đó không giống sói dưới này đâu.',
+          'Rừng tây này là sân nhà của ta. Bầy sói già ăn thịt người quen mùi rồi, thấy dấu chân vòng tròn là phải đổi đường ngay.',
+          'Phế tích trên bắc ngày xưa là điện thờ sơn thần. Giờ rắn với khỉ chiếm, nhưng cột đá đổ vẫn còn dấu khắc chữ cổ.'
+        ],
+        greeting: ['Khách lạ lên được tới Trung Phúc là có bản lĩnh đấy. Ngồi nghỉ chút, ta chỉ cho đường nào ít thú dữ.'],
+        lore: ['Nghe già làng kể, điện cổ trên núi thờ vị sơn thần giữ linh mạch Đại Sơn. Mạt pháp tới, điện bỏ hoang, linh khí tụ xuống giếng cổ làng Thanh Khê.'],
+        idle: ['Mài lại mũi tên đã. Trời trở gió là thú rừng xuống thấp.']
+      },
+      an_si_trung_phuc: {
+        lines: [
+          'Đình này ta dựng cho người lên núi có chỗ tránh mưa. Nước suối đông trong, uống được, đừng uống nước đầm lầy phía tây nam.',
+          'Đầm lầy nam nhiều rắn lục, nhưng quanh bờ đầm mọc Độc Tâm Hoa — họa phúc đi cùng nhau, hái thì phải cẩn thận.',
+          'Lên cao nữa là Thâm Xứ, khí núi lạnh và đặc. Ngồi đây hơ tay một lát rồi hãy đi tiếp.'
+        ],
+        greeting: ['Đi đường núi mà hơi thở còn đều thế kia, căn cơ không tệ. Vào đình nghỉ chân đi cháu.'],
+        lore: ['Ta ở đây hơn hai mươi năm. Phế tích thượng cổ phía bắc mỗi mùa mưa lại lộ thêm một bậc thềm mới — như thể núi đang tự mở đường cho ai đó.'],
+        idle: ['Phơi mớ thảo dược kẻo ẩm mốc hết.']
+      },
+      // --- TÍCH HỢP V5 MAP 10: thoại 4 NPC (README gói map 10 mục 3, nguyên văn) ---
+      tran_viem: {
+        lines: [
+          'Qua khỏi Đoạn Long Lĩnh mà còn đứng vững là khá rồi. Tiền đồn này là chỗ dừng chân cuối trước Hàn Băng Cốc.',
+          'Đêm ở Xích Diệm đừng rời đường cái. Tro nóng dưới đất chỗ dày chỗ mỏng, sụp xuống là thành tro theo đúng nghĩa.',
+          'Lính của ta ít, nhưng đứa nào cũng thuộc hoang nguyên này như lòng bàn tay. Có lạc cứ đốt hiệu khói, sẽ có người tới.'
+        ],
+        greeting: ['Tu sĩ mới lên chặng Kim Đan phải không? Ta là Trần Viêm, giữ tiền đồn này. Nghỉ chân, uống nước rồi hẵng đi tiếp.'],
+        lore: ['Xích Diệm xưa là biển lửa sau một trận địa hỏa phun trào. Lửa tắt trên mặt đất chứ chưa tắt dưới lòng đất — hồ dung nham giữa hoang nguyên là miệng của nó đấy.'],
+        idle: ['Trực đêm nay đến lượt ta. Gió nam mang theo mùi lưu huỳnh — mai sẽ nóng hơn hôm nay.'],
+        quest: {}
+      },
+      ha_tu: {
+        lines: [
+          'Lò của ta cháy bằng địa hỏa dẫn từ kẽ đá, lửa đều quanh năm, luyện đan hệ Hỏa ở đây là nhất.',
+          'Hỏa Diệm Liên quanh hồ nhiều nhưng khó hái — cánh không cháy mà cuống nóng như than. Phải dùng kẹp ngọc, đừng dùng tay.',
+          'Có Sơn Tinh thì để lại cho ta. Thứ đó luyện đan Kim Đan quý lắm, ta trả giá tử tế.'
+        ],
+        greeting: ['Khách lạ! Lò dã chiến của ta nhỏ thôi nhưng đủ phẩm đan. Ngồi xuống, để ta xem thương thế và túi dược của ngươi.'],
+        lore: ['Đan sư Đan Hà Cốc ai cũng mơ một lần luyện đan bên hồ dung nham Xích Diệm: địa hỏa ở đây có linh tính, đan thành phẩm hay có thêm một đường vân lửa.'],
+        idle: ['Mẻ đan này còn hai canh giờ. Lửa nhỏ thôi, đừng ai động vào lò.'],
+        quest: {}
+      },
+      chu_ba: {
+        lines: [
+          'Miếu này nhỏ nhưng Hỏa Thần linh thiêng. Trước khi xuống bãi săn, thắp một nén nhang cũng không mất gì.',
+          'Ta giữ miếu này bốn mươi năm. Núi lửa ngủ yên bốn mươi năm. Ta không dám nói hai việc đó không liên quan nhau.',
+          'Đêm nào nghe tiếng rền dưới đất, ta lại lên thềm ngó về phía hồ. Hồ còn đỏ yên ổn là làng dưới núi còn yên ổn.'
+        ],
+        greeting: ['Lữ khách phương xa, vào miếu tránh nắng một lát. Ở hoang nguyên này, bóng râm cũng là một thứ ân huệ.'],
+        lore: ['Tương truyền Hỏa Thần vốn là vị tu sĩ đầu tiên chết ở Xích Diệm, hồn không tan, ở lại trấn ngọn địa hỏa cho người sau qua lại.'],
+        idle: ['Nhang sắp tàn. Để ta thay nén mới, khói nhang ở đây bay thẳng lắm.'],
+        quest: {}
+      },
+      ly_hoa_van: {
+        lines: [
+          'Hỏa Diệm Liên nở sát mép dung nham, càng gần lửa cánh càng đỏ đẹp. Hái hoa này là đi trên lưỡi dao đấy.',
+          'Muốn biết hồ hôm nay "hiền" hay "dữ" cứ nhìn khói: khói trắng là hiền, khói vàng sậm là sắp có đợt khí nóng phun.',
+          'Ta bán hoa cho lò của chị Hà Tú ở tiền đồn. Cả hoang nguyên này, người không sợ lửa chỉ đếm trên đầu ngón tay.'
+        ],
+        greeting: ['Đừng lại gần mép hồ thêm nữa! Đứng chỗ ta đứng này mới là đất nguội. Ngươi cũng lên hái liên à?'],
+        lore: ['Người hái thuốc lâu năm ở Xích Diệm thuộc lòng từng "cửa gió" quanh hồ — chỗ nào khí nóng phun theo giờ, chỗ nào quanh năm mát như có người che.'],
+        idle: ['Đợi gió đổi chiều đã. Khói đang tạt về phía bãi hoa của ta.'],
+        quest: {}
+      },
+      // --- TÍCH HỢP V5 MAP 11: thoại 3 NPC (story-npcs.js của gói, nguyên văn + quest:{} theo chuẩn nhà) ---
+      tuan_bang_son: {
+        lines: [
+          'Đi trên băng thì nghe tiếng dưới chân. Băng kêu răng rắc một tiếng là còn chịu được; im lặng tuyệt đối mới là chỗ băng mỏng.',
+          'Sáng nay ta tuần một vòng: Băng Hồ Đông nứt thêm hai vệt ở bờ tây, đê đá vẫn chắc. Xuống hồ thì đi đúng đê, đừng tắt ngang mặt băng.',
+          'Xuống Thẳm Băng Nam săn boss thì xem sổ tuần của ta trước. Băng dưới sân vực nghe chắc vậy thôi, năm nào cũng có kẻ chủ quan.'
+        ],
+        greeting: ['Lên cốc săn băng hay hái dược? Ghé chòi sưởi tay một lát, ta chỉ cho chỗ nào băng đang yếu.'],
+        lore: ['Hàn Băng Cốc lạnh không phải vì cao. Dưới thung là một mạch hàn ngọc chạy dài, băng trên mặt đất ba thước quanh năm không tan. Người xưa nói mạch đó là xương của một con băng long chết từ thời thượng cổ.'],
+        idle: ['Lục Hàn Sơn mài lại lưỡi dao cạo băng, mắt không rời mặt hồ phía bắc.'],
+        quest: {}
+      },
+      ton_tuyet_nuong: {
+        lines: [
+          'Băng tinh hoa phải hái lúc mặt trời chưa qua đỉnh núi, nắng chạm vào là cánh hoa cụp lại, dược tính mất hơn nửa.',
+          'Ngọc tủy chi mọc ven Linh Tuyền Băng, chỗ nước lạnh nhất. Tay trần mà thò xuống là tê buốt tới khuỷu — muốn hái thì quấn vải dày vào.',
+          'Khỉ mặt đỏ ở rừng tuyết tùng hay rình trộm sọt dược của ta. Thấy chúng thì đuổi khéo thôi, đừng đánh — chúng nhớ mặt người đánh chúng lâu lắm.'
+        ],
+        greeting: ['Trời lạnh thế này mà cũng lên cốc à? Sọt dược của ta còn trà gừng nóng, uống một chén cho ấm bụng rồi hẵng đi.'],
+        lore: ['Đan Hà Cốc trả giá băng tinh hoa cao gấp ba linh chi thường, vì luyện Băng Tâm Đan trấn tâm ma khi đột phá Kim Đan không có vị nào thay được. Một mẻ hoa hái đúng giờ đổi được cả tháng linh thạch.'],
+        idle: ['Tôn Tuyết Nương phơi những cánh băng tinh hoa lên phên đá, tay lật đều như đếm tiền.'],
+        quest: {}
+      },
+      han_ngoc_dao: {
+        lines: [
+          'Ngươi nhìn mặt băng thấy gì? Ta nhìn mười một mùa đông, thấy một người cứ vội vàng muốn mạnh lên, nên mãi không qua được cửa của chính mình.',
+          'Sân Băng Vực dưới thẳm kia, kẻ đến vì boss thì nhiều, kẻ về được nguyên vẹn thì ít. Không phải băng yếu — là lòng người nóng hơn băng.',
+          'Muốn trấn tâm thì ngồi xuống đây một lát. Không cần thổ nạp, chỉ cần nhìn băng cho đến khi hơi thở ngươi chậm lại bằng nhịp nước đóng băng.'
+        ],
+        greeting: ['Lên tới đài này mà hơi thở còn gấp thì đừng vội xuống thẳm. Ngồi lại, nhìn băng một lát.'],
+        lore: ['Đài Hàn Ngọc do một vị trưởng lão Huyền Âm Cung dựng khi mạch hàn ngọc mới lộ. Tương truyền đêm trăng tròn, đứng trên đài nhìn xuống Băng Hồ Bắc sẽ thấy bóng băng long bơi dưới lớp băng ba thước.'],
+        idle: ['Hàn Ngọc Dao ngồi xếp bằng quay mặt ra Băng Hồ Bắc, hơi thở trắng xóa mà người bất động như tượng băng.'],
+        quest: {}
+      },
+      // --- TÍCH HỢP V5 MAP 12: thoại 5 NPC (README gói map 12, nguyên văn; greeting/lore để dạng mảng theo chuẩn nhà) ---
+      han_ba: {
+        lines: [
+          'Trạm này dựng trên đường ngang giữa khanh, ai lên đài Lôi Vương hay xuống Sân Săn đều phải qua đây. Ta ghi sổ hết.',
+          'Trời mà nổi sấm thì đừng đứng gần cột đá cao. Sét trên Thiên Khanh đánh xuống cột trước, đánh người sau — nhớ thứ tự đó là sống.',
+          'Cổng bắc lên Tinh Vẫn Chi Địa khóa theo cảnh giới Hóa Thần. Chưa đủ cảnh thì ngắm Lôi Trì thêm vài năm nữa cũng không thừa.'
+        ],
+        greeting: ['Qua được cổng nam là còn sống. Ngồi xuống, uống ngụm trà nóng rồi hẵng đi tiếp.'],
+        lore: ['Hàn Bá coi trạm đã bốn mươi năm, thuộc từng cột đá trên Thiên Khanh như thuộc lòng bàn tay; sổ trạm của ông là nơi các đội săn tra tin boss hồi sinh.'],
+        idle: ['Hàn Bá pha ấm trà mới trên bếp đá của trạm.', 'Hàn Bá lật sổ ghi tên khách qua trạm, chấm bút từng dòng.'],
+        quest: {}
+      },
+      trinh_vien: {
+        lines: [
+          'Bãi Cột Sét này là rừng cột đá cổ, sét đánh nghìn năm nên cột nào cũng tích điện. Đệ tử các tông lên đây luyện thân pháp né sét.',
+          'Đài Tụ Lôi ở sườn tây là chỗ sét tụ mạnh nhất ngoài hai hồ. Muốn hái Thiên Lôi Quả thì chờ sau cơn giông, quả rụng đầy gốc cột.',
+          'Phía tây bắc khối là hang Thiên Lôi, sào của Thiên Lôi Xà Vương. Nghe tiếng rít trong hang thì đừng tò mò.'
+        ],
+        greeting: ['Đứng xa cột ra một chút. Cột nào nứt dọc là cột sắp dẫn sét.'],
+        lore: ['Trình Viễn là lính gác thế tập của Bãi Cột Sét; cha và ông nội anh đều gác bãi này, thuộc tiếng nứt của từng cây cột trước khi sét đánh.'],
+        idle: ['Trình Viễn đi dọc hàng cột, gõ thử từng cây cột đá.', 'Trình Viễn ngẩng nhìn mây xoáy trên bãi cột, tính giờ giông tới.'],
+        quest: {}
+      },
+      an_tich: {
+        lines: [
+          'Miếu này thờ Lôi Thần trấn khanh. Tương truyền Thiên Khanh là hố do một tia sét khai thiên giáng xuống, hồ lôi là nước mưa nghìn năm tích điện.',
+          'Đài giữa hồ phía đông nam là chỗ tu sĩ xưa ngồi hứng sét luyện công. Nay chỉ còn đội săn dám ra đó lúc trời quang.',
+          'Hương ở miếu này không cầu thăng cảnh, chỉ cầu đi qua khanh mà tóc không dựng đứng.'
+        ],
+        greeting: ['Vào miếu thì khẽ tiếng. Lôi Thần không ghét người, chỉ ghét kẻ ồn ào lúc ngài ngủ.'],
+        lore: ['Ân Tịch là đời thủ miếu thứ ba; bà ở lều sau miếu, mỗi ngày quét thềm và thay dầu đèn đá dù mưa giông cũng không nghỉ.'],
+        idle: ['Ân Tịch quét lá thông trên thềm miếu.', 'Ân Tịch châm thêm dầu vào hai đèn đá trước miếu.'],
+        quest: {}
+      },
+      loi_tam_nuong: {
+        lines: [
+          'Đội săn của ta đóng lều ở bờ đông này vì hai hồ đều gần: rắn lục uống nước hồ tây, sói rừng xuống hồ đông lúc chạng vạng.',
+          'Lôi Xà Vương cuộn trên đài giữa lõi, chu kỳ ngủ dài; muốn đánh thì canh lúc nó vừa trườn xuống hồ uống điện.',
+          'Sân Săn ở cuối khanh phía nam là chỗ các đội tụ trước giờ boss. Đông người thì chia nhau đứng, đừng chen một góc.'
+        ],
+        greeting: ['Mua da lôi thú không? Vảy rắn sấm ở đây cứng hơn giáp thường một bậc đấy.'],
+        lore: ['Lôi Tam Nương là thợ săn lôi thú có tiếng nhất Thiên Khanh; vết sẹo sét hình nhánh cây trên vai trái là do bà đỡ cho học trò trong một cơn giông bất chợt.'],
+        idle: ['Lôi Tam Nương lột da một con rắn lục mới săn, tay thoăn thoắt.', 'Lôi Tam Nương kiểm tra lại dây cung và bó tên tẩm nhựa thông.'],
+        quest: {}
+      },
+      tan_hai: {
+        lines: [
+          'Ta hái quả ở bờ hồ tây này. Quả mọc trên bụi lôi thảo bạc quanh cột đá, sét càng mạnh quả càng tím.',
+          'Đường đá bắc qua cửa hồ trơn lắm sau mưa giông; đi chậm, bám lan can đá mà qua.',
+          'Quả tươi bán được giá, nhưng để luyện đan thì phải phơi qua một đêm sương. Người mới đừng ăn sống, tê lưỡi ba ngày.'
+        ],
+        greeting: ['Suỵt — nói nhỏ thôi. Thiên Lôi Quả nghe tiếng động lớn là rụng xuống hồ, phí lắm.'],
+        lore: ['Tần Hái là người hái thuốc dạn dày nhất vùng hồ tây; ông thuộc từng bụi lôi thảo quanh hồ và chưa từng bị sét đánh trúng lần nào.'],
+        idle: ['Tần Hái lom khom lựa từng quả tím trong bụi lôi thảo bạc.', 'Tần Hái buộc lại giỏ thuốc, ngước nhìn mây trên hồ.'],
+        quest: {}
+      },
+      // --- TÍCH HỢP V5 MAP 13: thoại 5 NPC (README gói map 13, nguyên văn; greeting/lore để dạng mảng theo chuẩn nhà) ---
+      mac_quan: {
+        lines: [
+          'Ta ghi chép sao băng ở đất này bốn mươi năm. Mảnh vẫn thạch nào rơi, rơi giờ nào, đều có sổ cả.',
+          'Đêm nào sao đổi ngôi là hôm sau Hố Vẫn Tinh dưới kia lại rộ lên. Ngươi xuống hố thì chớ đi vào những đêm như thế.',
+          'Thấy đèn đá hai bên đường trục không? Đệ tử các tông thay nhau châm dầu, để người lỡ đường trong đất vẫn thạch còn biết lối lên đài.'
+        ],
+        greeting: ['Đứng trên Đài Quan Tinh mới thấy sao rơi không hề ngẫu nhiên.'],
+        lore: ['Mạc Quan Tinh vốn là đệ tử Cửu Cung Trận Tông, bỏ tông về đài này vì cho rằng tinh tượng mới là trận đồ lớn nhất của trời đất.'],
+        idle: ['Mạc Quan Tinh ngẩng đầu nhìn trời, tay lần tràng hạt đá.', 'Mạc Quan Tinh ghi thêm một dòng vào cuốn sổ tinh tượng cũ.'],
+        quest: {}
+      },
+      thach_mo: {
+        lines: [
+          'Tinh thiết trong đá vẫn thạch cứng gấp ba sắt thường, nhưng phải khai đúng vân nứt phát sáng, bổ sai là vỡ vụn.',
+          'Mỏ này nuôi cả xóm đúc phía đông. Đá khai ở đây, chở qua đường ngang, vào lò của Vân Nương là thành phôi tốt.',
+          'Hố Vẫn Bắc kia là hố cũ nhất vùng. Thợ mỏ tụi ta chỉ lấy đá rìa hố, không ai dám xuống lòng hố khi trời tối.'
+        ],
+        greeting: ['Coi chừng đỉnh đầu — đất này đá trời rơi không báo trước đâu.'],
+        lore: ['Thạch Thiết Sơn là thợ khai tinh thiết lâu năm nhất Trạm Khai Tinh; tiếng búa của ông nghe là biết đá tốt hay đá rỗng.'],
+        idle: ['Thạch Thiết Sơn gõ thử từng tảng đá vẫn thạch mới khai.', 'Thạch Thiết Sơn buộc lại dây thừng quanh miệng mỏ.'],
+        quest: {}
+      },
+      hoa_duc: {
+        lines: [
+          'Xóm Đúc Tinh này mọc lên nhờ đá trời: mười lò thì chín lò đúc phôi cho các tông phía dưới núi.',
+          'Tinh thiết gặp lửa thường thì nứt, phải luyện bằng lửa dẫn từ đất vẫn thạch — bí quyết của xóm, không truyền ra ngoài.',
+          'Phía bắc xóm là Hồ Vẫn Đông, nước hồ ngâm phôi thì phôi không giòn. Đẹp, nhưng bờ đông hồ là đất lợn mông sắt, đi lấy nước phải có người canh.'
+        ],
+        greeting: ['Lò đang đỏ. Ngươi mang tinh thiết thô hay muốn đúc phôi?'],
+        lore: ['Hỏa Vân Nương là lò trưởng của Xóm Đúc Tinh; bàn tay đầy sẹo bỏng nhưng mắt nhìn nhiệt lửa chuẩn hơn bất kỳ pháp khí đo nào.'],
+        idle: ['Hỏa Vân Nương quạt thêm gió vào miệng lò.', 'Hỏa Vân Nương nhúng thử một phôi đỏ vào thùng nước hồ.'],
+        quest: {}
+      },
+      tong_tram: {
+        lines: [
+          'Trạm này là điểm dừng cuối trước khi xuống Thung Vẫn Nam. Đi tiếp về nam là đất sói, đi vòng theo đường chân vẫn thì an toàn hơn.',
+          'Ta ghi sổ người qua trạm. Mấy tháng nay tu sĩ Hóa Thần lên Tinh Vẫn đông hẳn — chắc vì Vạn Niên Linh Chi trong Hố Vẫn Nam vào mùa.',
+          'Muốn vào lòng Hố Vẫn Nam thì đi cửa bắc của vòng đá, đừng trèo qua vành — đá vẫn thạch trơn như bôi mỡ.'
+        ],
+        greeting: ['Mệt thì ghé trạm. Nước suối, ghế đá, và tin tức đường vẫn thạch — ở đây có cả.'],
+        lore: ['Tống Hành Vân từng là tiêu sư; giải nghệ sau một chuyến tiêu mất trắng ở Thập Vạn Đại Sơn, về coi trạm cho người qua lại.'],
+        idle: ['Tống Hành Vân đun ấm nước suối trên bếp đá.', 'Tống Hành Vân lật sổ ghi tên khách qua trạm.'],
+        quest: {}
+      },
+      lieu_tuyen: {
+        lines: [
+          'Hồ Tinh Quang không có cá, chỉ có ánh sao đọng lại từ nghìn năm sao rơi. Nước hồ đem về ngâm dược thì dược bền hơn hẳn.',
+          'Suối Tinh Tuyền chảy từ sườn bắc xuống hồ này. Bờ tây suối là đất rắn lục, đi hái Sơn Tinh thì nhìn kỹ dưới chân.',
+          'Đứng trên thềm đá lúc nửa đêm, sao trên trời và sao trong hồ như nhau — người ta nói tu sĩ Hóa Thần ngồi đây dễ ngộ đạo nhất vùng.'
+        ],
+        greeting: ['Suỵt — mặt hồ đang yên. Ngươi đến ngắm sao hay đến lấy nước?'],
+        lore: ['Liễu Tinh Tuyền là người canh hồ đời thứ ba; nhà bà ở quần thể bên thềm hồ, mỗi tối thắp đèn đá quanh thềm cho khách ngắm sao.'],
+        idle: ['Liễu Tinh Tuyền vớt lá rụng trên mặt hồ bằng vợt cán dài.', 'Liễu Tinh Tuyền châm thêm dầu vào đèn đá đầu thềm.'],
+        quest: {}
+      },
+      // --- TÍCH HỢP V5 MAP 14: thoại 4 NPC (README gói map 14, nguyên văn) ---
+on_dan_thanh: {
+  lines: [
+    'Đan dược độ kiếp không cần nhiều, cần đúng. Một viên Hộ Tâm Đan uống sớm nửa khắc cũng thành vô dụng.',
+    'Ta kiểm tra hành trang cho từng người lên đài. Thiếu gì cứ nói, trạm này còn giữ phần của những người... không trở xuống nữa.',
+    'Đừng ăn no trước khi độ kiếp. Lôi đánh xuống, khí huyết cuộn lên, dạ dày đầy chỉ tổ thêm khổ.'
+  ],
+  greeting: ['Ngươi sắp lên đài phải không? Ta là Ôn Đan Thanh. Để ta xem túi đan của ngươi một lượt — yên tâm, ta không lấy một viên nào đâu.'],
+  lore: ['Từ ngày có đài này, trạm chuẩn bị chưa từng đóng cửa. Đan sư thay nhau trực, vì lôi kiếp không chọn giờ, chỉ chọn người.'],
+  idle: ['Mẻ Hộ Tâm Đan này còn thiếu một vị. Chờ Sơn Tinh từ hai cánh núi gửi xuống đã.'],
+  quest: {}
+},
+thiet_son: {
+  lines: [
+    'Ta đứng ở quảng trường này mười hai năm. Người lên thì nhiều, người xuống thì ít. Ngươi liệu mà tính.',
+    'Sợ là phải. Kẻ không biết sợ mới là kẻ chết đầu tiên trên đài.',
+    'Nếu lôi đánh ngã ngươi giữa chừng mà còn thở, cứ nằm yên. Ta sẽ lên kéo ngươi xuống — đó là việc của ta.'
+  ],
+  greeting: ['Đứng vững chứ? Cổng độ kiếp xô người ghê lắm. Ta là Thiết Sơn, giữ quảng trường này.'],
+  lore: ['Vết sẹo trên cổ ta là đạo lôi thứ bảy để lại. Đạo thứ chín ta vượt qua bằng cách... thôi, mỗi người một cách, nói ra cũng vô ích.'],
+  idle: ['Gió đang đổi. Kiếp vân trên đài mà đặc lại thì hôm nay sẽ có người độ kiếp.'],
+  quest: {}
+},
+van_quan_lao: {
+  lines: [
+    'Mây dưới đài hôm nay chảy về đông. Mai sẽ quang, lôi kiếp nếu có cũng nhẹ hơn thường lệ một chút.',
+    'Sáu mươi năm ta nhìn biển mây này. Nó chưa từng giống nhau hai ngày liên tiếp.',
+    'Tu sĩ lên đài hay hỏi ta mây lành hay dữ. Ta chỉ nói điều ta thấy — nghe hay không là việc của họ.'
+  ],
+  greeting: ['Lại đây ngồi một lát. Đứng ở Đài Quan Vân này, mây ở dưới chân mà trời thì ngay trên đầu.'],
+  lore: ['Ngày đài mới dựng, người ta trồng quanh đài một vòng thông. Giờ thông đã thành rừng, còn người dựng đài thì chẳng ai nhớ tên nữa.'],
+  idle: ['Kiếp vân đang tụ ở phía bắc. Quyển sổ của cậu ký sử trên Kiếp Vân Đài hôm nay chắc lại thêm trang.'],
+  quest: {}
+},
+loi_ky_su: {
+  lines: [
+    'Mỗi đạo lôi rơi xuống đài này đều có trong sổ của ta: ngày, giờ, người hứng, và kết cục.',
+    'Hai trăm năm, chín quyển sổ. Tên bay lên trời thì ta ghi bằng mực vàng. Tên ở lại... cũng ghi, không thiếu một ai.',
+    'Ngươi muốn xem tên mình thuộc trang nào à? Lên đài đi, rồi xuống đây, ta sẽ cho xem.'
+  ],
+  greeting: ['Cho ta biết tên ngươi trước đã. Ai lên Kiếp Vân Đài này, ta cũng phải ghi vào sổ — đó là lệ hai trăm năm rồi.'],
+  lore: ['Quyển sổ đầu tiên của tổ tiên ta còn giữ trong am trên đài. Trang đầu chỉ có một dòng: "Ngày dựng đài, trời quang, chưa có lôi."'],
+  idle: ['Mực mới mài. Kiếp vân hôm nay đặc thế này, chắc chắn có việc cho ta ghi.'],
+  quest: {}
+},
+      // --- SƠN MÔN THANH PHONG PHÁI (story-blocks.js của gói, nguyên văn) ---
+      ta_thanh_van: {
+              lines: [
+                'Ngươi đã đi hết đại lộ bậc đá mà lên được tới đây — đôi chân đi được đường dài, tâm mới mong đi được đường xa.',
+                'Thanh Phong Phái không đông người, cũng không giàu. Thứ phái giữ được qua mấy trăm năm mạt pháp chỉ là một câu: kiếm là để chắn trước người khác.',
+                'Muốn học kiếm của phái, trước hết tới Kiếm Mộ mà nhìn. Mỗi thanh kiếm cắm ở đó đều từng chắn trước một người khác — và chủ của chúng đều không về nữa.'
+              ],
+              greeting: [
+                'Đệ tử mới nhập môn, lên thềm mà đứng. Ta là Tạ Thanh Vân, chưởng môn đời này của Thanh Phong Phái.',
+                'Từ hôm nay, Thanh Sơn là nhà của ngươi. Nhà nghèo nhưng cửa luôn mở cho người giữ được tâm.'
+              ],
+              lore: [
+                'Tổ sư lập phái vốn là một kiếm khách vô danh. Ông để lại đúng một thanh kiếm và một câu nói, thanh kiếm nay nằm ở giữa Kiếm Mộ, câu nói khắc ở cổng sơn môn.',
+                'Thanh Khê lão nhân năm xưa là khách khanh của phái. Ông xuống núi giữ làng, ta giữ núi giữ phái — hai đầu của cùng một lời hứa với Thanh Sơn.'
+              ],
+              idle: [
+                'Đang xem lại danh sách đệ tử mới nhập môn năm nay.',
+                'Lau thanh kiếm cũ bằng khăn vải thô, chậm rãi như đang trò chuyện.'
+              ]
+            },
+      chap_su_tp: {
+              lines: [
+                'Quy củ sơn môn có ba điều: không tự ý xuống núi, không mang kiếm vào Tàng Kinh Các, và trời tối thì thắp đủ đèn đá dọc đại lộ.',
+                'Đệ tử mới ở viện ngoại môn phía tây tầng giữa; qua hết kỳ khảo hạch mới dọn lên viện nội môn. Linh điền ngay cạnh viện — đói thì ra đó mà hái, đừng hái trộm của sư huynh.',
+                'Muốn luyện kiếm thì qua Diễn Võ Trường, muốn tĩnh tâm thì ra Đài Vọng Vân phía đông. Còn Kiếm Mộ ở sườn đông tầng giữa — vào thì nhẹ chân, nói khẽ.'
+              ],
+              greeting: [
+                'Đệ tử mới phải không? Ta là Ngô Thủ Lễ, chấp sự sơn môn. Việc ăn ở, đèn đuốc, khách khứa trong phái đều qua tay ta.',
+                'Đi đường xa lên núi chắc mệt. Uống chén trà ở Tiếp Khách Đài này đã, rồi ta dẫn ngươi nhận phòng.'
+              ],
+              lore: [
+                'Đại lộ bậc đá có đúng chín trăm chín mươi chín bậc. Tổ sư nói: leo hết bậc mà lòng còn nóng vội thì chưa leo xong.',
+                'Hai hàng đèn đá dọc đại lộ thắp từ đời tổ sư. Đêm nào gió núi tắt mất một ngọn, sáng ra thể nào cũng có đệ tử bị gọi lên thềm nghe răn.'
+              ],
+              idle: [
+                'Đang kiểm lại sổ điểm danh đệ tử hai viện.',
+                'Sai đệ tử nhỏ đi thay dầu cho hàng đèn đá dọc đại lộ.'
+              ]
+            },
+      de_tu_kiem_dai: {
+              lines: [
+                'Kiếm Đài này là nơi đệ tử trong phái tỉ thí mỗi tháng. Thắng thua không ghi sổ — chỉ ghi ai tiến bộ hơn chính mình tháng trước.',
+                'Đừng nhìn kiếm của người khác mà sốt ruột. Kiếm ý Thanh Phong là gió: không thấy hình, chỉ thấy lá rụng.',
+                'Khi nào ngươi đứng vững qua mười chiêu của ta, ta sẽ dẫn ngươi vào sâu trong Kiếm Mộ — tới trước thanh kiếm của tổ sư.'
+              ],
+              greeting: [
+                'Sư đệ mới nhập môn? Ta là Trình Dật Phong, đệ tử chân truyền, phụ trách Kiếm Đài này.',
+                'Cầm kiếm lên thử một đường ta xem. Đừng sợ sai — sợ nhất là không dám xuất kiếm.'
+              ],
+              lore: [
+                'Kiếm Mộ không chỉ chôn kiếm. Mỗi thanh kiếm cắm xuống là một lời thề của phái: người ngã xuống, kiếm ở lại giữ núi.',
+                'Có đêm trăng, đệ tử trực mộ nghe tiếng kiếm ngân trong mộ phần. Các lão nhân bảo đó là kiếm linh chưa tan — kiếm còn nhớ chủ.'
+              ],
+              idle: [
+                'Đang múa một bài kiếm chậm giữa Kiếm Đài, mũi kiếm không rời một vòng tròn tưởng tượng.',
+                'Lau giá kiếm, xếp lại từng thanh theo thứ tự cũ mới.'
+              ]
+            },
+      de_tu_ngoai_mon: {
+              lines: [
+                'Linh điền của phái em phụ trách đấy! Linh chi trồng ở thửa chân núi là giống dễ nhất, sư huynh sư tỉ toàn bảo em có tay trồng thuốc.',
+                'Trúc Lâm phía tây chân núi là chỗ em thích nhất. Sáng nào sương cũng dày, hái được linh chi mọc hoang sau mưa nữa.',
+                'Em mới nhập môn năm ngoái thôi. Việc vặt nhiều nhưng vui — tối nào cả viện cũng ngồi ở sân nghe chấp sự kể chuyện đời tổ sư.'
+              ],
+              greeting: [
+                'A, đệ tử mới! Em là Lưu Tiểu Mãn, ở viện ngoại môn. Phòng của anh/chị xếp cạnh phòng em đấy!',
+                'Leo hết chín trăm chín mươi chín bậc thang có mệt không? Lần đầu em leo, tới thềm nghỉ là ngồi bệt xuống luôn!'
+              ],
+              lore: [
+                'Nghe nói giếng cổ ở làng Thanh Khê dưới chân núi phát sáng trở lại, cả phái xôn xao. Chấp sự bảo đó là linh nhãn của Thanh Sơn đang thức.',
+                'Hồ Tẩy Kiếm ở chân núi là nơi đệ tử mới rửa kiếm lần đầu nhập môn. Nước hồ lạnh quanh năm, rửa xong kiếm ngân rất lâu.'
+              ],
+              idle: [
+                'Đang gánh nước từ bờ hồ lên tưới linh điền.',
+                'Ngồi ở sân viện ngoại môn khâu lại bao kiếm bị sờn.'
+              ]
+            },
+      thu_mo_tp: {
+              lines: [
+                'Nhẹ chân thôi. Ở đây mỗi bước đều có thể là chỗ một người từng đứng chắn cho đồng môn của mình.',
+                'Ta giữ mộ này bốn mươi năm. Tên từng thanh kiếm, ta còn nhớ. Tên chủ của chúng — ta càng nhớ.',
+                'Kiếm của tổ sư cắm ở bậc trên cùng. Nó chưa từng rỉ. Đêm gió lớn, nó ngân như có người đang thở dài.'
+              ],
+              greeting: [
+                'Lại một đệ tử mới tới xem Kiếm Mộ. Ta là Cố Kiếm Sinh, người giữ mộ này.',
+                'Vào mộ thì đừng chạm vào kiếm của người khác. Kiếm có chủ — dù chủ đã thành đất từ lâu.'
+              ],
+              lore: [
+                'Đời nào phái cũng có người ngã xuống vì giữ cổng, giữ làng, giữ đường cho kẻ yếu chạy. Kiếm của họ được mang về đây, cắm xuống đất núi, gọi là hoàn kiếm quy sơn.',
+                'Thanh kiếm cổ nhất trong mộ không có tên chủ. Các đời chưởng môn đều nói: đó là kiếm của người đã chắn trước cả tổ sư.'
+              ],
+              idle: [
+                'Cầm khăn khô lau từng chuôi kiếm trên bậc mộ dưới.',
+                'Đứng lặng trước một thanh kiếm cong, rất lâu không nhúc nhích.'
+              ]
+            },
+      // --- SƠN MÔN HUYỀN PHÁP TÔNG (story-blocks.js của gói, nguyên văn) ---
+      lieu_ngung_suong: {
+              lines: [
+                'Đứng yên. Ta xem khí quanh người ngươi — vào được sơn môn này, nghĩa là tâm ngươi ít nhất không loạn đến mức không cứu được.',
+                'Huyền Pháp Tông không hỏi linh căn mấy phẩm. Linh căn chỉ là vé vào cửa; hiểu, mới là đường đi. Không hiểu, vé đẹp đến đâu cũng chỉ là giấy.',
+                'Đừng gọi ta là tiên cô. Ta có tên: Liễu Ngưng Sương. Trong tông này, người ta gọi nhau bằng tên và bằng việc đã làm.'
+              ],
+              greeting: [
+                'Ngươi là đệ tử mới bái nhập? Lên thềm mà đứng cho ngay. Ta là Liễu Ngưng Sương, tông chủ đời này của Huyền Pháp Tông.',
+                'Từ hôm nay, sách của tông là sách của ngươi, đàn của tông là đàn của ngươi. Đọc hỏng một quyển, chép lại mười lần. Làm loạn một đàn, tự tay dọn đến khi sạch.'
+              ],
+              lore: [
+                'Dưới Hàn Đàm phía đông tầng thượng có một pháp đàn cổ chìm trong nước, khắc đủ ngũ hành. Đàn ấy không phải của tông ta dựng — tông ta chỉ là người đến sau, giữ lấy mà thôi.',
+                'Tổ sư lập tông để lại một câu khắc ở Pháp Đàn Thượng: pháp không từ trời rơi, pháp từ hiểu mà ra. Ba trăm năm nay, đệ tử vào tông đều phải tự đọc câu ấy thành tiếng một lần.',
+                'Thanh Khê lão nhân năm xưa từng đấu pháp với trưởng lão đời trước của tông ta trên đỉnh Thanh Sơn. Thắng bại không ai kể; chỉ kể rằng hai người uống rượu với nhau tới sáng.'
+              ],
+              idle: [
+                'Lật từng trang danh sách đệ tử mới, thỉnh thoảng dừng lại gạch một nét đỏ.',
+                'Đứng nhìn Ngũ Hành Luân xoay chậm trên lòng bàn tay, không nói một lời.'
+              ]
+            },
+      thu_cac_hp: {
+              lines: [
+                'Vào các thì bỏ giày ướt ở ngoài, lật sách bằng tay khô. Pháp thư hỏng vì ẩm, ta bắt đền bằng chép tay đấy.',
+                'Bốn nghìn lẻ mười hai quyển. Ngươi hỏi quyển nào, ta chỉ kệ. Hỏi nội dung quyển nào — cũng ta chỉ, nhưng phải nghe hết, không được ngắt lời.',
+                'Đệ tử mới hay chạy thẳng tới kệ công pháp mạnh. Sai thứ tự rồi: đọc Dẫn Khí Thiên trước, ba lần, rồi mới được chạm vào kệ thứ hai.'
+              ],
+              greeting: [
+                'Thủ các Lục Thư Ngạn. Tên ngươi đã vào sổ mượn sách từ lúc ngươi qua cổng — chấp sự Nghiêm làm việc nhanh hơn ta tưởng.',
+                'Muốn đọc sách thì đọc ở bàn đá trong các, không mang ra ngoài trời. Mưa nắng Thanh Sơn thất thường, sách thì không biết tự tránh.'
+              ],
+              lore: [
+                'Kệ sâu nhất của các giữ một quyển đồ hình không tên, vẽ một pháp đàn ngũ hành chìm dưới nước. Ta giữ nó sáu mươi năm, chưa thấy ai trong tông giải được hết.',
+                'Ngũ Hành Luân của tông chủ kết thành năm mười tám tuổi. Trong các còn giữ bản chép tay đầu tiên của cô ấy — chữ xấu, nhưng mạch pháp không sai một nét.'
+              ],
+              idle: [
+                'Phủi bụi từng kệ sách theo đúng thứ tự từ đông sang tây.',
+                'Chép lại một trang sách cũ bị mối xông, nét chữ đều như in.'
+              ]
+            },
+      chap_su_hp: {
+              lines: [
+                'Quy củ sơn môn có bốn điều: qua cổng phải trình lệnh bài, vào Tàng Kinh Các phải ghi sổ, sau giờ tối không tự ý lên Pháp Đàn Thượng, và thấy đèn đá tắt thì báo ngay cho ta.',
+                'Đệ tử mới ở viện ngoại môn phía tây tầng giữa; qua kỳ khảo dẫn pháp mới dọn lên viện nội môn. Vườn Linh Thảo ngay dưới viện — cần dược liệu thì xin phép Tiểu Vũ, đừng tự tay hái.',
+                'Đài Thử Pháp ở chân núi phía đông là nơi tông thử người ngoài. Ngươi đã qua cửa ấy ở bãi tuyển rồi — lên tới đây là khách trong nhà, không phải người bị thử nữa.'
+              ],
+              greeting: [
+                'Đứng lại. Lệnh bài. ... Đúng ấn Ngũ Hành Luân. Ta là Nghiêm Thủ Chân, chấp sự sơn môn — từ nay việc ăn ở, sách vở, đàn tràng của ngươi đều qua sổ của ta.',
+                'Tên ngươi ta đã ghi vào sổ đệ tử, trang đầu của năm nay. Chữ ta xấu nhưng không bao giờ sai tên người.'
+              ],
+              lore: [
+                'Hai tháp cổng sơn môn xây cùng năm với Đại Điện. Người thợ cả khắc lên đá một câu không ai được đọc to — ta trực cổng hai mươi năm, cũng chưa từng đọc.',
+                'Đèn đá dọc đại lộ có hai mươi tám chiếc. Trời tối mà thiếu một chiếc sáng, đêm đó ta không ngủ.'
+              ],
+              idle: [
+                'Đối chiếu sổ đệ tử với sổ mượn sách, gật đầu từng dòng.',
+                'Đi dọc thềm tiếp khách, nhặt từng chiếc lá rơi vào rãnh thoát nước.'
+              ]
+            },
+      tran_su_hp: {
+              lines: [
+                'Vào Trận Đồ thì bước theo vạch đá sáng, đừng bước lên trụ. Tám trụ bát quái kia lệch một viên, cả vòng trận phải dỡ ra bày lại.',
+                'Ngươi đứng ở tâm trận, nhắm mắt, nghe. Mạch linh khí dưới chân chạy theo vòng sinh — nghe được vòng ấy, ngươi mới bắt đầu hiểu pháp là gì.',
+                'Hàng rào linh khí quanh sơn môn mười lăm năm nay do ta giữ. Nó không mạnh, nhưng chưa từng đứt — bền, đôi khi thắng mạnh.'
+              ],
+              greeting: [
+                'Đệ tử mới? Ta là Đỗ Trận Sinh, giữ Trận Đồ này. Muốn luyện pháp, trước hết học đứng cho đúng ô.',
+                'Tông chủ nói tâm loạn thì pháp loạn. Ở chỗ ta thêm một câu: chân loạn thì trận loạn. Đứng yên nào.'
+              ],
+              lore: [
+                'Vòng bát quái ở Trận Đồ không phải để trang trí: mỗi trụ ứng một quẻ, dẫn linh khí Thanh Sơn chạy vòng qua sơn môn rồi mới lên Đại Điện — như nước phải qua lọc mới uống được.',
+                'Đồ hình pháp đàn dưới Hàn Đàm và vòng trận của ta có ba nét giống nhau. Giống ở đâu, ta nghiên cứu mười năm chưa xong. Có lẽ phải chờ nước hồ rút mới biết.'
+              ],
+              idle: [
+                'Quỳ xuống, áp tai nghe mạch đá ở rìa Trận Đồ.',
+                'Thay một viên đá trụ bị nứt, xoay ba lần mới đặt xuống.'
+              ]
+            },
+      de_tu_noi_mon_hp: {
+              lines: [
+                'Luyện pháp xa thì đứng ở vạch trong cùng của trường. Đứng gần bia mà bắn trúng thì dễ; đứng xa mà tâm không động, mới khó.',
+                'Tông chủ chỉ điểm cho ta từ năm mười bốn tuổi. Bốn năm, cô ấy khen ta đúng hai lần. Ta nhớ cả hai lần — và nhớ cả những lần bị chê để mà sửa.',
+                'Muốn đấu thử với ta thì chờ qua kỳ khảo dẫn pháp. Giờ ngươi cần học đứng vững trước gió núi đã — pháp chưa ra mà người đã nghiêng thì không trúng được đâu.'
+              ],
+              greeting: [
+                'Sư đệ mới? Tô Nguyệt Dao, chân truyền. Khu Luyện Công này ta phụ trách buổi sáng — cần bia, cần giá binh khí, cứ tìm ta.',
+                'Nghe nói ngươi trấn được phong ấn ở làng Thanh Khê. Việc đó ta nể. Nhưng vào tông rồi, mọi thứ tính lại từ đầu — ta cũng vậy, năm mười bốn tuổi.'
+              ],
+              lore: [
+                'Bia pháp ở trường này làm từ đá Hàn Đàm: lạnh quanh năm, pháp đánh vào không vỡ, chỉ để lại vệt sáng — nhìn vệt là biết đòn lệch ở đâu.',
+                'Đình Tĩnh Tâm phía đông là chỗ tông chủ ngồi mỗi sớm. Đệ tử không bị cấm vào, chỉ bị cấm nói to. Ngươi cứ thử ngồi một buổi, sẽ hiểu vì sao.'
+              ],
+              idle: [
+                'Đứng ở vạch xa nhất, bắn từng đòn pháp vào bia, vệt sáng nối thành hàng đều.',
+                'Lau lại mặt bia pháp bằng khăn ẩm, kiểm từng vệt nứt nhỏ.'
+              ]
+            },
+      de_tu_ngoai_mon_hp: {
+              lines: [
+                'Vườn này em tưới hai lần một ngày, sáng trước khi mặt trời lên và chiều khi sương xuống. Linh thảo uống sương mới tốt, uống nắng là héo.',
+                'Chị Nguyệt Dao nói em tâm loạn. Em đang tập đứng yên một nén nhang mỗi sáng ở Trận Đồ — mới đứng được nửa nén là chân tê, nhưng tê cũng là tiến bộ chứ bộ.',
+                'Đừng hái linh chi trong vườn khi chưa hỏi em. Không phải em khó — là chấp sự Nghiêm ghi sổ từng cây một, thiếu một cây là em bị chép phạt thay.'
+              ],
+              greeting: [
+                'A, đệ tử mới! Em là Lâm Tiểu Vũ, ngoại môn, giữ Vườn Linh Thảo dưới viện. Việc vặt trong tông cứ hỏi em, em biết hết — trừ việc trong Tàng Kinh Các, cái đó hỏi bác Lục.',
+                'Anh... chị... à người mới, đã ghi tên vào sổ của chấp sự Nghiêm chưa? Chưa ghi là chưa được phát sách đâu, em nhắc trước kẻo mất công đi lại.'
+              ],
+              lore: [
+                'Ngũ Hành Lâm ở chân núi là nơi đệ tử ngoại môn tụi em trốn nắng trưa. Giữa lâm có vòng đá cũ, nghe nói là dấu của đài thử pháp đời đầu — đứng vào đó mùa mưa nghe tiếng nước rất lạ.',
+                'Hàn Đàm phía đông lạnh đến mức cá cũng ít. Bác Lục nói dưới đáy đầm có đàn cổ; em chỉ dám đứng bờ nhìn, nước trong veo mà không thấy đáy.'
+              ],
+              idle: [
+                'Xách thùng gỗ đi dọc luống dược, tưới từng gốc một.',
+                'Đứng trên lối mòn giữa vườn, nhắm mắt tập tĩnh tâm được vài hơi rồi mở mắt cười.'
+              ]
+            },
+      // --- SƠN MÔN THIÊN CÔNG PHƯỜNG (story-blocks.js của gói, nguyên văn) ---
+      mac_thiet_tam: {
+          lines: [
+            'Vào phường thì bỏ cái thói nói dài. Nhìn lửa, nhìn sắt, rồi hãy mở miệng.',
+            'Khí do tay người, đạo do tâm rèn. Tay run thì đừng trách sắt cong.',
+            'Muốn ta rèn khí cho, mang quặng tốt tới. Sắt vụn thì thần tiên cũng rèn ra phế phẩm.'
+          ],
+          greeting: [
+            'Đệ tử mới? Xuống sân lò xem thợ cả quai ba chùy trước, rồi hãy nói chuyện bái sư.',
+            'Đứng tránh đường xe quặng. Trong phường này, quặng quý hơn khách.'
+          ],
+          lore: [
+            'Lò lớn của phường cháy không tắt đã hơn trăm năm. Lửa tắt ngày nào, phường giải tán ngày đó — lời thề của tổ sư rèn.',
+            'Bờm sắt của Lợn Mông Sắt cứng hơn thép thường ba phần. Đệ tử mới nào hạ được hai con, ta mới cho chạm vào đe.'
+          ],
+          idle: [
+            'Nghe tiếng đe đều là phường còn yên ổn.',
+            'Hừ. Thanh kiếm kia tôi sớm nửa khắc, lưỡi đã sậm màu.'
+          ]
+        },
+      chap_su_tc: {
+          lines: [
+            'Lên núi phải điểm danh ở tiếp khách đài. Lệ phường từ đời tổ sư, không trừ ai.',
+            'Xe quặng xuống núi, xe than lên núi — đứng nép vào lan can, đừng chắn đại lộ.',
+            'Đệ tử tông khác muốn vào sơn môn phải có thủ lệnh của phường chủ. Không có thì mời quay lại map dưới núi.'
+          ],
+          greeting: [
+            'Người nhà về núi đấy à? Sổ điểm danh đây, ký một nét rồi hẵng lên đại điện.',
+            'Khách quý, mời dừng chân ở tiếp khách đài, để tôi vào bẩm phường chủ.'
+          ],
+          lore: [
+            'Cổng phường khắc ba chữ Thiên Công Phường từ ngày lập phái, nét chữ là của chính tổ sư rèn — nghe nói ông dùng chùy gõ thay bút.',
+            'Hai tháp cổng không phải để trang trí: trên đó treo chuông báo, lò có biến là chuông tự rung trước cả người coi lò.'
+          ],
+          idle: [
+            'Hôm nay ba xe tinh thiết vào kho, hai xe than lên lò. Sổ sách khớp từng cân.',
+            'Gió nam thuận, khói lò bay thẳng — ngày rèn tốt.'
+          ]
+        },
+      tho_ca_tc: {
+          lines: [
+            'Đứng xa đe ra ba bước! Tia lửa không biết tránh đệ tử mới đâu.',
+            'Rèn khí trước hết rèn tay. Tay chưa chai, đừng mơ cầm chùy lớn.',
+            'Thanh nào qua tay ta mà cong, ta rèn lại miễn phí — mà hai mươi năm nay chưa có thanh nào phải rèn lại.'
+          ],
+          greeting: [
+            'Sư đệ mới về núi à? Xuống bãi luyện tay vung chùy gỗ một tháng cho quen vai đi.',
+            'Muốn xem rèn khí thì đứng bên bể tôi, chỗ đó vừa mát vừa không vướng thợ.'
+          ],
+          lore: [
+            'Lò lớn thân đúc bằng đất sét trộn tro xương yêu thú, nung ngàn độ không nứt. Cả vùng này chỉ phường ta có một lò như thế.',
+            'Bể tôi dùng nước suối khoáng sau núi: tôi kiếm xong lưỡi xanh như mặt nước, thợ ngoài phường học mãi không ra.'
+          ],
+          idle: [
+            'Một, hai, ba — nhịp chùy phải đều như nhịp thở.',
+            'Đợt tinh thiết này tốt, đánh vào nghe tiếng trong như chuông.'
+          ]
+        },
+      coi_lo_tc: {
+          lines: [
+            'Lửa lò hôm nay màu cam sậm, nhiệt đang đẹp. Đừng có mở cửa lò ngó vào, gió lùa là hỏng mẻ thép.',
+            'Tôi khí phải đúng khắc: sớm một khắc lưỡi giòn, muộn một khắc lưỡi mềm. Ta canh giờ bằng mắt bốn mươi năm nay chưa sai.',
+            'Bể tôi này cấm rửa tay, cấm lấy nước uống. Nước tôi kiếm có linh, quấy đục là phường chủ đuổi khỏi núi.'
+          ],
+          greeting: [
+            'Lại gần lò thì buộc tóc gọn, vạt áo cài chặt. Lửa không thương ai đâu, cháu ạ.',
+            'Thăm lò à? Đứng sau vạch đá, lão chỉ cho xem màu lửa từng lò một.'
+          ],
+          lore: [
+            'Chín cửa lò dưới mái lớn là chín tính lửa khác nhau: lò giữa rèn trọng khí, lò hai bên rèn linh khí nhẹ. Thợ mới vào phải học thuộc trước khi học cầm chùy.',
+            'Hầm mỏ mẫu dưới chân núi là nơi tổ sư đào được viên quặng đầu tiên. Phường giữ nguyên không khai thác nữa, chỉ cho đệ tử mới vào xem cho biết gốc.'
+          ],
+          idle: [
+            'Khói lò bay nghiêng… chiều nay đổi gió, phải dặn thợ đóng bớt cửa gió đông.',
+            'Bốn mươi năm coi lò, mắt lão mờ đi nhưng nhìn lửa thì sáng hơn xưa.'
+          ]
+        },
+      de_tu_tc: {
+          lines: [
+            'Huynh xem thanh kiếm này của đệ… lại cong rồi. Lần thứ mười một.',
+            'Thợ cả bảo: vung chùy ngàn lần thì tay tự biết đúng sai. Đệ mới vung được ba trăm.',
+            'Bãi luyện tay này giá binh khí toàn đồ tập. Đệ tử rèn hỏng bao nhiêu cũng không bị phạt, chỉ bị cười.'
+          ],
+          greeting: [
+            'Sư huynh mới nhập nội môn ạ? Đệ là Phan Tiểu Luyện, phụ trách bãi luyện tay hôm nay.',
+            'Huynh đến thử tay à? Chọn chùy gỗ ở giá bên trái, chùy sắt phải có lệnh thợ cả mới được lấy.'
+          ],
+          lore: [
+            'Nghe nói phường chủ ngày trẻ rèn hỏng một thanh kiếm của khách, ngồi rèn lại ba ngày ba đêm không ngủ. Từ đó phường có lệ: khí hỏng, rèn lại miễn phí.',
+            'Vòng Thiên Công Chùy Ấn giữa quảng trường là ấn của tổ sư. Đệ tử mới bái sư phải đứng trong vòng đó dập đầu chín cái.'
+          ],
+          idle: [
+            'Hôm nay phải vung đủ bảy trăm lần còn lại trước giờ cơm.',
+            'Giá như một lần rèn thẳng được ngay…'
+          ]
+        },
+      de_tu_ngoai_tc: {
+          lines: [
+            'Đệ đang gánh quặng từ bãi vật liệu lên sân lò. Gánh này là gánh thứ chín hôm nay rồi đấy.',
+            'Ngoại môn muốn lên nội môn phải qua kỳ khảo tay: rèn một con dao không cong, không mẻ. Đệ trượt hai kỳ rồi.',
+            'Giếng này là nước cho cả khu đệ tử. Sáng nào đệ cũng gánh sáu thùng trước khi thợ cả dậy.'
+          ],
+          greeting: [
+            'Sư huynh về núi ạ? Để đệ xách hành lý xuống viện ngoại môn cho.',
+            'Huynh có khát không? Nước giếng ở khu đệ tử mát lắm, đệ múc cho một gáo.'
+          ],
+          lore: [
+            'Đệ nghe các sư huynh kể: hầm mỏ mẫu ở chân núi còn một vỉa quặng tổ sư chừa lại, dặn khi nào phường gặp đại nạn mới được đào.',
+            'Suối khoáng sau núi chảy qua bãi đá ấm cả mùa đông. Người coi lò bảo nhờ nó mà bể tôi của phường hơn hẳn nơi khác.'
+          ],
+          idle: [
+            'Gánh quặng, gánh nước, vung tay không… ngày nào cũng thế mà vai đệ to hẳn ra.',
+            'Cố lên, kỳ khảo tay tới phải đậu.'
+          ]
+        },
+      // --- SƠN MÔN ĐAN HÀ CỐC (story-blocks.js của gói, nguyên văn) ---
+      tan_duoc_tu: {
+              lines: [
+                'Ngồi xuống đã. Hít một hơi thật sâu — mùi khói lò, mùi dược, mùi đất đan sa sau mưa. Ngửi được ba mùi ấy lẫn nhau mà không lẫn lộn, ngươi mới bắt đầu ngửi ra thuốc.',
+                'Cốc này giữ một câu làm cốc quy: lửa nhỏ giữ mạng người, lửa lớn hại mạng người. Luyện đan cũng vậy, tu hành cũng vậy — tham một mẻ lớn là mất cả lò.',
+                'Muốn học đan, trước hết xuống vườn mà học thuộc mặt thuốc. Tay chưa quen đất, mắt chưa quen lá, thì đừng mơ tới chuyện quen lửa.'
+              ],
+              greeting: [
+                'Đệ tử mới của Đan Hà phải không? Ta là Tần Dược Tử. Ừm — trên áo ngươi còn mùi linh chi của Thanh Sơn, thơm đấy.',
+                'Vào cốc rồi thì coi như vào bếp của trời đất. Đừng sợ lửa, nhưng cũng đừng bao giờ khinh lửa.'
+              ],
+              lore: [
+                'Suối Đan Hà chảy qua tầng đất đan sa nên bờ đá đỏ như ráng chiều — tên cốc từ đó mà ra. Nước suối ấy tưới vườn, dược tính ấm hơn nước thường một bậc.',
+                'Năm xưa ta mải đọc sách, suýt làm nổ tung Đại Đan Lô. Lò không nổ, nhưng mái Đan Phòng cháy mất một nửa. Từ đó cốc có lệ: người trông lò không được mang sách vào phòng.'
+              ],
+              idle: [
+                'Đang hít hà một nắm dược liệu mới thu, gật gù như nếm rượu.',
+                'Lật sổ đan phương cũ, thỉnh thoảng bật cười một mình.'
+              ]
+            },
+      chap_su_dh: {
+              lines: [
+                'Quy củ trong cốc có ba điều: không giẫm lên luống dược, không tự ý vào Đan Phòng khi lò đang đỏ, và hái thuốc phải chừa lại gốc — hái tuyệt chủng là tội lớn nhất của nhà thuốc.',
+                'Đệ tử mới ở hai viện phía tây tầng giữa. Sảnh Giao Dịch ngay dưới chân cốc: đan dược luyện dư đem xuống đó đổi Linh Thạch, thương khách các nơi đều qua ta kiểm ấn.',
+                'Kho Dược ở cạnh sảnh giao dịch, chìa khóa chỉ hai người giữ: ta và cốc chủ. Thiếu vị nào trong đơn thuốc, cứ tới hỏi ta trước, đừng tự chạy vào vườn hái bừa.'
+              ],
+              greeting: [
+                'Đệ tử mới phải không? Ta là Hà Thủ Nhân, chấp sự sơn môn. Ăn ở, kho bồ, khách khứa trong cốc đều qua tay ta.',
+                'Đi đường xa chắc đói. Ghé Sảnh Giao Dịch uống chén trà dược đã, rồi ta dẫn ngươi nhận phòng ở viện ngoại môn.'
+              ],
+              lore: [
+                'Đan Đỉnh ở giữa quảng trường là đỉnh trấn cốc, đúc từ đời cốc chủ đầu tiên. Mỗi dịp mở lò lớn, cả cốc tụ về quảng trường nghe tiếng đỉnh ngân mà đoán mẻ đan lành dữ.',
+                'Đất cốc này hình lòng chảo, giữ nhiệt địa hỏa quanh năm. Lò đan ở đây tốn ít lửa hơn nơi khác ba phần — đó là lộc trời của Đan Hà, cũng là họa nếu ai tham lửa lớn.'
+              ],
+              idle: [
+                'Đang đối chiếu sổ kho dược với sổ giao dịch, chấm bút liên tục.',
+                'Sắp lại các sạp hàng trước Sảnh Giao Dịch cho ngay ngắn.'
+              ]
+            },
+      quan_vuon_dh: {
+              lines: [
+                'Đi đứng nhìn chân! Luống bên trái là Ngọc Tủy Chi mới nhú mầm, giẫm một cái là mất ba năm chờ đợi của cả cốc.',
+                'Ba vườn của cốc chia theo tầng: vườn thượng trồng thuốc quý ưa lạnh, vườn giữa là thuốc thường ngày, vườn chân cốc cho đệ tử mới tập tay. Nước mương lấy từ suối Đan Hà, ấm và có linh khí.',
+                'Hái thuốc phải nhớ: lá lấy hai chừa một, rễ đào một trồng lại hai. Thuốc cũng như người, phải để đường sống mới có ngày gặp lại.'
+              ],
+              greeting: [
+                'Đệ tử mới xuống vườn phải không? Ta là Tôn Thảo Nương, quản ba vườn dược này. Tay đâu, đưa ta xem — tay mềm thế này, cầm cuốc khéo lại làm đau đất.',
+                'Đừng sợ ta khó. Thuốc trong vườn này cứu người cả vùng Thanh Sơn; ta khó là khó thay cho người bệnh thôi.'
+              ],
+              lore: [
+                'Luống Huyết Sâm ở vườn thượng là giống đem từ Đoạn Long Lĩnh về thuần hóa hai mươi năm mới sống được ở đất cốc. Cả vùng Thanh Sơn chỉ cốc này trồng nổi.',
+                'Đêm nào sương xuống dày, sáng ra linh chi mọc hoang dọc bờ suối Đan Hà. Đệ tử trực vườn được hái, nhưng phải ghi sổ — của chung không ai được giấu làm của riêng.'
+              ],
+              idle: [
+                'Đang cúi kiểm tra từng luống Ngọc Tủy Chi, tay không chạm vào lá non.',
+                'Đứng giữa ngã ba mương, ngó mực nước rồi gật đầu một mình.'
+              ]
+            },
+      dan_su_dh: {
+              lines: [
+                'Nghe đi. Lò kêu thế này là lửa đang đều. Khi nào tiếng kêu chuyển sang rít ngắn, đó là dược đang kết tinh — lúc ấy, dù cốc chủ gọi cũng không được mở nắp.',
+                'Đan Đài lộ thiên phía nam sân là nơi luyện các mẻ dễ phản phệ. Luyện ở đó, có nổ cũng chỉ nổ trời — nhớ câu của cốc chủ: lửa nhỏ giữ mạng người.',
+                'Muốn ta dạy mẻ đầu tiên? Xuống vườn hái đủ vị về đây, tự tay rửa, tự tay phơi ở Sân Phơi. Đan là việc của cả đôi tay, không phải chỉ của cái lò.'
+              ],
+              greeting: [
+                'Đệ tử mới? Ta là Chu Đỉnh Sinh, giữ Đại Đan Phòng này. Vào phòng lò thì bước nhẹ, nói khẽ — lửa đang ngủ.',
+                'Đứng xa lò ra một chút. Tóc ngươi còn mùi khói đường núi; gần lò quá, nó bắt lửa trước cả dược liệu.'
+              ],
+              lore: [
+                'Đại Đan Lô trong phòng này đúc cùng một mẻ đồng với Đan Đỉnh ở quảng trường. Hai vật một lửa: đỉnh ngân thì lò thuận, đỉnh lặng thì phải coi lại địa hỏa.',
+                'Tai trái ta lãng đi một phần vì lò phản phệ năm xưa. Từ đó ta nghe lửa bằng tai phải và bằng... lòng bàn tay đặt lên vách lò.'
+              ],
+              idle: [
+                'Áp lòng bàn tay lên vách lò, nhắm mắt nghe rất lâu.',
+                'Đang cân từng vị dược trên cân đồng nhỏ, sai một phân cũng đổ ra cân lại.'
+              ]
+            },
+      de_tu_hai_duoc_dh: {
+              lines: [
+                'Vườn chân cốc là em phụ trách đấy! Luống nào mới gieo, luống nào sắp thu, em nhắm mắt cũng đi được.',
+                'Chị quản vườn khó tính lắm, nhưng thuốc em hái sai một lá là bà ấy ngửi cái biết ngay. Anh/chị mới vào, cứ theo em một vòng là thuộc hết đường mương.',
+                'Sân Phơi ở tầng giữa là chỗ em thích nhất. Nắng lên, cả sân thơm mùi thuốc khô — ngửi mùi ấy là biết trưa nay bếp nấu món gì cũng ngon.'
+              ],
+              greeting: [
+                'A, đệ tử mới! Em là Lâm Tiểu Chi, ở viện ngoại môn. Phòng của anh/chị xếp dãy trên, gần giếng nước đấy!',
+                'Leo hết đại lộ vào cốc có mệt không? Lần đầu em vào, tới thềm nghỉ là ngồi bệt xuống, bị chị quản vườn cười cho một trận.'
+              ],
+              lore: [
+                'Nghe nói linh chi quanh làng Thanh Khê hút linh khí giếng cổ mà mọc, dược tính mạnh lạ thường. Cốc chủ đích thân xuống núi xem rồi đấy!',
+                'Bờ suối phía đông có chòi gác nhỏ. Đêm trăng, đệ tử trực suối kể là thấy cá chép đỏ bơi ngược lên thác — cá ấy mà bắt được thì... em chưa bắt bao giờ, toàn nghe kể thôi.'
+              ],
+              idle: [
+                'Đang gánh nước từ mương lên tưới luống mới gieo ở vườn chân cốc.',
+                'Ngồi ở bờ mương rửa một rổ thảo dược, hát khẽ một điệu không rõ lời.'
+              ]
+            },
+      // --- SƠN MÔN VẠN THÚ MÔN (story-blocks.js của gói, nguyên văn) ---
+      giang_tieu_thu: {
+              lines: [
+                'Ngươi vừa qua cổng là ta biết rồi — không phải nghe tiếng chân, mà nghe tiếng đàn thú trong chuồng cùng im lặng quay đầu nhìn. Thú tò mò tức là chúng để ý ngươi đấy.',
+                'Vạn Thú Môn tu không phải để sai khiến thú. Ngươi coi thú là bạn, thú mới chịu đứng cạnh ngươi lúc đánh nhau. Coi nó là công cụ, nó bỏ đi giữa trận cũng đừng trách.',
+                'Khi nào ra Bãi Thuần Thú, nhớ: vòng tròn khắc trên sân không phải để nhốt thú, là để ngươi và thú học cách đứng đúng chỗ của nhau.'
+              ],
+              greeting: [
+                'Đệ tử mới phải không? Ta là Giang Tiểu Thú — ừ, chưởng môn đấy, đừng nhìn mặt ta mà không tin. Đàn thú trong núi còn không nghi ngờ ta nữa là.',
+                'Từ hôm nay bầy thú của môn cũng là bạn của ngươi. Tối nay qua Thú Viên chào chúng một tiếng đi, ta dẫn.'
+              ],
+              lore: [
+                'Ta lớn lên trong chuồng thú, sói mẹ nuôi. Sư phụ nhặt ta về dạy chữ sau — nên ta đọc ý thú nhanh hơn đọc sách, các trưởng lão cứ trêu mãi.',
+                'Dấu chân khắc giữa quảng trường là Trảo Ấn của tổ sư. Tương truyền tổ sư không lập phái bằng kiếm hay đan, mà bằng một lời hứa với con thú vương đầu tiên của Thanh Sơn: người và thú giữ núi cùng nhau.'
+              ],
+              idle: [
+                'Đang hít hà ngửi gió từ hướng Thú Viên, gật gù như nghe ai nói chuyện.',
+                'Chia nắm linh thảo cho mấy con thú con chạy theo chân xin ăn.'
+              ]
+            },
+      chap_su_vt: {
+              lines: [
+                'Quy củ sơn môn có ba điều: không mở cổng chuồng khi chưa được phép, không cho thú lạ ăn ngoài bữa, và nghe tiếng thú kêu khác thường ban đêm thì báo ngay, đừng tự vào chuồng một mình.',
+                'Đệ tử mới ở viện ngoại môn phía tây tầng giữa. Thú của ngươi nếu có, đăng ký vào sổ chuồng ở nhà gác cổng Thú Viên — môn nuôi chung, ốm đau có người lo.',
+                'Muốn tập phối hợp với thú thì xuống Bãi Thuần Thú ở chân núi phía đông, có Tiểu Hoàn sư tỉ ở đó. Muốn yên tĩnh thì ra Vọng Thú Đài mà ngắm đàn thú thả ở rừng tây.'
+              ],
+              greeting: [
+                'Đệ tử mới phải không? Ta là Lỗ Bình An, chấp sự sơn môn. Việc ăn ở của người và thú trong môn đều qua sổ của ta.',
+                'Leo núi mệt không? Ngồi xuống thềm uống chén nước đã. Thú đi đường xa còn phải nghỉ, huống chi người.'
+              ],
+              lore: [
+                'Sổ chuồng của môn ghi liên tục hơn hai trăm năm: con thú nào sinh, con nào mất, đều có tên. Đệ tử trong môn bảo nhau: ở Vạn Thú, thú có gia phả trước cả người.',
+                'Hồ Tắm Thú ở chuồng giữa là nước suối linh dẫn về. Thú bị thương ngâm vào mau lành — đệ tử bị thương cũng hay lén ra ngâm, quản sự Hoắc biết hết mà làm ngơ.'
+              ],
+              idle: [
+                'Đang đối chiếu sổ chuồng với sổ điểm danh đệ tử, hai cuốn dày như nhau.',
+                'Sai đệ tử nhỏ mang thêm cỏ linh ra máng chuồng Bắc.'
+              ]
+            },
+      quan_thu_vien: {
+              lines: [
+                'Vào chuồng thì đi nhẹ, nói khẽ. Đừng đứng chắn gió đầu chuồng — thú ngửi mùi lạ là nó biết ngươi chưa phải người nhà.',
+                'Ba chuồng chia theo tính: chuồng Bắc thả loài hiền, chuồng Giữa có hồ tắm cho loài ưa nước và thú đang dưỡng thương, chuồng Nam nhiều bóng cây cho loài khó tính cần yên tĩnh. Đừng tự ý dồn chúng sang chuồng nhau.',
+                'Con nào bỏ ăn là sắp ốm, con nào tự nhiên hiền hẳn là sắp sinh. Nhìn thú phải nhìn trước khi nó kêu — đợi nó kêu là muộn rồi.'
+              ],
+              greeting: [
+                'Đệ tử mới vào xem Thú Viên à? Ta là Hoắc Sơn Dân, giữ vườn thú này ba mươi năm rồi.',
+                'Đứng đây thôi, đừng sờ vội. Để chúng ngửi mùi ngươi cho quen đã — bạn bè gì cũng phải làm quen từ từ.'
+              ],
+              lore: [
+                'Đàn thú của môn một nửa là thú rừng tự tìm đến. Núi này linh khí dày, thú khôn tự biết chỗ nào an toàn mà tới ở.',
+                'Ngày môn lập chuồng đầu tiên, tổ sư chỉ rào đúng ba mặt, chừa mặt phía rừng mở. Người hỏi sao không rào kín, tổ sư bảo: rào kín là nhốt, chừa đường về rừng mới là nuôi bạn.'
+              ],
+              idle: [
+                'Đang kiểm tra từng máng cỏ, vốc một nắm lên ngửi rồi mới gật đầu.',
+                'Ngồi ở cửa chuồng Nam vá lại đoạn rào bị thú cọ gãy.'
+              ]
+            },
+      thuan_thu_su: {
+              lines: [
+                'Bài đầu tiên ở bãi này không phải nhảy chướng ngại — là đứng yên trong vòng tròn cho tới khi thú của ngươi tự ngồi xuống cạnh ngươi. Thú chưa tin thì đừng mong nó nghe lệnh.',
+                'Chướng ngại sơn đỏ trắng là để tập đổi hướng giữa trận. Ngươi chạy trước, thú theo sau; ngươi vấp là nó cũng loạn — nên người phải thuộc đường trước thú.',
+                'Khi nào ngươi và thú qua hết bài chướng ngại mà không cần ta hô, ta sẽ xin chưởng môn cho ngươi theo đoàn vào rừng thả thú tuần sơn.'
+              ],
+              greeting: [
+                'Sư đệ mới nhập môn? Ta là Tô Tiểu Hoàn, phụ trách Bãi Thuần Thú này. Dẫn thú của ngươi ra vòng tròn ta xem hai đứa hợp nhau tới đâu.',
+                'Đừng sợ thú của ngươi không nghe lời ngày đầu. Ta ngày mới lên núi, con hươu của ta còn kéo ta chạy ba vòng quanh bãi.'
+              ],
+              lore: [
+                'Vòng tròn giữa bãi khắc theo Trảo Ấn ở quảng trường tầng thượng. Thuần thú sư các đời đều nói: đứng trong vòng là đứng trong lời hứa của tổ sư với bầy thú.',
+                'Khu Ấp Trứng dưới kia là chỗ của A Ngưu. Trứng linh thú phải ấp bằng hơi ấm người giữ đều — môn không dùng lò lửa, vì thú nở ra ngửi mùi khói sẽ không nhận người.'
+              ],
+              idle: [
+                'Đang chạy một vòng chướng ngại mẫu, bước chân nhẹ và đều như đếm nhịp.',
+                'Chải lông cho một con linh thú già nằm phơi nắng ở mép bãi.'
+              ]
+            },
+      de_tu_chan_thu: {
+              lines: [
+                'Khu ấp này là việc của em đấy! Trứng phải trở đều mỗi canh giờ, thú con nở ra yếu lắm, ba ngày đầu không rời tay người được.',
+                'Ô ấp phía đông có ổ trứng mới mang từ rừng về tuần trước — quản sự bảo có trứng của loài hiếm. Em canh mà hồi hộp theo!',
+                'Anh/chị biết không, thú con nở ra nhìn thấy ai đầu tiên là theo người đó. Nên lúc trứng sắp nở, cả khu ấp nín thở — được thú chọn là phước lớn của đệ tử ngoại môn đấy.'
+              ],
+              greeting: [
+                'A, đệ tử mới! Em là Trần A Ngưu, coi Khu Ấp Trứng này. Tay anh/chị ấm không? Ấm là có duyên với thú con đấy!',
+                'Leo núi lên có gặp đàn thú thả ở rừng tây không? Chúng hiền lắm, đừng có chạy — chạy là chúng tưởng chơi, đuổi theo còn mệt hơn!'
+              ],
+              lore: [
+                'Rừng Thả Thú phía tây chân núi là nơi môn thả thú con lớn rồi cho tự lập. Chúng vẫn nhớ đường về chuồng — con nào nhớ nhà thì tối lại mò về ngủ nhờ.',
+                'Nghe nói giếng cổ ở làng Thanh Khê dưới chân núi phát sáng trở lại, thú trong rừng mấy hôm nay cứ hướng về phía làng mà ngửi gió. Chưởng môn bảo linh nhãn thức thì thú biết trước người.'
+              ],
+              idle: [
+                'Đang trở trứng trong ổ rơm, miệng đếm khẽ từng quả.',
+                'Ôm một con thú con mới nở cho bú bình sữa linh thảo.'
+              ]
+            },
+      // --- SƠN MÔN THIÊN PHÙ CÁC (story-blocks.js của gói, nguyên văn) ---
+      diep_phu_sinh: {
+            lines: [
+              'Chậm. Nét bùa đặt xuống rồi, không sửa được đâu.',
+              'Lá bùa trấn cổng kia, ta viết trong một đêm mưa, một hơi, không nhấc bút.',
+              'Giấy có thể rách, chu sa có thể cạn — chỉ có tâm vội là không chữa được.',
+              'Ngươi muốn học phù? Trước hết, học cách rửa bút cho sạch đã.',
+            ],
+            greeting: 'Vào các của ta, bước chân cũng phải như nét bùa: nhẹ, mà chắc.',
+            lore: [
+              'Thiên Phù Chu Ấn trên bia đá giữa Phù Đàn khuyết một góc từ trăm năm nay. Tổ sư nói ấn khuyết là để nhắc người sau: phù đạo không có điểm tròn đầy, chỉ có người không ngừng luyện.',
+              'Cây bút cán ngọc này là của sư phụ ta. Một năm ta chỉ dùng nó một lần — vẽ bùa trấn cổng đêm giao thừa. Còn lại, bút thường cũng vẽ nên bùa tốt, nếu tay không run.',
+            ],
+            idle: [
+              'Đàm quản sự canh đàn ba mươi năm, chưa tắt một nén hương. Cái chậm rãi ấy mới là phù đạo.',
+              'Tề Mặc Quân chê nét bùa của ta run — cô ấy nói đúng. Lần sau ngươi gặp, cứ bảo ta đã chép lại nét đó rồi.',
+            ] },
+      chap_su_tpc: {
+            lines: [
+              'Đứng lại đã, ghi sổ cái nào: họ tên, ngày giờ lên núi — xong mới đi tiếp được.',
+              'Giấy bùa phát theo suất, chu sa phát theo lạng. Hết thì xuống kho gặp ta, đừng tự ý lấy.',
+              'Này, đi chậm thôi! Cổng các này trăm năm nay chưa ai vội mà được việc gì.',
+            ],
+            greeting: 'Người mới lên núi phải không? Qua đây, ta ghi sổ điểm danh rồi chỉ đường lên thềm tiếp khách.',
+            lore: [
+              'Kho giấy của các nằm cạnh xưởng chế phù, khô ráo quanh năm — giấy ẩm một xấp là hỏng cả trăm lá bùa, nên ta canh kho còn kỹ hơn canh nhà mình.',
+              'Lá bùa đầu tiên ta vẽ năm mười sáu tuổi, nét run như giun đất. Ta vẫn giữ nó trong sổ tay — để nhớ mình cũng từng hấp tấp như ai.',
+            ],
+            idle: [
+              'Hàn Tiểu Chỉ dưới vườn lại gửi lên một rổ chu sa chín. Con bé thuộc từng cây như thuộc tên người.',
+              'Chiều nay có đợt phát giấy mới cho đệ tử ngoại môn, ngươi nhớ qua sớm kẻo hết khổ giấy tốt.',
+            ] },
+      quan_dan_tpc: {
+            lines: [
+              'Trên đàn, nói khẽ thôi. Văn khắc dưới chân ngươi nghe rõ từng chữ đấy.',
+              'Hương trên đàn này, ba mươi năm chưa tắt một lần. Ta cũng chưa vắng một ngày.',
+              'Bia đá giữa đàn là Thiên Phù Chu Ấn. Nhìn kỹ đi — ấn khuyết một góc ở phía đông.',
+              'Muốn lên đàn xem lễ thì rửa tay ở bể đá trước. Tay bẩn, đừng chạm vào giá bùa.',
+            ],
+            greeting: 'Lên đàn thì bỏ dép ở bậc dưới. Đất đàn là đất nghiêm, bước nhẹ cho ta.',
+            lore: [
+              'Phù Đàn ba bậc: bậc dưới phơi bùa mới vẽ, bậc giữa là xưởng và kho, bậc trên cùng chỉ mở khi cả các làm lễ tế tổ hoặc gặp tà khí lớn. Bậc càng cao, nét bùa càng phải sạch.',
+              'Năm ta trẻ dại, một nét bùa lạc làm cháy nửa giá bùa trên đàn. Các chủ đời trước không phạt, chỉ bảo: "Lửa đó, con tự canh lấy." Ta canh từ đó đến giờ.',
+            ],
+            idle: [
+              'Mùa này gió nam hay tạt, ta phải che thêm lồng cho lư hương phía đông.',
+              'Các chủ sắp lên đàn khảo bùa cuối tháng. Mấy hôm nay đệ tử nào cũng nín thở luyện nét.',
+            ] },
+      che_phu_tpc: {
+            lines: [
+              'Giấy này cắt ẩu! Mép xiên nửa ly là nét bùa lệch cả tấc — mang về, cắt lại.',
+              'Chu sa phải nghiền mịn như phấn, pha loãng là ta trả về ngay, khỏi năn nỉ.',
+              'Nhìn tay ta này: chấm mực một lần, vẽ liền ba nét. Luyện được vậy hẵng nói chuyện lôi phù.',
+              'Bùa hỏng đừng vứt — đốt ở lò xưởng, tro trộn vào đất vườn chu sa. Trong các này không có thứ gì là rác.',
+            ],
+            greeting: 'Vào xưởng thì đứng tránh lối đi, giấy khô đang phơi đầy sân đấy — dẫm lên là ta bắt đền.',
+            lore: [
+              'Giấy bùa của các làm từ trúc trong Trúc Lâm Giấy dưới chân núi: ngâm, giã, phơi đúng bốn mươi chín ngày. Vội một ngày là giấy giòn, bùa vẽ lên nứt nét giữa chừng.',
+              'Ta đang thử giấy "chu trúc" — trộn vỏ cây chu sa vào bột trúc. Nếu thành, lá bùa lôi vẽ lên sẽ không cháy giấy trước khi kịp nổ.',
+            ],
+            idle: [
+              'Đàn trên sắp làm lễ, xưởng ta phải giao ba trăm lá bùa trắng trước rằm. Mấy đứa nhỏ, tay lên nào!',
+              'Hàn Tiểu Chỉ hứa hái cho ta lứa quả chu sa chín nhất. Con bé có mắt chọn quả chẳng thua gì ta.',
+            ] },
+      de_tu_vuon_tpc: {
+            lines: [
+              'Cây chu sa góc đông này là "cụ" của vườn đấy — chín mươi tuổi rồi, quả của cụ to bằng đầu ngón tay cái!',
+              'Hái chu sa phải hái lúc sương chưa tan, quả mới giữ được màu đỏ tươi. Trưa nắng hái là quả xỉn ngay.',
+              'Trúc trong lâm kia là để làm giấy bùa. Anh đừng bẻ măng lung tung, chấp sự Tống ghi sổ trừ suất giấy đấy!',
+              'Em có một hũ "kho báu" chôn dưới gốc cây già nhất. Là gì thì… bí mật!',
+            ],
+            greeting: 'Anh xuống vườn chơi ạ? Đi theo lối gạch này thôi nhé, đừng dẫm lên luống chu sa mới trồng của em.',
+            lore: [
+              'Vườn chu sa này nuôi cả sơn môn: quả nghiền ra chu sa vẽ bùa, lá ủ làm phân cho lâm trúc, trúc lại làm giấy — các chủ bảo đó là "một vòng tròn không đầu thừa".',
+              'Ao tưới đầu vườn có cầu đá bắc qua. Nước ao trong lắm, soi thấy cả cá — mà cá trong ao là để ngắm, bắt là bị quản sự Đàm phạt chép bùa đấy.',
+            ],
+            idle: [
+              'Mai em phải dậy sớm hái lứa quả chín cho xưởng của cô Tề. Cô ấy khó tính, quả hơi xanh là trả cả rổ.',
+              'Em mơ sau này được vẽ lá bùa đầu tiên bằng chu sa tự trồng. Các chủ nghe xong chỉ gật đầu — gật đầu của các chủ là quý lắm đấy!',
+            ] },
+      // --- SƠN MÔN CỬU CUNG TRẬN TÔNG (story-blocks.js của gói, nguyên văn) ---
+      au_duong_ky: {
+              lines: [
+                'Ngươi vào sơn môn bằng đại lộ, bước qua đúng tâm trận mà lên thềm — không lệch một ô. Người như vậy, bày trận sẽ không run tay.',
+                'Cửu Cung không dạy đánh. Cửu Cung dạy đứng. Đứng đúng ô thì một người yếu giữ được mười người mạnh; đứng sai ô thì mạnh đến đâu cũng là quân cờ trong trận của kẻ khác.',
+                'Muốn học trận, trước hết xuống quảng trường mà đi hết một vòng Đại Trận Đồ. Đi chậm thôi — trận đồ không trốn, chỉ có người vội là tự trốn khỏi nó.'
+              ],
+              greeting: [
+                'Đệ tử mới, đứng yên ở ô đó đã. Ta là Âu Dương Kỳ, tông chủ đời này của Cửu Cung Trận Tông — và cũng là người đã thử ngươi ở bãi tuyển dưới núi.',
+                'Từ hôm nay, mỗi bước chân của ngươi đều là một nước cờ. Nghe thì nặng, đi quen rồi sẽ thấy nhẹ — vì ngươi không còn đi một mình, ngươi đi cùng cả ngọn núi này.'
+              ],
+              lore: [
+                'Tổ sư lập tông vốn là một quân sư phàm nhân, không có linh căn. Ông nói: người không có sức thì mượn sức của đất. Đại Trận Đồ dưới quảng trường là trận đầu tiên ông bày, một nghìn năm chưa từng tắt.',
+                'Phong ấn giếng cổ ở làng Thanh Khê, xét cho cùng, là một đại trận thu nhỏ: linh nhãn là tâm trận, mặt giếng là trận nhãn. Nó nứt dần vì trăm năm không có trận sư bảo trì — việc đó, sớm muộn cũng tới tay đời đệ tử của ngươi.'
+              ],
+              idle: [
+                'Đang đi chậm quanh thềm đại điện, miệng lẩm nhẩm đếm bước như đang đo lại một thế trận vô hình.',
+                'Nhặt một viên sỏi trên thềm, đặt xuống, lại nhặt lên đặt sang ô bên cạnh — gật đầu như vừa thắng một ván cờ.'
+              ]
+            },
+      bach_ky_sinh: {
+              lines: [
+                'Ta là Bạch Kỳ Sinh, giữ Đại Trận Đồ này. Việc của ta là mỗi ngày đi đúng tám nghìn bước quanh trận — thiếu một bước, trận yếu một phần; thừa một bước, cũng yếu một phần.',
+                'Trận đồ có chín cung. Ngươi đứng ở cung nào, địch thấy ngươi ở cung đó; nhưng trận sư thật sự đứng ở cung thứ mười — cung không vẽ trên đất, vẽ trong đầu kẻ địch.',
+                'Đừng dẫm lên nan trận khi chưa thuộc đường. Dẫm sai một ô trong lúc trận đang vận hành, nhẹ thì trận tắt, nặng thì người tắt theo.'
+              ],
+              greeting: [
+                'Sư đệ mới nhập môn? Lại gần tâm trận mà đứng — đừng sợ, hôm nay trận đang ngủ, chỉ có bia tâm là thức.',
+                'Ta nghe tông chủ nói có người dẫn khí qua cửu cung một lần trúng hết chín ô. Là ngươi phải không? Tốt. Trận Tông chờ một người như vậy đã lâu.'
+              ],
+              lore: [
+                'Cửu Cung Khốn Trận không giết địch — nó nhốt. Nhốt đủ lâu thì địch tự hiểu ra: đánh tiếp cũng vô ích. Trận Tông ít máu trên tay nhất trong mười tông, là vì vậy.',
+                'Tám cột trận nhãn quanh vòng bát quái không cột nào giống cột nào. Mỗi cột trấn một hướng gió; gió Thanh Sơn đổi hướng theo mùa, nên mỗi mùa ta phải chỉnh lại trận một lần.'
+              ],
+              idle: [
+                'Đang đi vòng quanh Đại Trận Đồ theo một nhịp bước đều như đồng hồ, tay chắp sau lưng.',
+                'Dừng lại ở một cột trận nhãn, áp tai vào đá nghe ngóng như nghe mạch người.'
+              ]
+            },
+      chap_su_cc: {
+              lines: [
+                'Quy củ sơn môn có ba điều: không tự ý đổi vị trí vật trong trận địa, không vào Tàng Trận Các khi chưa được thủ các gật đầu, và trời tối thì thắp đủ đèn đá dọc đại lộ.',
+                'Đệ tử mới ở viện ngoại môn phía tây tầng giữa; thuộc được đường đi của Thạch Trận Mê Cung mới dọn lên viện nội môn. Linh điền ngay cạnh viện — nguyên liệu trận kỳ trồng ở đó, hái thì ghi sổ.',
+                'Muốn học trận thì ra Bãi Luyện Trận cạnh viện; muốn thử sức thì qua mê cung ở sườn đông tầng giữa — vào bằng cửa tây, đừng trèo tường đá, tường có trận cảm ứng đấy.'
+              ],
+              greeting: [
+                'Đệ tử mới phải không? Ta là Cố Trường Canh, chấp sự sơn môn. Ăn ở, đèn đuốc, sổ sách trong tông đều qua tay ta — và ta ghi chép không sót một ô nào.',
+                'Leo hết đại lộ bậc đá có mệt không? Ngồi xuống Tiếp Khách Đài uống chén trà đã. Trong Trận Tông, nghỉ ngơi cũng phải đúng chỗ — ngươi đang ngồi đúng ô nghỉ đấy.'
+              ],
+              lore: [
+                'Đại lộ bậc đá của sơn môn có đúng một nghìn lẻ tám bậc — bằng số ô của một bộ đại trận hoàn chỉnh. Tổ sư nói: leo hết bậc mà chưa thuộc số ô, thì leo lại.',
+                'Sơn môn này xây theo đúng một trận đồ khổng lồ: cổng là cửa sinh, đại điện là tâm, hai vách bậc là hai vòng trận. Kẻ lạ xông vào mà không biết đường, đi ba ngày cũng chỉ quanh quẩn ở chân núi.'
+              ],
+              idle: [
+                'Đang kiểm lại sổ điểm danh đệ tử hai viện, chấm bút theo từng ô vuông kẻ sẵn.',
+                'Sai đệ tử nhỏ đi đếm lại số đèn đá dọc đại lộ — đếm hai lần cho chắc.'
+              ]
+            },
+      quan_tran_cc: {
+              lines: [
+                'Đứng trên tháp này nhìn xuống, cả sơn môn là một trận đồ, cả Thanh Sơn là một trận đồ lớn hơn. Người tu trận phải học nhìn từ cao trước khi học bày ở thấp.',
+                'Linh khí quanh núi năm nay chảy lệch về phía đông nam — hướng làng Thanh Khê. Ta đã ghi vào bản đồ quan trận ba lần rồi, lần nào cũng lệch thêm một chút.',
+                'Tháp này không có chuông. Gió qua khe đá trên đỉnh tháp tự kêu — nghe tiếng gió là biết linh mạch dưới núi đang mạnh hay yếu.'
+              ],
+              greeting: [
+                'Đệ tử mới mà leo được lên thềm tháp này à? Ta là Hứa Đăng Đài, giữ Tháp Quan Trận. Lại lan can mà nhìn — thấy đại trận đồ dưới quảng trường không? Từ đây nó mới đúng là một vòng tròn.',
+                'Lần đầu lên tháp, ai cũng choáng: hóa ra đường mình vừa đi là một nét vẽ. Ừ — cả sơn môn là một nét vẽ, và ngươi vừa bước vào trong tranh.'
+              ],
+              lore: [
+                'Đời tông chủ nào nhậm chức cũng phải lên tháp đứng một đêm, tự vẽ lại bản đồ linh khí của Thanh Sơn từ trí nhớ. Vẽ sai một mạch, chưa được xuống tháp.',
+                'Trận Nhãn Tuyền ở sườn tây tầng thượng là con mắt của trận giữ núi: nước tuyền quanh năm không cạn, vì nó nối thẳng xuống linh mạch. Tuyền mà cạn, là núi đang bệnh.'
+              ],
+              idle: [
+                'Đang trải một tấm bản đồ da dê trên thềm tháp, chấm thêm mấy nét mực mới.',
+                'Đứng lặng ở lan can phía đông, nhìn về hướng làng Thanh Khê rất lâu.'
+              ]
+            },
+      thu_cac_cc: {
+              lines: [
+                'Vào các thì rửa tay. Tay bẩn mà chạm vào trận đồ, giấy ố một vệt là ta bắt đền cả đời đấy.',
+                'Ba nghìn quyển trận đồ trong các này, quyển nào ta cũng biết nằm ở ô nào. Ngươi muốn tìm trận gì, nói tên — đừng tự ý rút, rút sai ô là lạc cả kệ.',
+                'Trận đồ cổ nhất trong các vẽ trên da thú, nét vẽ đã mờ. Nhưng trận còn chạy được — giấy có thể rách, thế trận thì không rách, miễn là còn người hiểu nó.'
+              ],
+              greeting: [
+                'Lại một đứa mới tới xem các. Ta là Nghiêm Thủ Các, giữ Tàng Trận Các này — nói trước: xem thì được, sờ thì phải xin.',
+                'Mắt ta chỉ còn một, nhưng nhìn người thì còn rõ hơn khối kẻ đủ hai mắt. Ngươi vào các với tay không và mắt sáng — được, ngồi xuống đó, ta lấy cho quyển nhập môn.'
+              ],
+              lore: [
+                'Tổ sư để lại một tàn trận chưa bày xong, cất ở tầng cao nhất của các. Một nghìn năm, mười một đời tông chủ, chưa ai bày nốt được ô cuối cùng. Âu Dương Kỳ phá được một nửa — nửa còn lại, có khi chờ ngươi.',
+                'Trận đồ không phải sách. Đọc trận đồ như đọc nhạc: phải nghe được tiếng của nó trong đầu. Kẻ chỉ chép lại nét vẽ mà không nghe được tiếng, bày trận nào chết trận đó.'
+              ],
+              idle: [
+                'Đang phơi một quyển trận đồ cũ ra nắng sớm trên thềm các, tay vuốt phẳng từng góc giấy.',
+                'Lúi húi ghi chép lên thẻ tre, thỉnh thoảng lại ngẩng đầu đếm các ô kệ sách.'
+              ]
+            },
+      de_tu_cc: {
+              lines: [
+                'Em là Tề Tiểu Cung, trực cửa mê cung này! Kỷ lục đi từ cửa tây tới bia tâm của em là một trăm mười hai bước — sư huynh vào thử không, em đếm cho!',
+                'Mẹo đi mê cung của Trận Tông không phải nhớ đường, mà là nhớ ô: cứ đứng ở ô nền thì tường nào cũng như nhau, đếm đủ chín ô là tự thấy lối ra.',
+                'Đừng nghe mấy sư huynh khóa trước dọa có trận cắn người trong mê cung. Chỉ có đúng một ô sụt ở gần cửa nam — em cắm biển rồi, bước tránh ra là được.'
+              ],
+              greeting: [
+                'A, đệ tử mới! Em trực ở cửa Thạch Trận Mê Cung này cả ngày. Sư huynh/sư tỉ là người thứ mấy hôm nay em đón rồi đấy!',
+                'Lần đầu em vào mê cung, đi lạc tới tối mới ra, chấp sự phải thắp đèn đi tìm. Giờ thì em thuộc từng ngõ cụt — đi lạc cũng là một cách học trận mà!'
+              ],
+              lore: [
+                'Nghe nói mê cung này do chính tổ sư bày làm phép thử nhập môn: không cần thắng ai, chỉ cần không hoảng. Người hoảng thì đi vòng tròn, người tĩnh thì thấy đường thẳng.',
+                'Bia Tâm Trận ở giữa mê cung khắc một câu của tổ sư, mà em không nói trước đâu — phải tự đi tới nơi mà đọc mới thấm.'
+              ],
+              idle: [
+                'Đang ngồi xổm trước cửa mê cung, vẽ sơ đồ đường đi lên mặt đất bằng que củi rồi lại xóa.',
+                'Đếm bước chân của một sư huynh đang đi trong mê cung, miệng lẩm nhẩm theo từng ô.'
+              ]
+            },
+      // --- SƠN MÔN KIM CANG MÔN (story-blocks.js của gói, nguyên văn) ---
+      chap_su_kc: {
+          lines: [
+            'Ha! Vai này, lưng này — lên núi xin học phải không? Vác bao cát kia lên hết bậc thang ta xem!',
+            'Sổ khách của ta ba mươi năm chưa sót một tên. Ngươi là người thứ… để ta đếm, đông quá đếm không xuể, ha ha!',
+            'Ăn chưa? Lên núi Kim Cang mà bụng rỗng là ta không tiếp đâu — nhà bếp ở viện tây, cứ nói tên ta!',
+            'Tông chủ ít nói, ta nói bù cho cả núi. Hai người cộng lại vừa đủ một người bình thường!',
+            'Khách quý tới thì ta đón, kẻ gây sự tới thì… cũng ta đón. Đón bằng vai này này.'
+          ],
+          greeting: 'Hoan nghênh lên núi Kim Cang! Tên gì, từ đâu tới, ăn cơm chưa?',
+          lore: [
+            'Muốn nhập môn thì qua ải bao cát của ta trước: vác lên Tiếp Khách Đài không nghỉ, đổ một hạt cát cũng tính lại.',
+            'Tháp chuông tháp trống hai bên đại điện: chuông đánh bằng đồng đúc tại núi, trống bịt da trâu rừng — nghe một lần là nhớ cả đời.',
+            'Dưới chân núi phía tây là Rừng Thông, có Trường Rèn Thể ngoài trời. Đệ tử mới đứa nào cũng phải qua đó đứng tấn một mùa.'
+          ],
+          idle: ['Khách đâu, khách đâu, lên núi thì ghé sổ ta ghi tên!', 'Bao cát hôm nay nhẹ hơn hôm qua — hay vai ta lại to ra?', 'Cười to lên, núi cao không sợ tiếng cười!']
+        },
+      quan_dai_kc: {
+          lines: [
+            'Lên đài thì đọc luật trước. Điều một: rơi đài là thua. Điều hai: nhận thua là dừng. Điều ba: ta gõ gậy là dừng, không cãi.',
+            'Ba mươi năm giữ đài, ta chưa chậm lần nào. Ngươi đừng thử làm lần đầu tiên của ta.',
+            'Đài này đá cứng, người mềm. Thắng thua một trận không bằng nguyên vẹn mười năm tu luyện.',
+            'Muốn tỉ võ thì ghi tên. Muốn gây sự thì xuống núi. Ở đây chỉ có một trong hai.',
+            'Kẻ thắng không được cười kẻ bại. Đó là điều luật ta trọng nhất — mạnh mà không biết kính người thì chưa phải đệ tử Kim Cang.'
+          ],
+          greeting: 'Tới Võ Đài có việc gì? Tỉ võ, xem đài, hay ghi tên?',
+          lore: [
+            'Vòng đá giữa đài khắc theo Quyền Ấn của tổ sư. Đứng giữa vòng mà đánh, ra khỏi vòng là tự nhận lép.',
+            'Hai trống đá hai bên khán đài không phải để trang trí — trận lớn, đệ tử gõ trống cổ vũ, tiếng vang xuống tận chân núi.',
+            'Ngày hội lớn, tông chủ tự ra chấm đài. Ba mươi năm ông chỉ đứng lên ba lần — ba lần đó đều là có kẻ sắp quá tay.'
+          ],
+          idle: ['Đài sạch. Luật rõ. Người chưa tới.', 'Gõ gậy ba tiếng là điểm danh. Đừng để ta gõ tiếng thứ tư.', 'Khán đài hôm nay vắng. Tốt — ít người xem, ít kẻ hiếu thắng.']
+        },
+      huan_luyen_kc: {
+          lines: [
+            'ĐỨNG THẲNG! Chân run là chân đang học đứng, run nữa đi, đừng có ngã!',
+            'Chân là gốc! Gốc mục thì cây đổ, quyền múa đẹp đến mấy cũng là múa cho người ta cười!',
+            'Vác tạ lên dốc, ba lượt nữa! Khóc thì khóc, chân không được dừng!',
+            'Ta hét to không phải ghét các ngươi. Núi cao gió lớn, nói nhỏ thì gió mang đi hết!',
+            'Đêm qua đứa nào đau chân ta biết hết. Thuốc để ở hốc đá thứ ba — tự lấy, đừng cảm ơn, mai tập gấp đôi!'
+          ],
+          greeting: 'Tới Sườn Đá thì đừng đứng ngắm cảnh. Xuống tấn, một trăm cái, rồi nói chuyện!',
+          lore: [
+            'Cọc mai hoa ở Sân Luyện Thể trồng theo thế hoa mai năm cánh: bước sai một cọc là ngã — ngã trên cọc còn hơn ngã trên đài.',
+            'Sườn Đá này dốc đứng gió quật, đứng tấn ở đây một ngày bằng ba ngày sân phẳng. Vì thế ta đóng trạm ở đây.',
+            'Tông chủ dạy ta ba năm chỉ một câu: "Chân là gốc." Ta hét lại câu đó mười lăm năm nay, chưa thấy sai chữ nào.'
+          ],
+          idle: ['Một, hai — đếm theo nhịp chân, đừng đếm bằng miệng!', 'Gió hôm nay yếu. Thêm tạ!', 'Đứng tấn mà ngủ gật được như Tiểu Ngưu thì cũng là một loại tài.']
+        },
+      de_tu_kc: {
+          lines: [
+            'Huynh tới tập cọc mai hoa à? Để đệ xếp lại cọc cho — hôm qua sư huynh ngã lệch mất hai cọc rồi!',
+            'Đệ ăn khỏe lắm, chấp sự bảo bát cơm của đệ nặng bằng tạ đá nhỏ. Ăn thế mới có sức đứng tấn chứ!',
+            'Mơ ước của đệ là đứng giữa Võ Đài một lần, cho tông chủ xem. Một lần thôi cũng được!',
+            'Chuyện tông chủ tay không đỡ lợn rừng, đệ kể huynh nghe nhé? Đệ thuộc từng chữ — con lợn to bằng này này!',
+            'Sư phụ hét ghê lắm, nhưng đêm đệ đau gối, thầy xoa thuốc cả buổi không mắng tiếng nào. Đệ thấy hết, giả vờ ngủ thôi.'
+          ],
+          greeting: 'Chào huynh! Tới Sân Luyện Thể tập à? Cọc với tạ đệ xếp sẵn hết rồi!',
+          lore: [
+            'Tạ đá ở sân xếp theo hàng từ nhẹ tới nặng; khiêng hết hàng cuối cùng là được sư phụ gật đầu cho học quyền.',
+            'Hồ Ngâm Thân ở phía đông để ngâm mình sau buổi tập — nước lạnh buốt, ngâm vào là hết đau cơ, đệ thử rồi!',
+            'Bao cát buộc ở đầu sân, đánh rách thì đệ khâu lại. Ba năm đệ khâu chắc cũng mấy trăm bao rồi.'
+          ],
+          idle: ['Đứng tấn… đứng tấn… đừng ngã, Tiểu Ngưu, đừng ngã…', 'Trưa nay nhà bếp có thịt không nhỉ?', 'Đếm cọc: đủ mười lăm. Đếm tạ: đủ năm. Xong việc, đi tập!']
+        },
+      // --- SƠN MÔN NGŨ ĐỘC GIÁO (story-blocks.js của gói, nguyên văn) ---
+      duong_tinh_nd: {
+              lines: [
+                'Ngươi leo hết đại lộ mà hơi thở vẫn đều, tay không run. Tốt. Bên cạnh độc, tay run là chết trước khi độc kịp ngấm.',
+                'Giang hồ gọi giáo ta là tà. Ta không cãi. Ta chỉ hỏi họ: khi làng dưới núi trúng độc thảo, ai là người xuống núi giải độc trong đêm? Cũng là người của giáo này.',
+                'Độc Tâm Hoa mọc quanh Ao Độc Tâm ở Độc Cốc. Hoa càng đẹp, độc càng sâu. Nhớ lấy điều đó — với hoa, và với người.'
+              ],
+              greeting: [
+                'Đệ tử mới. Ta là Đường Tĩnh, giáo chủ đời này của Ngũ Độc Giáo. Từ nay gọi ta là sư phụ cũng được, gọi giáo chủ cũng được — chỉ đừng gọi khi ta đang cầm độc.',
+                'Chén thuốc thử ở bãi tuyển, ngươi uống không chớp mắt. Ta nhận ngươi không vì gan — vì ngươi uống xong còn biết nhìn sắc mặt ta xem mình có qua hay không. Người biết sợ đúng lúc mới sống lâu với độc.'
+              ],
+              lore: [
+                'Tổ sư lập giáo vốn là một ngự y bị triều đình cũ ruồng bỏ vì dám dùng độc trị bệnh cho hoàng tử. Ông về Thanh Sơn, nói một câu còn khắc ở cổng giáo: độc cũng là thuốc — tùy tay người dùng.',
+                'Ngũ Độc Nguyệt Ấn trên lệnh bài của ngươi khắc hình trăng khuyết ôm năm giọt độc. Trăng khuyết là để nhắc: độc công của giáo này mãi mãi thiếu một phần — phần đó là lòng người giữ lại.'
+              ],
+              idle: [
+                'Đang xem lại danh sách độc dược thu vào kho tháng này, đầu bút chấm rất chậm.',
+                'Đứng lặng nhìn xuống Độc Cốc, tay chắp sau lưng, áo không động dù gió núi đang mạnh.'
+              ]
+            },
+      chap_su_nd: {
+              lines: [
+                'Quy củ sơn môn có bốn điều, ta nói một lần: không tự ý mở chuồng độc vật; không mang độc dược ra khỏi Kho khi chưa ghi sổ; qua giờ Tuất không xuống Độc Cốc một mình; và thấy đèn đá nào tắt phải báo ngay — đèn tắt ở giáo này không phải chuyện nhỏ.',
+                'Đệ tử mới ở viện ngoại môn phía tây tầng giữa; qua kỳ khảo phân biệt thảo dược mới lên viện nội môn. Phần ăn của ngươi ghi ở bếp ngoại môn, phần độc dược luyện tập ghi ở sổ của ta — hai thứ đừng bao giờ lẫn nhau.',
+                'Muốn luyện độc công thì qua Sân Luyện Độc, muốn xem độc vật thì theo đường coi trại mà đi, chỉ đứng ngoài rào. Còn Độc Cốc ở chân núi phía đông — đẹp, và là nơi nguy hiểm nhất của giáo này.'
+              ],
+              greeting: [
+                'Đệ tử mới phải không? Ta là Lục Uyên, chấp sự sơn môn. Ăn ở, sổ sách, lịch cho ăn của cả trại độc vật đều qua tay ta.',
+                'Đi đường xa lên núi chắc mệt. Ngồi ở Tiếp Khách Đài uống chén Thanh Tâm Thảo đã — trà của giáo này thì ngươi cứ yên tâm, thứ gì vào miệng đệ tử đều qua sổ của ta trước.'
+              ],
+              lore: [
+                'Hàng đèn đá dọc đại lộ ở giáo này cháy ánh lục, vì dầu đèn pha bột dạ quang lấy từ đá ở Độc Cốc. Đêm nào sương độc dâng cao, đèn lục nhìn rõ hơn đèn thường — thắp đèn ở đây là để canh sương, không chỉ để soi đường.',
+                'Cổng giáo dựng ở miệng cốc chứ không trên đỉnh, vì Độc Cốc phải có người canh từ phía dưới. Khách lạ đi lạc vào cốc ban đêm, sáng ra ít khi còn nguyên vẹn — cổng này giữ người ngoài trước, giữ đệ tử sau.'
+              ],
+              idle: [
+                'Đang đối chiếu sổ xuất nhập độc dược với niêm phong của Kho Độc Dược.',
+                'Ghi lịch cho ăn của bốn chuồng độc vật vào tấm bảng gỗ treo ở thềm.'
+              ]
+            },
+      quan_doc_coc_nd: {
+              lines: [
+                'Đứng yên. Chỗ ngươi vừa định đặt chân là một khóm Độc Tâm Hoa non — dẫm nát nó thì tiếc hoa, mà nhựa của nó dính vào giày thì tối nay ngươi sốt.',
+                'Ao này gọi là Ao Độc Tâm. Nước trong, đáy sâu, hoa mọc quanh bờ. Đệ tử mới chỉ được hái hoa ở vòng ngoài; hoa ở sát mặt nước là phần của giáo, cũng là phần độc nhất.',
+                'Sương trong cốc dâng lên lúc chạng vạng, tan sau canh ba. Muốn xuống cốc hái hoa thì đi lúc trời vừa sáng — sương mỏng, hoa còn đọng sương là lúc dễ phân biệt nhất.'
+              ],
+              greeting: [
+                'Đệ tử mới của giáo? Ta là Hà Sương, giữ Độc Cốc này. Từ nay muốn xuống cốc, qua ta mà nhận găng da và khăn che mặt — không có hai thứ đó, ta không mở lời chỉ đường.',
+                'Đừng sợ cốc này, cũng đừng coi thường nó. Người chết ở đây phần nhiều không chết vì độc — chết vì chủ quan.'
+              ],
+              lore: [
+                'Độc Tâm Hoa chỉ mọc quanh ao này và vài khe suối có linh khí nhiễm độc. Hoa năm cánh, tim đen như mực; cánh hoa phơi khô đúng cách là thuốc an thần quý, để tươi là độc giết người trong một canh giờ.',
+                'Đời nào giáo cũng có người ngã xuống ở cốc này, phần lớn là đệ tử giỏi — vì giỏi nên dám vào sâu. Ta chôn ba người bạn đồng môn ở sườn đông của cốc. Vì thế ta kỹ tính. Đừng trách.'
+              ],
+              idle: [
+                'Đang đi dọc bờ ao, cúi xem từng khóm hoa non mới nhú.',
+                'Ngồi ở đình độc ghi chép mực nước và sắc hoa của ao vào một cuốn sổ đã sờn gáy.'
+              ]
+            },
+      luyen_doc_su_nd: {
+              lines: [
+                'Luyện độc trước hết học lửa. Lửa lò này ta giữ ba mươi năm chưa tắt — nó tắt một lần là vì ta muốn nó tắt, không phải vì ta quên thêm củi.',
+                'Liều lượng là mạng người. Một chỉ độc trong phương này là thuốc, thêm nửa chỉ là quan tài. Tay ngươi mà quen làm tròn số thì đừng bao giờ bén mảng tới lò của ta.',
+                'Muốn học giải độc thì xuống Trại Độc Vật mà nhìn: hiểu con vật cắn thế nào mới hiểu độc đi trong người thế nào. Sách dạy chữ, trại dạy thật.'
+              ],
+              greeting: [
+                'Đệ tử mới tới xem lò? Ta là Cổ Phong, giữ Lò Luyện Độc. Đứng lui ba bước, hơi lò không phải thứ để hít thử.',
+                'Lại một đứa trẻ nữa vào giáo. Được. Học thuộc bảng độc tính của hai mươi loại thảo dược quanh núi trước, rồi hãy quay lại gặp ta.'
+              ],
+              lore: [
+                'Phương "dĩ độc công độc" của giáo không phải phép màu: là lấy độc tính đã thuần của một loài chế ngự độc tính hoang của loài khác. Thuần được hay không là ở người giữ lò — và ở số năm chịu khói.',
+                'Kho Độc Dược cạnh lò này niêm phong hai lớp: một lớp là khóa đồng, một lớp là mùi. Độc dược để đúng thì không có mùi gì cả; ngửi thấy mùi lạ ở cửa kho là biết có thứ gì đó đã hỏng — hoặc có ai đó đã vào.'
+              ],
+              idle: [
+                'Đang nghiêng tai nghe tiếng sôi trong lò, tay điều củi từng thanh một.',
+                'Cân một lượng bột độc nhỏ trên cân đồng, mắt không rời kim cân.'
+              ]
+            },
+      de_tu_chan_doc_nd: {
+              lines: [
+                'Ra xem trại phải không? Đi sát ta, bước đúng đường coi trại. Bốn chuồng này: rắn Xích Luyện, rết Kim Tiễn, bọ cạp Ngọc Bích, nhện Hắc Mạn — con nào cũng đẹp, và con nào cũng không thích người lạ.',
+                'Cho ăn phải đúng giờ còn hơn đúng bữa của mình. Rắn ăn xong ba ngày không được động vào chuồng; rết nghe tiếng bước chân lạ là chui hết xuống đá; bọ cạp thì ban ngày hiền, ban đêm mới là bọ cạp.',
+                'Cổng chuồng luôn khóa hai nấc. Đệ tử mới chỉ đứng ngoài rào mà xem — khi nào ngươi phân biệt được tiếng rết bò với tiếng gió, ta mới cho ngươi cầm móc mở cổng.'
+              ],
+              greeting: [
+                'Sư đệ/sư muội mới nhập môn! Ta là Vệ Tiểu Chu, chăn độc vật ở trại này. Việc bị cả giáo tránh thì ta làm — mà ta thích, nói thật.',
+                'Đừng nghe chấp sự dọa. Trại này an toàn lắm — miễn là ngươi nhớ: tay không bao giờ qua rào, và Ngọc Bích Hạt không bao giờ là "con bọ cạp nhỏ dễ thương".'
+              ],
+              lore: [
+                'Bốn loài trong trại là bốn vị thuốc sống của giáo: nọc rắn luyện giải độc đan, vỏ rết phơi làm thuốc trấn kinh, đuôi bọ cạp ngâm rượu thuốc, tơ nhện khâu vết thương không để sẹo. Giáo nuôi chúng kỹ như nuôi người nhà — vì chúng cứu người thật.',
+                'Con Xích Luyện đầu đàn ở chuồng rắn đã ở trại mười một năm, dài hơn hai sải tay. Giáo chủ nói nó nhớ mặt người cho ăn. Ta cho nó ăn bảy năm nay — nó chưa cắn ta lần nào, chắc là nhớ thật.'
+              ],
+              idle: [
+                'Đang xách xô thịt vụn đi dọc đường coi trại, vừa đi vừa huýt sáo rất khẽ.',
+                'Ngồi xổm ngoài rào chuồng bọ cạp, ngắm một con Ngọc Bích Hạt mới lột xác qua khe rào.'
+              ]
+            },
+      // --- SƠN MÔN HUYỀN ÂM CUNG (story-blocks.js của gói, nguyên văn) ---
+      tieu_uyen_nhi: {
+              lines: [
+                'Ngươi lên được tới thềm này, bước chân nghe đã yên hơn lúc ở chân núi. Núi này lạ lắm — ở lâu, người ta tự khắc nói khẽ đi.',
+                'Huyền Âm Cung ít nhận đệ tử, vì đàn không chịu được tay nóng. Một khúc đàn hay không nằm ở ngón nhanh — nằm ở chỗ người đàn có thật lòng muốn người nghe được yên hay không.',
+                'Khi nào lòng ngươi loạn, cứ ra Hàn Đàm mà ngồi. Đừng đàn. Nghe nước đóng băng, nghe trúc tuyết rơi — nghe cho yên rồi hẵng gảy dây đầu tiên.'
+              ],
+              greeting: [
+                'Đệ tử mới nhập cung, lên thềm mà đứng. Ta là Tiêu Uyển Nhi, cung chủ đời này của Huyền Âm Cung.',
+                'Từ hôm nay, tiếng đàn của ngươi là tiếng của cung này. Đàn cho người sống được yên, đàn cho người đi được nhẹ — chỉ hai việc đó thôi.'
+              ],
+              lore: [
+                'Tổ sư lập cung vốn là một nhạc công mù. Bà không thấy đường lên núi, chỉ nghe tiếng suối mà đi — Hàn Tuyền dưới kia là nơi bà dừng chân gảy khúc đàn đầu tiên của cung.',
+                'Nhạc Đài giữa Hàn Đàm xây trên một tảng băng không tan. Đời nào cung chủ lên ngôi cũng phải ra đảo đàn một khúc giữa mặt băng — đàn cho mặt đàm nghe trước, người nghe sau.'
+              ],
+              idle: [
+                'Đang lắng nghe tiếng gió qua hàng thông tuyết sau đại điện, khẽ gật đầu theo nhịp.',
+                'Ôm đàn ngồi trên thềm, gảy từng nốt rất chậm như đang đếm tuyết rơi.'
+              ]
+            },
+      chap_su_ha: {
+              lines: [
+                'Quy củ của cung có ba điều: sau giờ Dậu không đàn lớn ngoài sân, vào Tàng Âm Các phải rửa tay khô mới được chạm phổ, và qua cầu Hàn Đàm thì đi chậm — băng trên cầu trơn, lòng người cũng trơn.',
+                'Đệ tử mới ở viện ngoại môn phía tây tầng giữa; qua kỳ khảo âm mới dọn lên viện nội môn. Phòng luyện âm có vách trúc cách âm ở ngay cạnh — muốn đàn khuya thì vào đó, đừng đàn giữa sân làm mất giấc của sư tỉ.',
+                'Muốn nghe đàn hay thì ra Nhạc Đài giữa Hàn Đàm, muốn tĩnh tâm thì lên Đài Vọng Nguyệt phía đông. Còn Hàn Tuyền ở sườn tây tầng thượng — nước lạnh thấu xương, đệ tử mới chỉ được rửa mặt, chưa được ngâm.'
+              ],
+              greeting: [
+                'Đệ tử mới phải không? Ta là Lâm Thính Vũ, chấp sự sơn môn. Việc ăn ở, chuông đàn, khách khứa trong cung đều qua tay ta.',
+                'Leo núi đường xa, hơi thở còn gấp. Ngồi xuống thềm tiếp khách này, uống chén trà mai ấm đã, rồi ta dẫn ngươi nhận phòng.'
+              ],
+              lore: [
+                'Đại lộ bậc đá của cung có đúng tám trăm sáu mươi tư bậc — bằng số nốt trong bản phổ cổ nhất giữ ở Tàng Âm Các. Tổ sư nói: leo hết bậc mà hơi còn loạn thì chưa leo xong.',
+                'Hai hàng đèn đá dọc đại lộ thắp từ đời tổ sư. Đêm nào đàn an hồn vang lên từ Nhạc Đài, đèn hai bên đường tự sáng hơn một bậc — các lão nhân bảo đó là người đi đường xa đang nghe ké.'
+              ],
+              idle: [
+                'Đang kiểm lại sổ điểm danh đệ tử hai viện, miệng khẽ đếm theo nhịp.',
+                'Sai đệ tử nhỏ đi thay dầu cho hàng đèn đá dọc đại lộ.'
+              ]
+            },
+      quan_nhac_dai: {
+              lines: [
+                'Nhẹ chân thôi. Mặt đàm này nghe được cả tiếng bước — ngươi đi gấp, nước dưới băng cũng giật mình.',
+                'Nhạc Đài này không phải chỗ biểu diễn cho đông người xem. Mỗi buổi đàn ở đây chỉ có ba thính giả: mặt băng, hàng trúc tuyết, và người đang cần được yên.',
+                'Cầu đá cong qua đàm là cố ý cong. Đi thẳng thì nhanh, đi cong thì buộc phải chậm lại — tới trước mặt đàn mà lòng còn vội, khúc đàn coi như hỏng từ trước khi gảy.'
+              ],
+              greeting: [
+                'Lại một đệ tử mới ra đảo. Ta là Trình Tuyết Trâm, người giữ Nhạc Đài này mười năm nay.',
+                'Ngồi xuống mép đảo, thả chân gần mặt băng. Nghe cho hết một vòng nước chảy dưới băng rồi ta nói chuyện đàn.'
+              ],
+              lore: [
+                'Tảng băng dưới đảo không tan qua bốn mùa, các đời cung chủ đều nói trong băng có giữ một khúc đàn của tổ sư — đàn đúng khúc của bà, mặt băng sẽ ngân theo.',
+                'Đêm trăng rằm, đệ tử trực đảo nghe tiếng đàn vọng từ dưới mặt băng lên. Không ai dám gảy đáp — sợ đáp sai một nốt, khúc đàn trong băng sẽ đứt.'
+              ],
+              idle: [
+                'Quỳ bên mép đảo, áp tai xuống gần mặt băng như đang nghe ai đàn ở rất xa.',
+                'Lau mặt đàn bằng khăn lụa khô, chậm rãi, không phát ra một tiếng động.'
+              ]
+            },
+      nhac_su_ha: {
+              lines: [
+                'Luyện Âm Trường này là nơi đệ tử hai viện tập đàn mỗi sớm. Sai nốt không sao — sợ nhất là đàn mà không nghe chính tiếng đàn của mình.',
+                'Đừng nhìn tay của sư tỉ mà sốt ruột. Âm tu của cung là nước trong đàm: càng khuấy càng đục, để yên tự khắc trong.',
+                'Khi nào ngươi đàn được một khúc từ đầu tới cuối mà chim trên mái không bay đi, ta sẽ cho ngươi vào phòng luyện âm vách trúc — nơi đó mới là chỗ tập khúc khó.'
+              ],
+              greeting: [
+                'Đệ tử mới nhập cung? Ta là Giang Nguyệt Cầm, nhạc sư giữ Luyện Âm Trường này.',
+                'Đặt tay lên dây thử một nốt ta nghe. Đừng sợ sai — ta chỉ nghe xem lòng ngươi đang yên hay đang vội.'
+              ],
+              lore: [
+                'Phòng luyện âm của cung bọc bằng ba lớp vách trúc tuyết. Đệ tử đời trước bảo trúc giữ âm tốt đến mức khúc đàn dở dang hôm qua, hôm nay vào phòng vẫn nghe văng vẳng.',
+                'Ngày xưa ta đàn trong cung đình, đàn cho người ta khen. Về cung này mới biết: đàn hay nhất là đàn cho một người đang khóc mà người đó nín được.'
+              ],
+              idle: [
+                'Đang đi dọc sân, dừng sau lưng từng đệ tử, lắng nghe rồi khẽ sửa lại tư thế tay.',
+                'Ngồi ở góc sân đàn một khúc rất khẽ, như đàn cho một mình mình nghe.'
+              ]
+            },
+      de_tu_huyen_am: {
+              lines: [
+                'Vườn mai trúc tuyết ở chân núi là em phụ trách đấy! Mai ở đó nở muộn hơn mai dưới làng cả tháng, nhưng thơm hơn — chắc tại uống nước Hàn Tuyền.',
+                'Sáng nào sương cũng phủ trắng vườn. Em quét lối đi mà nghe tiếng trúc kêu răng rắc vì lạnh — nghe riết thành quen, không nghe lại nhớ.',
+                'Em mới nhập cung năm ngoái thôi. Việc vặt nhiều nhưng vui — tối nào cả viện cũng ngồi ở sân nghe chấp sự kể chuyện đời tổ sư, có đêm còn nghe tiếng đàn từ Nhạc Đài vọng xuống.'
+              ],
+              greeting: [
+                'A, đệ tử mới! Em là Tô Tiểu Mai, ở viện ngoại môn. Phòng của anh/chị xếp cạnh phòng em đấy!',
+                'Leo hết tám trăm sáu mươi tư bậc thang có mệt không? Lần đầu em leo, tới thềm bờ tây Hàn Đàm là ngồi bệt xuống luôn!'
+              ],
+              lore: [
+                'Nghe nói giếng cổ ở làng Thanh Khê dưới chân núi phát sáng trở lại, cả cung xôn xao. Cung chủ bảo linh nhãn của Thanh Sơn đang thức — mà thức thì tiếng đàn an hồn càng phải đàn cho đều.',
+                'Hàn Đàm ở tầng giữa là nơi cung đàn an hồn mỗi rằm. Nước đàm lạnh quanh năm, vậy mà cá dưới băng vẫn sống — chấp sự bảo chúng sống nhờ nghe đàn.'
+              ],
+              idle: [
+                'Đang gánh nước từ bờ Hàn Tuyền lên tưới vườn mai trúc tuyết.',
+                'Ngồi ở sân viện ngoại môn lau lại cây đàn cũ, miệng khẽ hát theo.'
+              ]
+            },
+      // --- TÍCH HỢP V5 MAP 9: thoại 5 NPC (README gói map 9, nguyên văn; greeting/lore để dạng mảng theo chuẩn nhà) ---
+      phong_gac: {
+        lines: [
+          'Ta gác đài này ba mươi năm. Sống núi gãy làm đôi từ trận long chiến cổ, nên người ta gọi là Đoạn Long.',
+          'Đi lên đỉnh thì theo đường trục mà leo, gặp bậc đá là sắp tới thềm. Đừng băng rừng đêm, sói Đoạn Long không sợ người đâu.',
+          'Thấy ánh đèn hai bên đường không? Đệ tử Thanh Phong đốt dầu thông quanh năm, cho người lỡ đường biết lối về.'
+        ],
+        greeting: ['Đứng trên Đài Vọng Long mới thấy Đoạn Long Lĩnh dài tới đâu.'],
+        lore: ['Đỗ Phong vốn là đệ tử ngoại môn Thanh Phong Phái, tự xin về gác đài vọng sau khi sư phụ ông tạ thế trên đỉnh này.'],
+        idle: ['Đỗ Phong chống gậy nhìn về phía sống núi phía bắc.', 'Đỗ Phong lau lại tấm bia đá bên lan can đài.'],
+        quest: {}
+      },
+      tran_mieu: {
+        lines: [
+          'Miếu này thờ vị tu sĩ đầu tiên chôn xương rồng cổ lại hang Long Cốt, ngăn yêu khí lan xuống Vân Hải.',
+          'Muốn vào hang Long Cốt thì đi đường trong núi, sào ở mé đông bắc của lĩnh. Lang Vương giữ hang, đừng vào tay không.',
+          'Hương khói ở đây không cầu tài, chỉ cầu người đi đường núi bình an.'
+        ],
+        greeting: ['Vào miếu thì khẽ chân. Long cốt trong hang kia còn thiêng hơn cả miếu này.'],
+        lore: ['Trần Thủ Nghĩa là đời thủ miếu thứ tư; nhà ông ở Xóm Đá Đông, mỗi ngày leo lên thắp hương từ khi trời chưa sáng.'],
+        idle: ['Trần Thủ Nghĩa quét lá thông trước thềm miếu.', 'Trần Thủ Nghĩa châm thêm dầu vào đèn đá.'],
+        quest: {}
+      },
+      a_linh: {
+        lines: [
+          'Ta săn ở sườn tây này từ nhỏ. Khỉ mặt đỏ trên cao, rắn lục ven suối — nghe tiếng lá là biết con gì.',
+          'Suối tây chảy xuống Hồ Đoạn Long, cá linh nhỏ nhiều, nhưng bờ đông hồ là ổ rắn, đừng ngủ lại đó.',
+          'Qua cầu đá là Bãi Vọng Tây, đứng đó nhìn xuống thấy cả Vân Hải lúc trời quang.'
+        ],
+        greeting: ['Suỵt — phía tây suối có dấu chân sói mới. Ngươi đi săn hay đi hái thuốc?'],
+        lore: ['Tạ A Lĩnh là thợ săn giỏi nhất vùng chân lĩnh; da sói của anh là nguồn thu mua ổn định của thương đội dưới làng.'],
+        idle: ['Tạ A Lĩnh kiểm tra lại bẫy dây bên bìa rừng.', 'Tạ A Lĩnh mài lại mũi dao đi rừng.'],
+        quest: {}
+      },
+      luu_tram: {
+        lines: [
+          'Trạm này là điểm dừng cuối trước khi xuống Thung Chân Lĩnh. Đi tiếp về nam là đất sói, đi vòng theo đường chân lĩnh thì an toàn hơn.',
+          'Ta ghi sổ người qua trạm. Tháng này đệ tử các tông lên Đoạn Long đông hơn hẳn — chắc vì Vạn Niên Linh Chi vào mùa.',
+          'Suối cạnh trạm uống được, nhưng đừng tắm — nước lạnh thấu xương, tu sĩ Trúc Cơ cũng phải rùng mình.'
+        ],
+        greeting: ['Mệt thì ghé trạm. Nước suối, ghế đá, và tin tức đường núi — ở đây có cả.'],
+        lore: ['Lưu Văn Trạm từng là tiêu sư; giải nghệ sau một chuyến tiêu mất trắng ở Thập Vạn Đại Sơn, về coi trạm cho người qua lại.'],
+        idle: ['Lưu Văn Trạm đun ấm nước suối trên bếp đá.', 'Lưu Văn Trạm lật sổ ghi tên khách qua trạm.'],
+        quest: {}
+      },
+      thach_khai: {
+        lines: [
+          'Xóm Đá Đông này mọc lên nhờ nghề khai đá: đá lát thềm các tông đều lấy từ bãi này mà ra.',
+          'Phía bắc xóm là Hồ Liên, sen nở quanh năm vì nước ấm từ khe đá. Đẹp, nhưng rắn lục cũng thích bờ hồ.',
+          'Bổ đá nghe tiếng là biết đá sống hay đá chết. Đá sống gõ vào kêu như chuông.'
+        ],
+        greeting: ['Đá Đoạn Long cứng mà có vân linh khí — thợ khéo mới dám bổ.'],
+        lore: ['Thạch Văn Khai là tổ trưởng thợ đá của xóm; hai bàn tay chai sần nhưng chữ viết đẹp nổi tiếng khắp vùng.'],
+        idle: ['Thạch Văn Khai gõ thử từng phiến đá mới bổ.', 'Thạch Văn Khai chỉ cho thợ trẻ cách nhìn vân đá.'],
+        quest: {}
+      },
+      // --- TÍCH HỢP V5 MAP 8: thoại 4 NPC (README gói map 8, nguyên văn) ---
+      giang_van_tich: {
+        lines: [
+          'Mây ở đây không trôi như mây thường. Nó chảy từ khe đông sang khe tây, đúng một vòng mỗi buổi sáng. Ngồi đủ lâu, ngươi sẽ thấy nó thở.',
+          'Năm ta đột phá hụt, ta tưởng đường tu của mình đến đó là hết. Lên đài này ngồi mười năm, mới hiểu chậm cũng là một cách đi.',
+          'Muốn xuống thung dưới thì chờ mây tan ở giờ Tỵ. Xuống lúc mây đặc, người Trúc Cơ cũng lạc như thường.'
+        ],
+        greeting: ['Lên được tới đài này là chân còn khỏe. Ngồi xuống, nhìn mây một lát rồi hãy đi tiếp.'],
+        lore: ['Vọng Hải Đài này do đời chưởng môn thứ ba của Thanh Phong Phái dựng, để quan sát thú triều từ trên cao. Biển mây che núi, nhưng cũng che cả những thứ đang bò dưới mây.'],
+        idle: ['Mây hôm nay chảy chậm. Ngày yên bình đấy.'],
+        quest: {}
+      },
+      mac_van_sinh: {
+        lines: [
+          'Sáng nay mây xám ở rìa tây, gió lại ngược. Ta đã ghi vào sổ: ngày hôm nay lên núi phía tây thì cẩn thận bầy khỉ.',
+          'Nghề canh mây nghe thì nhàn, mà mắt không được rời trời. Mây đổi sắc một khắc, dưới trạm đổi cả lịch trình.',
+          'Sổ mây của ta buộc vào chân chim, bay xuống Trạm Mây mỗi sáng. Đình ở trạm đọc xong lại buộc chim bay tiếp xuống núi.'
+        ],
+        greeting: ['Khách lên núi à? Để ta xem sổ mây hôm nay... Phía đông quang, phía tây có biến nhẹ. Đi đông thì hơn.'],
+        lore: ['Chuỗi Đại Sơn này có lệ canh mây từ trăm năm: mỗi sườn núi một lán gác, mây có biến thì đốt khói hiệu. Lán của ta là lán cuối cùng còn giữ lệ đốt khói.'],
+        idle: ['Lại một dải mây sẫm kéo qua. Để ta ghi thêm một dòng.'],
+        quest: {}
+      },
+      du_van_lao: {
+        lines: [
+          'Hồ này lạ lắm: trời càng trong, nước càng xanh ngắt; hôm nào nước ngả đục là hôm đó núi sắp có chuyện.',
+          'Ta ở đây mấy chục năm, chưa thấy ai bắt được cá trong hồ này. Có người nói dưới đáy hồ là một con mắt của núi.',
+          'Ngồi bờ hồ này mà thổ nạp, linh khí mát hơn trên đỉnh một bậc. Chỉ tiếc bầy lợn mông sắt dưới thung hay mò lên phá.'
+        ],
+        greeting: ['Khách lạ. Ngồi xuống bờ hồ đi, đi đường núi xa, rửa mặt bằng nước hồ này là tỉnh cả người.'],
+        lore: ['Ngày thú triều năm xưa, nước hồ này đỏ suốt ba ngày. Từ đó người trên núi có lệ: sáng nào cũng phải có người ra nhìn màu nước hồ trước khi mở đường xuống thung.'],
+        idle: ['Nước hôm nay trong. Núi đang yên.'],
+        quest: {}
+      },
+      tong_van_dinh: {
+        lines: [
+          'Trạm của ta nhỏ mà đủ: nước nóng, củi khô, một mái ngói không dột. Đi đường núi, có thế là sang rồi.',
+          'Xuống phía nam là Rừng Thông Chân Mây — sói với lợn mông sắt không biết sợ người đâu. Nghỉ cho khỏe chân rồi hẵng xuống.',
+          'Chim đưa sổ mây vừa về. Hôm nay mây yên, đường xuống rừng sâu đi được, nhưng về trước khi trời tối cho ta nhờ.'
+        ],
+        greeting: ['Qua trạm thì ghé vào. Trà nóng có sẵn, đi đường mây ướt áo hết rồi còn gì.'],
+        lore: ['Trạm Mây này dựng từ ngày mở đường chuỗi Đại Sơn: cứ cách một quãng đường ngày là một trạm, người giữ trạm truyền nhau như truyền một chức quan nhỏ của núi.'],
+        idle: ['Để ta châm thêm ấm trà, lát nữa thế nào cũng có khách qua trạm.'],
+        quest: {}
+      },
+      // Lấp chỗ trống QA gói map 6: ba_dieu_duong (NPC lõi map 6) có NPCS
+      // nhưng bản gốc thiếu DIALOGUE — khối thoại dự phòng theo hệ sẵn có.
+      ba_dieu_duong: {
+        lines: [
+          'Lên cao thì đi chậm thôi. Người mới lên Thâm Xứ hay xây xẩm mặt mày — ngồi xuống, uống ngụm nước ấm là lại sức.',
+          'Ai bị thú rừng cào cấu cứ ghé ta băng cho. Thuốc ở đây đắng, nhưng vết thương mau lành hơn thuốc dưới làng.',
+          'Đêm trên này lạnh cắt da. Ngủ thì nhớ đắp thêm tấm da thú, đừng cậy sức trẻ mà nằm phơi sương.'
+        ],
+        greeting: ['Mặt mũi tái thế kia là say độ cao rồi. Ngồi xuống đây, ta sắc cho thang thuốc ấm.'],
+        lore: ['Ta theo người lên núi từ hồi đường lên Thâm Xứ mới mở. Kẻ ở lại được lâu nhất không phải kẻ mạnh nhất — là kẻ biết nghỉ đúng lúc.'],
+        idle: ['Thuốc thang này cho toán thợ săn chiều nay ghé qua.', 'Nước sôi rồi, ai cần nước ấm cứ tự lấy.'],
+        quest: {}
+      },
+      // --- TÍCH HỢP V5 MAP 6: thoại 4 NPC đất mới (gói map 6, story-npcs.js, nguyên văn) ---
+      ngo_truong_son: {
+        lines: [
+          'Đứng ở trạm này, việc của ta là nghe. Vực yên thì nghe tiếng nước, vực động thì nghe tiếng đá lăn — đá lăn là có biến, phải báo về làng ngay.',
+          'Đường xuống thềm tây bậc đá trơn lắm sau mưa. Đi thì đi giữa bậc, đừng bám mép — mép vực không có gì đỡ đâu.',
+          'Sổ nước của ta ghi mười năm rồi. Năm nào sông ngầm dâng sớm là năm đó dưới vực sâu không yên — người xuống hái dược phải liệu chừng.'
+        ],
+        greeting: ['Qua vực à? Đứng lại cho ta ngó một lượt đã. Người vững, đồ chắc thì đi — vực này không thương kẻ hấp tấp.'],
+        lore: ['Khe vực Thâm Xứ là vết nứt của cả dãy Thập Vạn. Sông ngầm chảy dưới đáy nối từ suối trong làng ra tới Đàm U Minh — nước trong đầm phát sáng là vì chảy qua mạch linh thạch dưới lòng núi, các cụ đời trước nói vậy.'],
+        idle: ['Gió đổi hướng rồi. Chiều nay sương xuống sớm, bậc đá sẽ ướt.',
+          'Lại một tiếng đá lăn phía nam. Xa — chưa đáng báo.'],
+        quest: {}
+      },
+      ly_thu_hang: {
+        lines: [
+          'Linh chi ở đây mọc ven Suối Linh, nửa năm mới lớn bằng bàn tay. Hái thì hái cái già, chừa cái non — hái tận gốc là năm sau mất cả bãi.',
+          'Nước suối này phát sáng nhè nhẹ, đêm hái dược không cần đèn. Nhưng rắn lục cũng thích bờ suối mát — đi hái phải mang theo gậy khua cỏ.',
+          'Dược phơi ở lán này xong, Đại Phu dưới làng kiểm lại từng bó. Ông khó tính lắm, bó nào ẩm là trả về phơi lại.'
+        ],
+        greeting: ['Lên hái dược à? Nhớ lời chị: bờ suối trơn, rắn lục nhiều — thấy bụi linh chi thì ngó quanh ba bước rồi hãy cúi xuống.'],
+        lore: ['Ba hồ Suối Linh nối nhau bằng hai dòng suối nhỏ, nước từ cao xuống thấp, hồ dưới cùng trong nhất. Người xưa kể mạch nước này là một nhánh của sông ngầm dưới khe vực, chui lên mặt đất ở cánh đông rồi lại chui xuống.'],
+        idle: ['Bó này phơi được hai nắng rồi, tối nay đóng gói là vừa.',
+          'Hồ trên hôm nay sáng hơn mọi ngày — cá lại tụ về phía bờ tây.'],
+        quest: {}
+      },
+      ha_van_dinh: {
+        lines: [
+          'Cầu này cha ta bắc mất ba mùa đông. Đá lấy từ vách vực, ghép không một hạt vữa — đá tự cắn nhau mà đứng mấy chục năm.',
+          'Qua cầu thì đi giữa nhịp, đừng vịn lan can đá phía đông — đoạn đó ta chưa kịp thay đá nứt, đang chờ đá mới trên núi chuyển xuống.',
+          'Dưới cầu là sông ngầm, sâu không thấy đáy. Đồ rơi xuống là mất — buộc dây vào người cho chắc trước khi qua.'
+        ],
+        greeting: ['Qua cầu xuống vực sâu à? Đồ đạc buộc hết vào người chưa? Cầu hẹp, gió dưới vực thốc lên mạnh — đi chậm thôi.'],
+        lore: ['Khe vực phía nam sâu hơn khe cũ trong núi nhiều, người già nói đào xuống nữa là chạm mạch sông ngầm chính. Cầu Đá Vực Sâu là đường duy nhất qua bờ đông mà không phải vòng lên cổng Chi Đỉnh.'],
+        idle: ['Đá nứt ở nhịp ba lại há miệng thêm một phân. Mai phải chèn lại.',
+          'Nghe tiếng nước hôm nay lạ — đục hơn mọi khi.'],
+        quest: {}
+      },
+      au_duong_thach: {
+        lines: [
+          'Đầm này ban ngày lặng như gương, nửa đêm nước tự sáng lên. Ngồi đủ lâu mới thấy: sáng không phải ở nước — sáng ở đáy, như có ai thắp đèn dưới đó.',
+          'Người ta xuống vực sâu tìm dược, tìm quái, tìm kỳ ngộ. Ta ở đây mười mấy năm, chỉ tìm một thứ: ngồi yên mà không nghĩ gì. Vẫn chưa tìm được.',
+          'Rắn quanh đầm không cắn người ngồi yên. Chúng sợ động, không sợ người — ngươi càng hấp tấp, chúng càng để ý.'
+        ],
+        greeting: ['Khách xuống được tới Đàm U Minh thì không phải người thường. Ngồi xuống bờ đầm một lát đã — đi tiếp cũng không muộn.'],
+        lore: ['Miếu cổ sau lưng ta không biết ai dựng, bia đá mòn hết chữ. Chỉ biết người xưa chọn đúng chỗ này: bờ đầm là nơi mạch linh của cả vùng Thâm Xứ tụ lại — tu sĩ ngồi thiền ở đây, linh khí vào người nhanh hơn trên núi.',
+          'Đường lên Chi Đỉnh ở cổng bắc cần Luyện Khí tầng 9. Nhưng người xưa còn nói: ai ngồi đủ lâu bên đầm mà nước không gợn, người đó đi đâu cũng qua được. Ta ngồi mười mấy năm, nước vẫn gợn.'],
+        idle: ['Nước hôm nay trong. Thấy được hai tầng đá dưới đáy.',
+          'Con rắn lục bờ đông lại ra phơi nắng. Kệ nó — chỗ của nó cũng như chỗ của ta.'],
+        quest: {}
+      },
+      // 6 NPC vành map 3 V5 (gói map 3 — Đài Vọng Sơn / đình / lán / rừng bia / đình đón khách / nhà nghỉ).
+      gac_son_mon: {
+        lines: ['Đứng trên đài vọng sơn, ngày quang thì thấy tới tận sông lớn, ngày mù thì thấy mây đi dưới chân mình.', 'Gác sơn môn không khó, khó là đứng yên một chỗ mà lòng không động.'],
+        greeting: ['Lữ khách lên núi tuyển tông, hay lên ngắm cảnh? Đường còn dài, giữ sức.', 'Đài này là mắt của sơn môn. Có động tĩnh gì lạ dưới núi, cứ báo cho ta.'],
+        lore: ['Nghe nói tổ sư lập đài vọng sơn trước cả bãi tuyển — núi này xưa là chỗ nhìn trời đoán gió lôi kiếp.'],
+        idle: ['…', 'Gió hôm nay thơm mùi thông non.']
+      },
+      truong_dinh: {
+        lines: ['Đình này dựng cho người leo dốc — nửa đường núi, mệt thì ghé, khát thì có trà nóng, đừng gắng sức mà ngã.', 'Ba mươi năm nay ta thấy bao lớp người lên núi: kẻ về tay không vẫn cười, kẻ đậu cao chưa chắc đã vui.'],
+        greeting: ['Mời vào đình nghỉ chân. Trà vừa pha, gậy chống có sẵn ở góc kia.', 'Lên nữa là tới thềm chuyển dốc, đường hẹp và trơn, đi chậm thôi.'],
+        lore: ['Ngày tuyển tông, đình này đông hơn chợ phiên — người nhà đi tiễn đứng chật cả thềm đá.'],
+        idle: ['Ấm trà này là trà shan tuyết hái sau đình.']
+      },
+      tho_san_tay: {
+        lines: ['Sườn tây thú dữ nhiều mà dược cũng nhiều — linh chi mọc sau mưa, cứ men theo vệt đất ẩm mà tìm.', 'Thấy dấu chân sói còn mới thì đừng đi tiếp một mình, quay lại lán của ta mà chờ trời sáng.'],
+        greeting: ['Lữ khách đi săn hay đi hái thuốc? Cần người dẫn đường sườn tây, cứ gọi ta.', 'Lán của ta có sẵn thịt khô và nước — khách qua đường cứ tự nhiên.'],
+        lore: ['Con gấu ngựa năm xưa ta hạ, da nó giờ lót ở nhà nghỉ chân dưới núi — chủ quán Hà là bạn cũ của ta.'],
+        idle: ['Bẫy mới đặt sáng nay, chiều về kiểm tra.']
+      },
+      ong_bia: {
+        lines: ['Bia cổ không khắc chữ cho người đọc, khắc cho người đủ duyên mà ngộ — đứng lâu trước bia, lòng tĩnh thì thấy.', 'Ba tấm bia này dựng cùng năm lập bãi tuyển. Tông nào cũng có phần, nên không tông nào được dời đi.'],
+        greeting: ['Lại một người trẻ tìm tới rừng bia… Ngồi xuống đây, nghe lão kể chuyện cũ.', 'Đừng chạm tay lên mặt bia — đá lạnh và thiêng, chạm vào là lạnh tới tim đấy.'],
+        lore: ['Nghe đâu dưới thềm bia còn chôn một hộp đá của tổ sư, dặn chỉ mở khi núi gặp đại nạn.'],
+        idle: ['Lá rụng mỗi ngày, quét mỗi ngày, vậy mới yên.']
+      },
+      tiep_khach: {
+        lines: ['Đình đón khách này là trạm đầu tiên của người lên núi đấy! Nghỉ một lát, cháu chỉ đường cho.', 'Anh/chị lên tuyển tông à? Quảng trường ở trên kia, đi theo đường đá này là tới, đừng rẽ vào rừng bia kẻo lạc.'],
+        greeting: ['Chào mừng tới chân núi Thanh Phong! Cháu là Lý Văn Trà, chuyên đón khách.', 'Đi đường xa có mệt không? Vào đình uống chén trà rồi hẵng leo tiếp.'],
+        lore: ['Hôm tuyển tông, người xếp hàng từ đình này lên tận quảng trường — cháu đếm thử một lần, hơn bốn trăm người!'],
+        idle: ['Cháu cũng muốn được lên núi học đạo…']
+      },
+      chu_nha_nghi: {
+        lines: ['Nhà nghỉ của ta tuy nhỏ mà giường êm, mì ngon — khách lỡ đường cứ vào, thiếu tiền thì ghi sổ, đi đâu mà vội.', 'Leo núi cả ngày rồi thì ngủ một giấc cho lại sức; sáng mai sương sớm trên đài vọng vân mới là cảnh đáng xem.'],
+        greeting: ['Vào đây, vào đây! Ngoài trời trở gió rồi, trong nhà có sẵn bếp lửa.', 'Khách lên núi hay xuống núi? Xuống núi thì kể ta nghe trên đó có gì vui.'],
+        lore: ['Năm nào kỳ tuyển tông xong, nhà ta cũng kín khách — kẻ ở lại ăn mừng, kẻ ra về ăn một bữa no rồi tính tiếp.'],
+        idle: ['Mì của ta phải nấu bằng nước suối nam mới đúng vị.']
+      },
       // Thủ Thư Tàng Kinh Các — trong game, js/library.js ưu tiên thoại
       // theo cổng bái nhập + tiến độ chuỗi việc giữ sách; đây là thoại
       // dự phòng (và là nguồn bắt buộc cho test story: mọi nhiệm vụ

@@ -56,8 +56,8 @@
   var ANCHORS = [
     { mapId: 'map1', x: 50, y: 48, place: 'sân giếng cổ Thanh Khê' },
     { mapId: 'map2', x: 68, y: 44, place: 'bờ suối linh trong Rừng Thanh Sơn' },
-    { mapId: 'map3', x: 42, y: 24, place: 'bãi tuyển đệ tử dưới Chân Núi' },
-    { mapId: 'map4', x: 32, y: 50, place: 'Ngoại Vi Thập Vạn Đại Sơn' }
+    { mapId: 'map3', x: 82, y: 66, place: 'bãi tuyển đệ tử dưới Chân Núi' }, // V5: +40,+42
+    { mapId: 'map4', x: 92, y: 98, place: 'Ngoại Vi Thập Vạn Đại Sơn' }
   ];
 
   // ---------- RNG tất định theo chu kỳ ----------

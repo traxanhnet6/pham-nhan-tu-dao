@@ -88,9 +88,9 @@
       ambushAt: 2, ambushTypes: ['soi_con', 'lon_rung'],
       ambushSpawns: [[40, 55], [46, 55], [40, 61], [46, 61], [43, 62]] },
     { mapId: 'map3', name: 'Chân Núi Thanh Phong', destName: 'Trạm Buôn Chân Núi',
-      waypoints: [[31, 36], [31, 31], [31, 28]],
+      waypoints: [[71, 78], [71, 73], [71, 70]], // V5: +40,+42
       ambushAt: 1, ambushTypes: ['khi_mat_do', 'soi_rung'],
-      ambushSpawns: [[27, 27], [35, 27], [28, 34], [34, 34], [31, 35]] }
+      ambushSpawns: [[67, 69], [75, 69], [68, 76], [74, 76], [71, 77]] } // V5: +40,+42
   ];
 
   function num(v, d) { v = +v; return isFinite(v) ? v : d; }

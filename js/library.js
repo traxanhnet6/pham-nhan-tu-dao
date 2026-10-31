@@ -43,12 +43,12 @@
   }
 
   var LIBRARIAN = { id: 'thu_thu', name: 'Cổ Mặc', title: 'Thủ Thư Tàng Kinh Các',
-    mapId: 'map3', x: 49, y: 22, sprite: 'dai_phu' }; // V10: + offset map (12,8)
+    mapId: 'map3', x: 89, y: 64, sprite: 'dai_phu' }; // V10: + offset map (12,8); V5: +40,+42
   // Tòa các: trạm thủ thư + kệ sách trong panel Tông Môn (quầy đổi
   // sách của manuals.js). Không thêm map nội thất riêng: ảnh nền
   // map 3 v7 không có tòa nhà mới, vẽ thêm nền giả sẽ phá ảnh thật
   // nên không gian trong game chính là trạm này + panel quầy.
-  var BUILDING = { mapId: 'map3', name: 'Tàng Kinh Các', x: 49, y: 22, // V10: + offset map (12,8)
+  var BUILDING = { mapId: 'map3', name: 'Tàng Kinh Các', x: 89, y: 64, // V10: + offset map (12,8); V5: +40,+42
     note: 'Tòa các chung của mười tông ở bãi tuyển đệ tử Chân Núi Thanh Phong.' };
   var QUEST_IDS = ['q_tkc_1', 'q_tkc_2', 'q_tkc_3'];
 

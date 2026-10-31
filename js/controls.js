@@ -255,15 +255,19 @@
       label: 'Màn hình NGANG',
       joy: { x: 0.095, y: 0.78, d: 0.24 },
       dpad: { x: 0.095, y: 0.78, d: 0.24 },
-      // Vòng cung nút chiêu ôm sát góc dưới-phải: Đánh to nhất ở tâm cung.
+      // MCTL 31/10: vòng cung cũ SẬP ở khung ngang điện thoại (audit:
+      // 9–10 cặp hộp chạm chồng ở 363x272/320x240, Đánh bị skill5 +
+      // interact nuốt). Đổi sang QUẠT 2 HÀNG: hàng trên y=0.76 (Tương
+      // tác + chiêu 1/4/5), hàng dưới y=0.925 (chiêu 2/3 + Đánh to nhất
+      // ở góc). Đã kiểm AABB 0 cặp chồng ở 363x272 -> 820x576 (test MCTL).
       skills: [
-        { id: 'attack', x: 0.925, y: 0.78, d: 0.13 },
-        { id: 'skill1', x: 0.83, y: 0.66, d: 0.088 },
-        { id: 'skill2', x: 0.775, y: 0.79, d: 0.088 },
-        { id: 'skill3', x: 0.845, y: 0.90, d: 0.088 },
-        { id: 'skill4', x: 0.895, y: 0.615, d: 0.082 },
-        { id: 'skill5', x: 0.958, y: 0.675, d: 0.082 },
-        { id: 'interact', x: 0.95, y: 0.90, d: 0.082 }
+        { id: 'attack', x: 0.93, y: 0.925, d: 0.13 },
+        { id: 'skill1', x: 0.66, y: 0.76, d: 0.088 },
+        { id: 'skill2', x: 0.66, y: 0.925, d: 0.088 },
+        { id: 'skill3', x: 0.815, y: 0.925, d: 0.088 },
+        { id: 'skill4', x: 0.79, y: 0.76, d: 0.082 },
+        { id: 'skill5', x: 0.92, y: 0.76, d: 0.082 },
+        { id: 'interact', x: 0.545, y: 0.76, d: 0.082 }
       ],
       zoomIn: { x: 0.955, y: 0.335, d: 0.07 },
       zoomOut: { x: 0.955, y: 0.455, d: 0.07 },
@@ -276,14 +280,20 @@
       // Hàng điều khiển dồn ở khoang dưới (deck) của khung dọc.
       joy: { x: 0.15, y: 0.89, d: 0.21 },
       dpad: { x: 0.15, y: 0.89, d: 0.21 },
+      // MCTL 31/10: bản cũ skill1 x interact chồng 34.2x8.0 (bấm Kiếm
+      // Khí thành Tương tác), attack x skill4/5 chồng ~5x20, skill4/5
+      // tràn mép phải khung 358. Bố cục mới: Tương tác lùi trái (0.575),
+      // skill3/4 lên hàng y=0.795 giãn ngang, skill5 lên y=0.63 né dải
+      // thẻ thu nhỏ; hộp chạm được clampCenter kẹp trong khung. Đã
+      // kiểm AABB 0 cặp chồng ở 358x468.5 -> 430x522.5 (test MCTL).
       skills: [
         { id: 'attack', x: 0.85, y: 0.89, d: 0.115 },
         { id: 'skill1', x: 0.70, y: 0.845, d: 0.078 },
         { id: 'skill2', x: 0.685, y: 0.935, d: 0.078 },
-        { id: 'skill3', x: 0.85, y: 0.795, d: 0.078 },
-        { id: 'skill4', x: 0.945, y: 0.845, d: 0.075 },
-        { id: 'skill5', x: 0.945, y: 0.94, d: 0.075 },
-        { id: 'interact', x: 0.715, y: 0.78, d: 0.075 }
+        { id: 'skill3', x: 0.815, y: 0.795, d: 0.078 },
+        { id: 'skill4', x: 0.97, y: 0.795, d: 0.075 },
+        { id: 'skill5', x: 0.96, y: 0.63, d: 0.075 },
+        { id: 'interact', x: 0.575, y: 0.775, d: 0.075 }
       ],
       zoomIn: { x: 0.945, y: 0.075, d: 0.062 },
       zoomOut: { x: 0.945, y: 0.165, d: 0.062 },
@@ -297,6 +307,95 @@
     if (orient === 'ngang' || orient === 'full') return 'landscape';
     if (orient === 'doc') return 'portrait';
     return (w >= h) ? 'landscape' : 'portrait';
+  }
+
+  /* ---------- Hình học thuần (MCTL 31/10 — tối ưu điều khiển mobile) ----------
+   * clampCenter: kẹp TÂM hộp chạm (hit x hit) vào trong khung, lề 2px.
+   * Trước đây tâm nút đặt theo tỉ lệ mù nên khung hẹp là hộp tràn ra
+   * ngoài (audit: lưới D-pad tràn trái 30px ở khung 320x240, skill4/5
+   * tràn mép phải khung dọc 358) — phần tràn không bấm được + đè UI khác.
+   * layoutBoxes: CÙNG phép toán với place()/positionOverlay (test MCTL
+   * đo hộp THẬT từ bảng LAYOUTS bằng hàm này, không nhân bản công thức).
+   * zoomPlan: chọn vị trí 3 nút zoom không đè minimap, theo ưu tiên:
+   * (1) vị trí LAYOUTS nếu không giao minimap (nới 4px) và không giao
+   * cụm chiêu/D-pad; (2) xếp ngay DƯỚI minimap (dọc: cột dọc, ngang:
+   * hàng ngang, cùng canh phải) — dải phải chỉ một chủ: minimap ->
+   * zoom -> thẻ thu nhỏ (chipTray nối tiếp ở positionOverlay);
+   * (3) hàng ngang dưới thẻ Mục tiêu bên trái; (4) rơi về (1) như cũ. */
+  function clampCenter(cx, cy, hit, W, H) {
+    var m = hit / 2 + 2;
+    return {
+      x: Math.min(Math.max(cx, m), Math.max(m, W - m)),
+      y: Math.min(Math.max(cy, m), Math.max(m, H - m))
+    };
+  }
+  function layoutBoxes(W, H, layoutName2, size) {
+    var L = LAYOUTS[layoutName2] || LAYOUTS.landscape;
+    var minDim = Math.min(W, H), sz = size || 1, out = { skills: {} };
+    L.skills.forEach(function (s) {
+      var d = s.d * minDim * sz, hit = touchHit(d);
+      var c = clampCenter(s.x * W, s.y * H, hit, W, H);
+      out.skills[s.id] = { cx: c.x, cy: c.y, d: d, hit: hit };
+    });
+    var jd = L.joy.d * minDim * sz;
+    var jc = clampCenter(L.joy.x * W, L.joy.y * H, jd, W, H);
+    out.joy = { cx: jc.x, cy: jc.y, d: jd };
+    var dd = L.dpad.d * minDim * sz, hitD = Math.max(dd, MIN_TOUCH * 3);
+    var dc = clampCenter(L.dpad.x * W, L.dpad.y * H, hitD, W, H);
+    out.dpad = { cx: dc.x, cy: dc.y, d: dd, hit: hitD };
+    return out;
+  }
+  function ctrBox(cx, cy, hit) { return { l: cx - hit / 2, t: cy - hit / 2, r: cx + hit / 2, b: cy + hit / 2 }; }
+  function boxesHit(a, b) { return !!(a && b && a.l < b.r && b.l < a.r && a.t < b.b && b.t < a.b); }
+  function inflateBox(b, m) { return { l: b.l - m, t: b.t - m, r: b.r + m, b: b.b + m }; }
+  var ZOOM_IDS = ['zoomIn', 'zoomOut', 'zoomReset'];
+  function zoomPlan(W, H, L, hit, mm, trackerBottom, avoid) {
+    var gap = 4;
+    function layoutPos() {
+      var p = {};
+      ZOOM_IDS.forEach(function (z) { p[z] = clampCenter(L[z].x * W, L[z].y * H, hit, W, H); });
+      return p;
+    }
+    function clearOf(pos, mmBox) {
+      for (var i = 0; i < ZOOM_IDS.length; i++) {
+        var b = ctrBox(pos[ZOOM_IDS[i]].x, pos[ZOOM_IDS[i]].y, hit);
+        if (mmBox && boxesHit(b, mmBox)) return false;
+        for (var j = 0; j < (avoid || []).length; j++) if (boxesHit(b, avoid[j])) return false;
+      }
+      return true;
+    }
+    function inside(pos) {
+      for (var i = 0; i < ZOOM_IDS.length; i++) {
+        var b = ctrBox(pos[ZOOM_IDS[i]].x, pos[ZOOM_IDS[i]].y, hit);
+        if (b.l < 2 || b.t < 2 || b.r > W - 2 || b.b > H - 2) return false;
+      }
+      return true;
+    }
+    function planBottom(pos) {
+      var bot = mm ? mm.b : 0;
+      ZOOM_IDS.forEach(function (z) { bot = Math.max(bot, pos[z].y + hit / 2); });
+      return bot;
+    }
+    var mmBox = mm ? inflateBox(mm, 4) : null;
+    var p1 = layoutPos();
+    if (clearOf(p1, mmBox)) return { name: 'layout', pos: p1, bottom: planBottom(p1) };
+    if (mm) {
+      var p2 = {};
+      if (W < H) { // dọc: cột dưới minimap, canh phải theo mép phải minimap
+        var cx2 = mm.r - hit / 2, top2 = mm.b + 6;
+        ZOOM_IDS.forEach(function (z, i) { p2[z] = { x: cx2, y: top2 + hit / 2 + i * (hit + gap) }; });
+      } else { // ngang: hàng dưới minimap, canh phải theo mép phải minimap
+        var cy2 = mm.b + 6 + hit / 2;
+        ZOOM_IDS.forEach(function (z, i) { p2[z] = { x: mm.r - hit / 2 - (2 - i) * (hit + gap), y: cy2 }; });
+      }
+      if (inside(p2) && clearOf(p2, null)) return { name: 'under-mm', pos: p2, bottom: planBottom(p2) };
+    }
+    if (trackerBottom) {
+      var p3 = {}, cy3 = trackerBottom + 6 + hit / 2;
+      ZOOM_IDS.forEach(function (z, i) { p3[z] = { x: hit / 2 + 8 + i * (hit + gap), y: cy3 }; });
+      if (inside(p3) && clearOf(p3, mmBox)) return { name: 'under-tracker', pos: p3, bottom: planBottom(p3) };
+    }
+    return { name: 'layout-fallback', pos: p1, bottom: planBottom(p1) };
   }
 
   /* ---------- Zoom ---------- */
@@ -503,13 +602,13 @@
     '.ctl-zbtn{position:absolute;pointer-events:auto;background:transparent;touch-action:none;user-select:none;-webkit-user-select:none}',
     '.ctl-zbtn .ctl-zface{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:rgba(26,20,14,.40);color:#f5eeda;border:2px solid rgba(245,238,218,.55);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;pointer-events:none;box-sizing:border-box}',
     '#ctlPadHint{display:none;background:rgba(26,20,14,.72);color:#ffe9a8;border:1px solid #c9a227;border-radius:14px;padding:2px 10px;font-size:12px;white-space:nowrap;transform:translateX(-50%)}',
-    '#ctlToast{position:fixed;top:14px;left:50%;transform:translateX(-50%);background:rgba(26,20,14,.92);color:#ffe9a8;border:2px solid #c9a227;border-radius:8px;padding:8px 16px;z-index:99;display:none;font-size:14px}',
+    '#ctlToast{position:fixed;top:calc(14px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);background:rgba(26,20,14,.92);color:#ffe9a8;border:2px solid #c9a227;border-radius:8px;padding:8px 16px;z-index:99;display:none;font-size:14px}', // MCTL 31/10: toast né tai thỏ/thanh trạng thái
     'body.pnt-pt #gameWrap{padding-bottom:200px}',
     'body.pnt-pt #screen-game{max-width:100%}',
     'body.pnt-pt .overlay{top:auto !important;bottom:0;max-height:64%;animation:ctlUp .18s ease-out}',
     '@keyframes ctlUp{from{transform:translateY(16px);opacity:.4}to{transform:none;opacity:1}}',
     'body.pnt-ls #screen-game{max-width:1180px}',
-    'body.pnt-ls #gameWrap{width:min(100%,calc((100dvh - 168px)*1.3333));min-width:320px}',
+    'body.pnt-ls #gameWrap{width:min(100%,820px,calc((100dvh - 88px)*1.3333));min-width:min(320px,100%)}', // MCTL 31/10: công thức cũ trừ 168px + min-width 320px bóp khung ngang điện thoại còn 320x240 (cụm chiêu sập chồng 10 cặp); mới trừ 88px theo đúng phần dưới khung thật (quickBar+skillBar khiêm tốn) và không ép tối thiểu quá bề ngang máy.
     'body.pnt-ls #hud{gap:8px;padding:6px 10px}',
     'body.pnt-ls #hud .bar{width:110px}',
     'body.pnt-ls #controls button{padding:7px 10px;font-size:13px}',
@@ -608,10 +707,15 @@
   function place(el, spec, W, H, minDim) {
     var d = spec.d * minDim * settings.touch.size; // cỡ VẼ thật của mặt nút
     var hit = touchHit(d); // hộp chạm: không bao giờ dưới MIN_TOUCH (40px)
+    // MCTL 31/10: kẹp tâm vào khung (lề 2px) — hết tràn mép ở khung hẹp.
+    var c = clampCenter(spec.x * W, spec.y * H, hit, W, H);
+    placePx(el, c.x, c.y, d, hit);
+  }
+  function placePx(el, cx, cy, d, hit) {
     el.style.width = hit + 'px';
     el.style.height = hit + 'px';
-    el.style.left = (spec.x * W - hit / 2) + 'px';
-    el.style.top = (spec.y * H - hit / 2) + 'px';
+    el.style.left = (cx - hit / 2) + 'px';
+    el.style.top = (cy - hit / 2) + 'px';
     var face = el.querySelector ? (el.querySelector('.ctl-face') || el.querySelector('.ctl-zface')) : null;
     if (face) {
       face.style.width = d + 'px';
@@ -619,9 +723,9 @@
       face.style.fontSize = Math.max(11, d * 0.3) + 'px'; // ký hiệu zoom (+/−/1:1)
     }
     var sn = el.querySelector ? el.querySelector('.sn') : null;
-    if (sn) sn.style.fontSize = Math.max(9, d * 0.18) + 'px';
+    if (sn) sn.style.fontSize = Math.max(10, d * 0.18) + 'px'; // MCTL: sàn 9->10px, tên chiêu đọc được ở cỡ điện thoại
     var sk = el.querySelector ? el.querySelector('.sk') : null;
-    if (sk) sk.style.fontSize = Math.max(10, d * 0.17) + 'px'; // số phím/hồi chiêu giữ đọc rõ ở cỡ mới
+    if (sk) sk.style.fontSize = Math.max(11, d * 0.17) + 'px'; // MCTL: sàn 10->11px — phím/hồi chiêu giữ đọc rõ ở cỡ mới
   }
   // Áp tỷ lệ khung hình đã chọn lên #gameWrap (lệnh Bui 20:12):
   // vùng khả dụng = bề ngang cột game x (chiều cao cửa sổ - phần trên
@@ -687,15 +791,20 @@
     els.dpad.style.display = touchMode === 'dpad' ? 'block' : 'none';
     if (touchMode === 'joystick') {
       if (!settings.touch.float || joyCenter) {
-        var c = joyCenter || { x: L.joy.x * W, y: L.joy.y * H };
+        var c0 = joyCenter || { x: L.joy.x * W, y: L.joy.y * H };
         var d = L.joy.d * minDim * settings.touch.size;
+        // MCTL 31/10: đế mặc định được kẹp trong khung; đế NỔI theo tay
+        // người chơi (joyCenter do chạm đặt) thì giữ nguyên điểm chạm.
+        var c = joyCenter ? c0 : clampCenter(c0.x, c0.y, d, W, H);
         els.joy.style.width = d + 'px'; els.joy.style.height = d + 'px';
         els.joy.style.left = (c.x - d / 2) + 'px'; els.joy.style.top = (c.y - d / 2) + 'px';
       }
     } else {
       var dd = L.dpad.d * minDim * settings.touch.size; // cỡ VẼ toàn cụm D-pad
       var hitD = Math.max(dd, MIN_TOUCH * 3); // lưới chạm: mỗi ô >= MIN_TOUCH
-      var cx = L.dpad.x * W, cy = L.dpad.y * H, cell = hitD / 3, vcell = dd / 3;
+      // MCTL 31/10: kẹp tâm lưới — bản cũ tràn trái tới 30px ở khung hẹp.
+      var dcC = clampCenter(L.dpad.x * W, L.dpad.y * H, hitD, W, H);
+      var cx = dcC.x, cy = dcC.y, cell = hitD / 3, vcell = dd / 3;
       els.dpad.style.left = (cx - hitD / 2) + 'px'; els.dpad.style.top = (cy - hitD / 2) + 'px';
       els.dpad.style.width = hitD + 'px'; els.dpad.style.height = hitD + 'px';
       Array.prototype.forEach.call(els.dpad.children, function (b) {
@@ -714,10 +823,41 @@
       for (var i = 0; i < L.skills.length; i++) if (L.skills[i].id === b.getAttribute('data-act')) spec = L.skills[i];
       if (spec) place(b, spec, W, H, minDim);
     });
-    Array.prototype.forEach.call(els.zoomBox.children, function (b) {
-      var spec = L[b.getAttribute('data-zoom')];
-      if (spec) place(b, spec, W, H, minDim);
-    });
+    // MCTL 31/10: zoom theo zoomPlan (không đè minimap — audit cũ: cả 3
+    // nút zoom đè minimap ở hầu hết khung điện thoại) + thẻ thu nhỏ
+    // (chipTray) xếp TIẾP dưới cụm minimap+zoom: dải phải chỉ một chủ.
+    // Đo rect thật của minimap/thẻ Mục tiêu trong wrap; môi trường test
+    // giả (rect 0/không có API) thì rơi về vị trí LAYOUTS như cũ.
+    try {
+      var zHit = touchHit(L.zoomIn.d * minDim * settings.touch.size);
+      var lb = layoutBoxes(W, H, layoutName, settings.touch.size);
+      var avoid = [];
+      Object.keys(lb.skills).forEach(function (id) { var s = lb.skills[id]; avoid.push(ctrBox(s.cx, s.cy, s.hit)); });
+      if (touchMode === 'dpad') avoid.push(ctrBox(lb.dpad.cx, lb.dpad.cy, lb.dpad.hit));
+      var wr = (wrap.getBoundingClientRect ? wrap.getBoundingClientRect() : null);
+      var mm = null, mmEl = $('minimapWrap');
+      if (wr && mmEl && mmEl.getBoundingClientRect) {
+        var mr = mmEl.getBoundingClientRect();
+        if (mr && mr.width > 0 && mr.height > 0) mm = { l: mr.left - wr.left, t: mr.top - wr.top, r: mr.right - wr.left, b: mr.bottom - wr.top };
+      }
+      var trkB = 0, trkEl = $('questTracker');
+      if (wr && trkEl && trkEl.getBoundingClientRect) {
+        var tr = trkEl.getBoundingClientRect();
+        if (tr && tr.height > 0) trkB = tr.bottom - wr.top;
+      }
+      var plan = zoomPlan(W, H, L, zHit, mm, trkB, avoid);
+      Array.prototype.forEach.call(els.zoomBox.children, function (b) {
+        var zid = b.getAttribute('data-zoom'), zp = plan.pos[zid], zs = L[zid];
+        if (zp && zs) placePx(b, zp.x, zp.y, zs.d * minDim * settings.touch.size, zHit);
+      });
+      var chip = $('chipTray');
+      if (chip && mm) chip.style.top = (plan.bottom + 6) + 'px';
+    } catch (e) {
+      Array.prototype.forEach.call(els.zoomBox.children, function (b) {
+        var spec = L[b.getAttribute('data-zoom')];
+        if (spec) place(b, spec, W, H, minDim);
+      });
+    }
     els.hint.style.left = (L.padHint.x * W) + 'px';
     els.hint.style.top = (L.padHint.y * H) + 'px';
     els.ov.style.opacity = settings.touch.opacity;
@@ -743,6 +883,10 @@
 
   /* ---------- Joystick / D-pad / nút chiêu / zoom ---------- */
   var joyActive = false, joyPid = null, joyCenter = null;
+  // MCTL 31/10: theo dõi CHẠM THUẦN trong vùng joystick nổi (không kéo):
+  // vùng này phủ 46%x58% khung và preventDefault mọi chạm nên trước đây
+  // chạm-để-đi (click canvas) chết lặng trên 26,7% diện tích khung.
+  var joyTap = null;
   function joyFromEvent(e) {
     var wrap = $('gameWrap');
     var r = wrap.getBoundingClientRect();
@@ -762,6 +906,7 @@
     els.zone.addEventListener('pointerdown', function (e) {
       if (joyPid !== null) return;
       joyPid = e.pointerId; joyActive = true;
+      joyTap = { t: Date.now(), x: e.clientX, y: e.clientY, moved: false };
       var r = wrap.getBoundingClientRect();
       joyCenter = { x: e.clientX - r.left, y: e.clientY - r.top };
       try { els.zone.setPointerCapture(joyPid); } catch (_e) {}
@@ -769,13 +914,29 @@
       joyFromEvent(e);
       e.preventDefault();
     });
-    els.zone.addEventListener('pointermove', function (e) { if (e.pointerId === joyPid) joyFromEvent(e); });
+    els.zone.addEventListener('pointermove', function (e) {
+      if (e.pointerId !== joyPid) return;
+      if (joyTap && Math.abs(e.clientX - joyTap.x) + Math.abs(e.clientY - joyTap.y) > 12) joyTap.moved = true;
+      joyFromEvent(e);
+    });
     var joyEnd = function (e) {
       if (e.pointerId !== joyPid) return;
+      // MCTL 31/10: chạm thuần (<=250ms, kéo <=12px, chưa qua deadzone)
+      // -> chuyển tiếp thành click lên canvas = chạm-để-đi như vùng
+      // không có joystick; game.js tự bỏ qua khi đang mở thoại/panel.
+      var tap = (e.type === 'pointerup' && joyTap && !joyTap.moved && Date.now() - joyTap.t <= 250 &&
+        Math.abs(joyVec.x) < 0.01 && Math.abs(joyVec.y) < 0.01) ? { x: e.clientX, y: e.clientY } : null;
+      joyTap = null;
       joyPid = null; joyActive = false; joyVec = { x: 0, y: 0 };
       els.knob.style.transform = '';
       if (!settings.touch.float) joyCenter = null;
       refreshOverlayVisibility();
+      if (tap) {
+        var cv = $('gameCanvas');
+        if (cv && typeof MouseEvent !== 'undefined') {
+          try { cv.dispatchEvent(new MouseEvent('click', { clientX: tap.x, clientY: tap.y, bubbles: true })); } catch (_e) {}
+        }
+      }
     };
     els.zone.addEventListener('pointerup', joyEnd);
     els.zone.addEventListener('pointercancel', joyEnd);
@@ -1222,6 +1383,11 @@
   function tick() {
     var sg = $('screen-game');
     inGame = !!(sg && sg.style.display !== 'none');
+    // MCTL 31/10: CSS dùng class này ẩn tiêu đề trang khi ĐANG CHƠI
+    // (ảnh Bui 06:28: tiêu đề bị thanh trạng thái cắt + trang cuộn dài,
+    // game chỉ chiếm ~40% chiều cao). Màn đăng nhập/tạo nhân vật giữ
+    // nguyên tiêu đề.
+    if (document.body) document.body.classList.toggle('pnt-ingame', inGame);
     var acc = currentAccount();
     if (acc !== account) {
       account = acc;
@@ -1265,6 +1431,7 @@
     axesVec: axesVec, PAD_PAGES: PAD_PAGES, PAD_PAGE_NAMES: PAD_PAGE_NAMES, padSkillDesc: padSkillDesc,
     PAD_DEADZONE: PAD_DEADZONE,
     LAYOUTS: LAYOUTS, pickLayout: pickLayout,
+    clampCenter: clampCenter, layoutBoxes: layoutBoxes, zoomPlan: zoomPlan,
     MIN_TOUCH: MIN_TOUCH, touchHit: touchHit,
     FRAME_RATIOS: FRAME_RATIOS, FRAME_IDS: FRAME_IDS, computeFrame: computeFrame, computeCanvasFit: computeCanvasFit,
     ZOOM_MIN: ZOOM_MIN, ZOOM_MAX: ZOOM_MAX,

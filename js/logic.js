@@ -730,7 +730,7 @@
     truc_co_dan: { name: 'Trúc Cơ Đan', desc: 'Đan dẫn kiếp luyện từ Yêu Đan Cấp 3 — viên đan kết thành đạo cơ mới chịu nổi thiên lôi Trúc Cơ. Khi đột phá từ Luyện Khí tầng 9 lên Trúc Cơ, lò tu hành tự dùng 1 viên để dẫn động lôi kiếp (mất cả khi độ kiếp thất bại).', heal: 0, pillCat: 'dan_kiep' },
     lenh_bai_thanh_phong: { name: 'Lệnh Bài Thanh Phong', desc: 'Lệnh bài gỗ xanh khắc mây gió của Thanh Phong Phái. Chứng nhận đệ tử nhập môn, không dùng được, không bán.', heal: 0 },
     lenh_bai_huyen_phap: { name: 'Lệnh Bài Huyền Pháp', desc: 'Lệnh bài tím khắc ngũ hành luân của Huyền Pháp Tông. Nhận khi bái nhập tông môn này ở Sơn Môn Đại Hội, không dùng được, không bán.', heal: 0 },
-    lenh_bai_thien_cong: { name: 'Lệnh Bài Thiên Tấn công', desc: 'Lệnh bài đồng khắc chùy rèn của Thiên Công Phường. Nhận khi bái nhập tông môn này ở Sơn Môn Đại Hội, không dùng được, không bán.', heal: 0 },
+    lenh_bai_thien_cong: { name: 'Lệnh Bài Thiên Công', desc: 'Lệnh bài đồng khắc chùy rèn của Thiên Công Phường. Nhận khi bái nhập tông môn này ở Sơn Môn Đại Hội, không dùng được, không bán.', heal: 0 },
     lenh_bai_dan_ha: { name: 'Lệnh Bài Đan Hà', desc: 'Lệnh bài đỏ khắc lò đan của Đan Hà Cốc. Nhận khi bái nhập tông môn này ở Sơn Môn Đại Hội, không dùng được, không bán.', heal: 0 },
     lenh_bai_van_thu: { name: 'Lệnh Bài Vạn Thú', desc: 'Lệnh bài xanh rêu khắc dấu chân thú của Vạn Thú Môn. Nhận khi bái nhập tông môn này ở Sơn Môn Đại Hội, không dùng được, không bán.', heal: 0 },
     lenh_bai_thien_phu: { name: 'Lệnh Bài Thiên Phù', desc: 'Lệnh bài vàng khắc nét bùa chu sa của Thiên Phù Các. Nhận khi bái nhập tông môn này ở Sơn Môn Đại Hội, không dùng được, không bán.', heal: 0 },
@@ -738,6 +738,12 @@
     lenh_bai_kim_cang: { name: 'Lệnh Bài Kim Cang', desc: 'Lệnh bài đồng vàng khắc nắm quyền của Kim Cang Môn. Nhận khi bái nhập tông môn này ở Sơn Môn Đại Hội, không dùng được, không bán.', heal: 0 },
     lenh_bai_ngu_doc: { name: 'Lệnh Bài Ngũ Độc', desc: 'Lệnh bài lục trầm khắc trăng khuyết của Ngũ Độc Giáo. Nhận khi bái nhập tông môn này ở Sơn Môn Đại Hội, không dùng được, không bán.', heal: 0 },
     lenh_bai_huyen_am: { name: 'Lệnh Bài Huyền Âm', desc: 'Lệnh bài bạc khắc dây đàn của Huyền Âm Cung. Nhận khi bái nhập tông môn này ở Sơn Môn Đại Hội, không dùng được, không bán.', heal: 0 },
+    // ----- TANG CHỨNG CỐT TRUYỆN (họ icon quest-items, nhóm evidence —
+    // tích hợp 31/10/2026: icon AI đã sinh sẵn ở assets/quest-items-ai,
+    // nay tạo ITEMS để nối dây; dùng cho các tuyến điều tra tông môn) ---
+    dan_doc_gia: { name: 'Đan Độc Giả', desc: 'Viên đan giả tẩm độc, vỏ ngoài giống hệt Giải Độc Đan của Đan Hà Cốc nhưng lõi rỗng và đắng gắt. Tang chứng cốt truyện: có kẻ tráo đan để hại người — giữ làm bằng chứng, không dùng được, không bán.', heal: 0 },
+    trang_thu_trat: { name: 'Trang Thư Trát', desc: 'Một trang thư trát xé dở, nét chữ chép tay vội và con dấu triện đỏ đã nhòe một nửa. Tang chứng cốt truyện: mảnh giấy này là đầu mối của một vụ án trong tông môn — giữ làm bằng chứng, không dùng được, không bán.', heal: 0 },
+    an_co_diem_mach: { name: 'Ấn Cổ Điểm Mạch', desc: 'Con ấn đồng cổ khắc mạch văn ngược, dùng để điểm lên huyệt mạch khi phong ấn tu vi. Tang chứng cốt truyện: ấn này chỉ trưởng lão chấp pháp mới được giữ — giữ làm bằng chứng, không dùng được, không bán.', heal: 0 },
     // ----- VẬT DẤU ẤN NGUỒN GỐC (mục 19 hàng chờ, docs/origins-and-encounters.md):
     // 15 vật cốt truyện, không chỉ số, heal 0 (không dùng trực tiếp
     // được), không nằm trong danh sách bán của shop nào nên không bán

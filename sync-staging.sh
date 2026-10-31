@@ -24,6 +24,9 @@ ASSET_DIRS=(
   hero-gem hero-gem-md
   hero-realms-ai hero-realms-md
   monsters-ai monsters-md
+  sect-masters-ai sect-masters-md
+  sect-looks-ai sect-looks-md
+  quest-items-ai quest-items-md
   npcs-ai npcs-md
   pets-ai pets-md
   costumes-ai costumes-md

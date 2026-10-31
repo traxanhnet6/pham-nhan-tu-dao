@@ -51,17 +51,17 @@
   // Q2 — đấu thử: hình nhân kiếm khí dựng ở Bãi Luyện Công map 3. Dùng loài
   // khi_mat_do làm thân hình nhân (loài hình người duy nhất có sẵn) với tên
   // + chỉ số ghi đè ở game.js; sức cỡ boss nhẹ (Sơn Quân cốt truyện HP 260).
-  var DUEL = { type: 'khi_mat_do', name: 'Hình Nhân Kiếm Khí', hp: 220, atk: 13, linhThach: 0, mapId: 'map3', x: 52, y: 27 }; // V10: + offset map (12,8)
+  var DUEL = { type: 'khi_mat_do', name: 'Hình Nhân Kiếm Khí', hp: 220, atk: 13, linhThach: 0, mapId: 'map3', x: 92, y: 69 }; // V10: + offset map (12,8); V5: +40,+42
   // Q3 — bay thử: 5 cột mốc quanh map 3, theo đúng thứ tự, phải đang bay.
   var TRIAL_SECONDS = 240; // giới hạn rộng rãi cho bài bay đầu đời
   var TRIAL_MAP = 'map3';
   var CHECKPOINTS = [
-    { x: 32, y: 20, name: 'Quảng Trường Tuyển Đệ Tử' },
-    { x: 52, y: 27, name: 'Bãi Luyện Tấn công' },
-    { x: 55, y: 31, name: 'Đài Vọng Vân' },
-    { x: 20, y: 40, name: 'Thềm Bia Thanh Phong' },
-    { x: 31, y: 12, name: 'Đường Lên Đại Sơn' }
-  ];
+    { x: 72, y: 62, name: 'Quảng Trường Tuyển Đệ Tử' },
+    { x: 92, y: 69, name: 'Bãi Luyện Tấn công' },
+    { x: 95, y: 73, name: 'Đài Vọng Vân' },
+    { x: 60, y: 82, name: 'Thềm Bia Thanh Phong' },
+    { x: 71, y: 54, name: 'Đường Lên Đại Sơn' }
+  ]; // V5: dịch theo neo map 3 (+40,+42) như DUEL ở trên
   var CHECKPOINT_RADIUS = 52; // px tới tâm cột mốc
 
   // Giọng riêng từng tông cho chuỗi ngự kiếm (khung chung, vị riêng):

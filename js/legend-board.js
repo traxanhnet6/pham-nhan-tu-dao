@@ -44,7 +44,7 @@
 (function (global) {
   'use strict';
 
-  var KEEPER = { id: 'ghi_bang_su', name: 'Thẩm Ký', title: 'Thư Lại Giữ Bia Truyền Kỳ', mapId: 'map3', x: 45, y: 22, sprite: 'hoc_tro' }; // V10: (33,14) nguồn + offset map (12,8) — khớp KEEPER của season-board.js
+  var KEEPER = { id: 'ghi_bang_su', name: 'Thẩm Ký', title: 'Thư Lại Giữ Bia Truyền Kỳ', mapId: 'map3', x: 85, y: 64, sprite: 'hoc_tro' }; // V10: (33,14) nguồn + offset map (12,8); V5: +40,+42 — khớp KEEPER của season-board.js
   var KINDS = {
     do_kiep: 'Độ kiếp thành công',
     quan_quan: 'Quán quân Đại Hội',

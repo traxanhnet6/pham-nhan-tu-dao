@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Phàm Nhân Tu Đạo</title>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;700&display=swap" rel="stylesheet">
 <style>
@@ -10,7 +10,11 @@
   body { margin: 0; background: #1a140e; color: #f5eeda; font-family: 'Be Vietnam Pro', 'Segoe UI', Arial, sans-serif; }
   h1 { text-align: center; color: #f2c14e; margin: 12px 0 4px; letter-spacing: 2px; }
   .sub { text-align: center; color: #c9b896; margin-bottom: 16px; }
-  .screen { max-width: 820px; margin: 0 auto; padding: 16px; }
+  .screen { max-width: 820px; margin: 0 auto; padding: 16px; padding-left: max(16px, env(safe-area-inset-left)); padding-right: max(16px, env(safe-area-inset-right)); }
+  /* MCTL 31/10: đang chơi thì ẩn tiêu đề trang (class pnt-ingame do
+     controls.js tick gắn) — hết cảnh tiêu đề bị thanh trạng thái cắt
+     và trang cuộn dài, game chỉ chiếm ~40% chiều cao (ảnh Bui 06:28). */
+  body.pnt-ingame h1, body.pnt-ingame .sub { display: none; }
   .panel { background: #f5eeda; color: #2a2016; border: 3px solid #8b5a2b; border-radius: 10px; padding: 20px; box-shadow: 0 0 0 3px #3a2a1a; }
   .panel h2 { margin-top: 0; color: #7a3b22; }
   label { display: block; margin: 10px 0 4px; font-weight: bold; }
@@ -124,7 +128,11 @@
   body.has-art { background: #0d0a06; }
   body.has-art .screen .panel { box-shadow: 0 0 0 3px #3a2a1a, 0 12px 44px rgba(0,0,0,.55); }
   @keyframes bgPan { from { transform: scale(1.08) translate(-1.2%, -1%); } to { transform: scale(1.08) translate(1.2%, 1%); } }
-  #chipTray { position: absolute; top: 8px; right: 8px; z-index: 7; display: flex; flex-direction: column; gap: 6px; max-width: 200px; }
+  /* MCTL 31/10: z-index 7 -> 4 (bằng lớp điều khiển, DƯỚI panel z5):
+     trước đây khay thẻ đè cả nút ✕/— của panel đang mở (QA (c) 02:01).
+     Vị trí top do controls.js positionOverlay xếp tiếp dưới minimap +
+     zoom (zoomPlan.bottom); max-height + cuộn để khay dài không tràn. */
+  #chipTray { position: absolute; top: 8px; right: 8px; z-index: 4; display: flex; flex-direction: column; gap: 6px; max-width: 200px; max-height: 52%; overflow-y: auto; }
   .chip { background: rgba(38,26,54,.94); color: #ffe9a8; border: 2px solid #8a6fd0; border-radius: 8px; padding: 6px 9px; font-size: 12px; cursor: pointer; text-align: left; margin: 0; }
   .chip small { display: block; color: #d8c8ff; font-size: 11px; }
   .min-btn { position: absolute; top: 6px; right: 42px; width: 26px; height: 26px; min-width: 26px; padding: 0; font-size: 15px; line-height: 1; background: #5a4632; border-radius: 6px; z-index: 2; }
@@ -158,7 +166,9 @@
   #hudHp { background: var(--c-hp); }
   #hudTuVi { background: var(--c-tv); }
   #gameWrap { position: relative; width: 768px; max-width: 100%; margin: 0 auto; }
-  #gameCanvas { width: 768px; max-width: 100%; height: auto; display: block; background: #74bd49; border: 3px solid #8b5a2b; border-radius: 8px; image-rendering: pixelated; }
+  /* MCTL 31/10: margin 0 auto — canvas 768 căn giữa wrap 820 trên
+     desktop, hết cảnh minimap/zoom lơ lửng ngoài mép phải canvas. */
+  #gameCanvas { width: 768px; max-width: 100%; height: auto; display: block; margin: 0 auto; background: #74bd49; border: 3px solid #8b5a2b; border-radius: 8px; image-rendering: pixelated; }
   /* Minimap (mục 25): góc trên-phải trong #gameWrap — đúng ô neo HUD
      mà js/controls.js đã chừa; bấm vào mở Bản đồ thế giới. */
   #minimapWrap { position: absolute; top: 8px; right: 8px; z-index: 4; background: rgba(26,20,14,.88); border: 2px solid #8b5a2b; border-radius: 8px; padding: 4px; cursor: pointer; text-align: center; }
@@ -239,6 +249,14 @@
   #invInfo { font-size: 13px; margin-bottom: 8px; }
   #log div { margin: 2px 0; }
   #err { color: #ff8a7a; text-align: center; min-height: 20px; }
+  /* MCTL 31/10: máy thấp (ngang điện thoại) — panel trần 92% chiều cao
+     khung + cuộn trong, không che kín màn khi đang chiến đấu (kiểu dọc
+     body.pnt-pt .overlay 64% có độ ưu tiên riêng, không bị luật này đè). */
+  @media (max-height: 480px) { .overlay { max-height: 92%; } }
+  /* MCTL 31/10: nút ghim theo dõi trong panel Nhiệm vụ + vùng chữ thoại
+     bấm để lật trang (game.js gắn listener). */
+  .track-btn { min-height: 36px; padding: 6px 12px; margin-top: 4px; font-size: 13px; cursor: pointer; }
+  #dlgText { cursor: pointer; }
 </style>
 </head>
 <body>
@@ -689,6 +707,7 @@
 <script src="js/yeu-dan-ai.js"></script>
 <script src="js/herb-icons-ai.js"></script>
 <script src="js/talisman-icons-ai.js"></script>
+<script src="js/quest-items-ai.js"></script>
 <script src="js/manual-icons-ai.js"></script>
 <script src="js/origin-icons-ai.js"></script>
 <script src="js/hero-ai.js"></script>
