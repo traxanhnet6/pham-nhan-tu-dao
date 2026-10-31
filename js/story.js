@@ -1437,7 +1437,7 @@ loi_ky_su: {
               'Giấy có thể rách, chu sa có thể cạn — chỉ có tâm vội là không chữa được.',
               'Ngươi muốn học phù? Trước hết, học cách rửa bút cho sạch đã.',
             ],
-            greeting: 'Vào các của ta, bước chân cũng phải như nét bùa: nhẹ, mà chắc.',
+            greeting: ['Vào các của ta, bước chân cũng phải như nét bùa: nhẹ, mà chắc.'],
             lore: [
               'Thiên Phù Chu Ấn trên bia đá giữa Phù Đàn khuyết một góc từ trăm năm nay. Tổ sư nói ấn khuyết là để nhắc người sau: phù đạo không có điểm tròn đầy, chỉ có người không ngừng luyện.',
               'Cây bút cán ngọc này là của sư phụ ta. Một năm ta chỉ dùng nó một lần — vẽ bùa trấn cổng đêm giao thừa. Còn lại, bút thường cũng vẽ nên bùa tốt, nếu tay không run.',
@@ -1452,7 +1452,7 @@ loi_ky_su: {
               'Giấy bùa phát theo suất, chu sa phát theo lạng. Hết thì xuống kho gặp ta, đừng tự ý lấy.',
               'Này, đi chậm thôi! Cổng các này trăm năm nay chưa ai vội mà được việc gì.',
             ],
-            greeting: 'Người mới lên núi phải không? Qua đây, ta ghi sổ điểm danh rồi chỉ đường lên thềm tiếp khách.',
+            greeting: ['Người mới lên núi phải không? Qua đây, ta ghi sổ điểm danh rồi chỉ đường lên thềm tiếp khách.'],
             lore: [
               'Kho giấy của các nằm cạnh xưởng chế phù, khô ráo quanh năm — giấy ẩm một xấp là hỏng cả trăm lá bùa, nên ta canh kho còn kỹ hơn canh nhà mình.',
               'Lá bùa đầu tiên ta vẽ năm mười sáu tuổi, nét run như giun đất. Ta vẫn giữ nó trong sổ tay — để nhớ mình cũng từng hấp tấp như ai.',
@@ -1468,7 +1468,7 @@ loi_ky_su: {
               'Bia đá giữa đàn là Thiên Phù Chu Ấn. Nhìn kỹ đi — ấn khuyết một góc ở phía đông.',
               'Muốn lên đàn xem lễ thì rửa tay ở bể đá trước. Tay bẩn, đừng chạm vào giá bùa.',
             ],
-            greeting: 'Lên đàn thì bỏ dép ở bậc dưới. Đất đàn là đất nghiêm, bước nhẹ cho ta.',
+            greeting: ['Lên đàn thì bỏ dép ở bậc dưới. Đất đàn là đất nghiêm, bước nhẹ cho ta.'],
             lore: [
               'Phù Đàn ba bậc: bậc dưới phơi bùa mới vẽ, bậc giữa là xưởng và kho, bậc trên cùng chỉ mở khi cả các làm lễ tế tổ hoặc gặp tà khí lớn. Bậc càng cao, nét bùa càng phải sạch.',
               'Năm ta trẻ dại, một nét bùa lạc làm cháy nửa giá bùa trên đàn. Các chủ đời trước không phạt, chỉ bảo: "Lửa đó, con tự canh lấy." Ta canh từ đó đến giờ.',
@@ -1484,7 +1484,7 @@ loi_ky_su: {
               'Nhìn tay ta này: chấm mực một lần, vẽ liền ba nét. Luyện được vậy hẵng nói chuyện lôi phù.',
               'Bùa hỏng đừng vứt — đốt ở lò xưởng, tro trộn vào đất vườn chu sa. Trong các này không có thứ gì là rác.',
             ],
-            greeting: 'Vào xưởng thì đứng tránh lối đi, giấy khô đang phơi đầy sân đấy — dẫm lên là ta bắt đền.',
+            greeting: ['Vào xưởng thì đứng tránh lối đi, giấy khô đang phơi đầy sân đấy — dẫm lên là ta bắt đền.'],
             lore: [
               'Giấy bùa của các làm từ trúc trong Trúc Lâm Giấy dưới chân núi: ngâm, giã, phơi đúng bốn mươi chín ngày. Vội một ngày là giấy giòn, bùa vẽ lên nứt nét giữa chừng.',
               'Ta đang thử giấy "chu trúc" — trộn vỏ cây chu sa vào bột trúc. Nếu thành, lá bùa lôi vẽ lên sẽ không cháy giấy trước khi kịp nổ.',
@@ -1500,7 +1500,7 @@ loi_ky_su: {
               'Trúc trong lâm kia là để làm giấy bùa. Anh đừng bẻ măng lung tung, chấp sự Tống ghi sổ trừ suất giấy đấy!',
               'Em có một hũ "kho báu" chôn dưới gốc cây già nhất. Là gì thì… bí mật!',
             ],
-            greeting: 'Anh xuống vườn chơi ạ? Đi theo lối gạch này thôi nhé, đừng dẫm lên luống chu sa mới trồng của em.',
+            greeting: ['Anh xuống vườn chơi ạ? Đi theo lối gạch này thôi nhé, đừng dẫm lên luống chu sa mới trồng của em.'],
             lore: [
               'Vườn chu sa này nuôi cả sơn môn: quả nghiền ra chu sa vẽ bùa, lá ủ làm phân cho lâm trúc, trúc lại làm giấy — các chủ bảo đó là "một vòng tròn không đầu thừa".',
               'Ao tưới đầu vườn có cầu đá bắc qua. Nước ao trong lắm, soi thấy cả cá — mà cá trong ao là để ngắm, bắt là bị quản sự Đàm phạt chép bùa đấy.',
@@ -1633,7 +1633,7 @@ loi_ky_su: {
             'Tông chủ ít nói, ta nói bù cho cả núi. Hai người cộng lại vừa đủ một người bình thường!',
             'Khách quý tới thì ta đón, kẻ gây sự tới thì… cũng ta đón. Đón bằng vai này này.'
           ],
-          greeting: 'Hoan nghênh lên núi Kim Cang! Tên gì, từ đâu tới, ăn cơm chưa?',
+          greeting: ['Hoan nghênh lên núi Kim Cang! Tên gì, từ đâu tới, ăn cơm chưa?'],
           lore: [
             'Muốn nhập môn thì qua ải bao cát của ta trước: vác lên Tiếp Khách Đài không nghỉ, đổ một hạt cát cũng tính lại.',
             'Tháp chuông tháp trống hai bên đại điện: chuông đánh bằng đồng đúc tại núi, trống bịt da trâu rừng — nghe một lần là nhớ cả đời.',
@@ -1649,7 +1649,7 @@ loi_ky_su: {
             'Muốn tỉ võ thì ghi tên. Muốn gây sự thì xuống núi. Ở đây chỉ có một trong hai.',
             'Kẻ thắng không được cười kẻ bại. Đó là điều luật ta trọng nhất — mạnh mà không biết kính người thì chưa phải đệ tử Kim Cang.'
           ],
-          greeting: 'Tới Võ Đài có việc gì? Tỉ võ, xem đài, hay ghi tên?',
+          greeting: ['Tới Võ Đài có việc gì? Tỉ võ, xem đài, hay ghi tên?'],
           lore: [
             'Vòng đá giữa đài khắc theo Quyền Ấn của tổ sư. Đứng giữa vòng mà đánh, ra khỏi vòng là tự nhận lép.',
             'Hai trống đá hai bên khán đài không phải để trang trí — trận lớn, đệ tử gõ trống cổ vũ, tiếng vang xuống tận chân núi.',
@@ -1665,7 +1665,7 @@ loi_ky_su: {
             'Ta hét to không phải ghét các ngươi. Núi cao gió lớn, nói nhỏ thì gió mang đi hết!',
             'Đêm qua đứa nào đau chân ta biết hết. Thuốc để ở hốc đá thứ ba — tự lấy, đừng cảm ơn, mai tập gấp đôi!'
           ],
-          greeting: 'Tới Sườn Đá thì đừng đứng ngắm cảnh. Xuống tấn, một trăm cái, rồi nói chuyện!',
+          greeting: ['Tới Sườn Đá thì đừng đứng ngắm cảnh. Xuống tấn, một trăm cái, rồi nói chuyện!'],
           lore: [
             'Cọc mai hoa ở Sân Luyện Thể trồng theo thế hoa mai năm cánh: bước sai một cọc là ngã — ngã trên cọc còn hơn ngã trên đài.',
             'Sườn Đá này dốc đứng gió quật, đứng tấn ở đây một ngày bằng ba ngày sân phẳng. Vì thế ta đóng trạm ở đây.',
@@ -1681,7 +1681,7 @@ loi_ky_su: {
             'Chuyện tông chủ tay không đỡ lợn rừng, đệ kể huynh nghe nhé? Đệ thuộc từng chữ — con lợn to bằng này này!',
             'Sư phụ hét ghê lắm, nhưng đêm đệ đau gối, thầy xoa thuốc cả buổi không mắng tiếng nào. Đệ thấy hết, giả vờ ngủ thôi.'
           ],
-          greeting: 'Chào huynh! Tới Sân Luyện Thể tập à? Cọc với tạ đệ xếp sẵn hết rồi!',
+          greeting: ['Chào huynh! Tới Sân Luyện Thể tập à? Cọc với tạ đệ xếp sẵn hết rồi!'],
           lore: [
             'Tạ đá ở sân xếp theo hàng từ nhẹ tới nặng; khiêng hết hàng cuối cùng là được sư phụ gật đầu cho học quyền.',
             'Hồ Ngâm Thân ở phía đông để ngâm mình sau buổi tập — nước lạnh buốt, ngâm vào là hết đau cơ, đệ thử rồi!',
