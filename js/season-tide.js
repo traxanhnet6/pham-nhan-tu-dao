@@ -51,16 +51,26 @@
 //   2 Thịt Gà làm cỗ hội) — trong trần NV lẻ ≤ 300 LT của
 //   economy.md mục 6, và 50 LT/tháng là tiền lẻ so với 430
 //   LT/giờ farm giữa chặng nên không phá nhịp giờ.
+// - VIỆC LỄ LẶP (mục 53 hàng chờ, 2026-11-01): sau khi cả 4 việc
+//   gốc đã trả xong, mỗi tháng mở thêm 1 việc lễ lặp của tiết
+//   tháng đó (mục tiêu chép việc gốc, thưởng 0 Linh Thạch, khóa
+//   1 lần trả/tháng ở qs.repeatDone) — để từ tháng thứ 5 panel
+//   Tiết Khí không chỉ còn hệ số.
 // - Người giao đều là NPC làng đã có ở map 1 (không tạo NPC mới):
 //   Tiểu Hạnh (Linh Tố), A Hổ (Thú Dữ), Hoa nương (Đăng Hoa),
 //   Lý lão (Tĩnh Tu). Việc tiết KHÔNG chen vào thoại nhiệm vụ
 //   thường của họ: nhận/trả đi đường nút ở hộp thoại + marker.
 //   dialogueFor() của module được game.js gọi ở dialogueLinesFor
-//   CHỈ KHI thoại nhiệm vụ của story.js không khớp trường hợp nào
-//   (bổ sung QA 15:46 30/10): nó cấp câu nhắc kèm tiến độ khi việc
-//   đang dở và câu phản ứng của Dì Tư khi mang lời chúc tới — hai
-//   trường hợp story.js không có ô thoại. Lời nhận/trả vẫn MỘT
-//   NGUỒN ở module này, story.js chỉ soi gương (test khóa khớp).
+//   SAU nhánh story.js. QA55 (mục 55 hàng chờ, 2026-11-01) CHỐT:
+//   module này là NGUỒN DUY NHẤT cho toàn bộ thoại việc tiết (lời
+//   nhận/trả, câu nhắc kèm tiến độ, câu phản ứng Dì Tư, câu báo bận
+//   việc tiết thứ hai) — bản sao q_tiet_*/q_tiet_lap_* trong
+//   story.js đã gỡ, nhánh ST trong game.js bỏ qua việc tiết
+//   (q.tietQuest) nên không còn hai bản để lệch. Phương án còn lại
+//   của mục 55 (giữ ST làm nguồn + test khóa khớp) KHÔNG chọn, vì
+//   test chung bắt mọi nhiệm vụ phải có thoại ST sẽ lại bắt buộc
+//   bản sao; thay vào đó test QA55 khóa "ST không còn việc tiết"
+//   và test chung được miễn trừ riêng cho việc tiết.
 // ============================================================
 (function (global) {
   'use strict';
@@ -123,8 +133,8 @@
   // 19:35): Tiểu Hạnh tự xưng "em" gọi người chơi "anh/chị"; A Hổ, Hoa
   // nương, Lý lão đều tự xưng "ta" gọi người chơi "cháu" — khớp giọng
   // của chính họ ở mọi thoại khác trong story.js. Bản cũ cả 4 việc đều
-  // "ta/ngươi" là sai giọng. Lời ở đây phải KHỚP TỪNG CHỮ với bản soi
-  // gương ở ST.DIALOGUE (story.js) — test TIET khóa chống lệch bản sao.
+  // "ta/ngươi" là sai giọng. Từ QA55 (mục 55 hàng chờ): lời ở đây là
+  // NGUỒN DUY NHẤT, story.js không còn bản soi gương để lệch.
   var QUEST_LINES = {
     q_tiet_linh: ['Tiết Linh Tố về rồi — đất làng đang thấm linh khí, thảo dược mọc nhanh hơn mọi tháng. Nhân lúc này, anh/chị hái giúp em 3 cây Thanh Tâm Thảo tươi để em giã thuốc dự trữ cho mùa khô sắp tới.',
       'Linh Tố qua là đất khô ngay, thuốc dự trữ lúc đó mới quý. Anh/chị hái đủ 3 cây mang về đây cho em nhé.'],
@@ -141,6 +151,79 @@
     q_tiet_dang: ['Dì Tư cười rồi chứ? Tốt — lời chúc tới nơi là hội đèn sáng thêm một phần. Ngồi xuống ăn cỗ hội với làng đi.'],
     q_tiet_tinh: ['Đủ 30 tu vi trong một tiết — tâm cháu tĩnh được rồi. Giữ cái tĩnh này mà tu tiếp, đừng để ồn ào cuốn đi.']
   };
+
+  // VIỆC LỄ LẶP (mục 53 hàng chờ, 2026-11-01): sau khi cả 4 việc
+  // tiết gốc đã trả xong, mỗi tháng dương lịch mở thêm đúng 1 việc
+  // lễ lặp của tiết tháng đó — mục tiêu chép đúng việc gốc cùng
+  // tiết, người giao giữ nguyên, thưởng 0 Linh Thạch (chỉ +10 tu vi
+  // và cỗ hội/hồi phục, xem js/logic.js). Từ QA55: thoại lặp cũng
+  // chỉ có MỘT nguồn ở đây, bản soi gương ở story.js đã gỡ cùng
+  // 4 việc gốc; test chung được miễn trừ riêng cho việc tiết và
+  // test QA55 khóa "ST không còn việc tiết". Lời nhắc/bận của
+  // việc lặp đi qua TD.dialogueFor ở nhánh dự phòng của game.js.
+  var REPEAT_IDS = ['q_tiet_lap_linh', 'q_tiet_lap_thu', 'q_tiet_lap_dang', 'q_tiet_lap_tinh'];
+  var REPEAT_META = {
+    q_tiet_lap_linh: { seasonId: 'linh_to', giver: 'hoc_tro', giverName: 'Lý Tiểu Hạnh', origin: 'q_tiet_linh' },
+    q_tiet_lap_thu: { seasonId: 'thu_du', giver: 'linh_gac', giverName: 'A Hổ', origin: 'q_tiet_thu' },
+    q_tiet_lap_dang: { seasonId: 'dang_hoa', giver: 'chu_quan', giverName: 'Hoa nương', origin: 'q_tiet_dang' },
+    q_tiet_lap_tinh: { seasonId: 'tinh_tu', giver: 'dai_phu', giverName: 'Lý lão', origin: 'q_tiet_tinh' }
+  };
+  var REPEAT_QUEST_LINES = {
+    q_tiet_lap_linh: ['Lại tới tháng Linh Tố rồi — việc tiết gốc em nhờ anh/chị năm nào cũng xong, nhưng thuốc dự trữ thì tháng nào cũng cần giã mới. Hái giúp em 3 cây Thanh Tâm Thảo tươi như mọi lần nhé; lần này làng trả anh/chị bằng thuốc dự trữ, không phải Linh Thạch.',
+      'Đất tháng này thấm linh khí, dược mọc nhanh — hái đủ 3 cây tươi mang về đây cho em giã thuốc dự trữ cho mùa khô nhé.'],
+    q_tiet_lap_thu: ['Lại tới tháng Thú Dữ — cổng Nam Môn tháng nào cũng cần người giữ. Cháu hạ giúp ta 3 con Sói Con lảng vảng quanh bãi hoang như mọi lần; lần này làng trả cháu bằng phần ăn trực cổng, không phải Linh Thạch.',
+      'Hạ đủ 3 con là cổng yên một đêm. Tinh anh thì để lính gác lo — cháu giữ đường cho dân là đủ.'],
+    q_tiet_lap_dang: ['Lại tới tháng Đăng Hoa — hội đèn làng tháng nào cũng sáng, lời chúc tháng nào cũng cần người mang. Cháu mang lời chúc này sang cho Dì Tư giúp ta một câu: "Đèn làng năm nay sáng hơn năm ngoái, cỗ Hoa nương nấu vẫn ngon như cũ." — lần này trả cháu bằng cỗ hội, không phải Linh Thạch.',
+      'Dì Tư nghe lời chúc là cười ngay. Nói xong quay lại đây, ta dọn cỗ hội cho cháu ăn.'],
+    q_tiet_lap_tinh: ['Lại tới tháng Tĩnh Tu — linh khí lặng mà đầy, tháng nào cũng là tháng để ngồi yên. Cháu ngồi thổ nạp tích đủ 30 tu vi trong tiết này cho ta xem tâm tĩnh tới đâu; lần này làng trả cháu bằng thuốc hồi sức, không phải Linh Thạch.',
+      'Đủ 30 tu vi thì quay lại đây. Thổ nạp trong tiết Tĩnh Tu được thêm một phần tư, ngồi một tuần trà là đủ.']
+  };
+  var REPEAT_TURNIN_LINES = {
+    q_tiet_lap_linh: ['Ba cây Thanh Tâm Thảo còn đẫm sương — thuốc dự trữ tháng này đủ rồi. Cầm lấy phần thuốc của làng, tháng sau lại ghé nhé.'],
+    q_tiet_lap_thu: ['Ba con sói đã dẹp, cổng yên rồi. Cầm lấy phần ăn trực cổng — tháng sau thú lại xuống thì cháu lại ghé giữ đường giúp làng.'],
+    q_tiet_lap_dang: ['Dì Tư cười rồi chứ? Tốt — lời chúc tới nơi là hội đèn sáng thêm một phần. Ngồi xuống ăn cỗ hội với làng đi, tháng sau lại mang chúc tiếp nhé.'],
+    q_tiet_lap_tinh: ['Đủ 30 tu vi trong một tiết — tâm cháu tĩnh được rồi. Cầm lấy thuốc hồi sức, giữ cái tĩnh này mà tu tiếp.']
+  };
+  function isRepeatQuest(qid) { return REPEAT_IDS.indexOf(qid) >= 0; }
+  function allFourTurnedIn(qs) {
+    if (!qs) return false;
+    for (var i = 0; i < QUEST_IDS.length; i++) {
+      if (!turnedIn(qs, QUEST_IDS[i])) return false;
+    }
+    return true;
+  }
+  function monthKeyOf(v) { return seasonOf(v).key; }
+  function repeatQuestIdForSeason(seasonId) {
+    for (var i = 0; i < REPEAT_IDS.length; i++) {
+      if (REPEAT_META[REPEAT_IDS[i]].seasonId === seasonId) return REPEAT_IDS[i];
+    }
+    return null;
+  }
+  // Việc lễ lặp mở nhận: đủ cả 4 việc gốc + không đang dở việc tiết
+  // nào (gốc hay lặp — một lúc chỉ một việc tiết) + chưa trả việc
+  // lặp nào trong đúng tháng này. Khóa là TOÀN CỤC theo tháng
+  // (bất kỳ giá trị nào trong qs.repeatDone bằng tháng hiện tại
+  // cũng chặn), không phải theo từng việc — nếu không, việc lặp
+  // tháng trước kéo sang trả trong tháng này rồi nhận tiếp việc
+  // tháng này sẽ thành 2 lần trả trong cùng một tháng.
+  function repeatDoneThisMonth(qs, key) {
+    if (!qs || !qs.repeatDone) return false;
+    var ids = Object.keys(qs.repeatDone);
+    for (var i = 0; i < ids.length; i++) {
+      if (qs.repeatDone[ids[i]] === key) return true;
+    }
+    return false;
+  }
+  function availableRepeatId(ch, flags, qs, date) {
+    if (!qs) return null;
+    if (activeQuestId(qs)) return null;
+    if (!allFourTurnedIn(qs)) return null;
+    var s = seasonOf(date);
+    var rid = repeatQuestIdForSeason(s.id);
+    if (!rid) return null;
+    if (repeatDoneThisMonth(qs, s.key)) return null;
+    return rid;
+  }
 
   function turnedIn(qs, qid) { return !!(qs && qs.turnedIn && qs.turnedIn.indexOf(qid) >= 0); }
   function questOfSeason(seasonId) {
@@ -163,19 +246,30 @@
     return qid;
   }
   // Việc đang làm (không khóa tiết — đã nhận thì trả được sang tháng sau).
+  // Từ mục 53: việc đang làm có thể là việc gốc hoặc việc lễ lặp.
   function activeQuestId(qs) {
     if (!qs) return null;
     for (var i = 0; i < QUEST_IDS.length; i++) {
       if (qs.accepted && qs.accepted[QUEST_IDS[i]]) return QUEST_IDS[i];
     }
+    for (var j = 0; j < REPEAT_IDS.length; j++) {
+      if (qs.accepted && qs.accepted[REPEAT_IDS[j]]) return REPEAT_IDS[j];
+    }
+    return null;
+  }
+  function giverOf(qid) {
+    if (QUEST_META[qid]) return QUEST_META[qid].giver;
+    if (REPEAT_META[qid]) return REPEAT_META[qid].giver;
     return null;
   }
   function markerFor(npcId, flags, qs, date) {
     if (!qs) return null;
     var act = activeQuestId(qs);
-    if (act && qs.accepted[act].done && QUEST_META[act].giver === npcId) return '?';
+    if (act && qs.accepted[act].done && giverOf(act) === npcId) return '?';
     var av = availableQuestId(null, flags, qs, date);
     if (av && QUEST_META[av].giver === npcId) return '!';
+    var avR = availableRepeatId(null, flags, qs, date);
+    if (avR && REPEAT_META[avR].giver === npcId) return '!';
     return null;
   }
   // Câu nhắc khi việc tiết đang dở: nói rõ TIẾN ĐỘ đã làm được bao
@@ -196,12 +290,18 @@
     // lời chúc của việc Đăng Hoa: đang mang lời chúc tới thì bà có
     // câu phản ứng riêng, không nói thoại chào chung chung (QA
     // 15:46 30/10 — trước đây thoại này không tồn tại ở đâu cả).
-    if (npcId === 'le_su' && qs.accepted && qs.accepted.q_tiet_dang && !qs.accepted.q_tiet_dang.done) {
+    if (npcId === 'le_su' && qs.accepted && ((qs.accepted.q_tiet_dang && !qs.accepted.q_tiet_dang.done) || (qs.accepted.q_tiet_lap_dang && !qs.accepted.q_tiet_lap_dang.done))) {
       return ['Ôi chao — lời chúc của con bé Hoa nương đấy à? "Đèn làng năm nay sáng hơn năm ngoái" — nó miệng càu nhàu vậy thôi chứ bụng dạ thương làng lắm. Dì nhận lời chúc rồi đó nghen. Về thưa lại là dì cười rồi, cỗ hội năm nay dì cũng góp một tay.'];
     }
     var act = activeQuestId(qs);
-    if (act && QUEST_META[act].giver === npcId) {
-      if (qs.accepted[act].done) return TURNIN_LINES[act];
+    if (act && giverOf(act) === npcId) {
+      if (qs.accepted[act].done) {
+        if (isRepeatQuest(act)) return REPEAT_TURNIN_LINES[act];
+        return TURNIN_LINES[act];
+      }
+      // Việc lặp dùng đúng câu nhắc của việc gốc cùng tiết (mục tiêu
+      // giống hệt) — không viết thêm bản nhắc riêng.
+      if (isRepeatQuest(act)) return [reminderLine(REPEAT_META[act].origin, qs.accepted[act].progress || 0)];
       return [reminderLine(act, qs.accepted[act].progress || 0)];
     }
     // QA (f) 15:31 30/10, mục 52 hàng chờ (phương án (a) — chặn việc
@@ -220,13 +320,29 @@
     }
     var av = availableQuestId(null, flags, qs, date);
     if (av && QUEST_META[av].giver === npcId) return QUEST_LINES[av];
+    var avR = availableRepeatId(null, flags, qs, date);
+    if (avR && REPEAT_META[avR].giver === npcId) return REPEAT_QUEST_LINES[avR];
     return null;
   }
   // Trạng thái việc tiết của tiết hiện tại, cho panel Tiết Khí.
+  // Từ mục 53: khi cả 4 việc gốc đã trả xong, panel chuyển sang
+  // việc lễ lặp của tiết tháng này (state 'repeat_done' khi tháng
+  // này đã trả xong một việc lặp — tháng sau lại mở việc mới).
   function questStatus(qs, date) {
     var s = seasonOf(date);
     var qid = questOfSeason(s.id);
     var meta = QUEST_META[qid];
+    if (turnedIn(qs, qid) && allFourTurnedIn(qs)) {
+      var rid = repeatQuestIdForSeason(s.id);
+      var rmeta = REPEAT_META[rid];
+      if (qs && qs.accepted && qs.accepted[rid]) {
+        return { season: s, questId: rid, giver: rmeta.giver, giverName: rmeta.giverName, state: qs.accepted[rid].done ? 'done_waiting' : 'active', repeat: true };
+      }
+      if (repeatDoneThisMonth(qs, s.key)) {
+        return { season: s, questId: rid, giver: rmeta.giver, giverName: rmeta.giverName, state: 'repeat_done', repeat: true };
+      }
+      return { season: s, questId: rid, giver: rmeta.giver, giverName: rmeta.giverName, state: 'available', repeat: true };
+    }
     var state = 'available';
     if (turnedIn(qs, qid)) state = 'turned_in';
     else if (qs && qs.accepted && qs.accepted[qid]) state = qs.accepted[qid].done ? 'done_waiting' : 'active';
@@ -236,11 +352,16 @@
   var api = {
     SEASONS: SEASONS, QUEST_IDS: QUEST_IDS, QUEST_META: QUEST_META,
     QUEST_LINES: QUEST_LINES, TURNIN_LINES: TURNIN_LINES,
+    REPEAT_IDS: REPEAT_IDS, REPEAT_META: REPEAT_META,
+    REPEAT_QUEST_LINES: REPEAT_QUEST_LINES, REPEAT_TURNIN_LINES: REPEAT_TURNIN_LINES,
     seasonIndexOf: seasonIndexOf, seasonOf: seasonOf, nextSeasonOf: nextSeasonOf,
     medMult: medMult, herbRespawnMult: herbRespawnMult, eliteMult: eliteMult,
     questOfSeason: questOfSeason, availableQuestId: availableQuestId,
     activeQuestId: activeQuestId, markerFor: markerFor, dialogueFor: dialogueFor,
-    reminderLine: reminderLine, questStatus: questStatus
+    reminderLine: reminderLine, questStatus: questStatus,
+    isRepeatQuest: isRepeatQuest, allFourTurnedIn: allFourTurnedIn,
+    monthKeyOf: monthKeyOf, repeatQuestIdForSeason: repeatQuestIdForSeason,
+    availableRepeatId: availableRepeatId, repeatDoneThisMonth: repeatDoneThisMonth
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   if (global) global.PNT_SEASON_TIDE = api;

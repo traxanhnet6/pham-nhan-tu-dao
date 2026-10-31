@@ -2393,19 +2393,12 @@ loi_ky_su: {
             'Đêm qua sói về gần làng, đội lính gác đánh đuổi cả đêm, mấy người bị thương nhẹ. Ta đang nấu cháo thỏ hầm thảo dược cho họ bồi bổ.',
             'Cháu săn giúp ta 3 con Thỏ Hoang ngoài bãi, thỏ phải còn tươi thì cháo mới ngon. Ta trả công xứng đáng.'
           ],
-          q_tiet_dang: [
-            'Tiết Đăng Hoa — đêm hội đèn của làng tới rồi! Cháu mang lời chúc hội đèn này sang cho Dì Tư (người lo lễ hội của làng) giúp ta một câu: "Đèn làng năm nay sáng hơn năm ngoái, cỗ Hoa nương nấu vẫn ngon như cũ."',
-            'Dì Tư nghe lời chúc là cười ngay. Nói xong quay lại đây, ta dọn cỗ hội cho cháu ăn.'
-          ]
         },
         turnin: {
           q_phu_tho: [
             'Thịt thỏ tới rồi! Để ta hầm ngay — mấy anh lính gác ăn được bát cháo nóng này là khỏe lại ngay.',
             'Cảm ơn cháu, đây là công của cháu. Lần sau đói thì cứ ghé quán, ta để phần.'
           ],
-          q_tiet_dang: [
-            'Dì Tư cười rồi chứ? Tốt — lời chúc tới nơi là hội đèn sáng thêm một phần. Ngồi xuống ăn cỗ hội với làng đi.'
-          ]
         }
       },
       dai_phu: {
@@ -2438,10 +2431,6 @@ loi_ky_su: {
             'Ngồi xuống, nghe ta nói. Có người bị thú cào nặng, vết thương không chờ được — ta cần 2 viên Hồi Xuân Đan, luyện cho kịp trước khi trời tối.',
             'Lò là của cháu, tay cũng là của cháu — ta chỉ đứng xem. Thân thể là cái bình, tu vi là nước; đan dược là thứ vá cái bình ấy cho người khác. Luyện hỏng thì làm lại, nhưng đừng để người bệnh chờ không. Làm đi.'
           ],
-          q_tiet_tinh: [
-            'Tiết Tĩnh Tu — linh khí lặng mà đầy, ngồi yên cũng hơn ngày thường. Cháu ngồi thổ nạp tích đủ 30 tu vi trong tiết này cho ta xem tâm tĩnh tới đâu — đừng vội, tĩnh mới là tu.',
-            'Đủ 30 tu vi thì quay lại đây. Thổ nạp trong tiết Tĩnh Tu được thêm một phần tư, ngồi một tuần trà là đủ.'
-          ]
         },
         turnin: {
           q_phu_thuoc: [
@@ -2452,9 +2441,6 @@ loi_ky_su: {
             'Hai viên đều thành, lửa đều, dược tính không hao. Tay này... không thua gì học trò ta dạy mười năm.',
             'Ta truyền cho cháu phương Ngưng Khí Đan — đan hỗ trợ đột phá bậc trung, và cho thêm một viên ta luyện sẵn. Đường tu càng lên cao càng cần đan đỡ, cháu giữ lấy. Nhớ lời ta: bình nứt thì nước đổ hết — cứu người trước, tu mình sau cũng chưa muộn.'
           ],
-          q_tiet_tinh: [
-            'Đủ 30 tu vi trong một tiết — tâm cháu tĩnh được rồi. Giữ cái tĩnh này mà tu tiếp, đừng để ồn ào cuốn đi.'
-          ]
         }
       },
       tho_ren: {
@@ -2515,19 +2501,12 @@ loi_ky_su: {
             'Tới rồi đấy! Chuông cổng vừa rung - thú dữ tràn qua bãi hoang, đang kéo thẳng về Nam Môn! Sói đi đầu, lợn rừng theo sau, đông hơn mọi năm gấp mấy lần.',
             'Ta với A Báo giữ hai bên cổng, cháu giữ chính giữa đường. Đừng để con nào lọt qua cổng - sau lưng cháu là cả làng đấy. Đánh đuổi 5 con sói đầu đàn là bầy sẽ vỡ!'
           ],
-          q_tiet_thu: [
-            'Tiết Thú Dữ — trời khô, thú đói, tinh anh xuống gần làng nhiều hơn mọi tháng. Cổng Nam Môn cần người giữ: cháu hạ giúp ta 3 con Sói Con lảng vảng quanh bãi hoang, đừng để chúng mò vào ruộng.',
-            'Hạ đủ 3 con là cổng yên một đêm. Tinh anh thì để lính gác lo — cháu giữ đường cho dân là đủ.'
-          ]
         },
         turnin: {
           q_chinh_5: [
             'Bầy vỡ rồi! Chúng chạy hết về phía rừng rồi! Cháu thấy không - cổng còn đứng, làng còn yên, là nhờ có cháu giữ giữa đường đấy.',
             'Nhưng nghe ta nói: bầy thú chạy có hàng có lối như có con gì dẫn đầu vậy. Trong rừng sâu, Sơn Quân đang gọi bầy. Cháu phải tìm Hà lão thợ săn - chỉ ông ấy biết đường tới sào huyệt của nó.'
           ],
-          q_tiet_thu: [
-            'Ba con sói đã dẹp, cổng yên rồi. Tiết Thú Dữ mà có cháu giữ đường thì dân làng ngủ yên được.'
-          ]
         }
       },
       linh_gac2: {
@@ -2755,10 +2734,6 @@ loi_ky_su: {
             'Anh/chị nghe tin gì chưa? Người của Đan Hà Cốc trên bãi tuyển nghe chuyện mẻ đan hẹn giờ của anh/chị, họ muốn tận mắt xem dược liệu vùng Thanh Sơn có thật tốt như lời đồn không.',
             'Em cần 3 tai Ngọc Tủy Chi gửi lên cho họ xem — nấm trắng trong như ngọc, mọc ở kẽ đá bãi luyện công trên chân núi, hiếm lắm. Mang được về, tiếng nhà thuốc làng mình đi xa đấy.'
           ],
-          q_tiet_linh: [
-            'Tiết Linh Tố về rồi — đất làng đang thấm linh khí, thảo dược mọc nhanh hơn mọi tháng. Nhân lúc này, anh/chị hái giúp em 3 cây Thanh Tâm Thảo tươi để em giã thuốc dự trữ cho mùa khô sắp tới.',
-            'Linh Tố qua là đất khô ngay, thuốc dự trữ lúc đó mới quý. Anh/chị hái đủ 3 cây mang về đây cho em nhé.'
-          ]
         },
         turnin: {
           q_phu_thuoc_rung: [
@@ -2777,9 +2752,6 @@ loi_ky_su: {
             'Ngọc Tủy Chi thật này! Trong như ngọc, sờ vào mát lạnh — đúng thứ mọc đủ năm hút sương núi mới được thế này.',
             'Em gửi kèm thư tay của em lên bãi tuyển rồi. Mà Đan Hà Cốc cũng để lại quà đáp lễ: phương Thần Hành Đan với một viên Đại Hồi Xuân Đan mẫu. Anh/chị cầm lấy — công hái dược hiếm là của anh/chị mà.'
           ],
-          q_tiet_linh: [
-            'Ba cây Thanh Tâm Thảo còn đẫm sương — thuốc dự trữ cho mùa khô đủ rồi. Tiết Linh Tố đúng là tiết của người hái thuốc.'
-          ]
         }
       },
       de_tu_phai: {

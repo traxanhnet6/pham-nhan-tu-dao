@@ -97,9 +97,29 @@
     }
     return { target: target, onScreen: onScreen, angle: angle, ex: ex, ey: ey, txPx: txPx, tyPx: tyPx };
   }
+  // Hình học NHÃN đi kèm mũi tên rìa màn hình (mục 110, 01/11/2026).
+  // Lỗi cũ trong game.js: nhãn vẽ tại (ex − 62) cố định — khi mũi tên kẹp
+  // ở rìa trái (ex = 30) tọa độ chữ thành −32 nên nhãn bị cắt mất một
+  // phần, ở rìa phải thì chữ tràn khỏi màn hình; đó là một lý do mũi tên
+  // "không xuất hiện" trong ảnh playtest dù logic đúng. Hàm này trả về
+  // tọa độ GÓC TRÁI của dòng chữ (game.js vẽ với textAlign = 'left' và
+  // bề rộng chữ đo thật bằng measureText truyền vào): chữ luôn nằm trọn
+  // trong màn hình, chừa lề 4px hai phía; chiều dọc giữ luật cũ (đích ở
+  // nửa dưới màn hình thì nhãn nằm dưới mũi tên +26, ngược lại −22) rồi
+  // kẹp vào [16, h − 6].
+  function labelLayout(info, viewPx, textW) {
+    if (!info || !viewPx) return null;
+    var w = Math.max(0, Math.round(textW || 0));
+    var lx = Math.round(info.ex - w / 2);
+    lx = Math.max(4, Math.min(Math.max(4, viewPx.w - w - 4), lx));
+    var ly = info.ey + (info.tyPx > viewPx.h / 2 ? 26 : -22);
+    ly = Math.max(16, Math.min(viewPx.h - 6, ly));
+    return { x: lx, y: ly, w: w };
+  }
   var api = {
     gatesOf: gatesOf, plazaRect: plazaRect, plazaTarget: plazaTarget,
-    inPlaza: inPlaza, southDrop: southDrop, arrowFor: arrowFor
+    inPlaza: inPlaza, southDrop: southDrop, arrowFor: arrowFor,
+    labelLayout: labelLayout
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else if (global) global.PNT_PLAZA_GUIDE = api;

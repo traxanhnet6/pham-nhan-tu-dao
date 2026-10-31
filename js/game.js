@@ -1471,6 +1471,8 @@
     var actT = TD.activeQuestId(qs);
     if (actT) { toast('Bạn đang dở việc tiết "' + L.QUESTS[actT].title + '" — xong việc đó đã mới nhận việc tiết khác được.'); return { ok: false, reason: 'busy' }; }
     var qid = TD.availableQuestId(ch, flags, qs, new Date(gameNow()));
+    // Mục 53: hết việc gốc thì mở việc lễ lặp của tiết tháng này.
+    if (!qid && TD.availableRepeatId) qid = TD.availableRepeatId(ch, flags, qs, new Date(gameNow()));
     if (!qid) return { ok: false, reason: 'none' };
     var r = L.acceptQuest(qs, qid);
     if (r.ok) {
@@ -1484,14 +1486,22 @@
     if (!TD) return { ok: false, reason: 'no_module' };
     var qid = TD.activeQuestId(qs);
     if (!qid || !qs.accepted[qid].done) return { ok: false, reason: 'not_done' };
-    var r = L.turnInQuest(qs, ch, qid);
+    // Mục 53: việc lễ lặp trả kèm khóa tháng hiện tại (turnInQuest
+    // ghi qs.repeatDone, không đẩy vào turnedIn) — không truyền
+    // tháng thì việc lặp vẫn không vào turnedIn nhưng khóa tháng
+    // rỗng, nên đường này luôn truyền tháng.
+    var r = (TD.isRepeatQuest && TD.isRepeatQuest(qid))
+      ? L.turnInQuest(qs, ch, qid, TD.monthKeyOf(new Date(gameNow())))
+      : L.turnInQuest(qs, ch, qid);
     if (r.ok) {
       if (SND) SND.sfx('quest_complete');
       // QA 15:46 30/10: toast trả việc phải kê cả thưởng VẬT PHẨM
       // (việc Đăng Hoa có 2 Thịt Gà cỗ hội) — trước đây chỉ kê Linh
-      // Thạch + tu vi, người chơi tưởng thưởng bị nuốt.
+      // Thạch + tu vi, người chơi tưởng thưởng bị nuốt. Việc lặp
+      // thưởng 0 Linh Thạch nên bỏ hẳn phần Linh Thạch khỏi toast.
       var itemTxtT = (r.rewards.items || []).map(function (it) { return (L.ITEMS[it.id] ? L.ITEMS[it.id].name : it.id) + ' ×' + it.n; }).join(', ');
-      toast('Trả việc tiết ' + L.QUESTS[qid].title + ': +' + r.rewards.linhThach + ' Linh Thạch, +' + (r.rewards.tuVi || 0) + ' tu vi' + (itemTxtT ? ', ' + itemTxtT : '') + '.');
+      var ltTxtT = r.rewards.linhThach ? ' +' + r.rewards.linhThach + ' Linh Thạch,' : '';
+      toast('Trả việc tiết ' + L.QUESTS[qid].title + ':' + ltTxtT + ' +' + (r.rewards.tuVi || 0) + ' tu vi' + (itemTxtT ? ', ' + itemTxtT : '') + '.');
       if (SECTP) announceSectPoints(SECTP.onQuestTurnIn(ch, flags, qid));
       if (AFF && nid) {
         var affTurn = AFF.onQuestTurnIn(flags, qid, nid);
@@ -1810,7 +1820,7 @@
       }
       var bname = TOURN.bracketById(res.result.bracket) ? TOURN.bracketById(res.result.bracket).name : '';
       toast('Đại Hội (' + bname + ') kết thúc: ' + TOURN.placementLabel(res.result.placement) + '! Quán quân kỳ này: ' + res.result.champion + '.');
-      if (SND) { SND.sfx('quest_complete'); if (res.result.placement === 'quan_quan') SND.sfx('tourn_cheer'); }
+      if (SND) { SND.sfx('quest_complete'); if (res.result.placement === 'quan_quan' || res.result.placement === 'hang_ba') SND.sfx('tourn_cheer'); } // QA (e) 05:16 01/11: thang tran tranh hang ba cung la tran thang, phai co tieng reo nhu thang vong giua (truoc day chi quan quan moi reo)
     }
     updateHUD(); saveGame();
     if ($('panelTournament').style.display === 'block') renderTournamentPanel();
@@ -2830,9 +2840,10 @@
     // đã chặn), nên hiện rõ dòng đang dở ở đầu panel.
     var actTide52 = TD.activeQuestId(qs);
     var tideBusy52 = (actTide52 && actTide52 !== st.questId && L.QUESTS[actTide52])
-      ? '<p><b>Đang dở việc tiết: ' + esc(L.QUESTS[actTide52].title) + '</b> — về gặp ' + esc(TD.QUEST_META[actTide52].giverName) + ' để trả trước đã; việc tiết tháng này chỉ mở nhận sau khi xong việc đó.</p>' : '';
+      ? '<p><b>Đang dở việc tiết: ' + esc(L.QUESTS[actTide52].title) + '</b> — về gặp ' + esc((TD.QUEST_META[actTide52] || TD.REPEAT_META[actTide52]).giverName) + ' để trả trước đã; việc tiết tháng này chỉ mở nhận sau khi xong việc đó.</p>' : '';
     var q = L.QUESTS[st.questId];
     var stateText = st.state === 'turned_in' ? 'Đã trả xong — tiết này quay lại sau 4 tháng.'
+      : st.state === 'repeat_done' ? 'Đã làm xong việc lễ tháng này — tháng sau mở việc lễ mới.'
       : st.state === 'done_waiting' ? 'Đã làm xong — về gặp ' + esc(st.giverName) + ' ở làng để trả.'
       : st.state === 'active' ? 'Đang làm — xem tiến độ ở panel Nhiệm vụ.'
       : 'Đang mở nhận ở ' + esc(st.giverName) + ' (làng Thanh Khê, map 1).';
@@ -2843,9 +2854,9 @@
     var html = '<p><b>' + esc(cur.label) + '</b> — ' + esc(cur.def.effect) + '</p>'
       + tideBusy52
       + '<p>Tiết tới: <b>Tiết ' + esc(nx.name) + '</b> (tháng ' + nx.month + '/' + nx.year + '). Chu kỳ 4 tiết xoay theo tháng dương lịch: Linh Tố (1/5/9) · Thú Dữ (2/6/10) · Đăng Hoa (3/7/11) · Tĩnh Tu (4/8/12).</p>'
-      + '<div class="qitem"><b>Việc tiết tháng này: ' + esc(q.title) + '</b> — ' + esc(q.desc) + '<br>Người giao: ' + esc(st.giverName) + ' · Thưởng: ' + q.rewards.linhThach + ' Linh Thạch, +' + (q.rewards.tuVi || 0) + ' tu vi' + ((q.rewards.items && q.rewards.items.length) ? ', ' + q.rewards.items.map(function (it) { return esc(L.ITEMS[it.id] ? L.ITEMS[it.id].name : it.id) + ' ×' + it.n; }).join(', ') : '') + '.<br>Trạng thái: ' + stateText + '</div>'
+      + '<div class="qitem"><b>Việc tiết tháng này: ' + esc(q.title) + '</b> — ' + esc(q.desc) + '<br>Người giao: ' + esc(st.giverName) + ' · Thưởng: ' + (q.rewards.linhThach ? q.rewards.linhThach + ' Linh Thạch, ' : 'không Linh Thạch, ') + '+' + (q.rewards.tuVi || 0) + ' tu vi' + ((q.rewards.items && q.rewards.items.length) ? ', ' + q.rewards.items.map(function (it) { return esc(L.ITEMS[it.id] ? L.ITEMS[it.id].name : it.id) + ' ×' + it.n; }).join(', ') : '') + '.<br>Trạng thái: ' + stateText + '</div>'
       + rows
-      + '<p><i>Việc tiết mỗi việc chỉ làm một lần; bỏ lỡ một tiết thì tiết đó quay lại sau 4 tháng. Việc đã nhận rồi thì sang tháng sau vẫn trả được.</i></p>';
+      + '<p><i>Việc tiết mỗi việc chỉ làm một lần; bỏ lỡ một tiết thì tiết đó quay lại sau 4 tháng. Việc đã nhận rồi thì sang tháng sau vẫn trả được.' + (TD.allFourTurnedIn && TD.allFourTurnedIn(qs) ? ' Đã xong cả 4 việc tiết gốc: mỗi tháng mở thêm 1 việc lễ lặp lại, thưởng cỗ hội/hồi phục, không Linh Thạch.</i></p>' : '</i></p>');
     $('tideBody').innerHTML = html;
   }
   function openFairPanel() {
@@ -4199,12 +4210,18 @@
     return bd <= maxDist ? best : null;
   }
   function npcDef(npc) {
-    var def = S.NPC[npc.sprite || npc.id] || S.NPC[npc.id];
+    // Cửa an toàn (sửa khẩn 01/11/2026, việc 1): NPC không có mục nào trong
+    // S.NPC (như 9 tông chủ sect_master_* trước khi được bổ sung lưới) thì
+    // def phải là đối tượng rỗng an toàn — trước đây def = undefined khiến
+    // chính npcDef ném TypeError khi đọc def.lines/def.grid, làm đứng cả
+    // vòng vẽ. Tên/chức danh vẫn lấy từ ST.NPCS/npc như cũ.
+    var FB = S.NPC_FALLBACK || {};
+    var def = S.NPC[npc.sprite || npc.id] || FB[npc.sprite || npc.id] || S.NPC[npc.id] || FB[npc.id] || {};
     var stNpc = (ST && ST.NPCS) ? ST.NPCS[npc.id] : null;
     return {
-      name: (stNpc && stNpc.name) || npc.name || def.name,
-      role: npc.role || (stNpc && stNpc.title) || def.role,
-      lines: def.lines, grid: def.grid
+      name: (stNpc && stNpc.name) || npc.name || def.name || npc.id,
+      role: npc.role || (stNpc && stNpc.title) || def.role || '',
+      lines: def.lines || [], grid: def.grid || null
     };
   }
   // Marker nhiệm vụ trên đầu NPC: chuỗi ngự kiếm dùng marker riêng theo
@@ -4347,6 +4364,10 @@
       var qids = Object.keys(qs.accepted);
       for (i = 0; i < qids.length; i++) {
         q = L.QUESTS[qids[i]];
+        // QA55 (mục 55 hàng chờ): việc tiết KHÔNG đọc bản ST ở đây —
+        // nguồn duy nhất là TD.dialogueFor ở nhánh dưới (nhận/trả/
+        // nhắc kèm tiến độ), bản sao ST đã gỡ.
+        if (q && q.tietQuest) continue;
         if (q && q.giver === npc.id && qs.accepted[qids[i]].done && d.turnin && d.turnin[qids[i]]) return d.turnin[qids[i]];
       }
       // THIÊN 4 ch.25-27: nhiệm vụ chính nhưng giver trừu tượng
@@ -4376,12 +4397,13 @@
       if (dRep2 && tq5 && dRep2.quest && dRep2.quest[tq5]) return dRep2.quest[tq5];
     }
     // THỦY TRIỀU THEO MÙA (js/season-tide.js): đặt SAU mọi xử lý thoại
-    // nhiệm vụ của story.js ở trên và TRƯỚC pool thoại chào — lời
-    // nhận/trả việc tiết đã có bản soi gương ở ST.DIALOGUE nên nhánh
-    // ST xử lý trước; nhánh này bắt hai trường hợp story.js không có
-    // ô thoại (QA 15:46 30/10): câu NHẮC KÈM TIẾN ĐỘ khi việc tiết
-    // đang dở (marker trống) và câu PHẢN ỨNG của Dì Tư (le_su không
-    // phải người giao việc) khi mang lời chúc Đăng Hoa tới.
+    // nhiệm vụ của story.js ở trên và TRƯỚC pool thoại chào — QA55
+    // (mục 55 hàng chờ): module TD là NGUỒN DUY NHẤT cho thoại việc
+    // tiết (lời nhận/trả, câu NHẮC KÈM TIẾN ĐỘ khi việc đang dở,
+    // câu PHẢN ỨNG của Dì Tư, câu báo bận việc tiết thứ hai); nhánh
+    // ST ở trên đã bỏ qua việc tiết nên không còn bản sao nào để lệch.
+    // Vị trí nhánh giữ nguyên sau ST (không dời lên sau SWN) để thứ tự
+    // ưu tiên với các module khác (WD lễ hội ở Dì Tư, AFF, OG) không đổi.
     if (TD && TD.dialogueFor) {
       var tdLines = TD.dialogueFor(npc.id, flags, qs, gameNow());
       if (tdLines) return tdLines;
@@ -4458,6 +4480,9 @@
           var b2 = document.createElement('button');
           b2.textContent = 'Trả nhiệm vụ: ' + q.title;
           b2.onclick = function () {
+            // Mục 53: việc lễ lặp trả qua turnInTideQuest để ghi khóa
+            // tháng (đường chung không có tháng sẽ ghi khóa rỗng).
+            if (TD && TD.isRepeatQuest && TD.isRepeatQuest(qid)) { turnInTideQuest(nid); renderDlgActions(); return; }
             var r = L.turnInQuest(qs, ch, qid);
             if (r.ok) {
               if (SND) SND.sfx('quest_complete');
@@ -4809,14 +4834,16 @@
     // --- THỦY TRIỀU THEO MÙA: NPC làng — nhận/trả việc tiết của tiết hiện tại
     if (TD) {
       var tdAvail = TD.availableQuestId(ch, flags, qs, new Date(gameNow()));
-      if (tdAvail && TD.QUEST_META[tdAvail].giver === nid) {
+      // Mục 53: hết việc gốc thì nút nhận mở việc lễ lặp tháng này.
+      if (!tdAvail && TD.availableRepeatId) tdAvail = TD.availableRepeatId(ch, flags, qs, new Date(gameNow()));
+      if (tdAvail && (TD.QUEST_META[tdAvail] ? TD.QUEST_META[tdAvail].giver : TD.REPEAT_META[tdAvail].giver) === nid) {
         var tdb1 = document.createElement('button');
         tdb1.textContent = 'Nhận việc tiết: ' + L.QUESTS[tdAvail].title;
         tdb1.onclick = function () { acceptTideQuest(); renderDlgActions(); };
         box.appendChild(tdb1);
       }
       var tdAct = TD.activeQuestId(qs);
-      if (tdAct && qs.accepted[tdAct].done && TD.QUEST_META[tdAct].giver === nid) {
+      if (tdAct && qs.accepted[tdAct].done && (TD.QUEST_META[tdAct] ? TD.QUEST_META[tdAct].giver : TD.REPEAT_META[tdAct].giver) === nid) {
         var tdb2 = document.createElement('button');
         tdb2.textContent = 'Trả việc tiết: ' + L.QUESTS[tdAct].title;
         tdb2.onclick = function () { turnInTideQuest(nid); renderDlgActions(); };
@@ -5140,6 +5167,13 @@
   var ATK_CD_MS = 900, lastAtkAt = 0;
   function attack() {
     if (deathPending) return;
+    // QA (b) 04:16 01/11: hop thoai dang mo thi khong danh — neu khong,
+    // danh tu dong (loop, khong co cua dlg) va nut Danh/nut combo cam ung
+    // van goi attack() giua cuoc thoai, quai phan don ngay khi nguoi choi
+    // dang doc thoai cua NPC co quai lang thang sat ben (10 NPC o map
+    // 1/2/7/8/11/12/14). Phim Space da tu di duong dlg->dlgNext truoc khi
+    // goi attack() nen cua nay khong doi hanh vi phim Space.
+    if (dlg) return;
     if (flying) landPlayer(true); // vào chiến đấu là tự hạ khỏi kiếm
     var nowA = Date.now();
     if (nowA - lastAtkAt < ATK_CD_MS) return; // đang hồi chiêu: bỏ qua lặng lẽ
@@ -7856,7 +7890,7 @@
       var q = L.QUESTS[qid], st = qs.accepted[qid], ob = q.objectives[0];
       html += '<div class="qitem ' + questKindClass(q) + '"><b class="qn">' + q.title + '</b> ' + (st.done ? '(trả được — gặp ' + questGiverPlace(q) + ')' : '(đang làm)') +
         '<br>' + q.desc + '<br>Mục tiêu: ' + st.progress + '/' + ob.need +
-        ' · Thưởng: ' + q.rewards.linhThach + ' Linh Thạch' +
+        ' · Thưởng: ' + (q.rewards.linhThach ? q.rewards.linhThach + ' Linh Thạch' : 'không Linh Thạch') +
         (q.rewards.items.length ? ', ' + q.rewards.items.map(function (it) { return L.ITEMS[it.id].name + ' x' + it.n; }).join(', ') : '') +
         (q.rewards.tuVi ? ', +' + q.rewards.tuVi + ' tu vi' : '') +
         '<br><button type="button" class="track-btn" data-trackq="' + qid + '">' +
@@ -9841,14 +9875,19 @@
         if (!drewNpcAI) {
           // V10: lưới NPC là TĨNH -> raster cache theo id rồi blit lại
           // (khỏi sinh lại ~1000 ô fillRect cho mỗi NPC mỗi frame).
+          // Cửa an toàn (việc 1, 01/11/2026): NPC thiếu lưới dự phòng thì
+          // BỎ QUA thân hình (nhãn tên + marker ở dưới vẫn vẽ) — tuyệt đối
+          // không để một NPC thiếu lưới ném lỗi làm đứng toàn bộ canvas.
           var drewNpcGrid = false;
-          if (SM) {
-            var nKey = 'npcgrid|' + (it.npc.sprite || it.npc.id);
-            var entN = { key: nKey, gen: null };
-            if (!SM.gridGet(nKey)) entN.gen = (function (g) { return function () { return S.gridToPixels(g); }; })(def.grid);
-            drewNpcGrid = !!SM.drawGridBlend(ctx, entN, null, 0, it.x * TILE + 16 - camX, (it.y + 1) * TILE + bobY - camY, 3);
+          if (def.grid) {
+            if (SM) {
+              var nKey = 'npcgrid|' + (it.npc.sprite || it.npc.id);
+              var entN = { key: nKey, gen: null };
+              if (!SM.gridGet(nKey)) entN.gen = (function (g) { return function () { return S.gridToPixels(g); }; })(def.grid);
+              drewNpcGrid = !!SM.drawGridBlend(ctx, entN, null, 0, it.x * TILE + 16 - camX, (it.y + 1) * TILE + bobY - camY, 3);
+            }
+            if (!drewNpcGrid) S.drawGridToCanvas(ctx, def.grid, it.x * TILE + 16 - 48 - camX, (it.y + 1) * TILE - 96 + bobY - camY, 3);
           }
-          if (!drewNpcGrid) S.drawGridToCanvas(ctx, def.grid, it.x * TILE + 16 - 48 - camX, (it.y + 1) * TILE - 96 + bobY - camY, 3);
         }
         // Nhãn tên gom lại vẽ ở cuối (chống chồng nhau) — xem npcLabels bên dưới.
         npcLabels.push({ name: def.name, role: def.role, cx: it.x * TILE + 16 - camX, y: it.y * TILE - 74 + bobY - camY, markerY: it.y * TILE - 96 + bobY - camY });
@@ -11603,20 +11642,36 @@
     if (info.onScreen) {
       var sx = info.txPx, sy = info.tyPx - 14 - bob;
       ctx.beginPath();
-      ctx.moveTo(sx - 9, sy - 14); ctx.lineTo(sx + 9, sy - 14); ctx.lineTo(sx, sy);
+      ctx.moveTo(sx - 12, sy - 17); ctx.lineTo(sx + 12, sy - 17); ctx.lineTo(sx, sy);
       ctx.closePath(); ctx.fill(); ctx.stroke();
     } else {
       var ex = info.ex, ey = info.ey;
+      // MỤC 110: nền tròn sẫm sau mũi tên để tam giác vàng không chìm
+      // vào địa hình sáng; tam giác phóng to (18/-11/13 thay cho 14/-8/10).
+      ctx.beginPath();
+      ctx.arc(ex, ey, 17, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(20,16,8,.55)'; ctx.fill();
+      ctx.strokeStyle = '#ffd94a'; ctx.lineWidth = 2; ctx.stroke();
+      ctx.fillStyle = '#ffd94a';
+      ctx.strokeStyle = 'rgba(0,0,0,.65)'; ctx.lineWidth = 2;
       ctx.translate(ex, ey); ctx.rotate(info.angle);
       ctx.beginPath();
-      ctx.moveTo(14, 0); ctx.lineTo(-8, -10); ctx.lineTo(-8, 10);
+      ctx.moveTo(18, 0); ctx.lineTo(-11, -13); ctx.lineTo(-11, 13);
       ctx.closePath(); ctx.fill(); ctx.stroke();
       ctx.rotate(-info.angle);
-      ctx.font = '13px sans-serif'; ctx.fillStyle = '#ffd94a';
-      ctx.strokeStyle = 'rgba(0,0,0,.8)'; ctx.lineWidth = 3;
+      ctx.translate(-ex, -ey);
+      // MỤC 110: nhãn luôn nằm trọn trong màn hình — vị trí tính bằng
+      // PLZ.labelLayout với bề rộng chữ đo thật (bản cũ vẽ tại ex − 62
+      // cố định nên bị cắt ở rìa trái/phải), chữ đậm 14px trên nền sẫm.
+      ctx.font = 'bold 14px sans-serif'; ctx.textAlign = 'left';
       var label = 'Quảng Trường Sơn Môn';
-      var ly = Math.max(16, Math.min(effVH() - 10, ey + (info.tyPx > effVH() / 2 ? 26 : -22)));
-      ctx.strokeText(label, ex - 62, ly); ctx.fillText(label, ex - 62, ly);
+      var tw110 = ctx.measureText ? ctx.measureText(label).width : 150;
+      var lay110 = PLZ.labelLayout ? PLZ.labelLayout(info, { w: effVW(), h: effVH() }, tw110) : { x: Math.max(4, ex - tw110 / 2), y: ey + 26 };
+      ctx.fillStyle = 'rgba(20,16,8,.62)';
+      ctx.fillRect(lay110.x - 4, lay110.y - 14, tw110 + 8, 19);
+      ctx.fillStyle = '#ffd94a';
+      ctx.strokeStyle = 'rgba(0,0,0,.8)'; ctx.lineWidth = 3;
+      ctx.strokeText(label, lay110.x, lay110.y); ctx.fillText(label, lay110.x, lay110.y);
     }
     ctx.restore();
   }

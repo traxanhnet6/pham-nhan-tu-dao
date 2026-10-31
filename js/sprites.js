@@ -309,6 +309,10 @@
     nu: { down: WOMAN_DOWN, up: WOMAN_UP, right: WOMAN_RIGHT, left: WOMAN_LEFT }
   };
   function gridToPixels(grid, extraPalette) {
+    // Cửa an toàn (sửa khẩn 01/11/2026, việc 1): lưới thiếu/không hợp lệ
+    // trả null thay vì ném TypeError — một NPC thiếu lưới dự phòng không
+    // được phép làm đứng toàn bộ vòng vẽ. Mọi lưới hợp lệ đi qua nguyên vẹn.
+    if (!grid || !grid.length) return null;
     var pal = {};
     var k;
     for (k in PALETTE) pal[k] = PALETTE[k];
@@ -848,6 +852,7 @@
     return frames;
   }
   function drawPixelsToCanvas(ctx, px, x, y, scale) {
+    if (!px) return; // lưới thiếu -> bỏ qua, không ném lỗi (việc 1, 01/11/2026)
     for (var r = 0; r < px.length; r++)
       for (var c = 0; c < px[r].length; c++)
         if (px[r][c]) { ctx.fillStyle = px[r][c]; ctx.fillRect(x + c * scale, y + r * scale, scale, scale); }
@@ -1357,6 +1362,77 @@
   NPC.chap_su_dai_hoi = { name: 'Hàn Sơn', role: 'Chấp Sự Đại Hội',
     lines: ['Tới ghi danh đại hội à? Sổ của ta đây — mười tông cùng bước lên một võ đài, thắng có thưởng, thua cũng có phần. Chỉ một điều ta không ghi: gian lận.', 'Sổ ghi danh của ta chưa sai bao giờ. Cứ yên tâm mà đấu.'],
     grid: sectGrid(['2', '2', '8', '8', '2', '8', '8', 'B', 'B', 'B', 'B'], null, [[1, 0], [0, 1], [1, 1], [2, 1], [1, 2]], '8') };
+  // ---- Tông chủ 10 sơn môn (ghế (80,20) các map sonmon_*) ----
+  // SỬA KHẨN 01/11/2026 (việc 1 — QA (d) 04:46 cùng ngày): 10 vị này dùng
+  // sprite 'sect_master_<tông>' trong dữ liệu map nhưng bảng NPC trước đây
+  // KHÔNG có mục nào cho cả sprite lẫn id của 9 vị (chỉ Kim Cang thoát nhờ
+  // tra cứu dự phòng theo id tong_the có lưới) — ở mức đồ họa Thấp, nhánh
+  // vẽ lưới dự phòng nhận lưới undefined và ném TypeError, làm đứng hình
+  // cả sơn môn. Nay bổ sung đủ: lưới tông chủ = thân của CHÍNH nhân vật đó
+  // (cùng người với đại diện tuyển sinh ở map 3, qua sectGrid như các đại
+  // diện) nhưng áo tông ĐẬM hơn một bậc và thêm lễ phục thủ lĩnh: trâm/
+  // quan vàng trên đỉnh tóc (hàng 1–2) + đai vàng ngang eo (hàng 20, trừ
+  // lưỡi thép M/G của vũ khí đeo hông). Chân giữ nguyên hàng 30–31 của
+  // thân gốc nên vẫn chạm đất; thân là một khối liền như thân gốc.
+  // Bảng dự phòng RIÊNG, không gộp vào NPC: bảng NPC là danh mục loại
+  // hình AI (mọi khóa trong NPC đều phải có sheet trong manifest
+  // npcs-ai), còn sheet Cao/Trung của tông chủ nằm ở manifest riêng
+  // assets/sect-masters-ai theo slug — gộp khóa tông chủ vào NPC sẽ phá
+  // bất biến đó. npcDef (game.js) tra NPC trước, NPC_FALLBACK sau.
+  var NPC_FALLBACK = {};
+  function masterGrid(robeVals, hairMap, sigilPts, sigilChar) {
+    var out = sectGrid(robeVals, hairMap, sigilPts, sigilChar).map(function (r) { return r.split(''); });
+    if (out[1][16] !== '.') out[1][16] = 'A';
+    if (out[1][17] !== '.') out[1][17] = 'A';
+    if (out[2][16] !== '.') out[2][16] = 'A';
+    for (var c = 0; c < out[20].length; c++) {
+      var ch20 = out[20][c];
+      if (ch20 !== '.' && ch20 !== 'M' && ch20 !== 'G') out[20][c] = 'A';
+    }
+    return out.map(function (r) { return r.join(''); });
+  }
+  NPC_FALLBACK.sect_master_thanh_phong = { name: 'Tạ Thanh Vân', role: 'Chưởng môn Thanh Phong Phái',
+    lines: ['Trên sơn môn, kiếm phải tĩnh như mặt hồ — tâm loạn thì kiếm loạn, cháu nhớ lấy.', 'Thanh Phong Phái giữ mạch kiếm cuối cùng của Thanh Sơn. Vào phái rồi, đừng làm hổ danh.'],
+    grid: masterGrid(['w', 'B', 'P', 'B', 'w', 'v', 'B', '8', 'A', '8', 'M'], null, [[1, 0], [1, 1], [1, 2]], 'A') };
+  NPC_FALLBACK.sect_master_huyen_phap = { name: 'Liễu Ngưng Sương', role: 'Tông chủ Huyền Pháp Tông',
+    lines: ['Pháp đàn của tông ta nhìn ra hồ — tâm tĩnh thì mặt hồ phẳng, pháp mới thành.', 'Ngũ hành luân chuyển không ngừng. Người tu pháp trước hết phải tu tâm cho tĩnh.'],
+    grid: masterGrid(['2', 'X', 'X', '2', '2', 'X', 'X', 'Z', 'A', 'Z', 'M'], null, [[1, 0], [0, 1], [1, 1], [2, 1], [1, 2]], 'A') };
+  NPC_FALLBACK.sect_master_thien_cong = { name: 'Mạc Thiết Tâm', role: 'Phường chủ Thiên Công Phường',
+    lines: ['Lò trên núi này cháy trăm năm chưa tắt. Tay nghề cũng vậy — nghỉ một ngày là nguội.', 'Nói ít thôi. Muốn chứng minh mình xứng với phường, cứ để tay làm thay miệng.'],
+    grid: masterGrid(['5', '6', '6', 'N', '6', '5', 'N', 't', 'A', 't', 'M'], null, [[0, 0], [1, 0], [2, 0], [0, 1], [2, 1], [0, 2], [1, 2], [2, 2]], 'A') };
+  NPC_FALLBACK.sect_master_dan_ha = { name: 'Tần Dược Tử', role: 'Cốc chủ Đan Hà Cốc',
+    lines: ['Vườn dược trên núi là tim của cốc. Hái một cây, trồng lại một cây — lệ từ đời cốc chủ đầu tiên.', 'Một lò đan tốt cứu người trước, cầu đạo sau. Ở trên núi này, câu đó khắc ở cổng.'],
+    grid: masterGrid(['9', 'R', 'R', '9', 'R', 'z', '9', 'O', 'A', 'O', 'M'], { J: 'I', j: 'k' }, [[1, 0], [0, 1], [1, 1], [2, 1], [0, 2], [2, 2]], 'A') };
+  NPC_FALLBACK.sect_master_van_thu = { name: 'Giang Tiểu Thú', role: 'Chưởng môn Vạn Thú Môn',
+    lines: ['Lên tới sơn môn rồi thì nghe cho kỹ: thú trên núi này đều có tên, đừng gọi chúng là quái.', 'Vạn Thú Môn mạnh không phải vì thú dữ, mà vì thú chịu tin người.'],
+    grid: masterGrid(['f', 'l', 'L', 'f', 'L', 'l', '7', '7', 'A', '7', 'M'], null, [[0, 0], [1, 0], [2, 0], [1, 1], [1, 2]], 'A') };
+  NPC_FALLBACK.sect_master_thien_phu = { name: 'Diệp Phù Sinh', role: 'Các chủ Thiên Phù Các',
+    lines: ['Các này yên tĩnh là để tay người vẽ bùa không run. Cháu bước nhẹ thôi.', 'Một nét bùa ngay, trấn tà an dân. Lên tới các rồi, cháu sẽ học nét đầu tiên cho thật vững.'],
+    grid: masterGrid(['u', 'x', 'x', 'u', 'x', 'c', 'u', 'T', 'A', 'T', 'M'], null, [[1, 0], [1, 1], [0, 2], [1, 2], [2, 2]], 'A') };
+  NPC_FALLBACK.sect_master_cuu_cung = { name: 'Âu Dương Kỳ', role: 'Tông chủ Cửu Cung Trận Tông',
+    lines: ['Cháu vừa bước qua ba trận nhỏ mà không hay biết. Tốt — trận giỏi là trận không ai thấy.', 'Đứng ở đây, cháu đang ở tâm trận của cả ngọn núi. Đánh nhau là hạ sách, giữ trận mới là thượng sách.'],
+    grid: masterGrid(['g', '3', 'i', 'g', 'i', '3', 'B', 'B', 'A', 'B', 'M'], null, [[0, 0], [2, 0], [0, 2], [2, 2]], 'A') };
+  NPC_FALLBACK.sect_master_kim_cang = { name: 'Thạch Bất Động', role: 'Đại diện Kim Cang Môn',
+    lines: ['HA! Lên được tới sơn môn thì cái thân đã hơn khối kẻ chỉ biết nói!', 'Ở trên núi này không có đường tắt. Thân này là pháp bảo đầu tiên — rèn nó mỗi ngày cho ta.'],
+    grid: masterGrid(['Q', 'y', '6', 'Q', '6', 'y', 'A', 'A', 'R', 'A', 'M'], null, [[0, 0], [1, 0], [2, 0], [1, 1], [0, 2], [1, 2], [2, 2]], 'A') };
+  NPC_FALLBACK.sect_master_ngu_doc = { name: 'Đường Tĩnh', role: 'Giáo chủ Ngũ Độc Giáo',
+    lines: ['Đừng sợ, trên núi của ta cười hiền vẫn là lệ đầu tiên. Độc chỉ dành cho kẻ ác ý.', 'Độc cũng là thuốc — tùy tay người dùng. Tay cháu có run không, để ta xem.'],
+    grid: masterGrid(['f', '3', 'X', 'f', 'X', '3', '7', '7', 'A', '7', 'M'], { J: '3', j: 'f' }, [[1, 0], [2, 0], [0, 1], [1, 2], [2, 2]], 'A') };
+  NPC_FALLBACK.sect_master_huyen_am = { name: 'Tiêu Uyển Nhi', role: 'Cung chủ Huyền Âm Cung',
+    lines: ['Hàn đàm sau cung quanh năm không đóng băng hẳn — cũng như tiếng đàn, lạnh mà không chết.', 'Huyền Âm Cung tu bằng tiếng đàn. Lên tới cung rồi, cháu sẽ nghe khúc đầu tiên của mình.'],
+    grid: masterGrid(['k', 'o', '8', 'k', 'o', '8', 'W', 'B', 'A', 'B', 'M'], { J: 'k', j: 'o' }, [[2, 0], [1, 1], [0, 2], [1, 2]], 'A') };
+  // Bí danh theo id nhân vật: npcDef tra theo sprite trước, theo id sau —
+  // gán cùng một đối tượng để mọi đường tra cứu (id hay sprite) đều ra
+  // đúng lưới tông chủ, không nhân đôi dữ liệu lưới.
+  NPC_FALLBACK.ta_thanh_van = NPC_FALLBACK.sect_master_thanh_phong;
+  NPC_FALLBACK.lieu_ngung_suong = NPC_FALLBACK.sect_master_huyen_phap;
+  NPC_FALLBACK.mac_thiet_tam = NPC_FALLBACK.sect_master_thien_cong;
+  NPC_FALLBACK.tan_duoc_tu = NPC_FALLBACK.sect_master_dan_ha;
+  NPC_FALLBACK.giang_tieu_thu = NPC_FALLBACK.sect_master_van_thu;
+  NPC_FALLBACK.diep_phu_sinh = NPC_FALLBACK.sect_master_thien_phu;
+  NPC_FALLBACK.au_duong_ky = NPC_FALLBACK.sect_master_cuu_cung;
+  NPC_FALLBACK.duong_tinh_nd = NPC_FALLBACK.sect_master_ngu_doc;
+  NPC_FALLBACK.tieu_uyen_nhi = NPC_FALLBACK.sect_master_huyen_am;
   // ---- Quái ----
   var MONSTERS = {
     ga_rung: {
@@ -3259,7 +3335,7 @@
   ITEM_ICONS.bt_pq_tho_thu = bookIcon('9', 'M');
   var api = {
     PALETTE: PALETTE, ORIGIN_PALETTES: ORIGIN_PALETTES, PLAYER: PLAYER,
-    NPC: NPC, MONSTERS: MONSTERS, MONSTER_FRAMES: MONSTER_FRAMES, monsterFrame: monsterFrame, monsterFramePx: monsterFramePx, OBJECTS: OBJECTS, ITEM_ICONS: ITEM_ICONS,
+    NPC: NPC, NPC_FALLBACK: NPC_FALLBACK, MONSTERS: MONSTERS, MONSTER_FRAMES: MONSTER_FRAMES, monsterFrame: monsterFrame, monsterFramePx: monsterFramePx, OBJECTS: OBJECTS, ITEM_ICONS: ITEM_ICONS,
     gridToPixels: gridToPixels, flipH: flipH, walkFrame: walkFrame, walkFrames: walkFrames,
     idleFrame: idleFrame, actionFrame: actionFrame, actionFrames: actionFrames, ACTIONS: ACTIONS,
     spinDir: spinDir, actionHandPoint: actionHandPoint,

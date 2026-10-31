@@ -1227,6 +1227,29 @@
       desc: 'Tiết Tĩnh Tu, linh khí lặng mà đầy, thổ nạp được thêm một phần tư. Ngồi thổ nạp tích đủ 30 tu vi trong tiết này cho Lý lão xem tâm tĩnh tới đâu.',
       objectives: [{ type: 'tuvi', need: 30 }],
       rewards: { linhThach: 50, tuVi: 10, items: [] } },
+    // --- VIỆC LỄ LẶP SAU 4 VIỆC TIẾT (mục 53 hàng chờ,
+    // js/season-tide.js): chỉ mở khi cả 4 việc tiết gốc đã trả xong,
+    // mỗi tháng dương lịch đúng 1 lần trả (khóa theo tháng ở
+    // qs.repeatDone, xem turnInQuest). Mục tiêu chép đúng việc tiết
+    // cùng tiết, nhưng thưởng KHÔNG có Linh Thạch — chỉ +10 tu vi và
+    // cỗ hội/hồi phục, để tổng Linh Thạch nhiệm vụ đã khóa (200 LT
+    // của 4 việc gốc) không tăng thêm dù việc lặp chạy hàng tháng.
+    q_tiet_lap_linh: { id: 'q_tiet_lap_linh', main: false, tietQuest: true, repeatMonthly: true, title: 'Việc lễ lặp — Tiết Linh Tố: Thuốc đầu mùa', giver: 'hoc_tro',
+      desc: 'Việc lễ lặp của tháng Linh Tố: hái 3 cây Thanh Tâm Thảo tươi cho Tiểu Hạnh giã thuốc dự trữ cho mùa khô. Thưởng là thuốc dự trữ, không phải Linh Thạch.',
+      objectives: [{ type: 'collect', target: 'thanh_tam_thao', need: 3 }],
+      rewards: { linhThach: 0, tuVi: 10, items: [{ id: 'thao_duoc', n: 2 }] } },
+    q_tiet_lap_thu: { id: 'q_tiet_lap_thu', main: false, tietQuest: true, repeatMonthly: true, title: 'Việc lễ lặp — Tiết Thú Dữ: Giữ cổng làng', giver: 'linh_gac',
+      desc: 'Việc lễ lặp của tháng Thú Dữ: hạ 3 con Sói Con lảng vảng quanh bãi hoang để A Hổ giữ yên cổng Nam Môn. Thưởng là phần ăn trực cổng, không phải Linh Thạch.',
+      objectives: [{ type: 'kill', target: 'soi_con', need: 3 }],
+      rewards: { linhThach: 0, tuVi: 10, items: [{ id: 'thit_lon', n: 2 }] } },
+    q_tiet_lap_dang: { id: 'q_tiet_lap_dang', main: false, tietQuest: true, repeatMonthly: true, title: 'Việc lễ lặp — Tiết Đăng Hoa: Lời chúc hội đèn', giver: 'chu_quan',
+      desc: 'Việc lễ lặp của tháng Đăng Hoa: mang lời chúc hội đèn của Hoa nương sang cho Dì Tư rồi quay lại ăn cỗ hội. Thưởng là cỗ hội, không phải Linh Thạch.',
+      objectives: [{ type: 'talk', target: 'le_su', need: 1 }],
+      rewards: { linhThach: 0, tuVi: 10, items: [{ id: 'thit_ga', n: 2 }] } },
+    q_tiet_lap_tinh: { id: 'q_tiet_lap_tinh', main: false, tietQuest: true, repeatMonthly: true, title: 'Việc lễ lặp — Tiết Tĩnh Tu: Ngồi yên một tuần trà', giver: 'dai_phu',
+      desc: 'Việc lễ lặp của tháng Tĩnh Tu: ngồi thổ nạp tích đủ 30 tu vi cho Lý lão xem tâm tĩnh tới đâu. Thưởng là thuốc hồi sức, không phải Linh Thạch.',
+      objectives: [{ type: 'tuvi', need: 30 }],
+      rewards: { linhThach: 0, tuVi: 10, items: [{ id: 'hoi_khi_tan', n: 1 }, { id: 'linh_khi_tan', n: 1 }] } },
     q_tong_tran: { id: 'q_tong_tran', main: false, title: 'Dẫn khí qua cửu cung', giver: 'tong_tran', requires: 'q_tong_phu',
       desc: 'Theo trận đồ Cửu Cung của Cửu Cung Trận Tông mà dẫn khí đi đủ một vòng: thổ nạp tích đủ 50 tu vi.', objectives: [{ type: 'tuvi', need: 50 }],
       rewards: { linhThach: 70, tuVi: 20, items: [] } },
@@ -1445,7 +1468,10 @@
   function bossShouldSpawn(qs) {
     return !!(qs && qs.accepted && qs.accepted.q_chinh_7) && !isTurnedIn(qs, 'q_chinh_7');
   }
-  function newQuestState() { return { accepted: {}, turnedIn: [] }; }
+  // repeatDone: khóa việc lễ lặp theo tháng — { qid: 'YYYY-MM' } của
+  // lần trả gần nhất (mục 53 hàng chờ). Save cũ chưa có trường này
+  // thì turnInQuest/availableRepeatId coi như {}.
+  function newQuestState() { return { accepted: {}, turnedIn: [], repeatDone: {} }; }
   function isTurnedIn(qs, qid) { return qs.turnedIn.indexOf(qid) >= 0; }
   function availableQuests(qs) {
     return Object.keys(QUESTS).filter(function (qid) {
@@ -1492,7 +1518,13 @@
     });
     return changed;
   }
-  function turnInQuest(qs, ch, qid) {
+  // monthKey (tham số thứ 4, tùy chọn): chỉ dùng cho nhiệm vụ
+  // repeatMonthly — khóa 'YYYY-MM' của lần trả. Việc lặp KHÔNG vào
+  // turnedIn (vào đó thì không nhận lại được tháng sau), mà ghi vào
+  // qs.repeatDone; mọi đường trả khác (không truyền monthKey) cũng
+  // không đẩy việc lặp vào turnedIn, chỉ ghi khóa rỗng — vì vậy
+  // đường trả việc tiết ở game.js phải truyền tháng hiện tại.
+  function turnInQuest(qs, ch, qid, monthKey) {
     var st = qs.accepted[qid];
     if (!st || !st.done || isTurnedIn(qs, qid)) return { ok: false };
     var q = QUESTS[qid];
@@ -1500,6 +1532,11 @@
     if (q.rewards.tuVi) gainTuVi(ch, guardGain('questTuVi', q.rewards.tuVi));
     q.rewards.items.forEach(function (it) { addItem(ch, it.id, it.n); });
     delete qs.accepted[qid];
+    if (q.repeatMonthly) {
+      qs.repeatDone = qs.repeatDone || {};
+      qs.repeatDone[qid] = monthKey || '';
+      return { ok: true, rewards: q.rewards, repeat: true };
+    }
     qs.turnedIn.push(qid);
     return { ok: true, rewards: q.rewards };
   }
