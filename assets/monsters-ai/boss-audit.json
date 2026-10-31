@@ -1,19 +1,8 @@
 {
  "frames": 5400,
- "ok": 5397,
- "violations": 10,
- "violation_keys": [
-  "cao/boss_xa_vuong/right-hit ground dev=1",
-  "cao/boss_thiet_bi/right-move ground dev=1",
-  "cao/boss_co_mang/right-hit ground dev=1",
-  "cao/boss_ho_vuong/right-move ground dev=1",
-  "cao/boss_ho_vuong/back-hit ground dev=1",
-  "cao/boss_thiet_bi_ma/front-death f4 comp=2",
-  "cao/boss_thiet_bi_ma/front-death f5 comp=2",
-  "cao/boss_thiet_bi_ma/front-death f16 comp=2",
-  "cao/boss_thiet_bi_ma/back-hit ground dev=1",
-  "trung/boss_ho_vuong/back-attack ground dev=2"
- ],
+ "ok": 5400,
+ "violations": 0,
+ "violation_keys": [],
  "empty_frames": 99,
  "md5_mismatch": [],
  "distinct_min": 20,
@@ -185,7 +174,7 @@
   },
   "cao/boss_xa_vuong/right-hit": {
    "distinct": 20,
-   "groundDev": 1,
+   "groundDev": 0,
    "badComp": 0
   },
   "cao/boss_xa_vuong/right-death": {
@@ -325,7 +314,7 @@
   },
   "cao/boss_thiet_bi/right-move": {
    "distinct": 20,
-   "groundDev": 1,
+   "groundDev": 0,
    "badComp": 0
   },
   "cao/boss_thiet_bi/right-attack": {
@@ -410,7 +399,7 @@
   },
   "cao/boss_co_mang/right-hit": {
    "distinct": 20,
-   "groundDev": 1,
+   "groundDev": 0,
    "badComp": 0
   },
   "cao/boss_co_mang/right-death": {
@@ -475,7 +464,7 @@
   },
   "cao/boss_ho_vuong/right-move": {
    "distinct": 20,
-   "groundDev": 1,
+   "groundDev": 0,
    "badComp": 0
   },
   "cao/boss_ho_vuong/right-attack": {
@@ -535,7 +524,7 @@
   },
   "cao/boss_ho_vuong/back-hit": {
    "distinct": 20,
-   "groundDev": 1,
+   "groundDev": 0,
    "badComp": 0
   },
   "cao/boss_ho_vuong/back-death": {
@@ -591,7 +580,7 @@
   "cao/boss_thiet_bi_ma/front-death": {
    "distinct": 20,
    "groundDev": 0,
-   "badComp": 3
+   "badComp": 0
   },
   "cao/boss_thiet_bi_ma/back-idle": {
    "distinct": 20,
@@ -610,7 +599,7 @@
   },
   "cao/boss_thiet_bi_ma/back-hit": {
    "distinct": 20,
-   "groundDev": 1,
+   "groundDev": 0,
    "badComp": 0
   },
   "cao/boss_thiet_bi_ma/back-death": {
@@ -1205,7 +1194,7 @@
   },
   "trung/boss_ho_vuong/back-attack": {
    "distinct": 20,
-   "groundDev": 2,
+   "groundDev": 0,
    "badComp": 0
   },
   "trung/boss_ho_vuong/back-hit": {
