@@ -32,6 +32,7 @@
   button:hover { background: #93492a; }
   button:disabled { background: #9a9a9a; cursor: default; }
   .err { color: #c0392b; min-height: 20px; margin-top: 8px; }
+  #bgLoadStatus { font-size: 12px; color: #c9b98a; margin-top: 8px; }
   .link { color: #5aa7d6; cursor: pointer; text-decoration: underline; background: none; padding: 0; margin: 0; font-size: 15px; }
   /* HỆ MÀU CHỮ THỐNG NHẤT (Phần 9 — lệnh Bui 22:32 30/10): MỘT bảng
      màu duy nhất cho toàn giao diện, tông ấm trên nền gỗ tối/viền
@@ -277,6 +278,7 @@
       <div class="err" id="regErr"></div>
       <button type="submit">Đăng kí</button>
     </form>
+    <div id="bgLoadStatus">Đang tải nền map…</div>
     <p>Đã có tài khoản? <button class="link" id="toLogin">Đăng nhập</button></p>
   </div>
 </div>

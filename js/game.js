@@ -245,9 +245,25 @@
     if (!M.MAPS || !M.MAPS[mid] || !M.MAPS[mid].bg) return;
     if (M.MAPS[mid].bgChunks) return; // map chia mảng: nạp theo mảng (drawBgChunks), không tải file full
     var im = new Image();
-    im.onload = function () { im._ready = true; };
+    im.onload = function () { im._ready = true; refreshBgLoadStatus(); };
     im.src = M.MAPS[mid].bg;
     bgImgs[mid] = im;
+  }
+  // QA35 (hang cho 35, QA (g) 14:01 30/10): dong trang thai tai nen
+  // map1 tren man dang ki. Chi theo doi nen GAME (bgImgs['map1']) —
+  // anh trang tri #bgArt la file webp rieng, khong phai nen game.
+  // Hien khi nen game map1 chua san, an ngay khi onload cua
+  // ensureBg bao san. Vong nap 14 map luc mo trang cua muc 33 van
+  // KHONG tro lai: day chi la 1 file map1 (lang khoi dau chac chan
+  // cua nhan vat moi), startGame prefetch co cache-check nen khong
+  // tai lai; nguoi choi cu ve map tu save thi duong startGame lo.
+  function bgMap1Ready() { var b = bgImgs['map1']; return !!(b && b._ready); }
+  function refreshBgLoadStatus() {
+    var el = $('bgLoadStatus');
+    if (!el) return;
+    if (bgMap1Ready()) { el.style.display = 'none'; return; }
+    el.textContent = 'Đang tải nền map…';
+    el.style.display = 'block';
   }
   // ----- TÍCH HỢP SƠN MÔN (31/10/2026): nền chia mảng bgChunks -----
   // Map instance lớn (sơn môn) dùng nền cắt lưới (vd 3x3) có vùng chồng
@@ -636,6 +652,9 @@
           bim.src = 'assets/map1-bg-v7.webp'; // WebP q95 từ đúng tranh v7 (1,26MB thay 5,22MB PNG, PSNR 41,6dB)
         } else if (showScreen._bgOk !== false) document.body.classList.add('has-art');
       } else document.body.classList.remove('has-art');
+      // QA35: man dang ki bat dau tai nen game map1 (1 file, khong
+      // phai vong 14 map) + hien dong trang thai trong luc chua san.
+      if (id === 'screen-register') { ensureBg('map1'); refreshBgLoadStatus(); }
     } catch (e) {}
   }
   // Toast (lệnh Bui 20:16 30/10): toast TRÙNG nhau liên tiếp không
@@ -925,6 +944,32 @@
       if (eplan) { eplan.spawns = eplan.spawns.slice(0, flags.escort.run.ambush.remaining); spawnEscortAmbush(eplan); }
     }
     maybeFestBanner();
+    pruneSheetCaches();
+  }
+  // QA (g) 14:01 30/10 — MỤC 34 HÀNG CHỜ: XẢ CACHE SHEET THEO MAP.
+  // loadMapEntities() vừa dựng xong quái của map mới nên đây là điểm
+  // xả duy nhất: _monSheets chỉ giữ loài đang có mặt (kể cả sheet
+  // thiết kế boss_<id>/alias của boss thế giới, vì draw() chọn sheet
+  // theo aiType chứ không phải m.type), _petSheets chỉ giữ loài thú
+  // đang xuất chiến theo người chơi qua mọi map. _heroSheets KHÔNG
+  // xả: nhân vật theo người chơi mọi map. _npcSheets cũng không xả
+  // (ngoài phạm vi mục 34; NPC sơn môn/map kề vẫn cần khi quay lại).
+  // Chỉ xóa mục cache — loader nạp lười (getMonsterSheet/getPetSheet)
+  // tạo lại ngay khi cần nên không đổi logic chiến đấu hay hình vẽ.
+  function pruneSheetCaches() {
+    var keepMon = {}, keepPet = {};
+    monsters.forEach(function (m) {
+      if (m.type) keepMon[m.type] = true;
+      if (m.worldBoss) {
+        keepMon['boss_' + m.worldBoss] = true;
+        var al34 = { thiet_bi_vuong: 'boss_thiet_bi', co_mang_vuong: 'boss_co_mang', thiet_bi_ma_vuong: 'boss_thiet_bi_ma' }[m.worldBoss];
+        if (al34) keepMon[al34] = true;
+      }
+    });
+    var ap34 = activePetInst();
+    if (ap34 && ap34.sp) keepPet[ap34.sp] = true;
+    Object.keys(_monSheets).forEach(function (ck) { if (!keepMon[ck.split('/')[1]]) delete _monSheets[ck]; });
+    Object.keys(_petSheets).forEach(function (ck) { if (!keepPet[ck.split('/')[1]]) delete _petSheets[ck]; });
   }
   // Banner LỄ HỘI (js/wardrobe.js): vào làng trong cửa sổ lễ thì báo một
   // lần/phiên cho mỗi lễ — panel Tủ Đồ + NPC Dì Tư giữ phần việc lễ.
@@ -1788,7 +1833,10 @@
       monsters.push(m);
     });
     tideWaveLive = true;
-    if (SND) SND.voice('soi_rung', 'aggro', { vol: 0.9 });
+    // QA (e) 15:01 31/10: tiếng đợt thú phải đúng loài — đợt nào cũng hú
+    // sói thì đợt 5–6 (không có sói) và Yêu Vương (lợn mông sắt) đều sai
+    // tiếng. Ưu tiên tiếng thủ lĩnh ở đợt cuối, còn lại lấy loài đầu đợt.
+    if (SND) { var lvT = null; for (var liT = 0; liT < plan.spawns.length; liT++) if (plan.spawns[liT].leader) { lvT = plan.spawns[liT].type; break; } SND.voice(lvT || (plan.spawns[0] && plan.spawns[0].type) || 'soi_rung', 'aggro', { vol: 0.9 }); }
     toast('Thú triều — đợt ' + plan.wave + '/' + BT.WAVE_COUNT + ': ' + plan.count + ' con thú tràn về Nam Môn' + (plan.wave === BT.WAVE_COUNT ? ' — YÊU VƯƠNG HỐNG SƠN dẫn đầu!' : '!'));
   }
   // Tải save / quay lại map 1 giữa lượt: dựng lại đợt hiện tại từ đầu
@@ -1996,7 +2044,9 @@
       monsters.push(m);
     });
     toast('PHỤC KÍCH! Thú dữ từ hai bên đường ập vào đoàn xe — dẹp sạch chúng rồi xe mới đi tiếp được!');
-    if (SND) SND.voice('soi_rung', 'aggro', { vol: 0.9 });
+    // QA (e) 15:01 31/10: phục kích kêu đúng loài đầu đoàn (chân 2 là sói
+    // con/lợn rừng, chân 3 là khỉ/sói) thay vì hú sói cứng cho mọi chân.
+    if (SND) SND.voice((plan.spawns[0] && plan.spawns[0].type) || 'soi_rung', 'aggro', { vol: 0.9 });
   }
   function startEscortRun() {
     if (!ESC) return { ok: false, reason: 'nomodule' };
@@ -3550,7 +3600,7 @@
         evoCostTxt = '<br>Tiến hoá cần: 1 ' + L.ITEMS[ec.yeuDanId].name + ' (đang có ' + PETS.countItem(ch, ec.yeuDanId) + ') + 1 Huyết Mạch Tinh (đang có ' + PETS.countItem(ch, ec.bloodId) + ')';
       }
       var html = '<b style="color:' + PETS.GRADES[d.grade].color + '">' + PETS.displayNameOf(p) + '</b> · ' + PETS.GRADES[d.grade].name + ' phẩm · hệ ' + PETS.ELEMS[d.elem] +
-        ' · ' + PETS.ROLES[d.role] + ' · Di chuyển: ' + PETS.MOVES[d.move] + (d.mountable ? ' · Có thể cưỡi (sắp mở)' : '') + evoTxt +
+        ' · ' + PETS.ROLES[d.role] + ' · Di chuyển: ' + PETS.MOVES[d.move] + (d.mountable ? (d.move === 'fly' ? ' · Ngự bay được (cần Trúc Cơ + đang xuất chiến, chọn Kiểu bay: Linh Thú rồi bấm F)' : ' · Loài đi bộ — không ngự bay được') : '') + evoTxt +
         '<br>Cấp ' + p.level + ' (Tu vi ' + p.exp + '/' + (p.level >= PETS.maxLevelOf(p) ? 'MAX' : PETS.expNeed(p.level)) + ') · Máu ' + hpTxt + ' · Tấn công ' + PETS.atkOf(p) +
         '<br>Kỹ năng: <b>' + d.skill.name + '</b> · Hào quang: ' + (auraText(d.aura) || 'không') + (isAct ? ' · <b>ĐANG XUẤT CHIẾN</b>' : '') + (PETS.isDowned(p) ? ' · <b style="color:#c33">ĐÃ GỤC</b>' : '') + evoCostTxt;
       if (d.desc) html += '<br><i style="color:#8a6d3b">' + d.desc + '</i>';
@@ -3591,6 +3641,18 @@
       }
     });
   }
+  // QA (f) 14:16 30/10 — PHÍ HỒI SINH (mục 37 hàng chờ): chết ngoài
+  // sự kiện ở map thường trước đây miễn phí mà vẫn về làng, rẻ hơn cả
+  // Truyền Tống Phù nên người chơi map xa chỉ cần để quái đánh chết là
+  // khỏi đi bộ về, khỏi mua phù. Phương án đã chọn: phí hồi sinh bằng
+  // ĐÚNG giá Truyền Tống Phù trong economy.md mục 10 (150 Linh Thạch),
+  // không tự chế số mới — chết về làng = dùng một lần truyền tống về
+  // làng, nên trả đúng giá đó. Phí chỉ áp ngoài sự kiện; chết trong
+  // Đại Hội/Thú Triều/vết nứt/sự kiện thú dữ/bí cảnh giữ nguyên luật
+  // reset cũ của sự kiện đó, không cộng thêm phí. Hết Linh Thạch thì
+  // trừ hết số còn lại, không bao giờ âm (người 0 LT vẫn hồi sinh, chỉ
+  // mất sạch số lẻ còn lại — điểm yếu còn lại, ghi rõ ở hàng chờ).
+  var DEATH_FEE = 150;
   function onPlayerDeath() {
     if (flags) lifetimeStats().deaths++; // thống kê trọn đời (20:24) — đếm từ bản này
     if (SND) SND.bossFight(false);
@@ -3598,23 +3660,30 @@
     // kiếm cũng tan (dựng lại khi nói chuyện với đại diện tông).
     flying = false; flyLift = 0; flyTrial = null;
     for (var di2 = monsters.length - 1; di2 >= 0; di2--) if (monsters[di2].duelFly) monsters.splice(di2, 1);
+    // Chụp trạng thái sự kiện TRƯỚC khi các nhánh dưới chốt/xoá run,
+    // để quyết phí: chỉ chết ngoài mọi sự kiện mới tốn phí.
+    var deathTournLive = false, deathTideRun = false;
+    if (TOURN) { var td0 = TOURN.ensure(flags); deathTournLive = !!(td0 && td0.run && td0.run.phase === 'live'); }
+    if (BT) { var bd0 = BT.ensure(flags); deathTideRun = !!(bd0 && bd0.run); }
+    var deathBeastEvent = !!(flags && flags.event && flags.event.active && !flags.event.done);
+    var deathRealmMap = !!(SR && SR.isRealmMap(curMapId));
     // ĐẠI HỘI: gục giữa trận trên võ đài = thua trận đó (chốt trước hồi sinh).
-    if (TOURN) {
-      var tstD = TOURN.ensure(flags);
-      if (tstD && tstD.run && tstD.run.phase === 'live') onTournMatchEnd(TOURN.reportLoss(flags, ch.name), null);
-    }
+    if (deathTournLive) onTournMatchEnd(TOURN.reportLoss(flags, ch.name), null);
     // THÚ TRIỀU: gục giữa trận thủ thành = chốt lượt thua theo số đợt
     // đã giữ + phát thưởng ngay (trước khi hồi sinh về làng như Đại Hội).
-    if (BT) {
-      var btdD = BT.ensure(flags);
-      if (btdD && btdD.run) onTideFinish(BT.forfeit(flags), 'Bạn gục ngã trước cổng Nam Môn! ');
-    }
+    if (deathTideRun) onTideFinish(BT.forfeit(flags), 'Bạn gục ngã trước cổng Nam Môn! ');
     // VẾT NỨT HƯ KHÔNG: gục trong cảnh của vết nứt = bị hư không hất
     // văng ra + vết nứt khép với người đó tới hết chu kỳ (noteDeath
     // phải đọc run TRƯỚC khi onRealmDeath xoá).
     var riftDeath = null;
     if (RIFT) riftDeath = RIFT.noteDeath(flags, gameNow());
     onRealmDeath();
+    var deathInEvent = deathTournLive || deathTideRun || deathBeastEvent || deathRealmMap || !!(riftDeath && riftDeath.wasRift);
+    var deathFee = 0;
+    if (!deathInEvent && ch) {
+      deathFee = Math.min(DEATH_FEE, Math.max(0, ch.linhThach || 0));
+      if (deathFee > 0) ch.linhThach -= deathFee;
+    }
     ch.hp = L.effMaxHp ? L.effMaxHp(ch) : ch.maxHp;
     curMapId = 'map1';
     if (SND) SND.setMap('map1'); // QA (e) 00:31 31/10: đường chết không qua switchMap nên nhạc kẹt theme map đã chết — hồi sinh về làng phải đổi nhạc về làng
@@ -3627,10 +3696,15 @@
     } else if (flags.event && flags.event.active && !flags.event.done) {
       L.resetBeastEvent(flags);
       toast('Bạn gục ngã... hồi sinh tại trấn. Sự kiện thú dữ bắt đầu lại từ đợt 1 — nói chuyện lại với A Hổ.');
+    } else if (!deathInEvent && deathFee > 0) {
+      toast('Bạn gục ngã... hồi sinh tại trấn, tốn ' + deathFee + ' Linh Thạch phí hồi sinh (bằng giá một lá Truyền Tống Phù).');
+    } else if (!deathInEvent) {
+      toast('Bạn gục ngã... hồi sinh tại trấn. Bạn không còn Linh Thạch nên lần này không tốn phí hồi sinh.');
     } else {
       toast('Bạn gục ngã... và hồi sinh tại trấn.');
     }
     loadMapEntities();
+    if (deathFee > 0) { updateHUD(); saveGame(); } // phí phải chốt vào save ngay, kẻo tải lại save cũ là trốn được phí
     if (SND) SND.sfx('revive'); // QA 16:31 30/10: khoảnh khắc hồi sinh phải có tiếng — trước đây chỉ có tiếng chết, hồi sinh im lặng
   }
   // ---------- HUD thu gọn (lệnh Bui 21:50 30/10) ----------
@@ -6427,6 +6501,15 @@
     flags.tdMedFrac = raw - gain;
     return Math.max(1, gain);
   }
+  // QA38 (muc 38 hang cho, quyet (b)): GIU NGUYEN base tay = 2, KHONG
+  // them hoi chieu cho nut tay o luot nay. Ly do: moi lan tay la mot
+  // lan bam co chu dich (tra bang su chu y), trong khi Tu tho nap la
+  // thu dong 1/giay; phim T giu da bi chan repeat o keydown (test
+  // skill khoa: repeat=true khong tang tu vi) nen khong con duong
+  // "giu mot phim la cay". economy.md khong co ti le tay/tu nao de
+  // ap, nen khong tu che hoi chieu hay doi base khi chua doi chieu
+  // xong — neu luot sau muon can bang thi quyet bang so economy chu
+  // khong phai bang cam tinh 2x.
   function meditate() {
     if (deathPending) return;
     if (flying) landPlayer(true); // thổ nạp phải ngồi trên đất
@@ -8431,7 +8514,15 @@
       autoAtkTimer -= dt;
       if (autoAtkTimer <= 0) { autoAtkTimer = 0.9; if (nearestMonsterMelee()) attack(); }
     }
-    if (autoMeditate && ch.root) {
+    // QA38 (muc 38 hang cho): tu tho nap CHI khi dung yen — cung dieu
+    // kien voi medActiveNow() (!moving && !action && !deathPending).
+    // Truoc day tick nay chi kiem autoMeditate && ch.root nen bat Tu
+    // tho nap roi chay/danh khap map van nhan 1 tu vi/giay, trong khi
+    // tu the ngoi (medActiveNow) da doi dung yen — hai duong lech nhau.
+    // Khong phai "tinh tam nen" co chu dich: dang chay thi khong ngoi
+    // thien duoc. Khi khong du dieu kien thi reset dong ho ve 1 giay
+    // de dung lai khong an ngay mot lan tu vi ton tu luc dang chay.
+    if (autoMeditate && ch.root && !moving && !action && !deathPending) {
       autoMedTimer -= dt;
       if (autoMedTimer <= 0) {
         autoMedTimer = 1.0;
@@ -8445,7 +8536,7 @@
         L.recordEvent(qs, ch, { type: 'tuvi', n: g });
         updateHUD(); saveGame();
       }
-    }
+    } else if (autoMeditate) { autoMedTimer = 1.0; } // QA38: dang chay/danh/chet thi dong ho khong tich luy san
     floaters.forEach(function (f) { f.t -= dt; f.y -= 30 * dt; });
     var fw = 0;
     for (var fi = 0; fi < floaters.length; fi++) if (floaters[fi].t > 0) floaters[fw++] = floaters[fi];
@@ -12458,6 +12549,18 @@
       moveTarget: function () { return moveTarget; },
       teleport: function (tx, ty) { px = tx * TILE + 16; py = ty * TILE + 28; moveTarget = null; pvx = 0; pvy = 0; },
       switchMap: function (toId, tx, ty) { switchMap(toId, tx, ty); }, // QA32: doi map that de test HUD doi ten ngay
+      // QA37: mo phong chet de test phi hoi sinh (muc 37 hang cho).
+      simulateDeath: function () { onPlayerDeath(); return { mapId: curMapId, linhThach: ch ? ch.linhThach : null, hp: ch ? ch.hp : null }; },
+      deathFee: function () { return DEATH_FEE; },
+      // QA35: trang thai tai nen map1 tren man dang ki (hook test).
+      bgLoadStatus: function () { refreshBgLoadStatus(); var el = $('bgLoadStatus'); return el ? { visible: el.style.display !== 'none', text: el.textContent } : null; },
+      bgLoadReset: function () { delete bgImgs['map1']; refreshBgLoadStatus(); return true; },
+      bgLoadEnsure: function () { ensureBg('map1'); return bgMap1Ready(); },
+      // QA34: xa cache sheet theo map — lo cache de test kiem chung.
+      sheetCache: function () { return { mon: Object.keys(_monSheets), pet: Object.keys(_petSheets), hero: Object.keys(_heroSheets) }; },
+      warmMonSheet: function (lv, type, key) { getMonsterSheet(lv, type, key); return Object.keys(_monSheets).indexOf(lv + '/' + type + '/' + key) >= 0; },
+      warmPetSheet: function (lv, sp, key) { getPetSheet(lv, sp, key); return Object.keys(_petSheets).indexOf(lv + '/' + sp + '/' + key) >= 0; },
+      warmHeroSheet: function (lv, gender, origin, set) { getHeroSheet(lv, gender, origin, set); return Object.keys(_heroSheets).indexOf(lv + '/' + gender + '/' + origin + '/' + set) >= 0; },
       cam: function () { return { x: Math.round(camX * 10) / 10, y: Math.round(camY * 10) / 10 }; },
       move: function () { return { vx: Math.round(pvx), vy: Math.round(pvy), speed: Math.round(Math.sqrt(pvx * pvx + pvy * pvy)), frame: walkFrameIdx, phase: Math.round(walkPhase * 10) / 10 }; },
       action: function () {

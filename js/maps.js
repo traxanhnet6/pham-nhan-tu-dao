@@ -2678,7 +2678,7 @@
     })();
     map.tiles = g.map(function (r) { return r.join(''); });
     map.w = NW; map.h = NH;
-    map.bg = 'assets/map2-bg-v8.webp';
+    map.bg = 'assets/map2-bg-v9.webp';
   })();
   // ---- TRỒNG CÂY PHỦ ĐẤT TRỐNG MAP 2 (lệnh parent 23:52 ngày
   // 2026-10-30): sau mở rộng V4, map 2 còn 16.515/22.400 ô '.' trống
@@ -3071,7 +3071,7 @@
     V5_SIGNS.forEach(function (s) { map.props.push(s); });
     map.tiles = g.map(function (r) { return r.join(''); });
     map.w = NW; map.h = NH;
-    map.bg = 'assets/map3-bg-v8.webp';
+    map.bg = 'assets/map3-bg-v9.webp';
   })();
 
 
@@ -3376,7 +3376,7 @@
     );
     map.tiles = rows.map(function (r) { return r.join(''); });
     map.w = NW; map.h = NH;
-    map.bg = 'assets/map4-bg-v8.webp';
+    map.bg = 'assets/map4-bg-v9.webp';
   })();
 
 
@@ -3643,7 +3643,7 @@
     );
     map.tiles = rows.map(function (r) { return r.join(''); });
     map.w = NW; map.h = NH;
-    map.bg = 'assets/map5-bg-v8.webp';
+    map.bg = 'assets/map5-bg-v9.webp';
   })();
 
 
@@ -3915,7 +3915,7 @@
     );
     map.tiles = g.map(function (r) { return r.join(''); });
     map.w = NW; map.h = NH;
-    map.bg = 'assets/map6-bg-v8.webp';
+    map.bg = 'assets/map6-bg-v9.webp';
   })();
 
 
@@ -4225,7 +4225,7 @@
     );
     map.tiles = g.map(function (r) { return r.join(''); });
     map.w = NW; map.h = NH;
-    map.bg = 'assets/map7-bg-v8.webp';
+    map.bg = 'assets/map7-bg-v9.webp';
   })();
 
 
@@ -4478,7 +4478,7 @@
     );
     map.tiles = g.map(function (r) { return r.join(''); });
     map.w = NW; map.h = NH;
-    map.bg = 'assets/map8-bg-v8.webp';
+    map.bg = 'assets/map8-bg-v9.webp';
   })();
 
 
@@ -5037,7 +5037,7 @@
     );
     map.tiles = rows.map(function (r) { return r.join(''); });
     map.w = NW; map.h = NH;
-    map.bg = 'assets/map10-bg-v8.webp';
+    map.bg = 'assets/map10-bg-v9.webp';
   })();
 
   // ---- MỞ RỘNG MAP 11 V5 — GẤP 10 DIỆN TÍCH GỐC (gói xưởng map xuyên
@@ -5371,7 +5371,7 @@
     );
     map.tiles = g.map(function (r) { return r.join(''); });
     map.w = NW; map.h = NH;
-    map.bg = 'assets/map11-bg-v8.webp';
+    map.bg = 'assets/map11-bg-v9.webp';
   })();
 
   // ---- MỞ RỘNG MAP 12 V5 — GẤP 10 DIỆN TÍCH (chương trình map 2–14
@@ -6022,7 +6022,7 @@ var LAKE_EAST_SPANS = { 76: '140-141', 77: '139,141-142', 78: '137-142,151', 79:
     V5_SIGNS.forEach(function (s) { map.props.push({ sprite: 'sign', x: s[0], y: s[1], label: s[2] }); });
     map.tiles = g.map(function (r) { return r.join(''); });
     map.w = NW; map.h = NH;
-    map.bg = 'assets/map13-bg-v8.webp';
+    map.bg = 'assets/map13-bg-v9.webp';
   })();
 
   // ---- MỞ RỘNG MAP 14 V5 — GẤP 10 DIỆN TÍCH (chương trình map 2–14,
@@ -6322,7 +6322,7 @@ var LAKE_EAST_SPANS = { 76: '140-141', 77: '139,141-142', 78: '137-142,151', 79:
     );
     map.tiles = rows.map(function (r) { return r.join(''); });
     map.w = NW; map.h = NH;
-    map.bg = 'assets/map14-bg-v8.webp';
+    map.bg = 'assets/map14-bg-v9.webp';
   })();
 
  function isBlockedIn(map, x, y) {
@@ -7958,12 +7958,12 @@ var SONMON_THIENPHU = {
   blocked: BLOCKED,
   start: { x: 80, y: 134 },
   portals: [
-    { x: 77, y: 139, to: 'map3', tx: 64, ty: 62, name: 'Xuống Chân Núi Thiên Phù Các' },
-    { x: 78, y: 139, to: 'map3', tx: 64, ty: 62, name: 'Xuống Chân Núi Thiên Phù Các' },
-    { x: 79, y: 139, to: 'map3', tx: 64, ty: 62, name: 'Xuống Chân Núi Thiên Phù Các' },
-    { x: 80, y: 139, to: 'map3', tx: 64, ty: 62, name: 'Xuống Chân Núi Thiên Phù Các' },
-    { x: 81, y: 139, to: 'map3', tx: 64, ty: 62, name: 'Xuống Chân Núi Thiên Phù Các' },
-    { x: 82, y: 139, to: 'map3', tx: 64, ty: 62, name: 'Xuống Chân Núi Thiên Phù Các' },
+    { x: 77, y: 139, to: 'map3', tx: 63, ty: 67, name: 'Xuống Chân Núi Thiên Phù Các' },
+    { x: 78, y: 139, to: 'map3', tx: 63, ty: 67, name: 'Xuống Chân Núi Thiên Phù Các' },
+    { x: 79, y: 139, to: 'map3', tx: 63, ty: 67, name: 'Xuống Chân Núi Thiên Phù Các' },
+    { x: 80, y: 139, to: 'map3', tx: 63, ty: 67, name: 'Xuống Chân Núi Thiên Phù Các' },
+    { x: 81, y: 139, to: 'map3', tx: 63, ty: 67, name: 'Xuống Chân Núi Thiên Phù Các' },
+    { x: 82, y: 139, to: 'map3', tx: 63, ty: 67, name: 'Xuống Chân Núi Thiên Phù Các' },
   ],
   npcs: [
     { id: 'diep_phu_sinh', x: 80, y: 20, sprite: 'sect_master_thien_phu' },
@@ -8181,12 +8181,12 @@ var SONMON_CUUCUNG = {
   blocked: BLOCKED,
   start: { x: 80, y: 134 },
   portals: [
-    { x: 77, y: 139, to: 'map3', tx: 79, ty: 62, name: 'Xuống Chân Núi Cửu Cung Trận Tông' },
-    { x: 78, y: 139, to: 'map3', tx: 79, ty: 62, name: 'Xuống Chân Núi Cửu Cung Trận Tông' },
-    { x: 79, y: 139, to: 'map3', tx: 79, ty: 62, name: 'Xuống Chân Núi Cửu Cung Trận Tông' },
-    { x: 80, y: 139, to: 'map3', tx: 79, ty: 62, name: 'Xuống Chân Núi Cửu Cung Trận Tông' },
-    { x: 81, y: 139, to: 'map3', tx: 79, ty: 62, name: 'Xuống Chân Núi Cửu Cung Trận Tông' },
-    { x: 82, y: 139, to: 'map3', tx: 79, ty: 62, name: 'Xuống Chân Núi Cửu Cung Trận Tông' },
+    { x: 77, y: 139, to: 'map3', tx: 80, ty: 66, name: 'Xuống Chân Núi Cửu Cung Trận Tông' },
+    { x: 78, y: 139, to: 'map3', tx: 80, ty: 66, name: 'Xuống Chân Núi Cửu Cung Trận Tông' },
+    { x: 79, y: 139, to: 'map3', tx: 80, ty: 66, name: 'Xuống Chân Núi Cửu Cung Trận Tông' },
+    { x: 80, y: 139, to: 'map3', tx: 80, ty: 66, name: 'Xuống Chân Núi Cửu Cung Trận Tông' },
+    { x: 81, y: 139, to: 'map3', tx: 80, ty: 66, name: 'Xuống Chân Núi Cửu Cung Trận Tông' },
+    { x: 82, y: 139, to: 'map3', tx: 80, ty: 66, name: 'Xuống Chân Núi Cửu Cung Trận Tông' },
   ],
   npcs: [
     { id: 'au_duong_ky', x: 80, y: 20, sprite: 'sect_master_cuu_cung' },
