@@ -1060,6 +1060,10 @@
     setTimeout(function () { b.style.display = 'none'; }, 9000);
   }
   function startGame() {
+    // Vào thế giới là nhả tiêu điểm khỏi form đăng nhập / nút vừa
+    // bấm — không thì phím di chuyển bị ô nhập giữ mất cho tới khi
+    // người chơi bấm xuống mặt đất (playtest live 01/11/2026).
+    try { if (document.activeElement && document.activeElement.blur) document.activeElement.blur(); } catch (e) {}
     loadGfx();
     loadSnd();
     loadHudPref();
@@ -8452,7 +8456,17 @@
   }
   document.addEventListener('keydown', function (e) {
     var t = e.target;
-    if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.tagName === 'SELECT' || t.isContentEditable)) return;
+    // Chỉ nhường phím khi đang GÕ CHỮ thật (ô nhập văn bản, textarea,
+    // select, vùng soạn thảo). Nút bấm và ô trượt/ô tick GIỮ TIÊU
+    // ĐIỂM sau khi bấm không được nuốt phím: playtest live 01/11 cho
+    // thấy sau khi đăng nhập / bấm nút, tiêu điểm kẹt lại nên WASD
+    // và phím mũi tên chết cho tới khi bấm xuống mặt đất mới đi
+    // được. Các đích đó nay rơi xuống xử lý phím game như thường
+    // (nhánh KEYMAP bên dưới vẫn preventDefault nên trang không
+    // cuộn theo phím mũi tên).
+    var tIsTextInput = !!t && t.tagName === 'INPUT' &&
+      /^(text|password|search|email|number|tel|url)$/.test(t.type || 'text');
+    if (t && (tIsTextInput || t.tagName === 'TEXTAREA' || t.tagName === 'SELECT' || t.isContentEditable)) return;
     var k = e.key.toLowerCase();
     // Móc controls (1): phím đã bị gán lại trong Cài đặt Điều khiển thì
     // js/controls.js tự xử lý — bỏ qua toàn bộ phím cứng bên dưới.
@@ -8522,6 +8536,15 @@
     if (ART && (k === '6' || k === '7')) castArtifactActive(parseInt(k, 10) - 6);
   });
   document.addEventListener('keyup', function (e) { keys[e.key.toLowerCase()] = false; });
+  // Nút bấm trong game nhả tiêu điểm ngay sau khi bấm: nút còn giữ
+  // tiêu điểm thì Space/Enter sẽ "bấm lại" chính nút đó thay vì
+  // đánh/tương tác, và ô trượt trong panel cũng giữ tiêu điểm tương
+  // tự (playtest live 01/11/2026). Chỉ bỏ tiêu điểm của NÚT — bấm
+  // vào ô nhập để gõ thì không đụng vào.
+  document.addEventListener('click', function (e) {
+    var t = e.target;
+    if (t && t.tagName === 'BUTTON' && t.blur) t.blur();
+  });
   document.querySelectorAll('.dpad-btn').forEach(function (btn) {
     var dd = btn.getAttribute('data-dir');
     if (!dd) return;
@@ -8531,6 +8554,7 @@
     btn.addEventListener('pointerdown', on);
     btn.addEventListener('pointerup', off);
     btn.addEventListener('pointerleave', off);
+    btn.addEventListener('pointercancel', off); // trượt tay/hệ thống hủy chạm: nhả phím, tránh kẹt di chuyển
   });
   // MỤC 106 — CLICK TỰ TÌM ĐƯỜNG TRONG MAP (KHẨN, lệnh Bui 17:02 31/10):
   // bấm ô đích trong cùng map thì chạy BFS bằng đúng isBlockedIn của
@@ -9230,6 +9254,46 @@
     _placedLabels.push({ x: x0, y: yy, w: w, h: bh });
     return { x: x0, y: yy };
   }
+  // ----- VÁ LỆCH NỀN V7 (playtest live 01/11/2026) -----
+  // Tranh nền của 14 map thế giới là tranh KHUNG CŨ (trước mở rộng
+  // x1,5): map1 dùng map1-bg-v8.webp 3584x3200px = 112x100 ô trong
+  // khi lưới logic là 168x150 ô. Trước đây draw() vẽ tranh 1:1 từ gốc
+  // thế giới nên mọi vật trong tranh (giếng cổ, nhà, sạp...) nằm ở
+  // tọa độ CŨ, lệch đúng neo V7 so với logic: giếng trong tranh ở ô
+  // cũ (43,45) còn giếng logic ở (71,70) = cũ + neo map1 (28,25).
+  // Người chơi tới giếng TRONG TRANH bấm E chỉ nhận "không có gì để
+  // tương tác", đứng ở giếng logic thì không thấy giếng (lớp vật thể
+  // theo ô bị tắt khi có tranh), cổng ở vành mới thì tranh không có.
+  // Vá ở ENGINE (không sửa dữ liệu nướng maps.js, không dùng tranh
+  // ứng viên chưa được duyệt): tranh đặt DỊCH theo neo lõi
+  // M.EXP_V7_ANCHORS của chính map đó, giữ nguyên kích thước tự
+  // nhiên — vật trong tranh khớp lại logic lõi; vành ngoài vùng
+  // tranh vẽ bằng lớp ô như cũ. Vật thể theo ô chỉ vẽ ở NGOÀI vùng
+  // tranh phủ (trong vùng phủ tranh đã chứa sẵn). Map chia mảng
+  // (bgChunks — sơn môn) không có bg toàn cảnh nên không đi đường
+  // này (curBg() trả null, bgCov null, hành vi như cũ).
+  var _bgCovCache = {}; // id map -> { img, cov } — cov null khi map không có neo / tranh chưa có kích thước
+  function bgCoverFor(mp, img) {
+    if (!mp || !img) return null;
+    var ent = _bgCovCache[mp.id];
+    if (ent && ent.img === img) return ent.cov;
+    var cov = null;
+    var anch = (M && M.EXP_V7_ANCHORS) ? M.EXP_V7_ANCHORS[mp.id] : null;
+    var iw = img.naturalWidth || img.width || 0, ih = img.naturalHeight || img.height || 0;
+    if (anch && iw >= TILE && ih >= TILE) {
+      cov = {
+        x0: anch.dx, y0: anch.dy,
+        x1: Math.min(mp.w, anch.dx + Math.floor(iw / TILE)),
+        y1: Math.min(mp.h, anch.dy + Math.floor(ih / TILE)),
+        px: anch.dx * TILE, py: anch.dy * TILE, iw: iw, ih: ih
+      };
+    }
+    _bgCovCache[mp.id] = { img: img, cov: cov };
+    return cov;
+  }
+  function bgCoversTile(cov, x, y) {
+    return !!cov && x >= cov.x0 && x < cov.x1 && y >= cov.y0 && y < cov.y1;
+  }
   function draw() {
     // Móc controls (4): trong draw(), VIEW_W/VIEW_H là biến CỤC BỘ = khung
     // nhìn hiệu dụng theo zoom (loop đã bọc ctx.scale(zoom) quanh draw).
@@ -9246,7 +9310,25 @@
     var x0 = Math.floor(camX / TILE), y0 = Math.floor(camY / TILE);
     var x1 = Math.min(mp.w - 1, x0 + VIEW_W / TILE + 1), y1 = Math.min(mp.h - 1, y0 + VIEW_H / TILE + 1);
     var x, y;
-    if (bgR) {
+    // VÁ LỆCH NỀN V7: bgCov = vùng tranh phủ sau khi dịch theo neo
+    // (null khi map không có tranh toàn cảnh hoặc không có neo).
+    var bgCov = bgR ? bgCoverFor(mp, bgR) : null;
+    if (bgR && bgCov) {
+      // Ô mặt đất phủ toàn khung nhìn trước (vành ngoài tranh có
+      // đất/đường/cổng dạng ô), rồi đặt tranh đã dịch neo đè lên
+      // đúng vùng lõi — chỉ vẽ phần giao với khung nhìn, dùng
+      // drawImage dạng cắt hình chữ nhật nguồn/đích.
+      for (y = y0; y <= y1; y++) for (x = x0; x <= x1; x++) {
+        drawGround(x, y, mp.tiles[y][x]);
+      }
+      var bgIx0 = Math.max(camX, bgCov.px), bgIy0 = Math.max(camY, bgCov.py);
+      var bgIx1 = Math.min(camX + VIEW_W, bgCov.px + bgCov.iw), bgIy1 = Math.min(camY + VIEW_H, bgCov.py + bgCov.ih);
+      if (bgIx1 > bgIx0 && bgIy1 > bgIy0) {
+        ctx.drawImage(bgR, bgIx0 - bgCov.px, bgIy0 - bgCov.py, bgIx1 - bgIx0, bgIy1 - bgIy0,
+          bgIx0 - camX, bgIy0 - camY, bgIx1 - bgIx0, bgIy1 - bgIy0);
+      }
+    } else if (bgR) {
+      // Không có neo (không xảy ra với 14 map thế giới): giữ đường cũ.
       ctx.drawImage(bgR, camX, camY, VIEW_W, VIEW_H, 0, 0, VIEW_W, VIEW_H);
     } else if (mp.bgChunks) {
       // Map chia mảng: tile dự phòng bên dưới, mảng đã nạp đè lên trên.
@@ -9419,7 +9501,7 @@
     var gate = mp.gate;
     var gX0 = gate ? gate.x * TILE - camX : -999, gX1 = gate ? (gate.x + 2) * TILE - camX : -999;
     var gCX = (gX0 + gX1) / 2, gY = gate ? gate.y * TILE - camY : -999;
-    if (!bgR && gate && gX1 >= 0 && gX0 <= VIEW_W) {
+    if (gate && !bgCoversTile(bgCov, gate.x, gate.y) && gX1 >= 0 && gX0 <= VIEW_W) {
       ctx.fillStyle = '#6b4a2a';
       ctx.fillRect(gX0 - 8, gY - 186, 80, 62);
       ctx.fillStyle = '#7a2e22';
@@ -9466,7 +9548,7 @@
     var lo;
     for (y = y0; y <= y1; y++) for (x = x0; x <= x1; x++) {
       var tt = mp.tiles[y][x];
-      if (!bgR && (tt === 'H' || tt === 'T' || tt === 'S' || tt === 'L' || tt === 'F' || tt === 'o' || tt === 'E')) {
+      if (!bgCoversTile(bgCov, x, y) && (tt === 'H' || tt === 'T' || tt === 'S' || tt === 'L' || tt === 'F' || tt === 'o' || tt === 'E')) {
         lo = pooledObj(); lo.kind = 'tile'; lo.tile = tt; lo.x = x; lo.y = y; lo.sy = (y + 1) * TILE; list.push(lo);
       }
     }
@@ -9476,7 +9558,7 @@
     var drawProps = mp.props || [];
     if (DP && curMapId === DP.MAP_ID) drawProps = drawProps.concat(DP.decorProps(flags));
     drawProps.forEach(function (p) {
-      if (bgR && p.sprite !== 'sign' && !(DP && curMapId === DP.MAP_ID)) return; // nền ảnh đã có sẵn vật trang trí; chỉ giữ biển hiệu + nhãn (phủ: nền hang không chứa prop tông nên phải hiện)
+      if (bgCoversTile(bgCov, p.x, p.y) && p.sprite !== 'sign' && !(DP && curMapId === DP.MAP_ID)) return; // trong vùng tranh phủ, tranh đã có sẵn vật trang trí; chỉ giữ biển hiệu + nhãn (phủ: nền hang không chứa prop tông nên phải hiện). Ngoài vùng phủ (vành ô) prop vẽ bình thường.
       var psx = p.x * TILE - camX, psy = p.y * TILE - camY;
       if (psx < -160 || psx > VIEW_W + 96 || psy < -160 || psy > VIEW_H + 96) return;
       lo = pooledObj(); lo.kind = 'prop'; lo.sprite = p.sprite; lo.label = p.label; lo.x = p.x; lo.y = p.y; lo.sy = (p.y + 1) * TILE; list.push(lo);
@@ -10525,7 +10607,7 @@
       }
     });
     // Cổng lầu — biển + trụ trước + dầm vòm (vẽ sau thực thể để luôn đọc được).
-    if (!bgR && gate && gX1 >= 0 && gX0 <= VIEW_W) {
+    if (gate && !bgCoversTile(bgCov, gate.x, gate.y) && gX1 >= 0 && gX0 <= VIEW_W) {
       ctx.fillStyle = '#3a2a1a';
       ctx.fillRect(gCX - 30, gY - 142, 60, 22);
       ctx.fillStyle = '#f2c14e';
@@ -11273,7 +11355,7 @@
   // click-to-move sẵn có (đặt moveTarget tới người giao) + vẽ mũi
   // tên nhấp nháy trên đầu NPC đích khi cùng map; khác map thì thẻ
   // ghi rõ đích ở map nào.
-  var trackerCache = '', guideOn = false, trackerTickLast = 0, guideQuestId = null;
+  var trackerCache = '', guideOn = false, trackerTickLast = 0, guideQuestId = null, guideTargetKey = null;
   function trackedQuest() {
     if (!qs) return null;
     // Mục mobile-controls 31/10: người chơi GHIM nhiệm vụ theo dõi từ
@@ -11352,42 +11434,138 @@
     var txt = trackerText();
     if (txt !== trackerCache) { trackerCache = txt; el.textContent = txt; }
     // Chỉ đường đang bật mà nhiệm vụ theo dõi ĐỔI (nhận mới / trả
-    // xong): đích tự đi phải ngắm lại theo người giao của nhiệm vụ
-    // mới — trước đây moveTarget chỉ đặt một lần lúc bật nên nhân
-    // vật cứ đi tới người giao cũ dù thẻ đã sang việc khác
-    // (playtest live 31/10).
+    // xong): đích tự đi phải ngắm lại theo nhiệm vụ mới — trước đây
+    // moveTarget chỉ đặt một lần lúc bật nên nhân vật cứ đi tới
+    // người giao cũ dù thẻ đã sang việc khác (playtest live 31/10).
+    // Đích nay lấy theo MỤC TIÊU đang dở (guideTarget), và khóa đích
+    // gồm cả tọa độ nên đích động đổi (quái đang bám chết -> chọn
+    // con khác, dược đã hái -> điểm khác) cũng ngắm lại kịp thời.
     if (guideOn) {
       var gt = trackedQuest();
       var gid = gt ? gt.q.id : null;
-      if (gid !== guideQuestId) {
+      var gtg = gt ? guideTarget() : null;
+      var gkey = gid + '|' + (gtg ? gtg.mapId + ':' + gtg.x + ',' + gtg.y : '-');
+      if (gid !== guideQuestId || gkey !== guideTargetKey) {
         guideQuestId = gid;
-        var ghome = gt ? npcHome(gt.q.giver) : null;
-        if (ghome && ghome.mapId === curMapId) { moveTarget = { x: ghome.npc.x * TILE + 16, y: ghome.npc.y * TILE + 28 }; movePath = null; }
+        guideTargetKey = gkey;
+        if (gtg && gtg.mapId === curMapId) { moveTarget = { x: gtg.x * TILE + 16, y: gtg.y * TILE + 28 }; movePath = null; }
         else moveTarget = null; movePath = null;
       }
     }
     var gb = $('qtGuide');
     if (gb) gb.textContent = guideOn ? '➤ Chỉ đường: Bật (tới ' + guideTargetName() + ')' : '➤ Chỉ đường: Tắt';
   }
+  // ĐÍCH CHỈ ĐƯỜNG THEO MỤC TIÊU ĐANG DỞ (vá playtest live
+  // 01/11/2026): trước đây chỉ đường chỉ biết NGƯỜI GIAO — nhiệm vụ
+  // "Bí mật giếng cổ" (objective type 'well') vẫn chỉ về trưởng làng
+  // Trần Đức, người chơi đứng ở giếng bấm E mãi không xong việc. Nay
+  // đích lấy theo objective đầu tiên của nhiệm vụ đang theo dõi:
+  //  - 'talk'    -> NPC đích (objective.target), như hành vi cũ khi
+  //                 đích trùng người giao;
+  //  - 'well'    -> ô giếng của map có giếng (trường .well trong dữ
+  //                 liệu map), tên đích "Giếng cổ";
+  //  - 'kill'    -> quái CÒN SỐNG thuộc loài đích gần người chơi
+  //                 nhất trên map hiện tại; map này không có con
+  //                 nào thì rơi về người giao như cũ;
+  //  - 'collect' -> điểm dược CHƯA HÁI đúng vật phẩm đích gần nhất
+  //                 trên map hiện tại; không có thì rơi về người
+  //                 giao như cũ;
+  //  - còn lại (tuvi / breakthrough / brew...) và nhiệm vụ ĐÃ XONG
+  //    (chờ trả) -> người giao, giữ nguyên hành vi cũ.
+  // Đích động (kill/collect) GIỮ NGUYÊN cá thể đã chọn chừng nào cá
+  // thể đó còn sống/chưa hái — tránh mũi tên nhảy qua lại giữa hai
+  // con gần ngang nhau; cá thể chết/đã hái thì lần gọi sau chọn lại
+  // con gần nhất. Trả { name, mapId, x, y } theo Ô, hoặc null khi
+  // không xác định được đích nào.
+  var guideDynRef = null; // { questId, kind, ref } — cá thể động đang bám
+  function guideTarget() {
+    var t = trackedQuest();
+    if (!t) { guideDynRef = null; return null; }
+    function giverTarget() {
+      var h = npcHome(t.q.giver);
+      return h ? { name: questGiverName(t.q), mapId: h.mapId, x: h.npc.x, y: h.npc.y } : null;
+    }
+    if (t.done) return giverTarget(); // xong việc: về gặp người giao để trả
+    var ob = t.q.objectives && t.q.objectives[0];
+    if (!ob) return giverTarget();
+    if (ob.type === 'talk' && ob.target) {
+      var th = npcHome(ob.target);
+      if (th) {
+        var td = npcDef(th.npc);
+        return { name: td.role ? td.name + ' — ' + td.role : td.name, mapId: th.mapId, x: th.npc.x, y: th.npc.y };
+      }
+      return giverTarget();
+    }
+    if (ob.type === 'well') {
+      var wFound = null;
+      Object.keys(M.MAPS).forEach(function (mid) {
+        if (!wFound && M.MAPS[mid].well) wFound = { mapId: mid, well: M.MAPS[mid].well };
+      });
+      if (wFound) return { name: 'Giếng cổ', mapId: wFound.mapId, x: wFound.well.x, y: wFound.well.y };
+      return giverTarget();
+    }
+    if (ob.type === 'kill' && ob.target) {
+      if (guideDynRef && guideDynRef.questId === t.q.id && guideDynRef.kind === 'kill' &&
+          guideDynRef.ref && guideDynRef.ref.hp > 0 && !guideDynRef.ref.dying) {
+        var kr = guideDynRef.ref;
+        return { name: kr.name || ob.target, mapId: curMapId, x: Math.floor(kr.x), y: Math.floor(kr.y) };
+      }
+      var kBest = null, kBd = Infinity;
+      monsters.forEach(function (m) {
+        if (m.type !== ob.target || m.hp <= 0 || m.dying) return;
+        var dx = m.x * TILE + 16 - px, dy = m.y * TILE + 28 - py, d = dx * dx + dy * dy;
+        if (d < kBd) { kBd = d; kBest = m; }
+      });
+      if (kBest) {
+        guideDynRef = { questId: t.q.id, kind: 'kill', ref: kBest };
+        return { name: kBest.name || ob.target, mapId: curMapId, x: Math.floor(kBest.x), y: Math.floor(kBest.y) };
+      }
+      guideDynRef = null;
+      return giverTarget();
+    }
+    if (ob.type === 'collect' && ob.target) {
+      if (guideDynRef && guideDynRef.questId === t.q.id && guideDynRef.kind === 'collect' &&
+          guideDynRef.ref && !guideDynRef.ref.taken) {
+        var cr = guideDynRef.ref;
+        return { name: (L.ITEMS[ob.target] ? L.ITEMS[ob.target].name : ob.target), mapId: curMapId, x: cr.x, y: cr.y };
+      }
+      var cBest = null, cBd = Infinity;
+      herbs.forEach(function (h) {
+        if (h.item !== ob.target || h.taken) return;
+        var dx = h.x * TILE + 16 - px, dy = h.y * TILE + 28 - py, d = dx * dx + dy * dy;
+        if (d < cBd) { cBd = d; cBest = h; }
+      });
+      if (cBest) {
+        guideDynRef = { questId: t.q.id, kind: 'collect', ref: cBest };
+        return { name: (L.ITEMS[ob.target] ? L.ITEMS[ob.target].name : ob.target), mapId: curMapId, x: cBest.x, y: cBest.y };
+      }
+      guideDynRef = null;
+      return giverTarget();
+    }
+    return giverTarget();
+  }
   function guideTargetName() {
     var t = trackedQuest();
-    return t ? questGiverName(t.q) : 'người giao';
+    if (!t) return 'người giao';
+    var tg = guideTarget();
+    return tg ? tg.name : questGiverName(t.q);
   }
   function toggleGuide() {
     guideOn = !guideOn;
     if (guideOn) {
       var t = trackedQuest();
       guideQuestId = t ? t.q.id : null;
-      if (t) {
-        var home = npcHome(t.q.giver);
-        if (home && home.mapId === curMapId) {
-          moveTarget = { x: home.npc.x * TILE + 16, y: home.npc.y * TILE + 28 }; movePath = null;
-          toast('Đang chỉ đường tới ' + questGiverName(t.q) + ' — nhân vật tự đi, mũi tên vàng nhấp nháy trên đầu người đó.');
-        } else if (home) {
-          toast(questGiverName(t.q) + ' đang ở ' + M.MAPS[home.mapId].name + ' — qua cổng bản đồ để sang đó.');
+      var tg = t ? guideTarget() : null;
+      guideTargetKey = t ? (t.q.id + '|' + (tg ? tg.mapId + ':' + tg.x + ',' + tg.y : '-')) : null;
+      if (t && tg) {
+        if (tg.mapId === curMapId) {
+          moveTarget = { x: tg.x * TILE + 16, y: tg.y * TILE + 28 }; movePath = null;
+          toast('Đang chỉ đường tới ' + tg.name + ' — nhân vật tự đi, mũi tên vàng nhấp nháy trên đầu đích.');
+        } else {
+          toast(tg.name + ' đang ở ' + M.MAPS[tg.mapId].name + ' — qua cổng bản đồ để sang đó.');
         }
       }
-    } else guideQuestId = null;
+    } else { guideQuestId = null; guideTargetKey = null; }
     trackerTickLast = 0; // nhãn nút cập nhật ngay khi bấm, khỏi chờ nhịp 500ms
     tickTracker();
   }
@@ -11395,9 +11573,9 @@
     if (!guideOn) return;
     var t = trackedQuest();
     if (!t) return;
-    var home = npcHome(t.q.giver);
-    if (!home || home.mapId !== curMapId) return;
-    var sx = home.npc.x * TILE + 16 - camX, sy = home.npc.y * TILE - camY - 14 - Math.abs(Math.sin(now / 280)) * 6;
+    var tg = guideTarget();
+    if (!tg || tg.mapId !== curMapId) return;
+    var sx = tg.x * TILE + 16 - camX, sy = tg.y * TILE - camY - 14 - Math.abs(Math.sin(now / 280)) * 6;
     if (sx < -20 || sy < -30 || sx > VIEW_W + 20 || sy > VIEW_H + 20) return;
     ctx.save();
     ctx.fillStyle = '#ffd94a';
