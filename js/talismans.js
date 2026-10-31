@@ -636,7 +636,7 @@
       if (ctx.inEvent) return { ok: false, reason: 'in_event', talisman: true, msg: 'Đang giữa sự kiện (thú triều / hộ tống / đại hội) — không truyền tống được.' };
       if (ctx.mapId === 'map1') return { ok: false, reason: 'at_home', talisman: true, msg: 'Bạn đang ở làng Thanh Khê rồi.' };
       if (!L.consumeItem(ch, id, 1)) return { ok: false, reason: 'no_item', talisman: true };
-      return { ok: true, talisman: true, kind: 'teleport', teleport: { mapId: 'map1', x: 43, y: 47 }, msg: 'Truyền Tống Phù xé mở một khe sáng — bạn trở về làng Thanh Khê.' }; // V3: đích (19,9) + offset V10 (12,8) + neo V3 (12,30)
+      return { ok: true, talisman: true, kind: 'teleport', teleport: { mapId: 'map1', x: 71, y: 72 }, msg: 'Truyền Tống Phù xé mở một khe sáng — bạn trở về làng Thanh Khê.' }; // V3: đích (19,9) + offset V10 (12,8) + neo V3 (12,30)
     }
     if (fx.kind === 'escape') {
       if (inTrib) return { ok: false, reason: 'in_tribulation', talisman: true, msg: 'Đang giữa lôi kiếp — đất trời đều khóa, Thổ Độn Phù không độn đi đâu được.' };

@@ -61,7 +61,7 @@
 (function (global) {
   'use strict';
 
-  var KEEPER = { id: 'tieu_thuong', name: 'Lục Tiểu Lục', title: 'Tiểu thương sạp chợ — người giữ sổ', mapId: 'map1', x: 36, y: 19 }; // V10: (24,11) + offset map (12,8)
+  var KEEPER = { id: 'tieu_thuong', name: 'Lục Tiểu Lục', title: 'Tiểu thương sạp chợ — người giữ sổ', mapId: 'map1', x: 64, y: 44 } // V7-EXPAND: (36,19)+neo map1 (28,25); // V10: (24,11) + offset map (12,8)
   var DETAIL_KILLS = 10;
 
   // Điểm theo từng loại trang (xem đầu file).

@@ -54,10 +54,10 @@
   // đi được trong maps.js): sân giếng cổ / bờ suối linh / bãi tuyển đệ
   // tử / chân Thập Vạn Đại Sơn.
   var ANCHORS = [
-    { mapId: 'map1', x: 50, y: 48, place: 'sân giếng cổ Thanh Khê' },
-    { mapId: 'map2', x: 68, y: 44, place: 'bờ suối linh trong Rừng Thanh Sơn' },
-    { mapId: 'map3', x: 82, y: 66, place: 'bãi tuyển đệ tử dưới Chân Núi' }, // V5: +40,+42
-    { mapId: 'map4', x: 92, y: 98, place: 'Ngoại Vi Thập Vạn Đại Sơn' }
+    { mapId: 'map1', x: 78, y: 73, place: 'sân giếng cổ Thanh Khê' },
+    { mapId: 'map2', x: 108, y: 79, place: 'bờ suối linh trong Rừng Thanh Sơn' },
+    { mapId: 'map3', x: 122, y: 101, place: 'bãi tuyển đệ tử dưới Chân Núi' }, // V5: +40,+42
+    { mapId: 'map4', x: 146, y: 138, place: 'Ngoại Vi Thập Vạn Đại Sơn' }
   ];
 
   // ---------- RNG tất định theo chu kỳ ----------

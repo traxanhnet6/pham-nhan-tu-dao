@@ -80,9 +80,9 @@
   // vị trí mới — sương mù là hiệu ứng theo vùng, không được ở lại tọa
   // độ cũ giữa map đã nới (cổng nghiệm thu A của Bui).
   var MIST_ZONES = [
-    { id: 'dai', x0: 90 * TILE, y0: 72 * TILE, x1: 101 * TILE, y1: 76 * TILE, cx: 95.5 * TILE, cy: 74 * TILE, weight: 1.0, puffs: 5 },
-    { id: 'them', x0: 94 * TILE, y0: 77 * TILE, x1: 105 * TILE, y1: 83 * TILE, cx: 99.5 * TILE, cy: 80 * TILE, weight: 0.65, puffs: 3 },
-    { id: 'bac', x0: 82 * TILE, y0: 62 * TILE, x1: 100 * TILE, y1: 68 * TILE, cx: 91 * TILE, cy: 65 * TILE, weight: 0.45, puffs: 3 }
+    { id: 'dai', x0: 130 * TILE, y0: 107 * TILE, x1: 141 * TILE, y1: 111 * TILE, cx: 135.5 * TILE, cy: 109 * TILE, weight: 1.0, puffs: 5 },
+    { id: 'them', x0: 134 * TILE, y0: 112 * TILE, x1: 145 * TILE, y1: 118 * TILE, cx: 139.5 * TILE, cy: 115 * TILE, weight: 0.65, puffs: 3 },
+    { id: 'bac', x0: 122 * TILE, y0: 97 * TILE, x1: 140 * TILE, y1: 103 * TILE, cx: 131 * TILE, cy: 100 * TILE, weight: 0.45, puffs: 3 }
   ];
   // V9: mở hệ mây cho map 7 (Thập Vạn Đại Sơn · Chi Đỉnh — vùng đỉnh mây).
   // Zones sương của map 7 tính theo ô của map 7 (56x40): quanh đài đá + bia
@@ -91,9 +91,9 @@
   // V5 (tích hợp map 7 mở rộng 160x140): vùng sương map 7 dịch theo neo
   // EXP_V5_MAP7 (+40,+24) — cùng lý do như MIST_ZONES của map 3 ở trên.
   var MIST_ZONES7 = [
-    { id: 'dinh', x0: 70 * TILE, y0: 35 * TILE, x1: 87 * TILE, y1: 47 * TILE, cx: 78.5 * TILE, cy: 41 * TILE, weight: 1.0, puffs: 5 },
-    { id: 'suon', x0: 68 * TILE, y0: 54 * TILE, x1: 88 * TILE, y1: 70 * TILE, cx: 78 * TILE, cy: 62 * TILE, weight: 0.6, puffs: 3 },
-    { id: 'dong', x0: 90 * TILE, y0: 48 * TILE, x1: 107 * TILE, y1: 63 * TILE, cx: 98 * TILE, cy: 55.5 * TILE, weight: 0.45, puffs: 3 }
+    { id: 'dinh', x0: 110 * TILE, y0: 70 * TILE, x1: 127 * TILE, y1: 82 * TILE, cx: 118.5 * TILE, cy: 76 * TILE, weight: 1.0, puffs: 5 },
+    { id: 'suon', x0: 108 * TILE, y0: 89 * TILE, x1: 128 * TILE, y1: 105 * TILE, cx: 118 * TILE, cy: 97 * TILE, weight: 0.6, puffs: 3 },
+    { id: 'dong', x0: 130 * TILE, y0: 83 * TILE, x1: 147 * TILE, y1: 98 * TILE, cx: 138 * TILE, cy: 90.5 * TILE, weight: 0.45, puffs: 3 }
   ];
   var MAP_IDS = { map3: true, map7: true };
   function zonesFor(mapId) { return mapId === 'map7' ? MIST_ZONES7 : MIST_ZONES; }

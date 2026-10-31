@@ -68,6 +68,7 @@
   function weaponsApi() { return global.PNT_WEAPONS || null; }
   function artifactsApi() { return global.PNT_ARTIFACTS || null; }
   function wardrobeApi() { return global.PNT_WARDROBE || null; }
+  function gearApi() { return global.PNT_GEAR || null; }
   function sha256(str) {
     var L = logicApi();
     return (L && typeof L.sha256Hex === 'function') ? L.sha256Hex(str) : null;
@@ -352,6 +353,13 @@
           kept.push(it);
           return;
         }
+        if (it.g) {
+          var GRv = gearApi();
+          if (GRv && GRv.GEAR && !GRv.GEAR[it.id]) { fix('item_unknown', 'trang bị lạ "' + it.id + '" -> loại'); return; }
+          it.count = 1;
+          kept.push(it);
+          return;
+        }
         if (items && !items[it.id] && !(festTokens && festTokens[it.id])) {
           fix('item_unknown', 'vật phẩm lạ "' + it.id + '" -> loại');
           return;
@@ -378,6 +386,73 @@
         kept.push(it);
       });
       ch.inventory = kept;
+    }
+    // Ô trang bị đeo (js/gear.js, GĐ2): mọi uid trong ch.gearSlots phải
+    // trỏ tới một entry gear THẬT còn trong túi và khớp loại ô; nhẫn
+    // tối đa 2 chiếc, không trùng uid, không trùng dòng tinh chỉnh.
+    // Sai thì DỌN Ô (món vẫn ở trong túi, không mất đồ). Trần chỉ số
+    // hiệu dụng (HP ở trên qua L.effMaxHp) đã gồm gear vì effMaxHp đọc
+    // Logic.statTotals — khối gear đi qua gearBlocks như mọi hệ khác.
+    var GRs = gearApi();
+    if (GRs && GRs.GEAR && ch.gearSlots && typeof ch.gearSlots === 'object') {
+      var gearByUid = {};
+      (Array.isArray(ch.inventory) ? ch.inventory : []).forEach(function (it) {
+        if (it && it.g && GRs.GEAR[it.id]) gearByUid[it.uid] = it;
+      });
+      ['mu', 'giap', 'choang', 'dai', 'baotay', 'giay', 'tram', 'vongco', 'vongtay'].forEach(function (k) {
+        var uid = ch.gearSlots[k];
+        if (uid === null || typeof uid === 'undefined') { ch.gearSlots[k] = null; return; }
+        var e = gearByUid[uid];
+        if (!e || GRs.GEAR[e.id].slot !== k) {
+          fix('gear_slot', 'ô ' + k + ' trỏ uid ' + String(uid) + ' không hợp lệ -> dọn ô');
+          ch.gearSlots[k] = null;
+        }
+      });
+      if (Array.isArray(ch.gearSlots.nhan)) {
+        var seenU = {}, seenK = {};
+        ch.gearSlots.nhan = ch.gearSlots.nhan.slice(0, 2);
+        while (ch.gearSlots.nhan.length < 2) ch.gearSlots.nhan.push(null);
+        for (var ri = 0; ri < 2; ri++) {
+          var ruid = ch.gearSlots.nhan[ri];
+          if (ruid === null || typeof ruid === 'undefined') { ch.gearSlots.nhan[ri] = null; continue; }
+          var re2 = gearByUid[ruid];
+          if (!re2 || GRs.GEAR[re2.id].slot !== 'nhan' || seenU[ruid] || seenK[GRs.GEAR[re2.id].ringKey]) {
+            fix('gear_slot', 'nhẫn ô ' + (ri + 1) + ' trỏ uid ' + String(ruid) + ' không hợp lệ -> dọn ô');
+            ch.gearSlots.nhan[ri] = null;
+            continue;
+          }
+          seenU[ruid] = 1; seenK[GRs.GEAR[re2.id].ringKey] = 1;
+        }
+      }
+    }
+    // BẢO KỸ pháp bảo Thiên (js/artifacts.js, đợt 1): khiên Hỗn Nguyên
+    // là trạng thái SUY RA từ pháp bảo đang đeo — save giữ khiên khi
+    // Hỗn Nguyên Châu không còn được đeo (tháo ra/sửa tay) là GIỮ BẢO
+    // KỸ SAU KHI THÁO: xoá khiên + ghi log. Khiên vượt trần theo Linh
+    // lực tối đa hiện tại cũng bị kẹp. (Chiêu chủ động Kiếm Trận Tru
+    // Tiên không có trạng thái lưu riêng — canActivate của artifacts
+    // luôn kiểm ô đeo tại thời điểm bấm nên không có gì để giữ lậu.)
+    var AB = artifactsApi();
+    if (AB && ch.art && typeof ch.art === 'object') {
+      if (typeof ch.art.hnShield !== 'undefined') {
+        if (typeof ch.art.hnShield !== 'number' || !isFinite(ch.art.hnShield) || ch.art.hnShield < 0) {
+          fix('bao_ky', 'khiên Hỗn Nguyên không hợp lệ (' + String(ch.art.hnShield) + ') -> 0');
+          ch.art.hnShield = 0;
+        } else if (ch.art.hnShield > 0) {
+          var msState = (typeof AB.manaShield === 'function') ? AB.manaShield(ch) : null;
+          if (!msState) {
+            fix('bao_ky', 'còn khiên Hỗn Nguyên ' + ch.art.hnShield + ' nhưng Hỗn Nguyên Châu không được đeo -> xoá khiên (bảo kỹ mất khi tháo pháp bảo)');
+            ch.art.hnShield = 0;
+          } else if (ch.art.hnShield > msState.cap) {
+            fix('bao_ky', 'khiên Hỗn Nguyên ' + ch.art.hnShield + ' vượt trần ' + msState.cap + ' -> kẹp');
+            ch.art.hnShield = msState.cap;
+          }
+        }
+      }
+      if (typeof ch.art.hnCalm !== 'undefined' && (typeof ch.art.hnCalm !== 'number' || !isFinite(ch.art.hnCalm) || ch.art.hnCalm < 0)) {
+        fix('bao_ky', 'bộ đếm yên tĩnh của khiên Hỗn Nguyên hỏng -> 0');
+        ch.art.hnCalm = 0;
+      }
     }
     if (data.flags && typeof data.flags === 'object') attachLog(data.flags);
     return fixes;

@@ -53,7 +53,7 @@ console.log(`Lớp 2: ${litSet.size} literal assets/... trong ${jsFiles.length} 
 // --- Lớp 3: đối chiếu số file staging vs nguồn ---
 const ASSET_DIRS = ['hero-ai','hero-md','hero-realm','hero-realm-md','hero-gem','hero-gem-md',
   'hero-realms-ai','hero-realms-md','monsters-ai','monsters-md','npcs-ai','npcs-md','pets-ai',
-  'pets-md','costumes-ai','costumes-md','artifacts-ai','artifacts-md','yeu-dan-ai','yeu-dan-md','looks'];
+  'pets-md','costumes-ai','costumes-md','artifacts-ai','artifacts-md','yeu-dan-ai','yeu-dan-md','looks','props'];
 function countFiles(dir) {
   let n = 0;
   if (!fs.existsSync(dir)) return -1;

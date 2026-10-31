@@ -70,7 +70,7 @@
     SECT = global.PNT_SECTS || null;
   }
 
-  var AUCTIONEER = { id: 'dau_gia_su', name: 'Kim Vạn Thông', title: 'Chấp Sự Đấu Giá Liên Tông', mapId: 'map3', x: 82, y: 67 } // V10: + offset map (12,8); V5: +40,+42;
+  var AUCTIONEER = { id: 'dau_gia_su', name: 'Kim Vạn Thông', title: 'Chấp Sự Đấu Giá Liên Tông', mapId: 'map3', x: 122, y: 102 } // V7-EXPAND: (82,67)+neo map3 (40,35) // V10: + offset map (12,8); V5: +40,+42;
   var SESSIONS = [12 * 60, 20 * 60]; // 12:00 và 20:00, phút từ 00:00 giờ địa phương
   var DUR_MIN = 90;
   var LOTS_PER_SESSION = 3;

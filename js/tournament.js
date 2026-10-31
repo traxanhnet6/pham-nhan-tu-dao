@@ -72,7 +72,7 @@
   function num(v, d) { v = +v; return isFinite(v) ? v : d; }
 
   // ---------- Hằng số khung ----------
-  var STEWARD = { id: 'chap_su_dai_hoi', name: 'Hàn Sơn', title: 'Chấp Sự Đại Hội', mapId: 'map3', x: 80, y: 62 } // V10: + offset map (12,8); V5: +40,+42 — dòng này là STEWARD Hàn Sơn;
+  var STEWARD = { id: 'chap_su_dai_hoi', name: 'Hàn Sơn', title: 'Chấp Sự Đại Hội', mapId: 'map3', x: 120, y: 97 } // V7-EXPAND: (80,62)+neo map3 (40,35) // V10: + offset map (12,8); V5: +40,+42 — dòng này là STEWARD Hàn Sơn;
   // Võ đài riêng: người chơi vào đài ở đầu TÂY (playerStart), đối thủ
   // đứng đầu ĐÔNG (x,y của ARENA). ring = toàn bộ bệ đài kể cả vành rào
   // — ô người chơi ra khỏi ring khi đang đấu = xuống đài = thua.
@@ -80,7 +80,7 @@
     mapId: 'map_dai_hoi', name: 'Võ Đài Đại Hội',
     x: 44, y: 19,
     playerStart: { x: 15, y: 19 },
-    returnPoint: { mapId: 'map3', x: 80, y: 63 }, // V10: + offset map (12,8); V5: +40,+42
+    returnPoint: { mapId: 'map3', x: 120, y: 98 }, // V7-EXPAND: (80,63)+neo map3 (40,35)
     ring: { x0: 12, y0: 11, x1: 47, y1: 28 },
     gate: { x: 29, y: 38 }
   };

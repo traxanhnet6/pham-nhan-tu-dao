@@ -31,6 +31,7 @@ ASSET_DIRS=(
   pets-ai pets-md
   costumes-ai costumes-md
   artifacts-ai artifacts-md
+  props
   yeu-dan-ai yeu-dan-md
   herb-icons-ai herb-icons-md
   talisman-icons-ai talisman-icons-md

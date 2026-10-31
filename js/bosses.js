@@ -56,7 +56,7 @@
   var BOSSES = [
     {
       id: 'lang_vuong', name: 'Lang Vương Huyết Nguyệt', type: 'soi_rung',
-      mapId: 'map2', lair: { x: 72, y: 34 }, stele: { x: 71, y: 34 },
+      mapId: 'map2', lair: { x: 112, y: 69 }, stele: { x: 111, y: 69 },
       lairName: 'Khu Sói Rừng — ghềnh đá phía bắc', scale: 1.45,
       hp: 200, atk: 13, linhThach: 140, cycleMin: 120, offsetMin: 60,
       desc: 'Vua của bầy sói rừng Thanh Sơn, bộ lông ánh đỏ như trăng máu. Gầm của nó gọi cả bầy về quanh sào huyệt.',
@@ -76,7 +76,7 @@
     },
     {
       id: 'son_quan', name: 'Sơn Quân', type: 'son_quan',
-      mapId: 'map2', lair: { x: 67, y: 49 }, stele: { x: 65, y: 46 },
+      mapId: 'map2', lair: { x: 107, y: 84 }, stele: { x: 105, y: 81 },
       lairName: 'Sào Huyệt Sơn Quân', scale: 1.15,
       hp: 340, atk: 17, linhThach: 200, cycleMin: 120, offsetMin: 0,
       storyQuest: 'q_chinh_7',
@@ -99,7 +99,7 @@
     },
     {
       id: 'xa_vuong', name: 'Xà Vương Đuôi Đỏ', type: 'ran_luc',
-      mapId: 'map2', lair: { x: 76, y: 38 }, stele: { x: 75, y: 37 },
+      mapId: 'map2', lair: { x: 116, y: 73 }, stele: { x: 115, y: 72 },
       lairName: 'Khu Rắn Lục — bờ suối phía đông', scale: 1.5,
       hp: 240, atk: 18, linhThach: 170, cycleMin: 120, offsetMin: 30,
       desc: 'Rắn lục chúa sống trăm năm, chót đuôi đỏ rực như than hồng. Đòn của nó là nặng nhất trong các yêu vương quanh Thanh Sơn.',
@@ -119,7 +119,7 @@
     },
     {
       id: 'hau_vuong', name: 'Hầu Vương Mặt Đỏ', type: 'khi_mat_do',
-      mapId: 'map3', lair: { x: 95, y: 69 }, stele: { x: 89, y: 67 }, // V5: +40,+42
+      mapId: 'map3', lair: { x: 135, y: 104 }, stele: { x: 129, y: 102 }, // V5: +40,+42
       lairName: 'Bãi Luyện Công — Chân Núi Thanh Phong', scale: 1.5,
       hp: 310, atk: 15, linhThach: 190, cycleMin: 240, offsetMin: 0,
       desc: 'Khỉ chúa chiếm bãi luyện công của đệ tử Thanh Phong, mặt đỏ như vẽ, nhanh và lì đòn. Nó chỉ tụ yêu khí bốn giờ một lần.',
@@ -139,7 +139,7 @@
     },
     {
       id: 'thiet_bi_vuong', name: 'Thiết Bì Vương', type: 'lon_mong_sat',
-      mapId: 'map2', lair: { x: 56, y: 51 }, stele: { x: 58, y: 49 },
+      mapId: 'map2', lair: { x: 96, y: 86 }, stele: { x: 98, y: 84 },
       lairName: 'Khu Lợn Mông Sắt — bãi phía nam', scale: 1.5,
       hp: 420, atk: 16, linhThach: 240, cycleMin: 180, offsetMin: 0,
       desc: 'Lợn mông sắt chúa, da dày như giáp rèn, trâu nhất trong các yêu vương vùng Thanh Sơn. Dân làng gọi nó là "cái cối xay biết đi".',
@@ -165,7 +165,7 @@
     // (65,4) đông bắc. Trường lairId = id sào trong maps.js để test khớp.
     {
       id: 'co_mang_vuong', name: 'Cổ Mãng Vương', type: 'ran_luc',
-      mapId: 'map4', lairId: 'tam_phe_tich', lair: { x: 108, y: 60 }, stele: { x: 109, y: 61 } /* V5 dich neo */,
+      mapId: 'map4', lairId: 'tam_phe_tich', lair: { x: 162, y: 100 }, stele: { x: 163, y: 101 } /* V5 dich neo */,
       lairName: 'Tâm Phế Tích — Thập Vạn Đại Sơn', scale: 1.7, // 22:17 30/10: 2.0 -> 256px vượt trần chuẩn 180-224, hạ về 218px
       hp: 560, atk: 22, linhThach: 420, cycleMin: 240, offsetMin: 120,
       desc: 'Mãng xà cổ sống ngàn năm, chiếm giữ tâm phế tích phía bắc Thập Vạn Đại Sơn, vảy cứng như đá cổ. Mạnh nhất trong các yêu vương đã biết.',
@@ -185,7 +185,7 @@
     },
     {
       id: 'ho_vuong', name: 'Gầm Sơn Hổ Vương', type: 'son_quan',
-      mapId: 'map4', lairId: 'hang_ho_gam', lair: { x: 79, y: 60 }, stele: { x: 80, y: 61 } /* V5 dich neo */,
+      mapId: 'map4', lairId: 'hang_ho_gam', lair: { x: 133, y: 100 }, stele: { x: 134, y: 101 } /* V5 dich neo */,
       lairName: 'Hang Hổ Gầm — Thập Vạn Đại Sơn', scale: 1.35,
       hp: 620, atk: 23, linhThach: 480, cycleMin: 300, offsetMin: 60,
       desc: 'Hổ vương trấn Hang Hổ Gầm ở tây bắc Thập Vạn Đại Sơn — họ hàng xa và hung dữ hơn hẳn Sơn Quân của rừng Thanh Sơn. Tiếng gầm của nó làm rung cả vách hang.',
@@ -212,7 +212,7 @@
     },
     {
       id: 'thiet_bi_ma_vuong', name: 'Thiết Bì Ma Vương', type: 'lon_mong_sat',
-      mapId: 'map4', lairId: 'hang_vuc_sau', lair: { x: 137, y: 60 }, stele: { x: 136, y: 61 } /* V5 dich neo */,
+      mapId: 'map4', lairId: 'hang_vuc_sau', lair: { x: 191, y: 100 }, stele: { x: 190, y: 101 } /* V5 dich neo */,
       lairName: 'Hang Vực Sâu — Thập Vạn Đại Sơn', scale: 1.7, // 22:17 30/10: 1.9 -> 243px vượt trần chuẩn 180-224, hạ về 218px
       hp: 680, atk: 24, linhThach: 540, cycleMin: 360, offsetMin: 0,
       desc: 'Ma vương lợn sắt trấn giữ Hang Vực Sâu ở đông bắc Thập Vạn Đại Sơn, giáp thịt cứng hơn cả thiết giáp, Máu cao nhất trong các yêu vương.',
@@ -248,7 +248,7 @@
     // (bắt buộc theo test 33b) và 1 dược đặc sản của map mình.
     {
       id: 'mang_trung_phuc', name: 'Cổ Mãng Trung Phúc', type: 'ran_luc',
-      mapId: 'map5', lairId: 'dien_co_trung_phuc', lair: { x: 82, y: 51 }, stele: { x: 83, y: 51 } /* V5 dich neo */,
+      mapId: 'map5', lairId: 'dien_co_trung_phuc', lair: { x: 126, y: 91 }, stele: { x: 127, y: 91 } /* V5 dich neo */,
       lairName: 'Điện Cổ Trung Phúc — Thập Vạn Đại Sơn', scale: 2.15, // 22:17 30/10: nâng lên sàn chuẩn 180-224 (160 -> 181px; sheet gốc cellCao 192 chịu được)
       hp: 750, atk: 26, linhThach: 480, cycleMin: 240, offsetMin: 30,
       desc: 'Mãng xà cổ chiếm điện cổ ở Trung Phúc, vảy đã ngả màu rêu đá. Nó canh phế tích từ trước khi người đầu tiên đặt chân lên Đại Sơn sâu.',
@@ -270,7 +270,7 @@
     },
     {
       id: 'lang_tham_xu', name: 'Lang Vương Thâm Xứ', type: 'soi_rung',
-      mapId: 'map6', lairId: 'hang_vuc_tham_xu', lair: { x: 44, y: 30 }, stele: { x: 45, y: 30 } /* V5 dich neo */,
+      mapId: 'map6', lairId: 'hang_vuc_tham_xu', lair: { x: 88, y: 70 }, stele: { x: 89, y: 70 } /* V5 dich neo */,
       lairName: 'Hang Vực Thâm Xứ — Thập Vạn Đại Sơn', scale: 1.9, // 22:17 30/10: nâng lên sàn chuẩn 180-224 (154 -> 182px)
       hp: 820, atk: 27, linhThach: 520, cycleMin: 300, offsetMin: 0,
       desc: 'Sói chúa của Thâm Xứ, lông xám như sương vực. Bầy của nó săn theo tiếng hú vang từ đáy hang vực, không bao giờ rời khỏi cửa hang quá xa.',
@@ -289,7 +289,7 @@
     },
     {
       id: 'tuyet_lang_vuong', name: 'Tuyết Lang Vương', type: 'soi_rung',
-      mapId: 'map7', lairId: 'phong_dinh_dai', lair: { x: 78, y: 41 }, stele: { x: 79, y: 41 } /* V5 dich neo */,
+      mapId: 'map7', lairId: 'phong_dinh_dai', lair: { x: 118, y: 76 }, stele: { x: 119, y: 76 } /* V5 dich neo */,
       lairName: 'Phong Đỉnh Đài — Thập Vạn Đại Sơn', scale: 1.9, // 22:17 30/10: nâng lên sàn chuẩn 180-224 (163 -> 182px)
       hp: 900, atk: 28, linhThach: 560, cycleMin: 360, offsetMin: 60,
       desc: 'Sói trắng trấn Phong Đỉnh Đài, đứng giữa bia cổ và biển mây. Người lên Chi Đỉnh muốn qua ngưỡng Trúc Cơ đều phải đi qua tiếng hú của nó.',
@@ -308,7 +308,7 @@
     },
     {
       id: 'lang_van_hai', name: 'Lang Vương Vân Hải', type: 'soi_rung',
-      mapId: 'map8', lairId: 'hang_van_hai', lair: { x: 84, y: 52 }, stele: { x: 85, y: 52 }, // V5: +(60,38)
+      mapId: 'map8', lairId: 'hang_van_hai', lair: { x: 136, y: 86 }, stele: { x: 137, y: 86 }, // V5: +(60,38)
       lairName: 'Hang Vân Hải — Sơn Trung Vân Hải', scale: 1.9, // 22:17 30/10: nâng lên sàn chuẩn 180-224 (163 -> 182px)
       hp: 1000, atk: 30, linhThach: 580, cycleMin: 300, offsetMin: 120,
       desc: 'Sói chúa đầu tiên của chặng Trúc Cơ, lông thấm hơi biển mây nên thoắt ẩn thoắt hiện trong sương. Đệ tử mới lên Vân Hải đều nghe tên nó trước khi gặp mặt.',
@@ -327,7 +327,7 @@
     },
     {
       id: 'lon_suoi_may', name: 'Lợn Vương Suối Mây', type: 'lon_mong_sat',
-      mapId: 'map8', lairId: 'dong_suoi_may', lair: { x: 120, y: 81 }, stele: { x: 121, y: 81 }, // V5: +(60,38)
+      mapId: 'map8', lairId: 'dong_suoi_may', lair: { x: 172, y: 115 }, stele: { x: 173, y: 115 }, // V5: +(60,38)
       lairName: 'Động Suối Mây — Sơn Trung Vân Hải', scale: 1.9,
       hp: 1050, atk: 31, linhThach: 580, cycleMin: 360, offsetMin: 0,
       desc: 'Lợn mông sắt chúa chiếm động suối mây, da dày lại thêm hơi nước mây che phủ nên đao kiếm thường khó chạm tới thịt. Nó ngủ ngày, chỉ ra khỏi động khi sương xuống.',
@@ -346,7 +346,7 @@
     },
     {
       id: 'lang_doan_long', name: 'Đoạn Long Lang Vương', type: 'soi_rung',
-      mapId: 'map9', lairId: 'hang_long_cot', lair: { x: 94, y: 56 }, stele: { x: 95, y: 56 }, // V5: +(40,42)
+      mapId: 'map9', lairId: 'hang_long_cot', lair: { x: 134, y: 91 }, stele: { x: 135, y: 91 }, // V5: +(40,42)
       lairName: 'Hang Long Cốt — Đoạn Long Lĩnh', scale: 1.9, // 22:17 30/10: nâng lên sàn chuẩn 180-224 (173 -> 182px)
       hp: 1150, atk: 32, linhThach: 600, cycleMin: 360, offsetMin: 180,
       desc: 'Sói chúa giữ hang xương rồng trên Đoạn Long Lĩnh, bộ xương rồng cổ trong hang là tổ của nó. Đệ tử đi tìm Vạn Niên Linh Chi đều phải vòng qua lãnh địa của nó.',
@@ -365,7 +365,7 @@
     },
     {
       id: 'diem_xa_vuong', name: 'Diệm Xà Vương', type: 'ran_luc',
-      mapId: 'map10', lairId: 'ho_diem_vuong', lair: { x: 77, y: 29 }, stele: { x: 78, y: 29 },
+      mapId: 'map10', lairId: 'ho_diem_vuong', lair: { x: 121, y: 69 }, stele: { x: 122, y: 69 },
       lairName: 'Hồ Diệm Vương — Xích Diệm Hoang Nguyên', scale: 2.15, // 22:17 30/10: nâng lên sàn chuẩn 180-224 (168 -> 181px; sheet gốc cellCao 192 chịu được)
       hp: 1300, atk: 34, linhThach: 600, cycleMin: 360, offsetMin: 60,
       desc: 'Rắn lửa chúa cuộn mình quanh hồ dung nham giữa hoang nguyên, vảy đỏ như than hồng chưa tắt. Hơi nóng của nó làm cả hồ sôi lăn tăn quanh năm.',
@@ -383,7 +383,7 @@
     },
     {
       id: 'hau_xich_diem', name: 'Hầu Vương Xích Diệm', type: 'khi_mat_do',
-      mapId: 'map10', lairId: 'hang_xich_diem', lair: { x: 104, y: 16 }, stele: { x: 105, y: 16 },
+      mapId: 'map10', lairId: 'hang_xich_diem', lair: { x: 148, y: 56 }, stele: { x: 149, y: 56 },
       lairName: 'Hang Xích Diệm — Xích Diệm Hoang Nguyên', scale: 2.15, // 22:17 30/10: nâng lên sàn chuẩn 180-224 (143 -> 181px; sheet gốc cellCao 192 chịu được)
       hp: 1350, atk: 35, linhThach: 600, cycleMin: 420, offsetMin: 0,
       desc: 'Khỉ chúa mặt đỏ như lửa của hoang nguyên, nhanh tới mức người ta chỉ thấy bóng đỏ lướt qua rồi mới nghe tiếng cười. Nó giữ Hỏa Diệm Liên như giữ bảo vật của đàn.',
@@ -401,7 +401,7 @@
     },
     {
       id: 'lon_bang_coc', name: 'Băng Cốc Thiết Bì Vương', type: 'lon_mong_sat',
-      mapId: 'map11', lairId: 'dong_bang_tinh', lair: { x: 94, y: 64 }, stele: { x: 95, y: 64 },
+      mapId: 'map11', lairId: 'dong_bang_tinh', lair: { x: 134, y: 99 }, stele: { x: 135, y: 99 },
       lairName: 'Động Băng Tinh — Hàn Băng Cốc', scale: 1.9,
       hp: 1500, atk: 36, linhThach: 600, cycleMin: 420, offsetMin: 120,
       desc: 'Lợn sắt chúa của Hàn Băng Cốc, lớp mỡ dưới da đã đông thành băng giáp. Nó nằm chặn cửa động băng tinh, thở ra hơi lạnh làm đóng băng cả lối vào.',
@@ -419,7 +419,7 @@
     },
     {
       id: 'loi_xa_vuong', name: 'Lôi Xà Vương', type: 'ran_luc',
-      mapId: 'map12', lairId: 'huyet_loi_vuong', lair: { x: 88, y: 30 }, stele: { x: 89, y: 30 },
+      mapId: 'map12', lairId: 'huyet_loi_vuong', lair: { x: 132, y: 70 }, stele: { x: 133, y: 70 },
       lairName: 'Huyệt Lôi Vương — Lôi Trì Thiên Khanh', scale: 2.15, // 22:17 30/10: nâng lên sàn chuẩn 180-224 (168 -> 181px; sheet gốc cellCao 192 chịu được)
       hp: 1700, atk: 38, linhThach: 600, cycleMin: 420, offsetMin: 60,
       desc: 'Rắn sấm chúa cuộn trên đài đá giữa lôi trì, vảy tích điện nên mỗi lần nó trườn là tia sét nhỏ chạy dọc thân. Người lên Thiên Khanh đều tránh đài của nó khi trời nổi sấm.',
@@ -437,7 +437,7 @@
     },
     {
       id: 'thien_loi_xa_vuong', name: 'Thiên Lôi Xà Vương', type: 'ran_luc',
-      mapId: 'map12', lairId: 'hang_thien_loi', lair: { x: 66, y: 16 }, stele: { x: 67, y: 16 },
+      mapId: 'map12', lairId: 'hang_thien_loi', lair: { x: 110, y: 56 }, stele: { x: 111, y: 56 },
       lairName: 'Hang Thiên Lôi — Lôi Trì Thiên Khanh', scale: 2.15, // 22:17 30/10: nâng lên sàn chuẩn 180-224 (168 -> 181px; sheet gốc cellCao 192 chịu được)
       hp: 1750, atk: 39, linhThach: 600, cycleMin: 480, offsetMin: 0,
       desc: 'Rắn sấm già hơn, sống trong hang phía tây Thiên Khanh, nơi sét đánh xuống nhiều nhất. Vảy của nó đã hóa thành vảy lôi, đánh vào như đánh vào đá tích điện.',
@@ -456,7 +456,7 @@
     },
     {
       id: 'hau_tinh_van', name: 'Tinh Vẫn Hầu Vương', type: 'khi_mat_do',
-      mapId: 'map13', lairId: 'van_tinh_ho', lair: { x: 70, y: 70 }, stele: { x: 71, y: 70 },
+      mapId: 'map13', lairId: 'van_tinh_ho', lair: { x: 110, y: 105 }, stele: { x: 111, y: 105 },
       lairName: 'Hố Vẫn Tinh — Tinh Vẫn Chi Địa', scale: 2.15, // 22:17 30/10: nâng lên sàn chuẩn 180-224 (151 -> 181px; sheet gốc cellCao 192 chịu được)
       hp: 2000, atk: 42, linhThach: 600, cycleMin: 480, offsetMin: 240,
       desc: 'Khỉ chúa sống trong hố vẫn tinh, lông đã nhuốm ánh sao rơi. Nó thu thập mảnh đá sao về tổ, coi đó là kho báu, kẻ nào động vào là bị cả đàn vây đánh.',
@@ -474,7 +474,7 @@
     },
     {
       id: 'lang_thien_dai', name: 'Thiên Đài Lang Vương', type: 'soi_rung',
-      mapId: 'map14', lairId: 'dai_loi_dinh', lair: { x: 80, y: 55 }, stele: { x: 81, y: 55 },
+      mapId: 'map14', lairId: 'dai_loi_dinh', lair: { x: 120, y: 90 }, stele: { x: 121, y: 90 },
       lairName: 'Đài Lôi Đỉnh — Độ Kiếp Đài', scale: 1.9,
       hp: 2400, atk: 45, linhThach: 600, cycleMin: 720, offsetMin: 0,
       desc: 'Sói chúa cuối cùng của Thập Vạn Đại Sơn, trấn giữ Đài Lôi Đỉnh nơi người ta độ kiếp. Nó đã thấy không biết bao nhiêu tu sĩ gục ngã dưới lôi kiếp, và vẫn đứng đó chờ kẻ tiếp theo.',

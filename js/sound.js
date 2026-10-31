@@ -14,6 +14,14 @@
 //     lớp sinh cảnh biome (lửa/sấm xa/gió lạnh) cho map 10/11/12;
 //     lấp nốt các khoảnh khắc câm: dọn xong bí cảnh, đấu giá, bái
 //     nhập tông, sang mùa, mở Đồ Giám lần đầu, tiếng bước chân.
+//   - Lượt 31/10 chiều (lệnh Bui 17:12 "Thêm âm thanh nền sống
+//     động"): lớp AMBIENCE theo BIOME (AMBIENCES + biomeFor) nằm
+//     dưới nhạc nền — nền liên tục nước chảy/lá xào xạc/rì rầm hang
+//     + gió giật theo cơn; sự kiện ngẫu nhiên có kiểm soát (chim,
+//     côn trùng, dế/ếch/cú đêm, gà gáy, chuông xa, chuông gió, giọt
+//     nước hang; lửa/sấm/gió lạnh chuyển từ cờ MAP_THEMES sang
+//     bảng biome). Chuyển map chỉ lướt gain (0 node mới), giao
+//     chiến/boss thì lớp nền tự nhỏ đi (ducking), tắt tiếng = im cả.
 // Kỹ thuật: AudioContext chỉ khởi tạo LƯỜI sau tương tác đầu tiên của
 // người chơi (chính sách autoplay); tắt tiếng = im hoàn toàn ngay; mọi
 // hàm công khai đều tự nuốt lỗi — game chạy bình thường khi không có
@@ -49,7 +57,9 @@
     // Lượt âm thanh 31/10: lấp các khoảnh khắc từng câm (QA (e) 02:38) +
     // bước chân đồng bộ chu kỳ đi (QA (e) 00:31).
     realm_clear: 1, auction_bid: 1, auction_win: 1, sect_join: 1,
-    season_change: 1, codex_open: 1, footstep: 1
+    season_change: 1, codex_open: 1, footstep: 1,
+    // QA (e) 20:16 31/10: tiếng độc rút HP mỗi giây (trước đây nhịp độc câm).
+    poison_tick: 1
   };
   // Tiếng tung chiêu theo id skill (thanh skill trong skills.js).
   // QA 15:16 30/10: 10 chiêu cảnh giới cao có bản tiếng RIÊNG ở
@@ -206,6 +216,67 @@
   }
 
   // ==================================================================
+  // ÂM THANH NỀN SỐNG ĐỘNG THEO BIOME (lượt 31/10, lệnh Bui 17:12
+  // "Thêm âm thanh nền sống động cho game"). Lớp này nằm DƯỚI nhạc
+  // nền (bus riêng ambBus -> musicBus nên thừa hưởng mức Bật/Nhỏ/Tắt
+  // và trims như nhạc), gồm:
+  //   - NỀN LIÊN TỤC dùng chung, tạo MỘT LẦN lúc khởi động nhạc:
+  //     nước chảy (noise qua lowpass, đều), lá xào xạc (noise qua
+  //     bandpass, biên độ lên xuống chậm bằng LFO), rì rầm trầm
+  //     (noise lowpass rất thấp cho hang/núi lửa), gió giật (LFO phụ
+  //     điều biên độ lên node gió sẵn có, mạnh theo hệ số gust).
+  //     Chuyển map/biome chỉ LƯỚT gain về thông số mới (crossfade
+  //     1–2s) — không tạo node mới, không rò node khi chuyển liên tục.
+  //   - SỰ KIỆN NGẪU NHIÊN CÓ KIỂM SOÁT trong schedulerTick: mỗi
+  //     trường là xác suất phát MỖI TICK (0,28s) — chim/côn trùng/
+  //     dế/ếch/cú/gà gáy/chuông xa/chuông gió/giọt nước/lửa reo/sấm
+  //     xa/gió rít lạnh. Cao độ và biến thể ngẫu nhiên theo từng lần
+  //     phát nên không lặp máy móc. (Lửa/sấm/lạnh trước đây đọc cờ
+  //     của MAP_THEMES — nay chuyển về bảng này làm một nguồn duy
+  //     nhất; MAP_THEMES vẫn giữ cờ vì theme nhạc + test còn đọc.)
+  //   water/leaves/rumble là tỉ lệ 0..1 của mức gain nền tối đa
+  //   (water 0,030 · leaves 0,016 · rumble 0,050 trên ambBus).
+  // ==================================================================
+  var AMBIENCES = {
+    village:   { water: 0.30, leaves: 0.25, rumble: 0,    gust: 0.35, bird: 0.055, insects: 0.05, cricket: 0,     frog: 0,     owl: 0,     rooster: 0.006, bell: 0,     chime: 0,     drip: 0,     fire: 0,    thunder: 0,     cold: 0 },
+    homestead: { water: 0.15, leaves: 0.15, rumble: 0,    gust: 0.25, bird: 0.02,  insects: 0.06, cricket: 0.10,  frog: 0,     owl: 0.004, rooster: 0,     bell: 0,     chime: 0,     drip: 0.02,  fire: 0,    thunder: 0,     cold: 0 },
+    forest:    { water: 0.45, leaves: 0.85, rumble: 0,    gust: 0.60, bird: 0.11,  insects: 0.20, cricket: 0,     frog: 0.02,  owl: 0,     rooster: 0,     bell: 0,     chime: 0,     drip: 0,     fire: 0,    thunder: 0,     cold: 0 },
+    mountain:  { water: 0.25, leaves: 0.40, rumble: 0,    gust: 0.85, bird: 0.03,  insects: 0.02, cricket: 0,     frog: 0,     owl: 0.002, rooster: 0,     bell: 0.003, chime: 0.004, drip: 0,     fire: 0,    thunder: 0,     cold: 0 },
+    sect:      { water: 0.20, leaves: 0.35, rumble: 0,    gust: 0.70, bird: 0.04,  insects: 0.03, cricket: 0,     frog: 0,     owl: 0,     rooster: 0,     bell: 0.010, chime: 0.014, drip: 0,     fire: 0,    thunder: 0,     cold: 0 },
+    water:     { water: 1.00, leaves: 0.30, rumble: 0,    gust: 0.55, bird: 0.05,  insects: 0.06, cricket: 0.02,  frog: 0.03,  owl: 0,     rooster: 0,     bell: 0,     chime: 0.006, drip: 0.02,  fire: 0,    thunder: 0,     cold: 0 },
+    swamp:     { water: 0.40, leaves: 0.30, rumble: 0,    gust: 0.40, bird: 0.02,  insects: 0.14, cricket: 0.09,  frog: 0.11,  owl: 0.004, rooster: 0,     bell: 0,     chime: 0,     drip: 0,     fire: 0,    thunder: 0,     cold: 0 },
+    night:     { water: 0.50, leaves: 0.20, rumble: 0,    gust: 0.45, bird: 0,     insects: 0.02, cricket: 0.16,  frog: 0.06,  owl: 0.010, rooster: 0,     bell: 0,     chime: 0.004, drip: 0.01,  fire: 0,    thunder: 0,     cold: 0 },
+    volcano:   { water: 0,    leaves: 0,    rumble: 0.55, gust: 0.40, bird: 0,     insects: 0,    cricket: 0,     frog: 0,     owl: 0,     rooster: 0,     bell: 0,     chime: 0,     drip: 0,     fire: 0.10, thunder: 0,     cold: 0 },
+    frost:     { water: 0.05, leaves: 0.05, rumble: 0,    gust: 0.90, bird: 0,     insects: 0,    cricket: 0,     frog: 0,     owl: 0,     rooster: 0,     bell: 0,     chime: 0.008, drip: 0,     fire: 0,    thunder: 0,     cold: 0.06 },
+    storm:     { water: 0.15, leaves: 0.50, rumble: 0.25, gust: 1.00, bird: 0,     insects: 0,    cricket: 0,     frog: 0,     owl: 0,     rooster: 0,     bell: 0,     chime: 0,     drip: 0,     fire: 0,    thunder: 0.012, cold: 0 },
+    cave:      { water: 0.10, leaves: 0,    rumble: 0.40, gust: 0.30, bird: 0,     insects: 0,    cricket: 0.01,  frog: 0,     owl: 0,     rooster: 0,     bell: 0,     chime: 0,     drip: 0.07,  fire: 0,    thunder: 0,     cold: 0 }
+  };
+  // Ánh xạ map -> biome tường minh cho các map có cảnh rõ; phần còn
+  // lại suy theo tiền tố (bí cảnh, sơn môn) rồi rơi về rừng (khớp
+  // MAP_THEMES._default vốn là khung rừng).
+  var AMBIENCE_MAP = {
+    map1: 'village', dong_phu: 'homestead',
+    map2: 'forest',
+    map3: 'sect',
+    map4: 'mountain', map5: 'mountain', map6: 'mountain', map7: 'mountain',
+    map8: 'water',
+    map9: 'mountain',
+    map10: 'volcano', map11: 'frost', map12: 'storm',
+    map13: 'mountain', map14: 'mountain',
+    map_dai_hoi: 'sect',
+    sonmon_huyenam: 'night',   // Huyền Âm Cung: hàn đàm, âm khí — cảnh đêm
+    sonmon_ngudoc: 'swamp'     // Ngũ Độc Giáo: đầm độc — ếch/dế đầm lầy
+  };
+  function biomeFor(mapId) {
+    var id = mapId || 'map1';
+    if (AMBIENCE_MAP[id]) return AMBIENCE_MAP[id];
+    if (id.indexOf('realm_') === 0) return 'cave';
+    if (id.indexOf('sonmon_') === 0) return 'sect';
+    return 'forest';
+  }
+  function ambienceFor(mapId) { return AMBIENCES[biomeFor(mapId)] || AMBIENCES.forest; }
+
+  // ==================================================================
   // TRẠNG THÁI ENGINE
   // ==================================================================
   var ctx = null, master = null, musicBus = null, sfxBus = null, noiseBuf = null;
@@ -226,6 +297,11 @@
   var ctxName = 'login', ctxWanted = 'login', ctxPending = null, ctxApplyAt = 0;
   var ctxStepIdx = 0, ctxNextT = 0, ctxRound = 0; // ctxRound: đếm vòng giai điệu (cho lead 'alt')
   var mapSeen = false;          // setMap đã gọi ít nhất 1 lần (trước đó = đang ở màn đăng nhập)
+  // Lớp ambience theo biome: ambNodes tạo 1 lần trong startMusic
+  // (ambBus + 3 nền loop + 2 LFO), curBiome suy từ map hiện tại,
+  // ambDuck = hệ số lùi tiếng khi giao chiến (0,6) / boss (0,4).
+  var ambNodes = null, curBiome = 'village', ambDuck = 1;
+  var AMB_LEVEL = 0.9;          // mức tổng của ambBus trên musicBus
   var combatOn = false, combatFreshAt = 0; // giao chiến thường; tự hết hạn sau 6s không có đòn mới
   var ksCache = {}, ksCount = 0; // bộ đệm Karplus-Strong theo tần số đã làm tròn
   var CTX_LEVEL = 0.85;          // mức tổng của lớp giai điệu trên musicBus
@@ -536,6 +612,9 @@
       tone({ type: 'square', f0: 300, f1: 150, dur: 0.07, vol: 0.2 });
     },
     hit_small: function () { noiseHit({ dur: 0.04, vol: 0.14, type: 'bandpass', f0: 1900, q: 0.8 }); },
+    poison_tick: function () { // Độc rắn lục rút HP mỗi giây: blip trầm khẽ, khác hẳn hurt to + trầm (QA (e) 20:16 31/10).
+      tone({ type: 'sine', f0: 280, f1: 160, dur: 0.14, vol: 0.10 });
+    },
     hurt: function () {
       tone({ type: 'sine', f0: 165, f1: 88, dur: 0.16, vol: 0.34 });
       noiseHit({ dur: 0.08, vol: 0.14, type: 'lowpass', f0: 800 });
@@ -1185,6 +1264,7 @@
     try {
       if (on) { combatFreshAt = nowMs(); if (!combatOn) { combatOn = true; refreshContext(); } }
       else if (combatOn) { combatOn = false; refreshContext(); }
+      refreshAmbDuck();
       return true;
     } catch (e) { return false; }
   }
@@ -1235,6 +1315,36 @@
       lfo.connect(lfoG); lfoG.connect(wf.frequency);
       wsrc.connect(wf); wf.connect(wg); wg.connect(musicBus);
       wsrc.start(); lfo.start();
+      // Lớp AMBIENCE theo biome (lượt 17:12 31/10): bus riêng nối
+      // vào musicBus + 3 nền loop dùng chung (nước/lá/rì rầm) + LFO
+      // lá thở + LFO gió giật gắn lên chính node gió ở trên. Tạo
+      // đúng MỘT lần ở đây — chuyển map chỉ lướt gain (applyAmbience).
+      var ambBus = ctx.createGain(); ambBus.gain.value = 0;
+      ambBus.connect(musicBus);
+      ambBus.gain.setTargetAtTime(AMB_LEVEL, ctx.currentTime, 1.2);
+      var ambBed = function (rate, off, fType, fFreq, fQ) {
+        var s = ctx.createBufferSource(); s.buffer = noiseBuf; s.loop = true; s.playbackRate.value = rate;
+        var f = ctx.createBiquadFilter(); f.type = fType; f.frequency.value = fFreq; f.Q.value = fQ;
+        var g = ctx.createGain(); g.gain.value = 0;
+        s.connect(f); f.connect(g); g.connect(ambBus);
+        s.start(0, off);
+        return g;
+      };
+      var waterGain = ambBed(0.5, 0.31, 'lowpass', 480, 0.7);    // nước chảy róc rách đều
+      var leavesGain = ambBed(0.8, 0.77, 'bandpass', 2600, 0.5); // lá xào xạc qua tán
+      var rumbleGain = ambBed(0.3, 0.53, 'lowpass', 110, 0.7);   // rì rầm trầm (hang/lửa địa)
+      // Lá thở: LFO chậm điều biên độ quanh mức gain của biome.
+      var leavesLfo = ctx.createOscillator(); leavesLfo.frequency.value = 0.13;
+      var leavesLfoG = ctx.createGain(); leavesLfoG.gain.value = 0;
+      leavesLfo.connect(leavesLfoG); leavesLfoG.connect(leavesGain.gain);
+      leavesLfo.start();
+      // Gió giật: LFO rất chậm cộng/trừ vào gain gió theo hệ số gust
+      // của biome (núi cao giật mạnh, làng chỉ gợn nhẹ).
+      var gustLfo = ctx.createOscillator(); gustLfo.frequency.value = 0.045;
+      var gustLfoG = ctx.createGain(); gustLfoG.gain.value = 0;
+      gustLfo.connect(gustLfoG); gustLfoG.connect(wg.gain);
+      gustLfo.start();
+      ambNodes = { bus: ambBus, waterGain: waterGain, leavesGain: leavesGain, rumbleGain: rumbleGain, leavesLfoG: leavesLfoG, gustLfoG: gustLfoG };
       // Lớp giai điệu theo ngữ cảnh: gain riêng để crossfade motif
       // mà không đụng pad/gió. Khởi phát thẳng ngữ cảnh hiện tại
       // (không fade ở lần đầu — chưa có gì để fade từ đó).
@@ -1245,6 +1355,7 @@
       ctxGain.gain.setTargetAtTime(CTX_LEVEL, ctx.currentTime, 0.8);
       musicNodes = { oscs: oscs, padGain: padGain, padFilter: padFilter, windGain: wg, ctxGain: ctxGain };
       applyTheme(0.1);
+      applyAmbience(0.1);
       schedTimer = setInterval(schedulerTick, 280);
       if (schedTimer && schedTimer.unref) schedTimer.unref(); // Node test: đừng giữ tiến trình
     } catch (e) { musicNodes = null; }
@@ -1261,6 +1372,29 @@
       musicNodes.padFilter.frequency.setTargetAtTime(th.bright, t, k);
       musicNodes.windGain.gain.setTargetAtTime(th.wind, t, k);
     } catch (e) {}
+  }
+  function ambSpec() { return AMBIENCES[curBiome] || AMBIENCES.forest; }
+  // Lướt toàn bộ lớp nền sang thông số của biome hiện tại (hằng số
+  // thời gian ~1,6s = crossfade nghe được, không cắt cụp). Chỉ gọi
+  // setTargetAtTime trên các node ĐÃ CÓ — không tạo node mới.
+  function applyAmbience(tc) {
+    if (!ctx || !ambNodes) return;
+    try {
+      var sp = ambSpec(), t = ctx.currentTime, k = tc || 1.6;
+      ambNodes.waterGain.gain.setTargetAtTime((sp.water || 0) * 0.030, t, k);
+      ambNodes.leavesGain.gain.setTargetAtTime((sp.leaves || 0) * 0.016, t, k);
+      ambNodes.leavesLfoG.gain.setTargetAtTime((sp.leaves || 0) * 0.016 * 0.55, t, k);
+      ambNodes.rumbleGain.gain.setTargetAtTime((sp.rumble || 0) * 0.050, t, k);
+      ambNodes.gustLfoG.gain.setTargetAtTime(theme().wind * 0.5 * (sp.gust == null ? 0.6 : sp.gust), t, k);
+    } catch (e) {}
+  }
+  // Ducking: boss/giao chiến thì lớp nền lùi xuống nhường tiếng
+  // chiêu + nhạc chiến, nhưng không tắt hẳn (vẫn nghe gió/nước xa).
+  function refreshAmbDuck() {
+    var want = bossOn ? 0.4 : (combatOn ? 0.6 : 1);
+    if (want === ambDuck) return;
+    ambDuck = want;
+    if (ctx && ambNodes) { try { ambNodes.bus.gain.setTargetAtTime(AMB_LEVEL * ambDuck, ctx.currentTime, 0.35); } catch (e) {} }
   }
   function schedulerTick() {
     if (!ctx || level === 'tat') return;
@@ -1284,7 +1418,7 @@
       // lên lịch từng step của motif trong cửa sổ 0,5s tới; tới hạn
       // crossfade thì đổi ngữ cảnh đang phát + bắt đầu vòng mới.
       if (ctxGain) {
-        if (combatOn && nowMs() - combatFreshAt > 6000) { combatOn = false; refreshContext(); }
+        if (combatOn && nowMs() - combatFreshAt > 6000) { combatOn = false; refreshContext(); refreshAmbDuck(); }
         if (ctxPending && t >= ctxApplyAt) {
           ctxName = ctxPending; ctxPending = null;
           ctxStepIdx = 0; ctxRound = 0; ctxNextT = t + 0.06;
@@ -1301,30 +1435,68 @@
           }
         }
       }
-      // Chim hót ở làng (map1): vài tiếng líu lo lác đác, rất khẽ.
-      if (th.bird && Math.random() < 0.05) {
+      // SỰ KIỆN SINH CẢNH THEO BIOME (AMBIENCES): xác suất mỗi tick
+      // lấy từ bảng biome của map hiện tại; cao độ/biến thể ngẫu
+      // nhiên từng lần nên không lặp máy móc. Mọi tiếng đều khẽ hơn
+      // hẳn tiếng chiêu cùng họ và đi qua ambBus (ducking được).
+      var sp = ambSpec(), aBus = ambNodes ? ambNodes.bus : musicBus;
+      if (sp.bird && Math.random() < sp.bird) { // chim hót: líu lo 2 nốt, đôi khi thêm nốt 3
         var bt = t + 0.05, bf = rnd(2500, 2900);
-        tone({ type: 'sine', f0: bf, f1: bf * 1.28, t: bt, dur: 0.07, vol: 0.02, a: 0.01, bus: musicBus });
-        tone({ type: 'sine', f0: bf * 1.1, f1: bf * 0.9, t: bt + 0.11, dur: 0.06, vol: 0.016, a: 0.01, bus: musicBus });
+        tone({ type: 'sine', f0: bf, f1: bf * 1.28, t: bt, dur: 0.07, vol: 0.02, a: 0.01, bus: aBus });
+        tone({ type: 'sine', f0: bf * 1.1, f1: bf * 0.9, t: bt + 0.11, dur: 0.06, vol: 0.016, a: 0.01, bus: aBus });
+        if (Math.random() < 0.3) tone({ type: 'sine', f0: bf * 1.05, f1: bf * 1.2, t: bt + 0.21, dur: 0.05, vol: 0.012, a: 0.01, bus: aBus });
       }
-      // Côn trùng trong rừng (map2): xung cao tần rất nhỏ, từng nhịp.
-      if (th.insects && Math.random() < 0.16) {
-        for (var i = 0; i < 3; i++) tone({ type: 'sine', f0: 4300, t: t + i * 0.07, dur: 0.03, vol: 0.006, a: 0.004, bus: musicBus });
+      if (sp.insects && Math.random() < sp.insects) { // côn trùng: xung cao tần rất nhỏ, từng nhịp
+        for (var i2 = 0; i2 < 3; i2++) tone({ type: 'sine', f0: 4300, t: t + i2 * 0.07, dur: 0.03, vol: 0.006, a: 0.004, bus: aBus });
       }
-      // Lớp sinh cảnh theo biome (QA (e) 00:31 — trước đây 12/14 map
-      // chỉ có gió): lửa reo thưa ở Xích Diệm, sấm xa thưa ở Lôi Trì,
-      // gió rít lạnh ở Hàn Băng Cốc. Mọi tiếng đều khẽ hơn hẳn tiếng
-      // chiêu cùng họ nên không lẫn nhau.
-      if (th.fire && Math.random() < 0.10) {
-        noiseHit({ t: t + 0.03, dur: rnd(0.08, 0.16), vol: 0.02, type: 'lowpass', f0: rnd(700, 1100), bus: musicBus });
-        if (Math.random() < 0.5) noiseHit({ t: t + rnd(0.1, 0.25), dur: 0.06, vol: 0.012, type: 'bandpass', f0: rnd(1200, 2000), q: 2, bus: musicBus });
+      if (sp.cricket && Math.random() < sp.cricket) { // dế đêm: 4 xung cao đều nhịp
+        var cfq = rnd(4100, 4400);
+        for (var ci = 0; ci < 4; ci++) tone({ type: 'sine', f0: cfq, t: t + ci * 0.055, dur: 0.028, vol: 0.008, a: 0.004, bus: aBus });
       }
-      if (th.thunder && Math.random() < 0.012) {
-        noiseHit({ t: t + 0.03, dur: 1.3, vol: 0.045, type: 'lowpass', f0: 220, a: 0.25, bus: musicBus });
-        tone({ type: 'sine', f0: 52, f1: 38, t: t + 0.05, dur: 1.1, vol: 0.035, a: 0.2, bus: musicBus });
+      if (sp.frog && Math.random() < sp.frog) { // ếch bờ suối/đầm: ộp trầm ngắn, đôi khi đáp lại
+        tone({ type: 'sine', f0: 760, f1: 470, t: t + 0.03, dur: 0.09, vol: 0.016, a: 0.008, bus: aBus });
+        if (Math.random() < 0.6) tone({ type: 'sine', f0: 720, f1: 450, t: t + 0.19, dur: 0.08, vol: 0.012, a: 0.008, bus: aBus });
       }
-      if (th.cold && Math.random() < 0.06) {
-        noiseHit({ t: t + 0.03, dur: rnd(0.5, 0.9), vol: 0.011, type: 'bandpass', f0: 2400, f1: 3400, q: 1.6, a: 0.15, bus: musicBus });
+      if (sp.owl && Math.random() < sp.owl) { // cú đêm: hai tiếng trầm cách nhau
+        tone({ type: 'sine', f0: 392, f1: 330, t: t + 0.03, dur: 0.28, vol: 0.02, a: 0.06, bus: aBus });
+        tone({ type: 'sine', f0: 380, f1: 318, t: t + 0.48, dur: 0.32, vol: 0.016, a: 0.06, bus: aBus });
+      }
+      if (sp.rooster && Math.random() < sp.rooster) { // gà gáy xa trong làng: rất thưa, chỉ làm điểm nhấn
+        var rt = t + 0.03;
+        tone({ type: 'sawtooth', f0: 700, f1: 1150, t: rt, dur: 0.16, vol: 0.028, a: 0.01, bus: aBus, filter: { type: 'lowpass', f: 1800 } });
+        tone({ type: 'sawtooth', f0: 880, f1: 620, t: rt + 0.18, dur: 0.30, vol: 0.032, a: 0.01, bus: aBus, filter: { type: 'lowpass', f: 1800 } });
+        tone({ type: 'sawtooth', f0: 760, f1: 560, t: rt + 0.52, dur: 0.20, vol: 0.016, a: 0.01, bus: aBus, filter: { type: 'lowpass', f: 1800 } });
+      }
+      if (sp.bell && Math.random() < sp.bell) { // chuông chùa/sơn môn vẳng xa: gốc của map, ngân dài, rất khẽ
+        bell(t + 0.03, th.root, 0.05, 3.0, aBus);
+      }
+      if (sp.chime && Math.random() < sp.chime) { // chuông gió: 3 tiếng leng keng lệch nhịp
+        var chf = rnd(2300, 2900);
+        tone({ type: 'sine', f0: chf, t: t + 0.03, dur: 0.30, vol: 0.010, a: 0.004, bus: aBus });
+        tone({ type: 'sine', f0: chf * 1.26, t: t + rnd(0.09, 0.16), dur: 0.26, vol: 0.008, a: 0.004, bus: aBus });
+        tone({ type: 'sine', f0: chf * 0.89, t: t + rnd(0.2, 0.3), dur: 0.32, vol: 0.007, a: 0.004, bus: aBus });
+      }
+      if (sp.drip && Math.random() < sp.drip) { // giọt nước hang/động phủ: rơi + vọng 2 lần xa dần
+        tone({ type: 'sine', f0: 1500, f1: 700, t: t + 0.03, dur: 0.09, vol: 0.012, a: 0.004, bus: aBus });
+        tone({ type: 'sine', f0: 1400, f1: 680, t: t + 0.19, dur: 0.07, vol: 0.006, a: 0.004, bus: aBus });
+        tone({ type: 'sine', f0: 1350, f1: 660, t: t + 0.34, dur: 0.06, vol: 0.003, a: 0.004, bus: aBus });
+      }
+      if (sp.leaves && Math.random() < sp.leaves * 0.06) { // cơn gió qua tán lá: xào dài hơn nền lá thường
+        noiseHit({ t: t + 0.03, dur: rnd(0.6, 1.0), vol: 0.012, type: 'bandpass', f0: 1700, f1: 2600, q: 0.8, a: 0.25, bus: aBus });
+      }
+      // Lửa reo (Xích Diệm) / sấm xa (Lôi Trì) / gió rít lạnh (Hàn
+      // Băng Cốc): chuyển từ cờ MAP_THEMES sang xác suất biome —
+      // công thức tiếng giữ nguyên như bản trước (QA (e) 00:31).
+      if (sp.fire && Math.random() < sp.fire) {
+        noiseHit({ t: t + 0.03, dur: rnd(0.08, 0.16), vol: 0.02, type: 'lowpass', f0: rnd(700, 1100), bus: aBus });
+        if (Math.random() < 0.5) noiseHit({ t: t + rnd(0.1, 0.25), dur: 0.06, vol: 0.012, type: 'bandpass', f0: rnd(1200, 2000), q: 2, bus: aBus });
+      }
+      if (sp.thunder && Math.random() < sp.thunder) {
+        noiseHit({ t: t + 0.03, dur: 1.3, vol: 0.045, type: 'lowpass', f0: 220, a: 0.25, bus: aBus });
+        tone({ type: 'sine', f0: 52, f1: 38, t: t + 0.05, dur: 1.1, vol: 0.035, a: 0.2, bus: aBus });
+      }
+      if (sp.cold && Math.random() < sp.cold) {
+        noiseHit({ t: t + 0.03, dur: rnd(0.5, 0.9), vol: 0.011, type: 'bandpass', f0: 2400, f1: 3400, q: 1.6, a: 0.15, bus: aBus });
       }
       // Lớp trầm giao chiến boss ngày xưa (nhịp sub 0,92s) nay do
       // ngữ cảnh 'boss' của lớp giai điệu đảm nhiệm (trống + bass) —
@@ -1335,7 +1507,9 @@
     try {
       curMap = id || 'map1';
       mapSeen = true;
+      curBiome = biomeFor(curMap);
       if (ctx && musicNodes) applyTheme(1.4); // chỉ đổi tông/lớp — nhạc không cắt
+      if (ctx && ambNodes) applyAmbience(1.6); // lớp nền lướt sang biome mới, không cắt
       refreshContext(); // giai điệu crossfade sang ngữ cảnh của map mới
     } catch (e) {}
   }
@@ -1346,6 +1520,7 @@
         musicNodes.padFilter.frequency.setTargetAtTime(bossOn ? Math.min(500, theme().bright) : theme().bright, ctx.currentTime, 0.8);
       }
       refreshContext();
+      refreshAmbDuck();
     } catch (e) {}
   }
   function stopAll() {
@@ -1354,6 +1529,7 @@
       if (ctx && ctx.close) ctx.close();
     } catch (e) {}
     ctx = null; musicNodes = null; bossOn = false; progIdx = 0; progIn = PROG_SEC;
+    ambNodes = null; curBiome = 'village'; ambDuck = 1;
     ctxGain = null; ctxName = 'login'; ctxWanted = 'login'; ctxPending = null;
     ctxStepIdx = 0; ctxRound = 0; mapSeen = false; combatOn = false; ksCache = {}; ksCount = 0;
   }
@@ -1373,7 +1549,8 @@
   function setSfxVol(v) { try { sfxTrim = Math.max(0, Math.min(1, +v || 0)); applyLevels(); return true; } catch (e) { return false; } }
   function getState() {
     return { level: level, musicVol: musicTrim, sfxVol: sfxTrim, hasCtx: hasCtx(), map: curMap, boss: bossOn, activeVoices: activeVoices, progIdx: progIdx, progSec: PROG_SEC,
-      context: ctxWanted, musicContext: ctxName, combat: combatOn };
+      context: ctxWanted, musicContext: ctxName, combat: combatOn,
+      biome: curBiome, ambDuck: ambDuck };
   }
 
   var api = {
@@ -1383,6 +1560,7 @@
     MAP_THEMES: MAP_THEMES, LEVELS: LEVELS,
     PROG_DEGREES: PROG_DEGREES, PROG_SEC: PROG_SEC, chordSemis: chordSemis,
     MUSIC_CONTEXTS: MUSIC_CONTEXTS, baseContextFor: baseContextFor,
+    AMBIENCES: AMBIENCES, biomeFor: biomeFor, ambienceFor: ambienceFor,
     unlock: unlock, hasCtx: hasCtx, getState: getState,
     voiceDefined: function (type, occ) { return !!(VOICES[type] && VOICE_OCCASIONS.indexOf(occ) >= 0); },
     setLevel: setLevel, setMusicVol: setMusicVol, setSfxVol: setSfxVol,

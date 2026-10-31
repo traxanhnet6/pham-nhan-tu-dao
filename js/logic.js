@@ -180,7 +180,7 @@
       name: name, gender: gender, origin: originId,
       hp: o.hp, maxHp: o.hp, atk: o.atk, def: o.def, rate: o.rate,
       tuVi: 0, tuViMax: TIERS[0].need, tier: 0, realm: TIERS[0].realm,
-      root: null, linhThach: 0, inventory: [], x: 43, y: 47, dir: 'down' // V3: start map1 (19,9) + offset V10 (12,8) + neo V3 (12,30)
+      root: null, linhThach: 0, inventory: [], x: 71, y: 72, dir: 'down' // V7-EXPAND: start map1 (71,72) tren khung 168x150
     };
     // TẠO HÌNH NV01–NV12 (Bui duyệt hết 06:06 30/10/2026): trường 'look'
     // chỉ tồn tại khi người chơi chọn mẫu NV đúng giới; save cũ không có
@@ -336,6 +336,18 @@
       var wst = WD.statTotals(ch);
       if (wst) blocks.push({ stats: wst, proc: null });
     }
+    // Trang bị đeo (js/gear.js, GĐ2 bộ 16 ô): 11 ô mới (phòng thân 6 +
+    // trang sức 5) cộng khối stats của từng món đang đeo. Gear không có
+    // proc riêng (proc là đất của vũ khí) nên proc luôn null. Tra cứu
+    // lười như các hệ trên: thiếu module thì bỏ qua, không lỗi.
+    var GR = null;
+    if (typeof window !== 'undefined' && window.PNT_GEAR) GR = window.PNT_GEAR;
+    else if (typeof globalThis !== 'undefined' && globalThis.PNT_GEAR) GR = globalThis.PNT_GEAR;
+    if (GR && typeof GR.equippedDefs === 'function') {
+      GR.equippedDefs(ch).forEach(function (def) {
+        if (def && def.stats) blocks.push({ stats: def.stats, proc: null });
+      });
+    }
     return blocks;
   }
   function statTotals(ch) {
@@ -364,6 +376,14 @@
       if (typeof A.CAPS.speed === 'number' && t.speed > A.CAPS.speed) t.speed = A.CAPS.speed;
       if (typeof A.CAPS.llRegen === 'number' && t.llRegen > A.CAPS.llRegen) t.llRegen = A.CAPS.llRegen;
     }
+    // Trần crit TỪ TRANG BỊ (quyết định GĐ2): crit trong thang này chỉ
+    // đến từ trang bị (vũ khí + pháp bảo + gear + hào quang thú), nên
+    // kẹp tổng crit ở GEAR_CRIT_CAP của js/gear.js (35%) — hằng số nằm
+    // ở gear.js để chỉnh một chỗ; thiếu module gear thì không kẹp.
+    var GR2 = null;
+    if (typeof window !== 'undefined' && window.PNT_GEAR) GR2 = window.PNT_GEAR;
+    else if (typeof globalThis !== 'undefined' && globalThis.PNT_GEAR) GR2 = globalThis.PNT_GEAR;
+    if (GR2 && typeof GR2.GEAR_CRIT_CAP === 'number' && t.crit > GR2.GEAR_CRIT_CAP) t.crit = GR2.GEAR_CRIT_CAP;
     // Buff tạm thời từ đan dược (ch.buffs do js/alchemy.js ghi): cộng SAU
     // trần trang bị vì là hiệu ứng thuốc có thời hạn, không bị CAPS kẹp.
     if (ch.buffs && ch.buffs.length) {
@@ -1289,7 +1309,7 @@
       desc: 'Một mẻ đan giả đóng ấn Đan Hà Cốc bán qua phiên chợ: hai người làng và ba đệ tử trúng độc, cả vùng chỉ mặt Ngũ Độc Giáo. Tông giao ngươi tra án — việc đầu không phải đánh ai: hái 4 cây Độc Tâm Hoa còn tươi quanh bờ suối phía đông Rừng Thanh Sơn (hoặc khe suối Đại Sơn) mang về. Lý lão cần mẫu hoa THẬT để đối chiếu: độc trong đan giả bị tinh luyện lệch một nấc, chỉ mẫu tươi mới phân biệt được.',
       objectives: [{ type: 'collect', target: 'doc_tam_hoa', need: 4 }],
       rewards: { linhThach: 260, tuVi: 110, items: [] } },
-    q_thien5_2: { id: 'q_thien5_2', main: true, thien5: true, title: 'Sào mãng sau Đầm Độc', giver: 'sect_rep', requires: 'q_thien5_1',
+    q_thien5_2: { id: 'q_thien5_2', main: true, thien5: true, title: 'Sào mãng ở Tâm Phế Tích', giver: 'sect_rep', requires: 'q_thien5_1',
       desc: 'Đối chiếu xong: độc trong đan giả là nọc Cổ Mãng bị tinh luyện, mà quanh sào Cổ Mãng Vương ở Thập Vạn Đại Sơn (map 4) có dấu một lò luyện dã chiến. Hạ Cổ Mãng Vương, lục sào của nó lấy bằng chứng mang về — nghe nói trong sào còn có một trang sách lạ bị dùng làm giấy gói nọc.',
       objectives: [{ type: 'thien5', target: 'boss', need: 1 }],
       rewards: { linhThach: 280, tuVi: 130, items: [] } },

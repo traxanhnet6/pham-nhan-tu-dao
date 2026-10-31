@@ -98,8 +98,70 @@
     quan_quan_dai_hoi_y: { id: 'quan_quan_dai_hoi_y', name: 'Đại Hội Quán Quân Y', kind: 'tournament',
       colors: ['#7a3b22', '#f2c14e', '#ffe98a'], aura: { speed: 3 },
       auraText: 'Phong thái quán quân: Tốc độ +3%',
-      desc: 'Y phục thêu ấn mười tông môn, chỉ trao cho QUÁN QUÂN Đại Hội Tu Tiên. Bộ duy nhất trong tủ có phong thái thật: người mặc bước đi nhanh nhẹn hơn hẳn (+3% tốc độ).' }
+      desc: 'Y phục thêu ấn mười tông môn, chỉ trao cho QUÁN QUÂN Đại Hội Tu Tiên. Bộ duy nhất trong tủ có phong thái thật: người mặc bước đi nhanh nhẹn hơn hẳn (+3% tốc độ).' },
+    // ===== ĐỢT 1 (lệnh Bui 20:41 31/10): 8 bộ trang phục CÓ CHỈ SỐ =====
+    // Khác các bộ cũ (thuần ngoại hình): 8 bộ này mang khối `stats` chạy
+    // thật qua statTotals của module này -> Logic.gearBlocks -> statTotals
+    // (cùng đường với aura của Quán Quân Y). Phẩm trải Linh/Huyền/Địa —
+    // trang phục KHÔNG lên Thiên ở đợt này. Thang số neo theo pháp bảo
+    // cùng phẩm (nhỏ hơn một món gear phòng thân cùng phẩm một bậc).
+    // artBatch 1 = đội mỹ thuật đang làm sheet mặc được (Hỏa Phượng, Mặc
+    // Ngọc, Kim Lân, Tuyết Liên); artBatch 2 = chờ sheet đợt 2 (Thanh
+    // Vân, Bích Hải, Lôi Đình, Tinh Hà): theo luật ẩn đồ chưa vẽ, bộ
+    // đợt 2 CHƯA có đường sở hữu nào chạy được trong game (mua bị chặn
+    // 'hidden', thưởng sự kiện có cổng hasArt) — sheet về là tự mở.
+    // Sheet của 4 bộ đợt 1 là hero look nv14–nv17 trong js/hero-ai.js
+    // (trường look/lookGender trên từng bộ dưới đây); game.js lúc khởi
+    // động sẽ gọi _registerArt cho bộ có look khớp giới để mở khóa sở
+    // hữu + vẽ bằng look đó. 4 bộ đợt 2 không có look nên giữ khóa.
+    thanh_van_du_hiep: { id: 'thanh_van_du_hiep', name: 'Thanh Vân Du Hiệp', kind: 'shop', price: 900,
+      grade: 'linh', artBatch: 2, colors: ['#7fb2d9', '#eef6ff', '#3f6d9e'],
+      stats: { speed: 4 }, auraText: 'Phong thái du hiệp: Tốc độ +4%',
+      desc: 'Trường sam xanh mây của hiệp khách giang hồ, vạt áo xẻ cao cho dễ lên ngựa xuống đò. Mặc vào chân như nhẹ đi một bậc.' },
+    bich_hai_trieu_sinh: { id: 'bich_hai_trieu_sinh', name: 'Bích Hải Triều Sinh', kind: 'shop', price: 1000,
+      grade: 'linh', artBatch: 2, colors: ['#2e7a8a', '#8fd0d8', '#ffd94a'],
+      stats: { ll: 8, elem: { thuy: 8 } }, auraText: 'Phong thái triều sinh: Linh lực tối đa +8, sát thương hệ Thủy +8%',
+      desc: 'Áo dệt sợi tảo biển bích ngọc, gấu áo thêu sóng triều dâng. Linh khí hệ Thủy quanh người mặc tuần hoàn không dứt.' },
+    hoa_phuong_chien_y: { id: 'hoa_phuong_chien_y', name: 'Hỏa Phượng Chiến Y', kind: 'boss',
+      grade: 'huyen', artBatch: 1, look: 'nv14', lookGender: 'nu', colors: ['#c93c22', '#ff9a3c', '#ffd94a'],
+      stats: { elem: { hoa: 12 }, hp: 25 }, auraText: 'Phong thái hỏa phượng: Sát thương hệ Hỏa +12%, Máu tối đa +25',
+      desc: 'Chiến y đỏ rực thêu phượng hoàng lửa bằng chỉ vàng, may từ lông vũ cháy của Hầu Vương Xích Diệm. Chỉ rơi từ boss Xích Diệm — mặc vào như mang theo một mùa hè trên lưng.' },
+    mac_ngoc_huyen_y: { id: 'mac_ngoc_huyen_y', name: 'Mặc Ngọc Huyền Y', kind: 'shop', price: 2000,
+      grade: 'huyen', artBatch: 1, look: 'nv15', lookGender: 'nam', colors: ['#23242e', '#3a4a44', '#8ff5df'],
+      stats: { def: 3, hp: 30 }, auraText: 'Phong thái mặc ngọc: Giáp +3, Máu tối đa +30',
+      desc: 'Huyền y đen như mực ngọc, sợi vải dệt lẫn bột ngọc trai đen nên cứng mà mềm. Bộ áo dạ hành đắt nhất quầy may — mặc vào đứng trong bóng tối là mất hút.' },
+    loi_dinh_dao_bao: { id: 'loi_dinh_dao_bao', name: 'Lôi Đình Đạo Bào', kind: 'sect', points: 350,
+      grade: 'huyen', artBatch: 2, colors: ['#4a3f7a', '#cfa6ff', '#ffe98a'],
+      stats: { elem: { loi: 12 }, ll: 12 }, auraText: 'Phong thái lôi đình: Sát thương hệ Lôi +12%, Linh lực tối đa +12',
+      desc: 'Đạo bào tím thẫm thêu vân lôi bằng chỉ bạc, đổi bằng Điểm Cống Hiến ở tông môn. Đạo sĩ hành lôi mặc bào này, dẫn sét như dẫn nước.' },
+    kim_lan_giap: { id: 'kim_lan_giap', name: 'Kim Lân Giáp', kind: 'boss',
+      grade: 'dia', artBatch: 1, look: 'nv16', lookGender: 'nam', colors: ['#8a6d1f', '#f2c14e', '#fff2b0'],
+      stats: { def: 5, hp: 40 }, auraText: 'Phong thái kim lân: Giáp +5, Máu tối đa +40',
+      desc: 'Giáp vảy vàng rèn từ vảy rụng của Cổ Mãng Vương, mỗi vảy khảm tay lên nền da thú. Chỉ rơi từ Cổ Mãng Vương — mặc vào nghe tiếng vảy khua như chuông nhỏ.' },
+    tuyet_lien_tien_y: { id: 'tuyet_lien_tien_y', name: 'Tuyết Liên Tiên Y', kind: 'boss',
+      grade: 'dia', artBatch: 1, look: 'nv17', lookGender: 'nu', colors: ['#e8edf2', '#bfe3ff', '#8fd0a2'],
+      stats: { hp: 45, llRegen: 0.6 }, auraText: 'Phong thái tuyết liên: Máu tối đa +45, Hồi linh lực +0,6/giây',
+      desc: 'Tiên y trắng như tuyết đầu mùa thêu sen băng, may từ cánh Tuyết Liên hái ở Băng Cốc. Chỉ rơi từ Băng Cốc Thiết Bì Vương — mặc vào hơi lạnh quanh thân mà linh khí hồi nhanh lạ thường.' },
+    tinh_ha_phap_y: { id: 'tinh_ha_phap_y', name: 'Tinh Hà Pháp Y', kind: 'event',
+      grade: 'dia', artBatch: 2, colors: ['#2a2d52', '#7a6fd0', '#ffe98a'],
+      stats: { ll: 20, crit: 4 }, auraText: 'Phong thái tinh hà: Linh lực tối đa +20, Chí mạng +4%',
+      desc: 'Pháp y thêu dải ngân hà bằng chỉ bạc và hạt tinh thạch, là phần thưởng đặc biệt cho người giữ vững Nam Môn qua trọn Thú Triều. Sao trên áo lấp lánh theo nhịp thở của người mặc.' }
   };
+  // Bảng rơi TRANG PHỤC theo boss thế giới (đợt 1) — game.js lăn trong
+  // grantBossTableDrops cạnh bảng chính, KHÔNG gộp vào bosses.js (test
+  // khóa snapshot bảng boss cũ, như tiền lệ manuals/artifacts). Tỉ lệ
+  // 10% bám thang ký danh boss của economy.md (8-12%).
+  var BOSS_COSTUME_DROPS = {
+    hau_xich_diem: [{ id: 'hoa_phuong_chien_y', chance: 0.10 }],
+    co_mang_vuong: [{ id: 'kim_lan_giap', chance: 0.10 }],
+    lon_bang_coc: [{ id: 'tuyet_lien_tien_y', chance: 0.10 }]
+  };
+  function rollBossCostumeDrop(bossId, rng) {
+    var table = BOSS_COSTUME_DROPS[bossId] || [];
+    var rand = rng || Math.random;
+    for (var i = 0; i < table.length; i++) if (rand() < table[i].chance) return table[i].id;
+    return null;
+  }
   var COSTUME_IDS = Object.keys(COSTUMES);
   var SEASONS = {
     xuan: { id: 'xuan', name: 'Xuân', months: 'tháng 1–3', costume: 'dao_hoa_xuan_y' },
@@ -217,13 +279,20 @@
   }
   function unwear(ch) { var w = ensure(ch); if (w) w.worn = null; return { ok: true }; }
   // Khối chỉ số "phong thái" của bộ đang mặc — logic.js gearBlocks cộng
-  // qua statTotals (chỉ Đại Hội Quán Quân Y có aura, mọi bộ khác null).
+  // qua statTotals. Bộ cũ dùng trường `aura` (chỉ Đại Hội Quán Quân Y);
+  // 8 bộ đợt 1 dùng trường `stats` — statTotals nhận cả hai (ưu tiên
+  // stats), bộ thuần ngoại hình không có cả hai thì trả null như cũ.
   function statTotals(ch) {
     var def = wornDef(ch);
-    if (!def || !def.aura) return null;
+    if (!def) return null;
+    var block = def.stats || def.aura;
+    if (!block) return null;
     if (!isVisible(ch, def.id)) return null;
     var s = {};
-    Object.keys(def.aura).forEach(function (k) { s[k] = def.aura[k]; });
+    Object.keys(block).forEach(function (k) {
+      if (k === 'elem' && block.elem) { s.elem = {}; Object.keys(block.elem).forEach(function (e) { s.elem[e] = block.elem[e]; }); }
+      else s[k] = block[k];
+    });
     return s;
   }
   // Thưởng Đại Hội: quán quân (bảng hall của js/tournament.js có entry
@@ -247,7 +316,7 @@
   }
 
   // ================= PHẦN C — LỄ + PHÁP BẢO LỄ =================
-  var FEST_NPC = { id: 'le_su', name: 'Dì Tư', title: 'Người lo lễ hội làng Thanh Khê', sprite: 'chu_quan', mapId: 'map1', x: 33, y: 19 } // V10: + offset map (12,8), rồi +1 ô đông khi Dì Tư rời ô đường (playtest 12:46);
+  var FEST_NPC = { id: 'le_su', name: 'Dì Tư', title: 'Người lo lễ hội làng Thanh Khê', sprite: 'chu_quan', mapId: 'map1', x: 61, y: 44 } // V7-EXPAND: (33,19)+neo map1 (28,25) // V10: + offset map (12,8), rồi +1 ô đông khi Dì Tư rời ô đường (playtest 12:46);
   // Ngày lễ ÂM LỊCH quy ra dương lịch theo năm (gần đúng, tra lịch vạn
   // niên 2025–2032). Ngoài bảng: dùng ngày của năm gần nhất trong bảng.
   var LUNAR_DATES = {
@@ -440,6 +509,198 @@
     return d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear();
   }
 
+  // ---------- Icon lưới 16x16 cho trang phục (đợt 1) ----------
+  // Cùng phong cách icon lưới của gear/artifacts: hình áo + họa tiết
+  // riêng từng bộ, màu lấy từ chính `colors` của bộ (b = màu chính,
+  // B = màu phụ, o = màu nhấn) + d viền tối, s vải sáng, g kim.
+  // Bộ cũ chưa có lưới riêng thì dùng lưới áo chung 'robe'.
+  var COSTUME_GRIDS = {
+    robe: [
+      '................',
+      '......dddd......',
+      '.....dbBBbd.....',
+      '....dbBBBBbd....',
+      '..ddbBBBBBBbdd..',
+      '..dbdbBBBBbdbd..',
+      '..db..bBBb..bd..',
+      '......bBBb......',
+      '.....bBBBBb.....',
+      '.....bBBBBb.....',
+      '....bBBBBBBb....',
+      '....bBBBBBBb....',
+      '...bBBBBBBBBb...',
+      '...bBBBBBBBBb...',
+      '..dddddddddddd..',
+      '................'
+    ],
+    thanh_van_du_hiep: [
+      '................',
+      '......dddd......',
+      '.....dbBBbd.....',
+      '....dbBBoBd.....',
+      '..ddbBBoBBbdd...',
+      '..dbdbobBBbd....',
+      '..db..bBBb..bd..',
+      '......boBb......',
+      '.....bBBBBb.....',
+      '....gggBBgg.....',
+      '....bBBBBBBb....',
+      '....bBBBBBBb....',
+      '...bBBBBBBBBb...',
+      '...bBBBBBBBBb...',
+      '..dddddddddddd..',
+      '................'
+    ],
+    bich_hai_trieu_sinh: [
+      '................',
+      '......dddd......',
+      '.....dbBBbd.....',
+      '....dbBBBBbd....',
+      '..ddbBBBBBBbdd..',
+      '..dbdbBBBBbdbd..',
+      '..db..bBBb..bd..',
+      '......bBBb......',
+      '.....bBBBBb.....',
+      '.....bBBBBb.....',
+      '....bBBBBBBb....',
+      '...oo.oooo.oo...',
+      '..o..o....o..o..',
+      '...bBBBBBBBBb...',
+      '..dddddddddddd..',
+      '................'
+    ],
+    hoa_phuong_chien_y: [
+      '................',
+      '......dddd......',
+      '.....dbBBbd.....',
+      '....dbBBBBbd....',
+      '..ddbBBBBBBbdd..',
+      '..dbdbBBBBbdbd..',
+      '..db..bBBb..bd..',
+      '......bBBb......',
+      '.....bBBoBb.....',
+      '.....bBooBb.....',
+      '....bBBBBBBb....',
+      '....bBoBBobB....',
+      '...bBBBBBBBBb...',
+      '...o.bbBBbb.o...',
+      '..dddddddddddd..',
+      '................'
+    ],
+    mac_ngoc_huyen_y: [
+      '................',
+      '......dddd......',
+      '.....dbbbbd.....',
+      '....dbBBBBbd....',
+      '..ddbBBBBBBbdd..',
+      '..dbdbBBBBbdbd..',
+      '..db..bBBb..bd..',
+      '......bBBb......',
+      '.....bBooBb.....',
+      '.....boBBob.....',
+      '....bBBBBBBb....',
+      '....bBBBBBBb....',
+      '...bBBBBBBBBb...',
+      '...bBBBBBBBBb...',
+      '..dddddddddddd..',
+      '................'
+    ],
+    loi_dinh_dao_bao: [
+      '................',
+      '......dddd......',
+      '.....dbBBbd.....',
+      '....dbBBBBbd....',
+      '..ddbBBBBBBbdd..',
+      '..dbdbBBBBbdbd..',
+      '..db..bBBb..bd..',
+      '......bBBb......',
+      '.....bBbobB.....',
+      '.....bBbobB.....',
+      '....bBBBoBBb....',
+      '....bBBBBobB....',
+      '...bBBBBBBBBb...',
+      '...bBBBBBBBBb...',
+      '..dddddddddddd..',
+      '................'
+    ],
+    kim_lan_giap: [
+      '................',
+      '.....dddddd.....',
+      '....dbBBBBbd....',
+      '...dbBBBBBBbd...',
+      '..ddbBBBBBBbdd..',
+      '..dbdbBBBBbdbd..',
+      '..db..bBBb..bd..',
+      '.....bBbBbB.....',
+      '....bBbBbBbB....',
+      '....bBbBbBbB....',
+      '...bBbBbBbBbB...',
+      '...bBbBbBbBbB...',
+      '...bBBBBBBBBb...',
+      '...bBBBBBBBBb...',
+      '..dddddddddddd..',
+      '................'
+    ],
+    tuyet_lien_tien_y: [
+      '................',
+      '......dddd......',
+      '.....dsSSsd.....',
+      '....dsSSSSsd....',
+      '..ddsSSSSSSsdd..',
+      '..dsdsSSSSsdsd..',
+      '..ds..sSSs..sd..',
+      '......sSSs......',
+      '.....sSSoSs.....',
+      '.....sSooSs.....',
+      '....sSSooSSs....',
+      '....sSSSSSSs....',
+      '...sSSSSSSSSs...',
+      '...sSSSSSSSSs...',
+      '..dddddddddddd..',
+      '................'
+    ],
+    tinh_ha_phap_y: [
+      '................',
+      '......dddd......',
+      '.....dbBBbd.....',
+      '....dbBBBBbd....',
+      '..ddbBBBBBBbdd..',
+      '..dbdbBBBBbdbd..',
+      '..db..bBBb..bd..',
+      '......bBBb......',
+      '.....bBoBobb....',
+      '.....bBBBBb.....',
+      '....bBBobBBBb...',
+      '....bBBBBBBb....',
+      '...bBboBBBBBb...',
+      '...bBBBBBBBBb...',
+      '..dddddddddddd..',
+      '................'
+    ]
+  };
+  function costumePalette(def) {
+    var c = (def && def.colors) || ['#8a8f98', '#c9ccd4', '#c9a44e'];
+    return { b: c[0], B: c[1], o: c[2], d: '#23242e', s: '#e8e4da', S: c[1], g: '#c9a44e' };
+  }
+  function costumeGridPixels(grid, palette) {
+    return grid.map(function (row) {
+      return row.split('').map(function (ch) { return palette[ch] || null; });
+    });
+  }
+  function costumeIconPixels(def) {
+    if (!def) return [];
+    return costumeGridPixels(COSTUME_GRIDS[def.id] || COSTUME_GRIDS.robe, costumePalette(def));
+  }
+  function drawCostumePixels(ctx, px, x, y, scale) {
+    for (var r = 0; r < px.length; r++)
+      for (var c = 0; c < px[r].length; c++)
+        if (px[r][c]) { ctx.fillStyle = px[r][c]; ctx.fillRect(x + c * scale, y + r * scale, scale, scale); }
+  }
+  function drawCostumeIcon(ctx, def, x, y, scale) {
+    if (!def || !ctx) return;
+    drawCostumePixels(ctx, costumeIconPixels(def), x, y, scale);
+  }
+
   // ---------- Đăng ký vào logic.js + artifacts.js (idempotent) ----------
   var _registered = false;
   function registerAll() {
@@ -571,6 +832,8 @@
   registerAll();
   var api = {
     COSTUMES: COSTUMES, COSTUME_IDS: COSTUME_IDS, SEASONS: SEASONS, seasonOf: seasonOf,
+    BOSS_COSTUME_DROPS: BOSS_COSTUME_DROPS, rollBossCostumeDrop: rollBossCostumeDrop,
+    COSTUME_GRIDS: COSTUME_GRIDS, costumeIconPixels: costumeIconPixels, drawCostumeIcon: drawCostumeIcon,
     costumeById: costumeById, shopRows: shopRows,
     ensure: ensure, owns: owns, ownedList: ownedList, wornId: wornId, wornDef: wornDef,
     hasArt: hasArt, isVisible: isVisible, visibleCostumes: visibleCostumes,

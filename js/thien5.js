@@ -11,7 +11,7 @@
 //   q_thien5_1 "Đan độc vào làng" — hái 4 Độc Tâm Hoa ở điểm dược
 //     sẵn có (objective 'collect' chạy qua recordEvent như mọi NV
 //     hái dược; module chỉ quản cổng như khuôn Thiên 4).
-//   q_thien5_2 "Sào mãng sau Đầm Độc" — hạ boss thế giới Cổ Mãng
+//   q_thien5_2 "Sào mãng ở Tâm Phế Tích" — hạ boss thế giới Cổ Mãng
 //     Vương (js/bosses.js, id 'co_mang_vuong', sào ở map 4).
 //   q_thien5_3 "Kẻ giữ ấn lên tiếng" — giữ trọn 1 lượt Thú Triều
 //     (thắng 6/6 đợt, js/beast-tide.js) HOẶC dọn xong 1 lượt Vết

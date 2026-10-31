@@ -151,9 +151,82 @@
       stats: { hp: 60, ll: 30, crit: 5 },
       signature: { name: 'Cửu Chuyển Hồi Sinh', kind: 'revive', hpPct: 30, threshold: 25, cd: 60 },
       fxText: 'Hồi linh lực tăng 60%, tu vi nhận tăng 15%. Ký danh Cửu Chuyển Hồi Sinh: khi Máu xuống dưới 25%, tự hồi 30% Máu tối đa (mỗi 60 giây một lần).',
-      desc: 'Chuỗi chín viên linh châu chuyển khí không ngừng, là bảo vật trấn thân mà tu sĩ Luyện Khí chỉ dám mơ.' }
+      desc: 'Chuỗi chín viên linh châu chuyển khí không ngừng, là bảo vật trấn thân mà tu sĩ Luyện Khí chỉ dám mơ.' },
+    // ===== ĐỢT 1 (lệnh Bui 20:41 31/10): 12 pháp bảo mới =====
+    // Thang số bám docs/equipment-slots-design.md mục 1 + economy.md:
+    // Phàm/Linh bán ở tiệm Lý lão (price > 0, value ~25-40% giá); Huyền
+    // chế tạo/rớt; Địa/Thiên CHỈ từ boss/sự kiện (price 0) + cổng cảnh
+    // giới reqRealm như hệ gear (Địa = Trúc Cơ rank 2, Thiên = Kim Đan
+    // rank 3 — trường mới, món cũ không có trường này nên không đổi).
+    thiet_moc_la_ban: { id: 'thiet_moc_la_ban', kind: 'bao', shape: 'la_ban', grade: 'pham', name: 'Thiết Mộc La Bàn', reqTier: 0, price: 130, value: 52,
+      fx: { dropPct: 10 },
+      fxText: 'La bàn dẫn tài: tỉ lệ rơi vật phẩm tăng 10%.',
+      desc: 'La bàn gỗ lim bọc sắt của thương đội Mã gia, kim chỉ nam rung lên khi gần nơi có đồ rơi. Đồ dẫn đường của dân cày cuốc.' },
+    truc_diep_chu: { id: 'truc_diep_chu', kind: 'phap', shape: 'chu', grade: 'pham', name: 'Trúc Diệp Chu', reqTier: 0, price: 140, value: 56,
+      stats: { speed: 5 },
+      fxText: 'Thuyền lá tre nâng bước: tốc độ di chuyển tăng 5%.',
+      desc: 'Chiếc thuyền gấp bằng lá tre ngâm linh dịch, đậu ở gót chân người đeo. Bước đi nhẹ hẳn như có nước đẩy dưới gót.' },
+    thanh_dong_co_chuong: { id: 'thanh_dong_co_chuong', kind: 'phap', shape: 'chuong', grade: 'linh', name: 'Thanh Đồng Cổ Chung', reqTier: 1, price: 380, value: 95,
+      fx: { kind: 'stun_react', chance: 0.12, dur: 0.6, radius: 60 },
+      stats: { def: 1 },
+      fxText: 'Khi bị đánh, 12% chuông tự ngân: quái quanh bạn choáng 0,6 giây. Giáp +1.',
+      desc: 'Chuông đồng xanh rêu đào được ở nền miếu cũ, gõ không kêu mà khi chủ gặp đòn lại tự ngân trầm. Bản nhỏ của Chuông Trấn Hồn.' },
+    bich_ngoc_an: { id: 'bich_ngoc_an', kind: 'phap', shape: 'an', grade: 'linh', name: 'Bích Ngọc Ấn', reqTier: 1, price: 420, value: 105,
+      fx: { kind: 'vs_boss', pct: 8, llOnKill: 2 },
+      stats: { hp: 15 },
+      fxText: 'Thêm 8% sát thương lên boss và quái tinh anh. Hạ một quái hồi 2 linh lực. Máu tối đa +15.',
+      desc: 'Ấn ngọc bích khắc triện cổ, đóng xuống đâu là yêu khí tán tới đó. Tu sĩ trẻ săn tinh anh hay mượn ấn này trấn áp.' },
+    tu_linh_ho_lo: { id: 'tu_linh_ho_lo', kind: 'bao', shape: 'holo', grade: 'linh', name: 'Tụ Linh Hồ Lô', reqTier: 1, price: 360, value: 90,
+      fx: { llRegenPct: 25 },
+      stats: { ll: 10 },
+      fxText: 'Tốc độ hồi linh lực tăng 25%. Linh lực tối đa +10.',
+      desc: 'Hồ lô non hứng sương linh khí đầu nguồn suối, đeo bên hông thì linh khí quanh thân tụ lại không tán. Nhỏ mà có võ.' },
+    phong_loi_tan: { id: 'phong_loi_tan', kind: 'phap', shape: 'tan', grade: 'huyen', name: 'Phong Lôi Tán', reqTier: 2, price: 0, value: 290,
+      fx: { dmgRedPct: 5 },
+      stats: { def: 2, elem: { phong: 10, loi: 10 } },
+      fxText: 'Giảm 5% mọi sát thương nhận vào. Giáp +2, sát thương hệ Phong +10%, hệ Lôi +10%.',
+      desc: 'Ô nan tre phủ da thú dệt chỉ đồng, mở ra là gió rít và sét nổ lách tách quanh tán. Vừa che đòn vừa gọi lôi phong trợ chiến.' },
+    ngu_hanh_phien: { id: 'ngu_hanh_phien', kind: 'phap', shape: 'phien', grade: 'huyen', name: 'Ngũ Hành Phiến', reqTier: 2, price: 0, value: 310,
+      stats: { ll: 12, elem: { kim: 6, moc: 6, thuy: 6, hoa: 6, tho: 6 } },
+      fxText: 'Linh lực tối đa +12. Sát thương cả 5 hệ Kim/Mộc/Thủy/Hỏa/Thổ mỗi hệ +6%.',
+      desc: 'Quạt lông năm màu tượng trưng ngũ hành, quạt một cái là ngũ khí luân chuyển. Pháp khí của người tu tạp linh căn, hệ nào cũng hưởng.' },
+    thai_at_dinh: { id: 'thai_at_dinh', kind: 'bao', shape: 'dinh', grade: 'dia', name: 'Thái Ất Đỉnh', reqTier: 3, reqRealm: 2, price: 0, value: 580,
+      fx: { healPct: 30, tuViPct: 10 },
+      stats: { hp: 40, llRegen: 0.8 },
+      fxText: 'Đan dược và thức ăn hồi máu hiệu quả thêm 30%, tu vi nhận được tăng 10%. Máu tối đa +40, hồi linh lực +0,8/giây. Cần Trúc Cơ mới đeo được.',
+      desc: 'Đỉnh đồng xanh theo đúng đồ hình Thái Ất của Đan Hà Cốc, hơi thuốc ngàn năm thấm vào thân đỉnh. Đeo bên người, thuốc nào qua tay cũng thêm ba phần dược tính.' },
+    can_khon_thap: { id: 'can_khon_thap', kind: 'phap', shape: 'thap', grade: 'dia', name: 'Càn Khôn Tháp', reqTier: 3, reqRealm: 2, price: 0, value: 600,
+      fx: { kind: 'bind', chance: 0.15, dur: 1.4, bossDur: 0.5 },
+      stats: { def: 3, hp: 30 },
+      fxText: 'Đòn đánh có 15% thả bóng tháp trấn quái 1,4 giây (boss 0,5 giây). Giáp +3, Máu tối đa +30. Cần Trúc Cơ mới đeo được.',
+      desc: 'Tháp bảy tầng thu nhỏ bằng nắm tay, trong tháp tự thành một cõi càn khôn. Kẻ bị bóng tháp phủ xuống thì như bị cả ngọn núi đè chân.' },
+    hon_nguyen_chau: { id: 'hon_nguyen_chau', kind: 'bao', shape: 'chau', grade: 'thien', name: 'Hỗn Nguyên Châu', reqTier: 3, reqRealm: 3, price: 0, value: 1200,
+      stats: { hp: 50, def: 4, ll: 20 },
+      signature: { name: 'Hỗn Nguyên Hộ Thể', kind: 'mana_shield', llPct: 50, regenDelay: 5, regenPct: 25 },
+      fxText: 'Máu tối đa +50, Giáp +4, Linh lực tối đa +20. BẢO KỸ Hỗn Nguyên Hộ Thể: một lớp khiên bằng 50% Linh lực tối đa tự hấp thụ sát thương trước Máu; hết giao chiến 5 giây thì khiên tự hồi 25% mỗi giây. Tháo châu ra là khiên mất ngay. Cần Kim Đan mới đeo được.',
+      desc: 'Viên châu hỗn nguyên chưa phân âm dương, linh khí trong châu xoáy như thuở trời đất chưa mở. Bảo vật trấn thân bậc Thiên — người yếu vía cầm vào còn thấy tay run.' },
+    tru_tien_kiem_tran: { id: 'tru_tien_kiem_tran', kind: 'phap', shape: 'kiem_tran', grade: 'thien', name: 'Tru Tiên Kiếm Trận', reqTier: 3, reqRealm: 3, price: 0, value: 1250,
+      stats: { crit: 8, critDmg: 25, ll: 15 },
+      active: { name: 'Kiếm Trận Tru Tiên', mana: 55, cd: 40, kind: 'sword_array', radius: 120, pct: 180, color: '#ffd94a' },
+      fxText: 'Chí mạng +8%, sát thương chí mạng +25%, Linh lực tối đa +15. BẢO KỸ Kiếm Trận Tru Tiên (chủ động, phím 6/7 khi đang đeo): dựng trận kiếm quanh thân, mọi quái trong vòng chịu 180% công của bạn (55 linh lực, hồi chiêu 40 giây). Tháo ra là mất chiêu ngay. Cần Kim Đan mới đeo được.',
+      desc: 'Bốn thanh tiểu kiếm và một trận đồ gói trong hộp gỗ đàn, mở hộp là kiếm khí tự bày thành trận Tru Tiên thu nhỏ. Kiếm tu Kim Đan thấy hộp này cũng phải nín thở.' },
+    can_khon_kinh: { id: 'can_khon_kinh', kind: 'phap', shape: 'kinh', grade: 'thien', name: 'Càn Khôn Kính', reqTier: 3, reqRealm: 3, price: 0, value: 1180,
+      stats: { ll: 30, crit: 4 },
+      signature: { name: 'Kính Phản Chiếu', kind: 'reflect', pct: 15 },
+      fxText: 'Linh lực tối đa +30 (thần thức mở rộng), Chí mạng +4%. BẢO KỸ Kính Phản Chiếu: phản 15% sát thương bạn thực nhận trở lại kẻ vừa đánh bạn. Tháo kính ra là mất ngay. Cần Kim Đan mới đeo được.',
+      desc: 'Mặt kính không soi người mà soi càn khôn: đòn đánh tới đâu, kính ghi nhớ và trả lại một phần y hệt. Thần thức qua kính mà mở rộng hơn hẳn.' }
   };
   Object.keys(ARTIFACTS).forEach(function (id) { ARTIFACTS[id].icon = 'art_' + id; });
+  // Pháp bảo CHƯA có ảnh biểu tượng AI (assets/artifacts-ai/<id>.png chưa
+  // có trên đĩa): luật "hình chưa xong thì ẩn" của Bui — các món này bị
+  // khóa mọi đường sở hữu ở tầng game.js cho tới khi có ảnh; danh sách
+  // phải khớp đĩa, test mục 24B kiểm chéo.
+  var ART_HIDDEN_NO_ART = [
+    'thiet_moc_la_ban', 'truc_diep_chu', 'thanh_dong_co_chuong', 'bich_ngoc_an',
+    'tu_linh_ho_lo', 'phong_loi_tan', 'ngu_hanh_phien', 'thai_at_dinh',
+    'can_khon_thap', 'hon_nguyen_chau', 'tru_tien_kiem_tran', 'can_khon_kinh'
+  ];
+  function isHidden(id) { return ART_HIDDEN_NO_ART.indexOf(id) >= 0; }
   // Tiệm pháp khí của đại phu Lý lão: bán các món price > 0.
   var SHOP = Object.keys(ARTIFACTS).filter(function (id) { return ARTIFACTS[id].price > 0; });
   // Chế tạo tại Lý lão (nguyên liệu sẵn có trong game, fee = công chế bằng Linh Thạch).
@@ -161,7 +234,12 @@
     chuong_tran_hon: { fee: 80, mats: { da_soi: 4, linh_chi: 1 } },
     than_hanh_boi: { fee: 70, mats: { long_ga: 6, da_soi: 2 } },
     tu_bao_bon: { fee: 120, mats: { linh_chi: 2, da_soi: 3 } },
-    dang_tu_khi: { fee: 160, mats: { linh_chi: 3, thao_duoc: 5 } }
+    dang_tu_khi: { fee: 160, mats: { linh_chi: 3, thao_duoc: 5 } },
+    // Đợt 1: chế tạo cho 2 món Linh + 2 món Huyền mới tại Lý lão.
+    thanh_dong_co_chuong: { fee: 60, mats: { da_soi: 3, linh_chi: 1 } },
+    tu_linh_ho_lo: { fee: 55, mats: { linh_chi: 2, thao_duoc: 3 } },
+    phong_loi_tan: { fee: 110, mats: { long_ga: 5, linh_chi: 2 } },
+    ngu_hanh_phien: { fee: 120, mats: { linh_chi: 3, da_soi: 2 } }
   };
   // ---------- Bảng rơi pháp bảo ----------
   // Quái thường: tối đa 1 món/lần như vũ khí. Tinh anh: bảng riêng, 1 món.
@@ -172,18 +250,40 @@
     lon_rung: [{ id: 'ho_tam_boi', chance: 0.02 }],
     soi_rung: [{ id: 'kinh_chieu_yeu', chance: 0.03 }, { id: 'than_hanh_boi', chance: 0.02 }],
     lon_mong_sat: [{ id: 'day_troi_tien', chance: 0.03 }, { id: 'tu_bao_bon', chance: 0.02 }],
-    ran_luc: [{ id: 'kinh_chieu_yeu', chance: 0.03 }, { id: 'chuong_tran_hon', chance: 0.015 }],
-    khi_mat_do: [{ id: 'chuong_tran_hon', chance: 0.03 }, { id: 'tui_tru_vat', chance: 0.02 }]
+    ran_luc: [{ id: 'kinh_chieu_yeu', chance: 0.03 }, { id: 'chuong_tran_hon', chance: 0.015 }, { id: 'ngu_hanh_phien', chance: 0.02 }],
+    khi_mat_do: [{ id: 'chuong_tran_hon', chance: 0.03 }, { id: 'tui_tru_vat', chance: 0.02 }, { id: 'phong_loi_tan', chance: 0.02 }]
   };
   var ELITE_DROPS = [
     { id: 'tui_tru_vat', chance: 0.12 }, { id: 'an_tran_son', chance: 0.10 },
     { id: 'phi_kiem_bao', chance: 0.08 }, { id: 'dang_tu_khi', chance: 0.08 },
-    { id: 'dan_dinh_ngoc', chance: 0.08 }
+    { id: 'dan_dinh_ngoc', chance: 0.08 },
+    { id: 'thai_at_dinh', chance: 0.06 }, { id: 'can_khon_thap', chance: 0.05 }
   ];
   var BOSS_DROPS = [
     { id: 'an_tran_son', chance: 0.5 }, { id: 'thien_la_vong', chance: 0.25 },
-    { id: 'dinh_hai_than_chau', chance: 0.2 }, { id: 'cuu_chuyen_linh_chau', chance: 0.15 }
+    { id: 'dinh_hai_than_chau', chance: 0.2 }, { id: 'cuu_chuyen_linh_chau', chance: 0.15 },
+    { id: 'hon_nguyen_chau', chance: 0.15 }, { id: 'can_khon_kinh', chance: 0.12 },
+    { id: 'tru_tien_kiem_tran', chance: 0.12 }
   ];
+  // Bảng rơi RIÊNG theo từng boss THẾ GIỚI cho pháp bảo đợt 1 — game.js
+  // lăn trong grantBossTableDrops cạnh bảng chính của bosses.js. KHÔNG
+  // gộp vào bosses.js vì test khóa snapshot bảng boss cũ (như tiền lệ
+  // bảng rơi bí tịch riêng của js/manuals.js). Tỉ lệ ký danh 6-8% bám
+  // thang economy.md mục 9 (ký danh boss 8-12%, hồ hiếm 4-5% — ở đây
+  // là bảng phụ nên lấy cận dưới).
+  var BOSS_ART_DROPS = {
+    son_quan: [{ id: 'hon_nguyen_chau', chance: 0.06 }],
+    thien_loi_xa_vuong: [{ id: 'tru_tien_kiem_tran', chance: 0.06 }],
+    co_mang_vuong: [{ id: 'can_khon_kinh', chance: 0.06 }],
+    thiet_bi_ma_vuong: [{ id: 'thai_at_dinh', chance: 0.08 }],
+    lang_doan_long: [{ id: 'can_khon_thap', chance: 0.08 }]
+  };
+  function rollBossDrop(bossId, rng) {
+    var table = BOSS_ART_DROPS[bossId] || [];
+    var rand = rng || Math.random;
+    for (var i = 0; i < table.length; i++) if (rand() < table[i].chance) return table[i].id;
+    return null;
+  }
   // Quái tinh anh: game.js lăn tỉ lệ khi dựng quái các loài này (không áp cho
   // boss / quái sự kiện): HP x1,8, công +4, Linh Thạch x5 (khớp ELITE_LT_MULT trong js/logic.js, test ECO khóa = 5), rơi theo ELITE_DROPS.
   var ELITE_TYPES = ['soi_rung', 'lon_mong_sat', 'khi_mat_do'];
@@ -199,6 +299,10 @@
     if (typeof ch.art.shield !== 'boolean') ch.art.shield = false;
     if (typeof ch.art.shieldCd !== 'number' || isNaN(ch.art.shieldCd)) ch.art.shieldCd = 0;
     if (typeof ch.art.revCd !== 'number' || isNaN(ch.art.revCd)) ch.art.revCd = 0;
+    // Khiên Hỗn Nguyên (bảo kỹ của Hỗn Nguyên Châu): hnShield = lượng
+    // khiên còn lại, hnCalm = số giây chưa bị đánh trúng (điều kiện hồi).
+    if (typeof ch.art.hnShield !== 'number' || isNaN(ch.art.hnShield) || ch.art.hnShield < 0) ch.art.hnShield = 0;
+    if (typeof ch.art.hnCalm !== 'number' || isNaN(ch.art.hnCalm) || ch.art.hnCalm < 0) ch.art.hnCalm = 0;
     if (!ch.acd || typeof ch.acd !== 'object') ch.acd = {};
     return ch;
   }
@@ -260,11 +364,28 @@
   function hasEquipped(ch, defId) {
     return equippedDefs(ch).some(function (d) { return d.id === defId; });
   }
+  // Rank cảnh giới của nhân vật (cùng mẫu gear.js: PNT_MAPS.realmRankOf,
+  // thiếu thì suy từ realmRank/tier). Chỉ dùng cho cổng reqRealm của
+  // pháp bảo đợt 1 — món cũ không có reqRealm nên không bị cổng này.
+  function realmRankOf(ch) {
+    if (!ch) return 0;
+    var MP = null;
+    if (typeof window !== 'undefined' && window.PNT_MAPS) MP = window.PNT_MAPS;
+    else if (typeof globalThis !== 'undefined' && globalThis.PNT_MAPS) MP = globalThis.PNT_MAPS;
+    if (MP && typeof MP.realmRankOf === 'function') return MP.realmRankOf(ch);
+    if (typeof ch.realmRank === 'number') return ch.realmRank;
+    return (ch.tier || 0) > 0 ? 1 : 0;
+  }
   function canEquip(ch, uid) {
+    // Khởi tạo ô đeo nếu nhân vật chưa qua ensure (save rất cũ / gọi
+    // thẳng từ panel) — vòng lặp ô trống bên dưới đọc ch.artSlots trực
+    // tiếp nên phải chắc chắn nó là mảng (equip/unequip đã ensure sẵn).
+    ensureArtifacts(ch);
     var e = findEntry(ch, uid);
     if (!e) return { ok: false, reason: 'missing' };
     var def = ARTIFACTS[e.id];
     if ((ch.tier || 0) < def.reqTier) return { ok: false, reason: 'tier', def: def };
+    if (def.reqRealm && realmRankOf(ch) < def.reqRealm) return { ok: false, reason: 'realm', def: def };
     if (slotOf(ch, uid) >= 0) return { ok: false, reason: 'equipped', def: def };
     if (equippedDefs(ch).some(function (d) { return d.id === def.id; }))
       return { ok: false, reason: 'dup', def: def };
@@ -276,6 +397,12 @@
     var chk = canEquip(ch, uid);
     if (!chk.ok) return chk;
     ch.artSlots[chk.slot] = uid;
+    // Đeo pháp bảo có khiên linh lực (Hỗn Nguyên Châu): khiên đầy ngay.
+    if (chk.def.signature && chk.def.signature.kind === 'mana_shield') {
+      ensureArtState(ch);
+      ch.art.hnShield = manaShieldCap(ch);
+      ch.art.hnCalm = 0;
+    }
     return { ok: true, def: chk.def, slot: chk.slot };
   }
   function unequip(ch, uid) {
@@ -284,6 +411,11 @@
     var e = findEntry(ch, uid);
     ch.artSlots[s] = null;
     if (e && ARTIFACTS[e.id].id === 'dinh_hai_than_chau') { ensureArtState(ch); ch.art.shield = false; }
+    // Tháo Hỗn Nguyên Châu: bảo kỹ mất NGAY — khiên tan, không giữ lại.
+    if (e && ARTIFACTS[e.id].signature && ARTIFACTS[e.id].signature.kind === 'mana_shield') {
+      ensureArtState(ch);
+      ch.art.hnShield = 0; ch.art.hnCalm = 0;
+    }
     ensureArtifacts(ch); // kẹp lại HP theo trần mới
     return { ok: true, def: e ? ARTIFACTS[e.id] : null, slot: s };
   }
@@ -414,6 +546,80 @@
     ch.art.revCd = def.signature.cd;
     return heal;
   }
+  // ---------- BẢO KỸ PHÁP BẢO THIÊN (đợt 1, lệnh Bui 20:41 31/10) ----------
+  // Luật chung: bảo kỹ TỒN TẠI CHỈ KHI pháp bảo đang đeo — mọi hàm dưới
+  // đây đều suy từ equippedDefs() tại thời điểm gọi, tháo ra là mất ngay
+  // (khiên Hỗn Nguyên còn bị xoá cưỡng bức trong unequip + tickManaShield
+  // + anticheat.validateSave). Không có cờ "đã mở khoá skill" nào lưu
+  // riêng, nên không đường nào giữ được bảo kỹ sau khi tháo.
+  function signatureDef(ch, kind) {
+    var found = null;
+    equippedDefs(ch).forEach(function (d) { if (d.signature && d.signature.kind === kind) found = d; });
+    return found;
+  }
+  // Linh lực tối đa: ưu tiên PNT_SKILLS.maxLinhLuc (nguồn thật duy nhất);
+  // thiếu module kỹ năng thì dùng công thức nền cùng thang (40 + 25/tầng
+  // + ll từ trang bị của module này) — chỉ là đường dự phòng cho test.
+  function maxLinhLucLazy(ch) {
+    var SK = null;
+    if (typeof window !== 'undefined' && window.PNT_SKILLS) SK = window.PNT_SKILLS;
+    else if (typeof globalThis !== 'undefined' && globalThis.PNT_SKILLS) SK = globalThis.PNT_SKILLS;
+    if (SK && typeof SK.maxLinhLuc === 'function') return SK.maxLinhLuc(ch);
+    return 40 + (ch.tier || 0) * 25 + totalStats(ch).ll;
+  }
+  // Trần khiên Hỗn Nguyên = llPct% của Linh lực tối đa (mặc định 50%).
+  function manaShieldCap(ch) {
+    var def = signatureDef(ch, 'mana_shield');
+    if (!def) return 0;
+    return Math.max(0, Math.round(maxLinhLucLazy(ch) * (def.signature.llPct || 50) / 100));
+  }
+  // Trạng thái khiên cho HUD/test/anticheat: null khi không đeo châu.
+  // HÀM THUẦN — không sửa ch (anticheat gọi khi nạp save).
+  function manaShield(ch) {
+    var def = signatureDef(ch, 'mana_shield');
+    if (!def) return null;
+    var cur = (ch.art && typeof ch.art.hnShield === 'number' && isFinite(ch.art.hnShield)) ? ch.art.hnShield : 0;
+    return { cur: Math.max(0, cur), cap: manaShieldCap(ch), def: def };
+  }
+  // Khiên hấp thụ sát thương: trả về lượng ĐÃ đỡ (game.js cộng lại HP
+  // theo đúng mẫu các lớp giảm sát thương khác). Đỡ đòn = mất yên tĩnh:
+  // hnCalm về 0 để khiên chỉ hồi khi thật sự hết giao chiến.
+  function absorbManaShield(ch, dmg) {
+    if (!ch || !(dmg > 0)) return 0;
+    var cap = manaShieldCap(ch);
+    if (cap <= 0) return 0;
+    ensureArtState(ch);
+    ch.art.hnCalm = 0; // bị đánh trúng (dù khiên đã cạn) cũng mất yên tĩnh
+    var pool = Math.min(ch.art.hnShield, cap);
+    var absorbed = Math.min(pool, dmg);
+    if (absorbed > 0) ch.art.hnShield = pool - absorbed;
+    return absorbed;
+  }
+  // Nhịp khiên theo thời gian: không đeo châu -> khiên luôn 0; đeo mà
+  // yên tĩnh đủ regenDelay giây -> hồi regenPct% trần/giây tới đầy.
+  function tickManaShield(ch, dt) {
+    if (!ch) return;
+    ensureArtState(ch);
+    var def = signatureDef(ch, 'mana_shield');
+    if (!def) { ch.art.hnShield = 0; ch.art.hnCalm = 0; return; }
+    var cap = manaShieldCap(ch);
+    if (ch.art.hnShield > cap) ch.art.hnShield = cap;
+    ch.art.hnCalm += dt;
+    if (ch.art.hnCalm >= (def.signature.regenDelay || 5) && ch.art.hnShield < cap) {
+      ch.art.hnShield = Math.min(cap, ch.art.hnShield + cap * (def.signature.regenPct || 25) / 100 * dt);
+    }
+  }
+  // Kính Phản Chiếu (Càn Khôn Kính): % sát thương thực nhận bị phản lại
+  // kẻ tấn công (game.js áp lên quái qua rawHitMonster). 0 khi không đeo.
+  function reflectPct(ch) {
+    var def = signatureDef(ch, 'reflect');
+    return def ? (def.signature.pct || 0) : 0;
+  }
+  function reflectAmount(ch, dmgTaken) {
+    var pct = reflectPct(ch);
+    if (!pct || !(dmgTaken > 0)) return 0;
+    return Math.max(1, Math.round(dmgTaken * pct / 100));
+  }
   // ---------- Kích hoạt chủ động (phím 6 = ô 1, phím 7 = ô 2) ----------
   function activeOf(ch, slot) {
     var def = equippedDefAt(ch, slot);
@@ -446,6 +652,7 @@
     });
     if (ch.art.shieldCd > 0) ch.art.shieldCd -= dt;
     if (ch.art.revCd > 0) ch.art.revCd -= dt;
+    tickManaShield(ch, dt); // khiên Hỗn Nguyên: hồi khi yên tĩnh, tan khi tháo châu
   }
   // ---------- Mua / bán / chế tạo (tiệm của Lý lão) ----------
   function sellPrice(def) { return def.value; }
@@ -845,6 +1052,114 @@
       '......oooo......',
       '................',
       '................'
+    ],
+    la_ban: [
+      '.......oo.......',
+      '......oBBo......',
+      '.....oB..Bo.....',
+      '....oB....Bo....',
+      '...oB..ff..Bo...',
+      '..oB..foof..Bo..',
+      '..o...fo.of...o.',
+      '..oB..foof..Bo..',
+      '...oB..ff..Bo...',
+      '....oB....Bo....',
+      '.....oB..Bo.....',
+      '......oBBo......',
+      '.......oo.......',
+      '......gggg......',
+      '.....gggggg.....',
+      '................'
+    ],
+    chu: [
+      '................',
+      '.......ss.......',
+      '......ssss......',
+      '.....ss..ss.....',
+      '....ss....ss....',
+      '.......hh.......',
+      '.......hh.......',
+      '..bbbbbbbbbbbb..',
+      '.bBBBBBBBBBBBBb.',
+      '..bbbbbbbbbbbb..',
+      '...bbbbbbbbbb...',
+      '....dddddddd....',
+      '................',
+      '..j.j..j..j.j...',
+      '................',
+      '................'
+    ],
+    tan: [
+      '.......oo.......',
+      '.....oooooo.....',
+      '....obBBBBbo....',
+      '..oobBBBBBBoo...',
+      '.obBBBBBBBBBBo..',
+      'obBfBBBBBBBBfBo.',
+      '..b.b.b..b.b....',
+      '.....b..b.......',
+      '......b.b.......',
+      '.......b........',
+      '.......b........',
+      '.......b........',
+      '......ooo.......',
+      '................',
+      '................',
+      '................'
+    ],
+    phien: [
+      '................',
+      '....j..y..f.....',
+      '...jjj.yyy.ff...',
+      '..jbBjyByBfBf...',
+      '..jbbbbyyyfff...',
+      '...bbbbbyyff....',
+      '....bbbbyyf.....',
+      '.....bbbyf......',
+      '.......hh.......',
+      '.......hh.......',
+      '.......hh.......',
+      '.......hh.......',
+      '......oooo......',
+      '................',
+      '................',
+      '................'
+    ],
+    thap: [
+      '.......oo.......',
+      '......oooo......',
+      '.....gggggg.....',
+      '....bbbbbbbb....',
+      '.....bBBBBb.....',
+      '....gggggggg....',
+      '...bbbbbbbbbb...',
+      '....bBBBBBBb....',
+      '...gggggggggg...',
+      '..bbbbbbbbbbbb..',
+      '..bBBBffffBBBb..',
+      '..bbbbbbbbbbbb..',
+      '..dddddddddddd..',
+      '.dddddddddddddd.',
+      '................',
+      '................'
+    ],
+    kiem_tran: [
+      '.B............B.',
+      '..B....oo....B..',
+      '...B..oBBo..B...',
+      '....B.oooo.B....',
+      '.....bbbbbb.....',
+      '..B...bBBb...B..',
+      '...B..bBBb..B...',
+      '....B.bBBb.B....',
+      '.....gggggg.....',
+      '.......hh.......',
+      '..B....hh....B..',
+      '...B........B...',
+      '....B......B....',
+      '................',
+      '................',
+      '................'
     ]
   };
   function gridPixels(grid, palette) {
@@ -957,12 +1272,31 @@
         ctx.globalAlpha = 1;
         if (ctx.restore) ctx.restore();
       }
+      // Khiên Hỗn Nguyên (bảo kỹ): vòng vàng quanh thân, độ mờ theo
+      // tỉ lệ khiên còn lại — khiên cạn thì vòng tắt hẳn.
+      if (def.signature && def.signature.kind === 'mana_shield') {
+        var ms = manaShield(ch);
+        if (ms && ms.cap > 0 && ms.cur > 0) {
+          if (ctx.save) ctx.save();
+          ctx.globalAlpha = 0.25 + 0.45 * (ms.cur / ms.cap);
+          ctx.strokeStyle = '#ffe98a';
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.arc(cx, cy - 48, 36 + Math.sin(t * 2.4) * 2, 0, Math.PI * 2);
+          ctx.stroke();
+          ctx.globalAlpha = 1;
+          if (ctx.restore) ctx.restore();
+        }
+      }
     });
   }
   var api = {
     KINDS: KINDS, GRADES: GRADES, GRADE_PALETTES: GRADE_PALETTES, ELEM_NAMES: ELEM_NAMES,
-    ARTIFACTS: ARTIFACTS, SHOP: SHOP, RECIPES: RECIPES,
+    ARTIFACTS: ARTIFACTS, ART_HIDDEN_NO_ART: ART_HIDDEN_NO_ART, isHidden: isHidden, SHOP: SHOP, RECIPES: RECIPES,
     DROPS: DROPS, ELITE_DROPS: ELITE_DROPS, BOSS_DROPS: BOSS_DROPS,
+    BOSS_ART_DROPS: BOSS_ART_DROPS, rollBossDrop: rollBossDrop, realmRankOf: realmRankOf,
+    manaShieldCap: manaShieldCap, manaShield: manaShield, absorbManaShield: absorbManaShield,
+    tickManaShield: tickManaShield, reflectPct: reflectPct, reflectAmount: reflectAmount,
     ELITE_TYPES: ELITE_TYPES, ELITE_CHANCE: ELITE_CHANCE, ELITE_HP_MULT: ELITE_HP_MULT, ELITE_ATK_ADD: ELITE_ATK_ADD,
     CAPS: CAPS, SLOT_COUNT: SLOT_COUNT, paletteFor: paletteFor,
     isArtifactId: isArtifactId, artifactDef: artifactDef, isArtifactEntry: isArtifactEntry,

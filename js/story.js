@@ -75,6 +75,16 @@
         personality: 'Sởi lởi, tính toán rõ ràng, coi chữ tín hơn vàng.',
         past: 'Nhiều năm dẫn thương đội phương bắc qua Thanh Khê. Đợt này xe hàng bị sói rừng chặn ở đường mòn phía nam nên kẹt lại chờ đường thông.',
         relations: 'Người đỡ đầu làm ăn của Lục Tiểu Lục; bạn hàng lâu năm của Hoa nương.' },
+      // Trạm dừng chân dọc Đại Sơn (mục 42 hàng chờ, 2026-10-31): người
+      // của thương đội Mã Vạn Lai ở lại giữ lều cho người đi núi.
+      tram_chi_dinh: { name: 'A Phúc', title: 'Người giữ trạm Chi Đỉnh', age: 39,
+        personality: 'Chân chất, nói to, nhớ mặt từng người đi núi.',
+        past: 'Đánh xe cho thương đội Mã Vạn Lai mười năm, nay ở lại giữ lều trạm ở Chi Đỉnh — nơi đoàn xe nghỉ trước khi lên chặng Trúc Cơ.',
+        relations: 'Người của thương đội Mã Vạn Lai; em họ của Lục Tiểu Lục.' },
+      tram_xich_diem: { name: 'A Lộc', title: 'Người giữ trạm Xích Diệm', age: 44,
+        personality: 'Trầm tính, ít nói, thuộc đường núi như thuộc sổ hàng.',
+        past: 'Đánh xe cho thương đội Mã Vạn Lai mười lăm năm, nay ở lại giữ lều trạm ở Xích Diệm Hoang Nguyên — chặng xa nhất mà xe hàng còn tới được.',
+        relations: 'Người của thương đội Mã Vạn Lai; bạn đánh xe cũ của A Phúc.' },
       hoc_tro: { name: 'Lý Tiểu Hạnh', title: 'Học trò của Lý đại phu', age: 19,
         personality: 'Nhanh nhẹn, tò mò, hơi hấp tấp nhưng rất có tâm với người bệnh.',
         past: 'Chính là người học trò lên thành phố lấy thuốc được nhắc từ chương 1-4. Nay trở về làng đúng lúc mùa thú dữ, mang theo thuốc mới và tin tức về đợt tuyển đệ tử của Thanh Phong Phái.',
@@ -2674,6 +2684,41 @@ loi_ky_su: {
           ]
         }
       },
+      // Trạm dừng chân dọc Đại Sơn (mục 42 hàng chờ, 2026-10-31).
+      tram_chi_dinh: {
+        lines: [
+          'Lều của thương đội đây, tu sĩ ghé nghỉ chân đi. Hàng mang theo núi chỉ còn Bùa Ngự Thú với Trứng Linh Thú — giá như ở sạp của chú Mã dưới núi, không thêm một đồng.',
+          'Đoàn xe của chú Mã đi tới đâu, lều dựng tới đó. Trạm này là chỗ đoàn nghỉ trước khi lên chặng Trúc Cơ, nên người đi núi ghé đây là đúng chỗ rồi.'
+        ],
+        greeting: [
+          'Tu sĩ đi núi đấy à? Vào lều ngồi một lát đã. Từ trạm này, đi xuống phía nam là về Thâm Xứ rồi cứ xuống núi theo đường cũ về làng Thanh Khê; đi lên phía bắc qua cổng Chi Đỉnh là vào Sơn Trung Vân Hải — nhưng cổng ấy chỉ mở cho người đã Trúc Cơ, chưa tới thì đừng cố.'
+        ],
+        lore: [
+          'Hết máu thì đừng cố đánh tiếp lấy được. Về trạm ngồi lại, xem lại túi đồ rồi hẵng đi — núi này không chạy đi đâu, mạng thì chỉ có một.',
+          'Chú Mã dặn rồi: trạm không phải quán trọ, không có giường chiếu gì đâu, chỉ có mái lều, hàng mang theo và đường chỉ rõ. Thế mà người đi núi vẫn ghé đông.'
+        ],
+        idle: [
+          'Đang vá lại mái lều bị gió đỉnh núi tốc.',
+          'Kiểm lại sổ hàng: bùa còn, trứng còn, muối thì hết từ hôm kia.'
+        ]
+      },
+      tram_xich_diem: {
+        lines: [
+          'Lều của thương đội đây, tu sĩ ghé nghỉ chân đi. Hàng mang theo núi chỉ còn Bùa Ngự Thú với Trứng Linh Thú — giá như ở sạp của chú Mã dưới núi, không thêm một đồng.',
+          'Xe hàng lên tới Xích Diệm này là hết đường xe rồi. Xa hơn nữa, chỉ còn chân người đi bộ mà thôi.'
+        ],
+        greeting: [
+          'Tu sĩ đi tới tận Xích Diệm rồi cơ à? Ngồi xuống uống ngụm nước đã. Muốn về làng thì đi ngược về phía nam: qua Đoạn Long Lĩnh, Sơn Trung Vân Hải, Chi Đỉnh rồi cứ xuống núi theo đường cũ về Thanh Khê; còn đi lên phía bắc qua cổng là vào Hàn Băng Cốc — đất Kim Đan, lạnh thấu xương, chuẩn bị đan dược hẵng đi.'
+        ],
+        lore: [
+          'Hết máu ở chặng này thì đừng tiếc đường về. Về trạm ngồi lại, tính lại rồi hẵng đi tiếp — đi tiếp khi máu đã cạn thì chỉ có nước để quái tiễn về làng không công.',
+          'Trạm này A Phúc ở Chi Đỉnh dựng giúp ta hồi đầu năm. Hai trạm nhìn nhau qua mấy chặng núi, mà người đi núi thì cứ từ trạm này lần sang trạm kia.'
+        ],
+        idle: [
+          'Đang phủ thêm da thú lên mái lều cho khỏi lọt gió nóng.',
+          'Đếm lại bùa trong hòm: thiếu một lá là cả đoàn hỏi thăm.'
+        ]
+      },
       hoc_tro: {
         lines: [
           'Em về rồi đây! Thành phố đông quá, mà thuốc quý nhất vẫn là thuốc cứu được người làng mình.',
@@ -3680,7 +3725,7 @@ loi_ky_su: {
         beats: ['Đoàn đọc ấn chưa kịp xuống điểm mạch thì tin dữ về trước: một mẻ đan giả đóng ấn Đan Hà Cốc bán qua phiên chợ — hai người làng và ba đệ tử trúng độc, cả vùng chỉ mặt Ngũ Độc Giáo (mầm dè chừng từ chương 11 nay thành án).', 'Tông giao người chơi tra án; việc đầu không phải đánh ai: hái 4 cây Độc Tâm Hoa còn tươi ở điểm dược quanh bờ suối phía đông Rừng Thanh Sơn (hệ luyện đan sẵn có).', 'Lý lão cần mẫu hoa THẬT để đối chiếu: độc trong đan giả bị tinh luyện lệch một nấc — chỉ mẫu tươi mới phân biệt được hàng giả với độc thuật có bài bản của Ngũ Độc Giáo.'],
         climax: 'Mẫu hoa về tay: độc trong đan giả đúng là bị tinh luyện lệch — Ngũ Độc Giáo có cơ hội được rửa oan, nhưng phải có bằng chứng cứng hơn một lời đối chiếu.',
         reward: '260 Linh Thạch, +110 tu vi, +15 Điểm Cống Hiến.', hook: 'Thứ nọc mạnh tới mức đó chỉ có một nguồn quanh vùng: Cổ Mãng Vương ở Thập Vạn Đại Sơn — và quanh sào nó có dấu một lò luyện dã chiến.' },
-      { id: 'chuong_29', title: 'Sào mãng sau Đầm Độc', quests: ['q_thien5_2'], npcs: ['sect_rep'],
+      { id: 'chuong_29', title: 'Sào mãng ở Tâm Phế Tích', quests: ['q_thien5_2'], npcs: ['sect_rep'],
         beats: ['Đối chiếu mẫu hoa chỉ ra nguồn độc: nọc Cổ Mãng bị tinh luyện. Quanh sào Cổ Mãng Vương ở Thập Vạn Đại Sơn (map 4) có dấu lò luyện dã chiến, khói chưa tan hẳn.', 'Người chơi hạ boss thế giới Cổ Mãng Vương (hồi sinh theo chu kỳ boss sẵn có) và lục sào của nó tìm bằng chứng.', 'Trong sào: một trang Thanh Khê Thủ Trát — quyển sách bị đánh cắp khỏi Tàng Kinh Các (mầm đã gieo ở mục 37) — bị dùng làm giấy gói nọc, cùng triện của lò luyện giả: không thuộc tông nào trong mười tông.'],
         climax: 'Bằng chứng về tay: Ngũ Độc Giáo rửa oan, và kẻ đứng sau lần đầu có hình bóng — một ma tu giữ di chỉ dưới điểm mạch.',
         reward: '280 Linh Thạch, +130 tu vi, +15 Điểm Cống Hiến.', hook: 'Kẻ luyện đan giả vẫn chưa lộ mặt — hắn chỉ còn hai đường bịt đầu mối: thú triều vào làng, hoặc vết nứt hư không.' },

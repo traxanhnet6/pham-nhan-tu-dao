@@ -204,6 +204,20 @@
       if (qs.accepted[act].done) return TURNIN_LINES[act];
       return [reminderLine(act, qs.accepted[act].progress || 0)];
     }
+    // QA (f) 15:31 30/10, mục 52 hàng chờ (phương án (a) — chặn việc
+    // tiết thứ hai): đang dở một việc tiết thì người giao việc tiết
+    // của tháng này cũng nói rõ lý do chưa mở nhận. Trước đây nhánh
+    // này trả null nên người chơi gặp người giao mới chỉ thấy câu
+    // chào chung, không biết vì sao không có nút nhận việc — trong
+    // khi nút nhận vốn đã bị availableQuestId chặn (một lúc chỉ
+    // một việc tiết) nên việc thứ hai không bao giờ rơi vào cảnh
+    // "làm xong mà không có nút trả". Nhánh này chỉ chạy khi người
+    // giao tháng này khác người giao việc đang dở và việc tháng này
+    // chưa từng trả (đã trả rồi thì không còn việc để nhận nữa).
+    var curQ52 = questOfSeason(seasonOf(date).id);
+    if (act && curQ52 && QUEST_META[curQ52].giver === npcId && !turnedIn(qs, curQ52)) {
+      return ['Việc tiết tháng này chưa mở nhận được — đang dở một việc tiết khác (' + QUEST_META[act].giverName + ' giao), làm xong việc đó đã rồi quay lại đây nhận việc mới.'];
+    }
     var av = availableQuestId(null, flags, qs, date);
     if (av && QUEST_META[av].giver === npcId) return QUEST_LINES[av];
     return null;

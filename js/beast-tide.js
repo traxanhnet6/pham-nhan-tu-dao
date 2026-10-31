@@ -72,10 +72,10 @@
   function num(v, d) { v = +v; return isFinite(v) ? v : d; }
 
   // ---------- Hằng số khung ----------
-  var STEWARD = { id: 'chap_su_thu_trieu', name: 'Vệ Trường Không', title: 'Chấp Sự Thủ Triều', mapId: 'map1', x: 46, y: 51 }; // V3: (22,13) + offset V10 (12,8) + neo V3 map1 (12,30)
+  var STEWARD = { id: 'chap_su_thu_trieu', name: 'Vệ Trường Không', title: 'Chấp Sự Thủ Triều', mapId: 'map1', x: 74, y: 76 }; // V7-EXPAND: (46,51)+neo map1 (28,25) // V3: (22,13) + offset V10 (12,8) + neo V3 map1 (12,30)
   // Cổng Nam Môn map 1: tường ở hàng 14, miệng cổng x19-20. Thú đi bộ
   // lên miệng cổng (hàng 15) trong dải x17-22 là coi như đã chạm cổng.
-  var GATE = { mapId: 'map1', x: 43, y: 52, w: 2, breachY: 53, breachX0: 41, breachX1: 46 }; // V3: + neo V3 map1 (12,30) trên số V10
+  var GATE = { mapId: 'map1', x: 71, y: 77, w: 2, breachY: 78, breachX0: 69, breachX1: 74 }; // V7-EXPAND: cong Nam Mon lang o (71-72,77), tuong hang 77 // V3: + neo V3 map1 (12,30) trên số V10
   var SESSIONS = [11 * 60 + 30, 20 * 60 + 30]; // 11:30 và 20:30, phút từ 00:00 giờ địa phương
   var DUR_MIN = 45;         // mỗi phiên mở nhận nhiệm vụ 45 phút
   var MIN_RANK = 2;         // Trúc Cơ
@@ -85,7 +85,7 @@
   var REWARD = { perWaveLt: 40, perWaveMerit: 5, winLt: 160, winMerit: 20, joinLt: 10 };
   var LEADER_TYPE = 'lon_mong_sat';
   var LEADER_NAME = 'Yêu Vương Hống Sơn';
-  var LEADER_SLOT = { x: 43, y: 68 }; // V3: (19,30) + offset V10 (12,8) + neo V3 map1 (12,30)
+  var LEADER_SLOT = { x: 71, y: 93 }; // V7-EXPAND: (43,68)+neo (28,25) // V3: (19,30) + offset V10 (12,8) + neo V3 map1 (12,30)
 
   // ---------- 6 đợt thú (tăng dần về số lượng + sức loài) ----------
   var WAVES = [
@@ -98,13 +98,13 @@
   ];
   // Điểm tràn vào ở bãi nam map 1 (đã kiểm ô đi được trong maps.js).
   // V3: số V10 + neo V3 map1 (12,30).
-  var SPAWN_SLOTS = [
-    { x: 36, y: 66 }, { x: 40, y: 67 }, { x: 44, y: 66 }, { x: 48, y: 67 }, { x: 52, y: 66 },
-    { x: 38, y: 69 }, { x: 50, y: 69 }, { x: 42, y: 70 }, { x: 46, y: 65 }, { x: 54, y: 68 }
+  var SPAWN_SLOTS = [ // V7-EXPAND: tat ca +neo map1 (28,25)
+    { x: 64, y: 91 }, { x: 68, y: 92 }, { x: 72, y: 91 }, { x: 76, y: 92 }, { x: 80, y: 91 },
+    { x: 66, y: 94 }, { x: 78, y: 94 }, { x: 70, y: 95 }, { x: 74, y: 90 }, { x: 82, y: 93 }
   ];
   // Hàng đứng của 10 đệ tử đồng minh: trước cổng Nam Môn, hàng 55
   // (V3: hàng 17 cũ + tổng neo (24,38)), trải x35-53.
-  function allyPost(i) { return { x: 35 + i * 2, y: 55 }; }
+  function allyPost(i) { return { x: 63 + i * 2, y: 80 }; } // V7-EXPAND: hang truoc cong Nam Mon (hang 80), x63-81
 
   // ---------- Trạng thái trong save (flags.tide) ----------
   function ensure(flags) {
