@@ -1,0 +1,265 @@
+{
+ "family": "quest-items",
+ "team": "icon-fx/ctx-quest",
+ "tiers": {
+  "cao": "assets/quest-items-ai",
+  "trung": "assets/quest-items-md"
+ },
+ "note": "cellCao 192 / cellTrung 120 nhu cac ho icon hien co. trang_thu_trat, dan_doc_gia, an_co_diem_mach la id DE XUAT (chua co trong js/ITEMS) — cho tich hop tao ITEMS roi moi noi day. prop_* la prop cot truyen co lon 512px cung thu muc -ai, khong co ban -md. Dot 2 (CTX-QUEST): +13 id food/material/antique/origin_fate; the_ngoc_am CHUA lam - chua co ITEMS id, cho tich hop tao id.",
+ "types": {
+  "lenh_bai_thanh_phong": {
+   "cellCao": 192,
+   "cellTrung": 120,
+   "group": "sect_token"
+  },
+  "lenh_bai_huyen_phap": {
+   "cellCao": 192,
+   "cellTrung": 120,
+   "group": "sect_token"
+  },
+  "lenh_bai_thien_cong": {
+   "cellCao": 192,
+   "cellTrung": 120,
+   "group": "sect_token"
+  },
+  "lenh_bai_dan_ha": {
+   "cellCao": 192,
+   "cellTrung": 120,
+   "group": "sect_token"
+  },
+  "lenh_bai_van_thu": {
+   "cellCao": 192,
+   "cellTrung": 120,
+   "group": "sect_token"
+  },
+  "lenh_bai_thien_phu": {
+   "cellCao": 192,
+   "cellTrung": 120,
+   "group": "sect_token"
+  },
+  "lenh_bai_cuu_cung": {
+   "cellCao": 192,
+   "cellTrung": 120,
+   "group": "sect_token"
+  },
+  "lenh_bai_kim_cang": {
+   "cellCao": 192,
+   "cellTrung": 120,
+   "group": "sect_token"
+  },
+  "lenh_bai_ngu_doc": {
+   "cellCao": 192,
+   "cellTrung": 120,
+   "group": "sect_token"
+  },
+  "lenh_bai_huyen_am": {
+   "cellCao": 192,
+   "cellTrung": 120,
+   "group": "sect_token"
+  },
+  "nanh_son_quan": {
+   "cellCao": 192,
+   "cellTrung": 120,
+   "group": "story"
+  },
+  "van_thu_an": {
+   "cellCao": 192,
+   "cellTrung": 120,
+   "group": "story"
+  },
+  "thiet_bia_tan_phien": {
+   "cellCao": 192,
+   "cellTrung": 120,
+   "group": "story"
+  },
+  "kim_bai_dai_hoi": {
+   "cellCao": 192,
+   "cellTrung": 120,
+   "group": "event"
+  },
+  "thien_bai_dai_hoi": {
+   "cellCao": 192,
+   "cellTrung": 120,
+   "group": "event"
+  },
+  "thien_nien_linh_nhu": {
+   "cellCao": 192,
+   "cellTrung": 120,
+   "group": "treasure"
+  },
+  "dia_tam_ngoc_tuy": {
+   "cellCao": 192,
+   "cellTrung": 120,
+   "group": "treasure"
+  },
+  "ngu_hanh_linh_chau": {
+   "cellCao": 192,
+   "cellTrung": 120,
+   "group": "treasure"
+  },
+  "trang_thu_trat": {
+   "cellCao": 192,
+   "cellTrung": 120,
+   "group": "evidence_proposed"
+  },
+  "dan_doc_gia": {
+   "cellCao": 192,
+   "cellTrung": 120,
+   "group": "evidence_proposed"
+  },
+  "an_co_diem_mach": {
+   "cellCao": 192,
+   "cellTrung": 120,
+   "group": "evidence_proposed"
+  },
+  "thit_ga": {
+   "cellCao": 192,
+   "cellTrung": 120,
+   "group": "food"
+  },
+  "thit_tho": {
+   "cellCao": 192,
+   "cellTrung": 120,
+   "group": "food"
+  },
+  "thit_lon": {
+   "cellCao": 192,
+   "cellTrung": 120,
+   "group": "food"
+  },
+  "thit_son_quan": {
+   "cellCao": 192,
+   "cellTrung": 120,
+   "group": "food"
+  },
+  "da_soi": {
+   "cellCao": 192,
+   "cellTrung": 120,
+   "group": "material"
+  },
+  "long_ga": {
+   "cellCao": 192,
+   "cellTrung": 120,
+   "group": "material"
+  },
+  "dong_tien_co": {
+   "cellCao": 192,
+   "cellTrung": 120,
+   "group": "antique"
+  },
+  "vun_ngoc_co": {
+   "cellCao": 192,
+   "cellTrung": 120,
+   "group": "antique"
+  },
+  "kiem_cua_cha_da_mai": {
+   "cellCao": 192,
+   "cellTrung": 120,
+   "group": "origin_fate"
+  },
+  "long_linh_ho": {
+   "cellCao": 192,
+   "cellTrung": 120,
+   "group": "origin_fate"
+  },
+  "chuong_dong_nho": {
+   "cellCao": 192,
+   "cellTrung": 120,
+   "group": "origin_fate"
+  },
+  "manh_ngoc_khuyet": {
+   "cellCao": 192,
+   "cellTrung": 120,
+   "group": "origin_fate"
+  },
+  "dao_linh_qua": {
+   "cellCao": 192,
+   "cellTrung": 120,
+   "group": "origin_fate"
+  }
+ },
+ "props": {
+  "prop_gieng_co": {
+   "size": 512
+  },
+  "prop_dan_lo": {
+   "size": 512
+  },
+  "prop_bia_phong_an": {
+   "size": 512
+  }
+ },
+ "files": {
+  "lenh_bai_thanh_phong.png (cao)": "873470433990b6e0385da99b62eb0111",
+  "lenh_bai_thanh_phong.png (trung)": "e85120571607fd8a5278256d0939b37c",
+  "lenh_bai_huyen_phap.png (cao)": "a4b6902510c00b1bdb22f1574e01f732",
+  "lenh_bai_huyen_phap.png (trung)": "230e129e5461afcc47f2a9c6d6a8549f",
+  "lenh_bai_thien_cong.png (cao)": "652a264ecd96579acc46ae76ff3a889b",
+  "lenh_bai_thien_cong.png (trung)": "1ced355e69f6faceef5851c19c29f467",
+  "lenh_bai_dan_ha.png (cao)": "80ed9a089782dd4b06a8ff37d07170ab",
+  "lenh_bai_dan_ha.png (trung)": "8780220935a7ad688258226937790494",
+  "lenh_bai_van_thu.png (cao)": "87003d311f8200835953bfe9b4e00bcb",
+  "lenh_bai_van_thu.png (trung)": "dad665da823be59f7cc0409335ebe74c",
+  "lenh_bai_thien_phu.png (cao)": "6e92774c657e5e0fd812e10091590f99",
+  "lenh_bai_thien_phu.png (trung)": "ea2810925bf2a1373e05cc526d87e272",
+  "lenh_bai_cuu_cung.png (cao)": "46949fa30bcfc6f6aedb8bd6e42c9dee",
+  "lenh_bai_cuu_cung.png (trung)": "8282b14bd2fffbcd9d41312497faf18a",
+  "lenh_bai_kim_cang.png (cao)": "7a597430ffb32e879cf1e91e2e46fc38",
+  "lenh_bai_kim_cang.png (trung)": "9952ee7ee5815fdc9e3b1a6c41d96870",
+  "lenh_bai_ngu_doc.png (cao)": "2a5df18a8bb51fcb8512d9ec30176443",
+  "lenh_bai_ngu_doc.png (trung)": "4570dbf55c4fd0fd13811bc0e8850580",
+  "lenh_bai_huyen_am.png (cao)": "192722de109e677f5bbdc7e50d028c31",
+  "lenh_bai_huyen_am.png (trung)": "609d1909b752b89965d5480b3586f231",
+  "nanh_son_quan.png (cao)": "4bb2c1b0e72792108f069c135c0a83fd",
+  "nanh_son_quan.png (trung)": "d4d6cd0f72fb2b0d1b2622d2a5820271",
+  "van_thu_an.png (cao)": "280bc3fa397b41a6ee6b61adcc454a7f",
+  "van_thu_an.png (trung)": "474c808a7b6b5bad8f6bc6380a561b6a",
+  "thiet_bia_tan_phien.png (cao)": "1225e052e9b6721a612985b0d1e77a8e",
+  "thiet_bia_tan_phien.png (trung)": "b057e27d18f98442af7d4377e748af63",
+  "kim_bai_dai_hoi.png (cao)": "041b1264bd0935298b9d687a2cb8581b",
+  "kim_bai_dai_hoi.png (trung)": "7d9dc3d153e9e8c0e875d083f1f19b00",
+  "thien_bai_dai_hoi.png (cao)": "42d1d1ddf100afabeee8157fccc29e1e",
+  "thien_bai_dai_hoi.png (trung)": "8cff8d935f796352e11a4f1ec0f982c1",
+  "thien_nien_linh_nhu.png (cao)": "03d40934ba62debec82f8abe15830ce2",
+  "thien_nien_linh_nhu.png (trung)": "274a2a9753f3f804977694a3227aa17c",
+  "dia_tam_ngoc_tuy.png (cao)": "575c664cae974acd3c18c48c56aa84e5",
+  "dia_tam_ngoc_tuy.png (trung)": "04b3f73be4d6c0a0748057eb9e89511d",
+  "ngu_hanh_linh_chau.png (cao)": "77aeae1416d2b99e6920f2759d0ca7e8",
+  "ngu_hanh_linh_chau.png (trung)": "b197d2ae5b9f7526778a6d77c3fdc43a",
+  "trang_thu_trat.png (cao)": "580de6b71948c8eb0d1c0a566178e234",
+  "trang_thu_trat.png (trung)": "1448e47a50e8fd8d478b40597e4eaa79",
+  "dan_doc_gia.png (cao)": "10b408a056f904b309f9bcb7c448ec18",
+  "dan_doc_gia.png (trung)": "873044b44c083eafe84a7b04ad9285b5",
+  "an_co_diem_mach.png (cao)": "5f69071ae4ef680dda03cbf654741cba",
+  "an_co_diem_mach.png (trung)": "59d860efa8a44b93d603bc1554fa5cf4",
+  "prop_gieng_co.png": "52e426ce11c0a8303a390be9533a9a5a",
+  "prop_dan_lo.png": "d6c7ae3fd8ae931b120efdf61093bcde",
+  "prop_bia_phong_an.png": "826bfb8c7bf88aa55b35b053d6dd25f2",
+  "thit_ga.png (cao)": "772e21324189a5902e794e949730815c",
+  "thit_tho.png (cao)": "d00e62bf3133f392236da2d5fc51fbaa",
+  "thit_lon.png (cao)": "015b1111d0998929595cac39d4d905ed",
+  "thit_son_quan.png (cao)": "1c23a0c58cc292111d6b16a3e862c950",
+  "da_soi.png (cao)": "62d230a000948335c202ea7b2ca53e9e",
+  "long_ga.png (cao)": "6d2408a5798f31d754db08544da7c96f",
+  "dong_tien_co.png (cao)": "5757361e0d3e4f374c5ae7bd3b291486",
+  "vun_ngoc_co.png (cao)": "e285532a3b11ab68a0209b1c18b2bb34",
+  "kiem_cua_cha_da_mai.png (cao)": "74bc83c78700c22c1f83cc3d11934405",
+  "long_linh_ho.png (cao)": "18bec6fe3a50854b6a47ce709215fa3e",
+  "chuong_dong_nho.png (cao)": "8a0ef579518d1b378fde3e79313d723f",
+  "manh_ngoc_khuyet.png (cao)": "5748f975b76a9b8d337b2f22da205290",
+  "dao_linh_qua.png (cao)": "b36792d9d05056a1eb0660a72eb9d713",
+  "thit_ga.png (trung)": "94c145a0c7d0f73d01018ca2498cdf0f",
+  "thit_tho.png (trung)": "ea9265c33688cd7173c610312e944053",
+  "thit_lon.png (trung)": "c11136391605f6d14265d5fa8403f436",
+  "thit_son_quan.png (trung)": "4e6e5633580cf1223982978f08452c1f",
+  "da_soi.png (trung)": "f660ff8fca0070903e5632c8d69c3800",
+  "long_ga.png (trung)": "dca597a57a638e4c91ff7c60c9cd9614",
+  "dong_tien_co.png (trung)": "509f875b944408da59a1bc6d0f34b42e",
+  "vun_ngoc_co.png (trung)": "2f1ec0bd3ce4f53f2137457d1d611768",
+  "kiem_cua_cha_da_mai.png (trung)": "23737981993a60f6259c4aa8254b13ec",
+  "long_linh_ho.png (trung)": "2cce48ec7f1a06027030ac0164291b5c",
+  "chuong_dong_nho.png (trung)": "d1ae5b370a3ed3b3d0fec0dd62ac31fb",
+  "manh_ngoc_khuyet.png (trung)": "fd03feb1afd7879230c83679b9ca34e5",
+  "dao_linh_qua.png (trung)": "e1b206b5c62013fdb06c33f8eb8a2700"
+ }
+}
