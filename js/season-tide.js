@@ -135,21 +135,26 @@
   // của chính họ ở mọi thoại khác trong story.js. Bản cũ cả 4 việc đều
   // "ta/ngươi" là sai giọng. Từ QA55 (mục 55 hàng chờ): lời ở đây là
   // NGUỒN DUY NHẤT, story.js không còn bản soi gương để lệch.
+  // QA54 (mục 54 hàng chờ, 2026-11-01): viết lại đủ 8 câu giao/trả
+  // gốc + 4 câu trả lặp theo đúng giọng này — trước đó lời giao đã
+  // đúng giọng nhưng lời trả còn trung tính (không xưng hô), nên
+  // câu trả cũ không nhận ra được ai nói; không đổi thông tin,
+  // thưởng hay logic nào, chỉ thêm xưng hô đúng người giao.
   var QUEST_LINES = {
-    q_tiet_linh: ['Tiết Linh Tố về rồi — đất làng đang thấm linh khí, thảo dược mọc nhanh hơn mọi tháng. Nhân lúc này, anh/chị hái giúp em 3 cây Thanh Tâm Thảo tươi để em giã thuốc dự trữ cho mùa khô sắp tới.',
+    q_tiet_linh: ['Tiết Linh Tố về rồi, anh/chị ạ — đất làng đang thấm linh khí nên thảo dược mọc nhanh hơn mọi tháng. Anh/chị hái giúp em 3 cây Thanh Tâm Thảo tươi để em giã thuốc dự trữ cho mùa khô sắp tới nhé.',
       'Linh Tố qua là đất khô ngay, thuốc dự trữ lúc đó mới quý. Anh/chị hái đủ 3 cây mang về đây cho em nhé.'],
     q_tiet_thu: ['Tiết Thú Dữ — trời khô, thú đói, tinh anh xuống gần làng nhiều hơn mọi tháng. Cổng Nam Môn cần người giữ: cháu hạ giúp ta 3 con Sói Con lảng vảng quanh bãi hoang, đừng để chúng mò vào ruộng.',
-      'Hạ đủ 3 con là cổng yên một đêm. Tinh anh thì để lính gác lo — cháu giữ đường cho dân là đủ.'],
-    q_tiet_dang: ['Tiết Đăng Hoa — đêm hội đèn của làng tới rồi! Cháu mang lời chúc hội đèn này sang cho Dì Tư (người lo lễ hội của làng) giúp ta một câu: "Đèn làng năm nay sáng hơn năm ngoái, cỗ Hoa nương nấu vẫn ngon như cũ."',
+      'Hạ đủ 3 con là cổng yên một đêm, ta hứa với cháu vậy. Tinh anh thì để lính gác lo — cháu chỉ cần giữ đường cho dân là đủ.'],
+    q_tiet_dang: ['Tiết Đăng Hoa — đêm hội đèn của làng tới rồi, cháu ạ! Cháu mang lời chúc hội đèn này sang cho Dì Tư (người lo lễ hội của làng) giúp ta một câu: "Đèn làng năm nay sáng hơn năm ngoái, cỗ Hoa nương nấu vẫn ngon như cũ."',
       'Dì Tư nghe lời chúc là cười ngay. Nói xong quay lại đây, ta dọn cỗ hội cho cháu ăn.'],
     q_tiet_tinh: ['Tiết Tĩnh Tu — linh khí lặng mà đầy, ngồi yên cũng hơn ngày thường. Cháu ngồi thổ nạp tích đủ 30 tu vi trong tiết này cho ta xem tâm tĩnh tới đâu — đừng vội, tĩnh mới là tu.',
-      'Đủ 30 tu vi thì quay lại đây. Thổ nạp trong tiết Tĩnh Tu được thêm một phần tư, ngồi một tuần trà là đủ.']
+      'Đủ 30 tu vi thì quay lại đây gặp ta, cháu nhé. Thổ nạp trong tiết Tĩnh Tu được thêm một phần tư, ngồi một tuần trà là đủ cho cháu rồi.']
   };
   var TURNIN_LINES = {
-    q_tiet_linh: ['Ba cây Thanh Tâm Thảo còn đẫm sương — thuốc dự trữ cho mùa khô đủ rồi. Tiết Linh Tố đúng là tiết của người hái thuốc.'],
-    q_tiet_thu: ['Ba con sói đã dẹp, cổng yên rồi. Tiết Thú Dữ mà có cháu giữ đường thì dân làng ngủ yên được.'],
-    q_tiet_dang: ['Dì Tư cười rồi chứ? Tốt — lời chúc tới nơi là hội đèn sáng thêm một phần. Ngồi xuống ăn cỗ hội với làng đi.'],
-    q_tiet_tinh: ['Đủ 30 tu vi trong một tiết — tâm cháu tĩnh được rồi. Giữ cái tĩnh này mà tu tiếp, đừng để ồn ào cuốn đi.']
+    q_tiet_linh: ['Ba cây Thanh Tâm Thảo còn đẫm sương — em giã thuốc dự trữ cho mùa khô đủ rồi, cảm ơn anh/chị nhé. Tiết Linh Tố đúng là tiết của người hái thuốc, mà nhờ có anh/chị thì thuốc mới đầy kho được.'],
+    q_tiet_thu: ['Ba con sói đã dẹp, cổng yên rồi, ta mừng lắm. Tiết Thú Dữ mà có cháu giữ đường thì dân làng ngủ yên được, cháu giỏi lắm.'],
+    q_tiet_dang: ['Dì Tư cười rồi chứ, cháu? Tốt — lời chúc tới nơi là hội đèn sáng thêm một phần, ta vui lắm. Ngồi xuống ăn cỗ hội với làng đi, cháu đừng khách sáo.'],
+    q_tiet_tinh: ['Đủ 30 tu vi trong một tiết — tâm cháu tĩnh được rồi, ta khen cháu đấy. Giữ cái tĩnh này mà tu tiếp, đừng để ồn ào cuốn đi.']
   };
 
   // VIỆC LỄ LẶP (mục 53 hàng chờ, 2026-11-01): sau khi cả 4 việc
@@ -179,10 +184,10 @@
       'Đủ 30 tu vi thì quay lại đây. Thổ nạp trong tiết Tĩnh Tu được thêm một phần tư, ngồi một tuần trà là đủ.']
   };
   var REPEAT_TURNIN_LINES = {
-    q_tiet_lap_linh: ['Ba cây Thanh Tâm Thảo còn đẫm sương — thuốc dự trữ tháng này đủ rồi. Cầm lấy phần thuốc của làng, tháng sau lại ghé nhé.'],
-    q_tiet_lap_thu: ['Ba con sói đã dẹp, cổng yên rồi. Cầm lấy phần ăn trực cổng — tháng sau thú lại xuống thì cháu lại ghé giữ đường giúp làng.'],
-    q_tiet_lap_dang: ['Dì Tư cười rồi chứ? Tốt — lời chúc tới nơi là hội đèn sáng thêm một phần. Ngồi xuống ăn cỗ hội với làng đi, tháng sau lại mang chúc tiếp nhé.'],
-    q_tiet_lap_tinh: ['Đủ 30 tu vi trong một tiết — tâm cháu tĩnh được rồi. Cầm lấy thuốc hồi sức, giữ cái tĩnh này mà tu tiếp.']
+    q_tiet_lap_linh: ['Ba cây Thanh Tâm Thảo còn đẫm sương — thuốc dự trữ tháng này em giã đủ rồi, cảm ơn anh/chị nhé. Cầm lấy phần thuốc của làng, tháng sau anh/chị lại ghé nhé.'],
+    q_tiet_lap_thu: ['Ba con sói đã dẹp, cổng yên rồi, ta cảm ơn cháu nhé. Cầm lấy phần ăn trực cổng — tháng sau thú lại xuống thì cháu lại ghé giữ đường giúp làng.'],
+    q_tiet_lap_dang: ['Dì Tư cười rồi chứ, cháu? Tốt — lời chúc tới nơi là hội đèn sáng thêm một phần. Ngồi xuống ăn cỗ hội với làng đi, tháng sau lại mang chúc tiếp cho ta nhé.'],
+    q_tiet_lap_tinh: ['Đủ 30 tu vi trong một tiết — tâm cháu tĩnh được rồi, ta mừng cho cháu. Cầm lấy thuốc hồi sức, giữ cái tĩnh này mà tu tiếp.']
   };
   function isRepeatQuest(qid) { return REPEAT_IDS.indexOf(qid) >= 0; }
   function allFourTurnedIn(qs) {
@@ -281,7 +286,7 @@
     if (qid === 'q_tiet_linh') return 'Thanh Tâm Thảo em nhờ, anh/chị đã hái ' + p + '/3 cây. Hái đủ 3 cây tươi mang về đây cho em giã thuốc dự trữ cho mùa khô nhé.';
     if (qid === 'q_tiet_thu') return 'Sói Con quanh bãi hoang, cháu đã hạ ' + p + '/3 con. Hạ đủ 3 con là cổng yên một đêm — xong thì quay lại đây gặp ta.';
     if (qid === 'q_tiet_dang') return 'Lời chúc chưa tới nơi à cháu? Dì Tư là người lo lễ hội của làng, ở ngay sân làng — mang lời chúc sang cho dì, rồi quay lại đây ăn cỗ hội với ta.';
-    if (qid === 'q_tiet_tinh') return 'Cháu đã tích ' + p + '/30 tu vi trong tiết này. Cứ ngồi yên thổ nạp — tiết Tĩnh Tu cộng thêm một phần tư, đủ 30 thì quay lại đây.';
+    if (qid === 'q_tiet_tinh') return 'Cháu đã tích ' + p + '/30 tu vi trong tiết này. Cứ ngồi yên thổ nạp — tiết Tĩnh Tu cộng thêm một phần tư, đủ 30 thì quay lại đây gặp ta.';
     return 'Việc tiết đang làm dở — xong thì quay lại gặp ta.';
   }
   function dialogueFor(npcId, flags, qs, date) {

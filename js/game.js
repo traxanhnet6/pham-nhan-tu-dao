@@ -9306,21 +9306,41 @@
   // tranh phủ (trong vùng phủ tranh đã chứa sẵn). Map chia mảng
   // (bgChunks — sơn môn) không có bg toàn cảnh nên không đi đường
   // này (curBg() trả null, bgCov null, hành vi như cũ).
+  // Từ 01/11/2026 (lệnh Bui 06:45): map nào đã có tranh vẽ lại
+  // thống nhất đúng khung logic (kích thước tranh >= khung map)
+  // thì bgCoverFor trả cov.full — draw() vẽ tranh 1:1 từ gốc tọa
+  // độ phủ toàn khung, không lát ô vành, không dịch neo; vật thể
+  // theo ô và cổng vì thế bị tắt trong toàn map (tranh đã chứa
+  // sẵn), biển hiệu vẫn vẽ như cũ. Map chưa vẽ lại giữ đường neo.
   var _bgCovCache = {}; // id map -> { img, cov } — cov null khi map không có neo / tranh chưa có kích thước
   function bgCoverFor(mp, img) {
     if (!mp || !img) return null;
     var ent = _bgCovCache[mp.id];
     if (ent && ent.img === img) return ent.cov;
     var cov = null;
-    var anch = (M && M.EXP_V7_ANCHORS) ? M.EXP_V7_ANCHORS[mp.id] : null;
     var iw = img.naturalWidth || img.width || 0, ih = img.naturalHeight || img.height || 0;
-    if (anch && iw >= TILE && ih >= TILE) {
+    // NEN VE LAI TOAN KHUNG (01/11/2026, lenh Bui 06:45 — map3 la
+    // map dau tien; map1 dung theo chi dao 07:24 cho lam lai
+    // atlas-town, cac map con lai theo dot): tranh nao PHU DU KHUNG map
+    // (kich thuoc >= khung x TILE) thi ve 1:1 TU GOC toa do, phu
+    // toan khung, KHONG dich neo, KHONG lat o vanh. Quy tac theo
+    // KICH THUOC TRANH THAT so voi khung map, khong gan cung map.
+    if (iw >= mp.w * TILE && ih >= mp.h * TILE) {
       cov = {
-        x0: anch.dx, y0: anch.dy,
-        x1: Math.min(mp.w, anch.dx + Math.floor(iw / TILE)),
-        y1: Math.min(mp.h, anch.dy + Math.floor(ih / TILE)),
-        px: anch.dx * TILE, py: anch.dy * TILE, iw: iw, ih: ih
+        full: true,
+        x0: 0, y0: 0, x1: mp.w, y1: mp.h,
+        px: 0, py: 0, iw: mp.w * TILE, ih: mp.h * TILE
       };
+    } else {
+      var anch = (M && M.EXP_V7_ANCHORS) ? M.EXP_V7_ANCHORS[mp.id] : null;
+      if (anch && iw >= TILE && ih >= TILE) {
+        cov = {
+          x0: anch.dx, y0: anch.dy,
+          x1: Math.min(mp.w, anch.dx + Math.floor(iw / TILE)),
+          y1: Math.min(mp.h, anch.dy + Math.floor(ih / TILE)),
+          px: anch.dx * TILE, py: anch.dy * TILE, iw: iw, ih: ih
+        };
+      }
     }
     _bgCovCache[mp.id] = { img: img, cov: cov };
     return cov;
@@ -9352,8 +9372,12 @@
       // đất/đường/cổng dạng ô), rồi đặt tranh đã dịch neo đè lên
       // đúng vùng lõi — chỉ vẽ phần giao với khung nhìn, dùng
       // drawImage dạng cắt hình chữ nhật nguồn/đích.
-      for (y = y0; y <= y1; y++) for (x = x0; x <= x1; x++) {
-        drawGround(x, y, mp.tiles[y][x]);
+      // Tranh phu du khung (bgCov.full): bo qua lop o mat dat —
+      // tranh ve 1:1 tu goc phu het moi o trong khung nhin.
+      if (!bgCov.full) {
+        for (y = y0; y <= y1; y++) for (x = x0; x <= x1; x++) {
+          drawGround(x, y, mp.tiles[y][x]);
+        }
       }
       var bgIx0 = Math.max(camX, bgCov.px), bgIy0 = Math.max(camY, bgCov.py);
       var bgIx1 = Math.min(camX + VIEW_W, bgCov.px + bgCov.iw), bgIy1 = Math.min(camY + VIEW_H, bgCov.py + bgCov.ih);
@@ -11630,10 +11654,75 @@
   // trên đích như mũi tên nhiệm vụ; đích ngoài màn hình: tam giác
   // xoay theo hướng đích, kẹp ở rìa màn hình kèm nhãn — đây là điểm
   // khác mũi tên nhiệm vụ cũ (nó bỏ qua đích ngoài màn hình).
+  // MỤC 110 ĐỢT 2 (nghiệm thu chơi thật 07:19–07:31 01/11/2026 vẫn
+  // chưa đạt): hai sửa —
+  // (A) nhãn/mũi tên tránh VÙNG BỊ KHUNG HTML PHỦ: khung nhân vật,
+  // thẻ nhiệm vụ, bản đồ nhỏ, dải sự kiện, biểu ngữ là phần tử HTML
+  // nằm trên canvas; đợt 1 chỉ kẹp trong khung canvas nên nhãn vẫn
+  // bị che mất phần đầu. Nay đo hình chữ nhật thật của chúng (hàm
+  // hudOccluders) rồi đặt nhãn + mũi tên vào vùng an toàn bằng
+  // PLZ.labelSafeLayout / PLZ.arrowSafePos; phải dời xa thì vẽ nét
+  // đứt nối lại để người chơi thấy quan hệ.
+  // (B) mũi tên chỉ theo TUYẾN ĐƯỜNG THẬT: đích tạm là điểm nhìn
+  // trước 7 ô trên tuyến BFS tới điểm tiếp cận quảng trường
+  // (PLZ.plazaRoute), không còn chỉ thẳng chim bay qua rừng. Tuyến
+  // được nhớ đệm: chỉ tính lại khi chưa có tuyến hoặc người chơi
+  // lệch khỏi tuyến quá 3 ô — không tính mỗi khung hình.
+  var plazaOccCache = { t: -1e9, rects: [] };
+  function hudOccluders() {
+    var nowMs = performance.now();
+    if (nowMs - plazaOccCache.t < 250) return plazaOccCache.rects;
+    plazaOccCache.t = nowMs;
+    var rects = [];
+    try {
+      var cr = canvas.getBoundingClientRect();
+      if (cr.width > 0 && cr.height > 0) {
+        var kx = effVW() / cr.width, ky = effVH() / cr.height;
+        var ids = ['hud', 'questTracker', 'minimapWrap', 'liveTicker', 'achToast', 'riftBanner', 'festBanner', 'ctlJoyFloat'];
+        for (var i = 0; i < ids.length; i++) {
+          var el = document.getElementById(ids[i]);
+          if (!el) continue;
+          var r = el.getBoundingClientRect();
+          if (r.width < 2 || r.height < 2) continue; // display:none / ẩn thì rect = 0
+          rects.push({ x: (r.left - cr.left) * kx, y: (r.top - cr.top) * ky, w: r.width * kx, h: r.height * ky });
+        }
+      }
+    } catch (e) {}
+    plazaOccCache.rects = rects;
+    return rects;
+  }
+  var plazaRouteCache = { mapId: '', route: null, idx: 0 };
+  function plazaAimTile(pt) {
+    var cache = plazaRouteCache;
+    if (cache.mapId !== curMapId) { cache.mapId = curMapId; cache.route = null; cache.idx = 0; }
+    if (cache.route) {
+      var la = PLZ.routeLookahead(cache.route.path, pt, cache.idx, 7);
+      if (la) {
+        cache.idx = la.index;
+        var near = cache.route.path[la.index];
+        var dev = Math.max(Math.abs(near.x - pt.x), Math.abs(near.y - pt.y));
+        if (dev <= 3) return la.endDist > 0 ? la.tile : null; // hết tuyến: rơi về chỉ thẳng về quảng trường
+      }
+      cache.route = null; // lệch tuyến quá xa hoặc tuyến hỏng: tính lại từ vị trí hiện tại
+    }
+    var rt = null;
+    try { rt = PLZ.plazaRoute(curMap(), pt, function (mp, x, y) { return M.isBlockedIn(mp, x, y); }); } catch (e) { rt = null; }
+    cache.route = rt; cache.idx = 0;
+    if (!rt) return null;
+    var la2 = PLZ.routeLookahead(rt.path, pt, 0, 7);
+    if (!la2) return null;
+    cache.idx = la2.index;
+    return la2.endDist > 0 ? la2.tile : null;
+  }
   function drawPlazaGuideArrow(now) {
     if (!PLZ || curMapId !== 'map3' || !ch) return;
     var pt = playerTile();
-    var info = PLZ.arrowFor(curMap(), curMapId, flags.sectJoined, pt, { x: camX, y: camY }, { w: effVW(), h: effVH() }, TILE);
+    var view = { w: effVW(), h: effVH() };
+    var aim = null;
+    if (!flags.sectJoined && PLZ.plazaRoute && PLZ.routeLookahead) {
+      try { aim = plazaAimTile(pt); } catch (e) { aim = null; }
+    }
+    var info = PLZ.arrowFor(curMap(), curMapId, flags.sectJoined, pt, { x: camX, y: camY }, view, TILE, aim || undefined);
     if (!info) return;
     var bob = Math.abs(Math.sin(now / 280)) * 6;
     ctx.save();
@@ -11645,28 +11734,51 @@
       ctx.moveTo(sx - 12, sy - 17); ctx.lineTo(sx + 12, sy - 17); ctx.lineTo(sx, sy);
       ctx.closePath(); ctx.fill(); ctx.stroke();
     } else {
-      var ex = info.ex, ey = info.ey;
-      // MỤC 110: nền tròn sẫm sau mũi tên để tam giác vàng không chìm
-      // vào địa hình sáng; tam giác phóng to (18/-11/13 thay cho 14/-8/10).
+      // MỤC 110 + ĐỢT 2: dời mũi tên ra khỏi vùng bị khung HTML phủ
+      // (vòng tròn nền phóng to r=19, tam giác 21/-13/15 cho dễ thấy
+      // trên nền rừng sáng), góc chỉ hướng giữ nguyên.
+      var occ = (PLZ.arrowSafePos && PLZ.labelSafeLayout) ? hudOccluders() : [];
+      var safeA = PLZ.arrowSafePos ? PLZ.arrowSafePos(info, view, occ, 20) : { x: info.ex, y: info.ey, moved: 0, overlap: 0 };
+      var ex = safeA.x, ey = safeA.y;
+      if (safeA.moved > 24) {
+        // Nét đứt phụ: nối mũi tên đã dời về điểm rìa gốc nơi hướng
+        // đích chạm mép màn hình.
+        ctx.save();
+        ctx.strokeStyle = 'rgba(255,217,74,.75)'; ctx.lineWidth = 2;
+        if (ctx.setLineDash) ctx.setLineDash([5, 5]);
+        ctx.beginPath(); ctx.moveTo(ex, ey); ctx.lineTo(info.ex, info.ey); ctx.stroke();
+        ctx.restore();
+      }
       ctx.beginPath();
-      ctx.arc(ex, ey, 17, 0, Math.PI * 2);
+      ctx.arc(ex, ey, 19, 0, Math.PI * 2);
       ctx.fillStyle = 'rgba(20,16,8,.55)'; ctx.fill();
       ctx.strokeStyle = '#ffd94a'; ctx.lineWidth = 2; ctx.stroke();
       ctx.fillStyle = '#ffd94a';
       ctx.strokeStyle = 'rgba(0,0,0,.65)'; ctx.lineWidth = 2;
       ctx.translate(ex, ey); ctx.rotate(info.angle);
       ctx.beginPath();
-      ctx.moveTo(18, 0); ctx.lineTo(-11, -13); ctx.lineTo(-11, 13);
+      ctx.moveTo(21, 0); ctx.lineTo(-13, -15); ctx.lineTo(-13, 15);
       ctx.closePath(); ctx.fill(); ctx.stroke();
       ctx.rotate(-info.angle);
       ctx.translate(-ex, -ey);
-      // MỤC 110: nhãn luôn nằm trọn trong màn hình — vị trí tính bằng
-      // PLZ.labelLayout với bề rộng chữ đo thật (bản cũ vẽ tại ex − 62
-      // cố định nên bị cắt ở rìa trái/phải), chữ đậm 14px trên nền sẫm.
+      // MỤC 110 + ĐỢT 2: nhãn đặt vào VÙNG AN TOÀN (không giao khung
+      // HTML phủ) bằng PLZ.labelSafeLayout với bề rộng chữ đo thật;
+      // nhãn phải dời xa mũi tên thì vẽ nét đứt nối hai thứ.
       ctx.font = 'bold 14px sans-serif'; ctx.textAlign = 'left';
       var label = 'Quảng Trường Sơn Môn';
       var tw110 = ctx.measureText ? ctx.measureText(label).width : 150;
-      var lay110 = PLZ.labelLayout ? PLZ.labelLayout(info, { w: effVW(), h: effVH() }, tw110) : { x: Math.max(4, ex - tw110 / 2), y: ey + 26 };
+      var anchor110 = { ex: ex, ey: ey, txPx: info.txPx, tyPx: info.tyPx };
+      var lay110 = PLZ.labelSafeLayout ? PLZ.labelSafeLayout(anchor110, view, tw110, 19, occ)
+        : (PLZ.labelLayout ? PLZ.labelLayout(info, view, tw110) : { x: Math.max(4, ex - tw110 / 2), y: ey + 26 });
+      var lcx = lay110.x + tw110 / 2, lcy = lay110.y - 5;
+      var ldx = lcx - ex, ldy = lcy - ey;
+      if (Math.sqrt(ldx * ldx + ldy * ldy) > 64) {
+        ctx.save();
+        ctx.strokeStyle = 'rgba(255,217,74,.6)'; ctx.lineWidth = 1.5;
+        if (ctx.setLineDash) ctx.setLineDash([4, 4]);
+        ctx.beginPath(); ctx.moveTo(ex, ey); ctx.lineTo(lcx, lcy); ctx.stroke();
+        ctx.restore();
+      }
       ctx.fillStyle = 'rgba(20,16,8,.62)';
       ctx.fillRect(lay110.x - 4, lay110.y - 14, tw110 + 8, 19);
       ctx.fillStyle = '#ffd94a';
