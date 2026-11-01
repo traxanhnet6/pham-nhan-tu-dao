@@ -333,11 +333,153 @@
     };
   }
 
+  // ===== VẬT THỂ THẬT CỠ LỚN (bản đồ làm lại theo bản thử atlas-town) =====
+  // Nền của các bản đồ này chỉ còn đất thuần; nhà, cây, sạp, giếng, cổng là
+  // vật thể ảnh thật đặt theo lưới logic, gom vào cùng danh sách sắp xếp
+  // theo chiều sâu của engine. Dữ liệu sinh tự động tại js/map1-objects.js
+  // (PNT_OBJMAPS): { mapId: { atlas, keys, sprites: {khóa: [x,y,rộng,cao]},
+  // placed: [[chỉ số sprite, tâm x, đáy y, mốc sắp xếp, bóng (phần nghìn
+  // bề rộng), lật gương, bề rộng vẽ (0 = nguyên bản)], ...] } }.
+  // Cơ chế tổng quát: bản đồ nào có dữ liệu trong PNT_OBJMAPS thì tự bật.
+  var OBJMAPS = null;
+  function objMaps() {
+    if (OBJMAPS) return OBJMAPS;
+    var w = null;
+    if (typeof window !== 'undefined' && window.PNT_OBJMAPS) w = window.PNT_OBJMAPS;
+    else if (typeof PNT_OBJMAPS !== 'undefined') w = PNT_OBJMAPS;
+    if (w && Object.keys(w).length) OBJMAPS = w;
+    return OBJMAPS || {};
+  }
+  function isObjMap(mapId) {
+    var m = objMaps();
+    return !!(m && m[mapId] && m[mapId].placed && m[mapId].placed.length);
+  }
+  var objRt = {};
+  function objRuntime(mapId) {
+    var rt = objRt[mapId];
+    if (rt) return rt;
+    var def = objMaps()[mapId];
+    var list = [];
+    var cells = new Map();
+    var CELL = 128;
+    for (var i = 0; i < def.placed.length; i++) {
+      var p = def.placed[i];
+      var key = def.keys[p[0]];
+      var rect = def.sprites[key];
+      var dw = p[6] || rect[2];
+      var o = {
+        key: key, rect: rect, def: def,
+        x: p[1], y: p[2], sy: p[3], sh: p[4], f: p[5],
+        dw: dw, dh: Math.round(rect[3] * dw / rect[2])
+      };
+      list.push(o);
+      var ck = Math.floor(p[1] / CELL) + ':' + Math.floor(p[2] / CELL);
+      if (!cells.has(ck)) cells.set(ck, []);
+      cells.get(ck).push(o);
+    }
+    rt = { list: list, cells: cells, cell: CELL };
+    objRt[mapId] = rt;
+    return rt;
+  }
+  function collectObj(mapId, x0, y0, x1, y1) {
+    if (!isObjMap(mapId)) return [];
+    var rt = objRuntime(mapId);
+    var CELL = rt.cell, out = [], seen = new Set();
+    var cx0 = Math.floor(x0 / CELL), cx1 = Math.floor(x1 / CELL);
+    var cy0 = Math.floor(y0 / CELL), cy1 = Math.floor(y1 / CELL);
+    for (var cy = cy0; cy <= cy1; cy++) for (var cx = cx0; cx <= cx1; cx++) {
+      var arr = rt.cells.get(cx + ':' + cy);
+      if (!arr) continue;
+      for (var i = 0; i < arr.length; i++) {
+        var o = arr[i];
+        if (seen.has(o)) continue;
+        seen.add(o);
+        if (o.x + o.dw / 2 >= x0 && o.x - o.dw / 2 <= x1 && o.y >= y0 && o.y - o.dh <= y1) out.push(o);
+      }
+    }
+    return out;
+  }
+  var objAtlasCache = {};
+  function objAtlasFor(def) {
+    var a = objAtlasCache[def.atlas];
+    if (!a) {
+      a = { ready: false, img: null };
+      objAtlasCache[def.atlas] = a;
+      if (typeof Image !== 'undefined') {
+        var im = new Image();
+        im.onload = function () { a.ready = true; };
+        im.src = def.atlas;
+        a.img = im;
+      }
+    }
+    return a;
+  }
+  var objSprCache = {};
+  function objSprite(o) {
+    var key = o.key + ':' + o.dw + (o.f ? 'f' : '');
+    var c = objSprCache[key];
+    if (c) return c;
+    var a = objAtlasFor(o.def);
+    if (!a.ready || typeof document === 'undefined') return null;
+    if (Object.keys(objSprCache).length > 300) objSprCache = {};
+    var r = o.rect;
+    c = document.createElement('canvas');
+    c.width = Math.max(2, o.dw); c.height = Math.max(2, o.dh);
+    var g = c.getContext('2d');
+    if (o.f) { g.translate(c.width, 0); g.scale(-1, 1); }
+    g.drawImage(a.img, r[0], r[1], r[2], r[3], 0, 0, c.width, c.height);
+    objSprCache[key] = c;
+    return c;
+  }
+  // Bóng tiếp xúc MỀM: một elip gradient xuyên tâm tan dần về mép (chuẩn
+  // của bản thử) — tuyệt đối không chồng nhiều mảng elip trong suốt.
+  var objShadowCache = {};
+  function objShadowSpr(w) {
+    var h = Math.max(4, Math.round(w * 0.30));
+    var key = w + 'x' + h;
+    var c = objShadowCache[key];
+    if (c || typeof document === 'undefined') return c || null;
+    c = document.createElement('canvas');
+    c.width = w; c.height = h;
+    var g = c.getContext('2d');
+    var gr = g.createRadialGradient(w / 2, h / 2, 1, w / 2, h / 2, w / 2);
+    gr.addColorStop(0, 'rgba(12,20,10,0.34)');
+    gr.addColorStop(0.7, 'rgba(12,20,10,0.15)');
+    gr.addColorStop(1, 'rgba(12,20,10,0)');
+    g.fillStyle = gr;
+    g.save();
+    g.translate(w / 2, h / 2); g.scale(1, h / w); g.translate(-w / 2, -h / 2);
+    g.beginPath(); g.arc(w / 2, h / 2, w / 2, 0, Math.PI * 2); g.fill();
+    g.restore();
+    objShadowCache[key] = c;
+    return c;
+  }
+  function drawObj(ctx, o, camX, camY) {
+    if (!o || !o.def) return;
+    if (o.sh) {
+      var sw = Math.max(8, Math.round(o.dw * o.sh / 1000));
+      var shImg = objShadowSpr(sw);
+      if (shImg) ctx.drawImage(shImg, Math.round(o.x - sw / 2 - camX), Math.round(o.y - shImg.height / 2 - camY));
+    }
+    var spr = objSprite(o);
+    if (!spr) return;
+    ctx.drawImage(spr, Math.round(o.x - o.dw / 2 - camX), Math.round(o.y - o.dh - camY));
+    drawnFrame++;
+  }
+  function debugObj(mapId) {
+    if (!isObjMap(mapId)) return null;
+    var rt = objRuntime(mapId);
+    var counts = {};
+    for (var i = 0; i < rt.list.length; i++) counts[rt.list[i].key] = (counts[rt.list[i].key] || 0) + 1;
+    return { total: rt.list.length, counts: counts, list: rt.list };
+  }
+
   var api = {
     TYPES: TYPES, REGROW_MS: REGROW_MS,
     enterMap: enterMap, collect: collect, harvestNear: harvestNear,
     markCut: markCut, rollDrop: rollDrop, solidAt: solidAt,
     beginFrame: beginFrame, drawOne: drawOne, debugState: debugState,
+    isObjMap: isObjMap, collectObj: collectObj, drawObj: drawObj, debugObj: debugObj,
     _runtime: runtime
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;

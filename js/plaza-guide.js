@@ -222,7 +222,98 @@
       dPref = Math.abs(best.x - pref.x) + Math.abs(best.y - pref.y);
       best.displaced = dPref;
     }
+    // QA110C (đợt 3): KẸP CỨNG LÀ BƯỚC CUỐI BẮT BUỘC — dù đường tìm
+    // vị trí nào ở trên kết thúc ra sao, vị trí trả về vẫn phải qua
+    // clampLabelPos lần cuối và hộp/giao được tính lại TRUNG THỰC
+    // trên vị trí cuối đó. "Nằm trọn trong khung nhìn" là ràng buộc
+    // cứng, không phải hệ quả phụ thuộc vào đường tìm kiếm.
+    var fin = clampLabelPos(best.x, best.y, viewPx, w);
+    if (fin.x !== best.x || fin.y !== best.y) {
+      var reBox = labelBox(fin.x, fin.y, w);
+      best = { x: fin.x, y: fin.y, w: w, box: reBox, overlap: totalOverlap(reBox, occ), displaced: Math.abs(fin.x - pref.x) + Math.abs(fin.y - pref.y) };
+    }
     return best;
+  }
+  // ==========================================================
+  // QA110C ĐỢT 3 (01/11/2026) — hai hàm thuần mới từ nghiệm thu
+  // chơi thật đợt 2 (07:59–08:19, vẫn nửa đạt):
+  // (1) guidePulse(nowMs): nhịp nhấp nháy của mũi tên + vòng đích
+  // chỉ đổi ĐỘ MỜ TRONG DẢI NHÌN THẤY RÕ (alpha ∈ [0.62, 1],
+  // ringAlpha ∈ [0.55, 1]) — không có pha nào mờ về 0/tắt hẳn.
+  // Trước đây nhánh đích-trong-màn-hình không có cơ chế làm nổi nào
+  // ngoài nhún vị trí ±6px: tam giác vàng nhỏ 24×17px nằm ngay mép
+  // trên của ô đích (vùng tán cây dày nhất) nên chìm hẳn vào tán
+  // lá vàng-xanh trong rừng rậm phía tây.
+  // (2) anchoredBoxLayout(cx, top, viewPx, boxW, boxH, occluders):
+  // bố cục cho NHÃN NEO THEO THẾ GIỚI (biển dẫn đường). Nguyên
+  // nhân cắt nhãn đợt 2 nằm Ở ĐÂY chứ không phải nhãn mũi tên (hàm
+  // labelSafeLayout đã qua fuzz 825 vị trí neo: 0 ngoài khung, 0
+  // giao khung): nhãn biển trong game.js vẽ canh giữa tại đúng vị
+  // trí biển, KHÔNG kẹp màn hình và KHÔNG tránh khung HTML — biển
+  // gần rìa trái khung nhìn là hộp nhãn tràn ra ngoài (neo x=50,
+  // nhãn rộng ~150px → tràn trái 25px, mất đúng chữ đầu: "…ác:
+  // Quảng Trường Sơn Môn"). Hàm này nhận neo + vị trí ưa thích,
+  // ưu tiên LẬT nhãn sang phía còn chỗ của điểm neo, tránh khung
+  // phủ khi còn chỗ, và kẹp cứng 4 rìa là bước cuối bắt buộc.
+  // Trả { x, y, box, overlap, flipped } — x/y là góc trái-trên hộp.
+  // ==========================================================
+  function guidePulse(nowMs) {
+    var u = 0.5 + 0.5 * Math.sin((nowMs || 0) / 300);
+    return { alpha: 0.62 + 0.38 * u, ringR: 13 + 4 * u, ringAlpha: 0.55 + 0.45 * u };
+  }
+  function clampBoxPos(x, y, viewPx, boxW, boxH) {
+    var mx = Math.max(2, viewPx.w - boxW - 2), my = Math.max(2, viewPx.h - boxH - 2);
+    return { x: Math.max(2, Math.min(mx, Math.round(x))), y: Math.max(2, Math.min(my, Math.round(y))) };
+  }
+  function anchoredBoxLayout(cx, top, viewPx, boxW, boxH, occluders) {
+    if (!viewPx || !(boxW > 0) || !(boxH > 0)) return null;
+    var occ = occluders || [];
+    function score(x, y) {
+      var box = { x: x, y: y, w: boxW, h: boxH };
+      return { x: x, y: y, box: box, overlap: totalOverlap(box, occ) };
+    }
+    var best = null, bestIdx = -1;
+    function consider(x, y, idx) {
+      var p = clampBoxPos(x, y, viewPx, boxW, boxH);
+      var s = score(p.x, p.y);
+      if (!best || s.overlap < best.overlap) { best = s; bestIdx = idx; }
+      return s.overlap;
+    }
+    // Thứ tự ưu tiên: 0 canh giữa tại neo; 1 lật sang phía còn chỗ
+    // của neo (neo ở nửa trái → sang phải trước, nửa phải → sang
+    // trái trước); 2 phía ngược lại; 3 dưới neo; 4 trên neo.
+    var sideFirst = (cx <= viewPx.w / 2) ? 1 : -1;
+    consider(cx - boxW / 2, top, 0);
+    if (best.overlap > 0) consider(cx + sideFirst * 18, top, 1);
+    if (best.overlap > 0) consider(cx - sideFirst * 18 - boxW, top, 2);
+    if (best.overlap > 0) consider(cx - boxW / 2, top + boxH + 10, 3);
+    if (best.overlap > 0) consider(cx - boxW / 2, top - boxH - 10, 4);
+    if (best.overlap > 0) {
+      // Vòng quanh neo, khoảng cách tăng dần (8 hướng × 3 vòng).
+      var dists = [34, 64, 100], di, ai;
+      for (di = 0; di < dists.length && best.overlap > 0; di++) {
+        for (ai = 0; ai < 8; ai++) {
+          var ang = ai * Math.PI / 4;
+          consider(cx + Math.cos(ang) * dists[di] - boxW / 2, top + boxH / 2 + Math.sin(ang) * dists[di] - boxH / 2, 5);
+          if (best.overlap === 0) break;
+        }
+      }
+    }
+    if (best.overlap > 0) {
+      // Quét lưới toàn khung (bước 8px) như labelSafeLayout: khe
+      // trống giữa các khung phủ ở dải trên thường hẹp và lệch hẳn
+      // khỏi vòng quanh neo.
+      var gx, gy;
+      for (gy = 2; gy <= viewPx.h - boxH - 2; gy += 8) {
+        for (gx = 2; gx <= viewPx.w - boxW - 2; gx += 8) consider(gx, gy, 6);
+        if (best.overlap === 0) break;
+      }
+    }
+    // Kẹp cứng bước cuối bắt buộc + tính lại hộp/giao trung thực.
+    var finB = clampBoxPos(best.x, best.y, viewPx, boxW, boxH);
+    var finScore = score(finB.x, finB.y);
+    finScore.flipped = (bestIdx > 0) || finB.x !== Math.round(cx - boxW / 2) || finB.y !== Math.round(top);
+    return finScore;
   }
   // arrowSafePos(info, viewPx, occluders, radius): nếu vòng tròn
   // nền của mũi tên (bán kính radius quanh ex,ey) giao khung phủ
@@ -390,6 +481,7 @@
     labelLayout: labelLayout,
     rectsOverlapArea: rectsOverlapArea, totalOverlap: totalOverlap,
     labelSafeLayout: labelSafeLayout, arrowSafePos: arrowSafePos,
+    guidePulse: guidePulse, anchoredBoxLayout: anchoredBoxLayout,
     bfsRoute: bfsRoute, plazaApproach: plazaApproach,
     plazaRoute: plazaRoute, routeLookahead: routeLookahead
   };

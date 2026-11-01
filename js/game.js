@@ -4336,6 +4336,25 @@
       var knlines = SWN.dialogueFor(npc.id, flags, ch, qs);
       if (knlines) return knlines;
     }
+    // QA (d) 15:46 30/10, mục 56 hàng chờ: câu PHẢN ỨNG của Dì Tư
+    // (TD.dialogueFor, việc Đăng Hoa) phải thắng thoại lễ hội chung của
+    // WD — trước đây nhánh WD chạy trước và LUÔN trả thoại cho le_su
+    // (kể cả ngoài cửa sổ lễ) nên câu phản ứng không bao giờ hiện
+    // trong game thật dù test riêng TD vẫn xanh; lần nói chuyện hoàn
+    // thành việc chỉ thấy thoại chào chung. Ngoại lệ duy nhất: việc
+    // lễ của WD đã xong chờ trả thì giữ lời nhắc trả của WD (đó cũng
+    // là cue trả việc, không phải thoại chào chung); việc lễ đang dở
+    // thì lời chúc Đăng Hoa thắng vì lần nói này chính là lúc trả lời
+    // chúc (recordEvent hoàn thành cả hai việc talk cùng lúc).
+    if (TD && TD.dialogueFor && npc.id === 'le_su') {
+      var tdDang56 = TD.dialogueFor(npc.id, flags, qs, gameNow());
+      var festDone56 = false;
+      if (WD && WD.activeFestQuestId && qs && qs.accepted) {
+        var fid56 = WD.activeFestQuestId(qs);
+        festDone56 = !!(fid56 && qs.accepted[fid56] && qs.accepted[fid56].done);
+      }
+      if (tdDang56 && !festDone56) return tdDang56;
+    }
     // LỄ HỘI: Dì Tư nói theo cửa sổ lễ + tiến độ chuỗi việc lễ (wardrobe.js).
     if (WD && WD.dialogueFor && npc.id === WD.FEST_NPC.id) {
       var wlines = WD.dialogueFor(npc.id, qs, ch, Date.now());
@@ -4403,7 +4422,10 @@
     // câu PHẢN ỨNG của Dì Tư, câu báo bận việc tiết thứ hai); nhánh
     // ST ở trên đã bỏ qua việc tiết nên không còn bản sao nào để lệch.
     // Vị trí nhánh giữ nguyên sau ST (không dời lên sau SWN) để thứ tự
-    // ưu tiên với các module khác (WD lễ hội ở Dì Tư, AFF, OG) không đổi.
+    // ưu tiên với các module khác (WD lễ hội ở Dì Tư, AFF, OG) không đổi
+    // — NGOẠI TRỪ câu phản ứng Đăng Hoa của Dì Tư đã được đưa lên trước
+    // nhánh WD ở trên (mục 56), vì WD luôn trả thoại cho le_su nên
+    // không có ngoại lệ đó thì nhánh này không bao giờ tới được Dì Tư.
     if (TD && TD.dialogueFor) {
       var tdLines = TD.dialogueFor(npc.id, flags, qs, gameNow());
       if (tdLines) return tdLines;
@@ -8664,6 +8686,39 @@
     }
     return null;
   }
+  // QA110C (đợt 3, nghiệm thu chơi thật đợt 2): ĐÍCH CLICK HIỆU
+  // DỤNG — ô đích đi được (hoặc ô tương tác có đường tới ô kề) thì
+  // giữ nguyên hành vi cũ. Ô đích BỊ CHẶN (cây/đá/tường — trường
+  // hợp findClickPath trả null) thì tự tìm ô đi được GẦN NHẤT
+  // trong bán kính Chebyshev tối đa 3 ô quanh ô đích mà BFS tới
+  // được, và đi tới đó thay vì dừng kèm "Không tới được ô đó."
+  // khiến người chơi tưởng đường cụt giữa rừng. Chỉ khi cả vùng
+  // 3 ô quanh đích không có ô đi được nào tới được mới trả null
+  // (giữ thông báo cũ). Ô cổng KHÔNG bao giờ là ô thay thế (dẫm
+  // lên là dịch chuyển map — người chơi bấm vào cây cạnh cổng
+  // không thể bị đưa sang map khác ngoài ý muốn); ô NPC đang đứng
+  // cũng bị clickTileFree loại như thường.
+  function clickDestResolve(mp, sx, sy, tx, ty, fly) {
+    var path = findClickPath(mp, sx, sy, tx, ty, fly);
+    if (path) return { x: tx, y: ty, path: path, retargeted: false };
+    for (var r = 1; r <= 3; r++) {
+      var best = null, bestPath = null, bestD = Infinity;
+      for (var nx = tx - r; nx <= tx + r; nx++) {
+        for (var ny = ty - r; ny <= ty + r; ny++) {
+          if (Math.max(Math.abs(nx - tx), Math.abs(ny - ty)) !== r) continue;
+          if (clickPortalAt(mp, nx, ny)) continue;
+          if (!clickTileFree(mp, nx, ny, { x: nx, y: ny }, fly)) continue;
+          var d = (nx - tx) * (nx - tx) + (ny - ty) * (ny - ty);
+          if (d >= bestD) continue;
+          var p2 = findClickPath(mp, sx, sy, nx, ny, fly);
+          if (!p2) continue;
+          bestD = d; best = { x: nx, y: ny }; bestPath = p2;
+        }
+      }
+      if (best) return { x: best.x, y: best.y, path: bestPath, retargeted: true };
+    }
+    return null;
+  }
   // MỤC 106 (bổ sung sau test toàn suite): đoạn thẳng từ chân nhân vật
   // tới điểm bấm mà không chạm ô chặn nào thì GIỮ NGUYÊN hành vi click cũ
   // (đi thẳng tới đúng pixel đã bấm) — vừa nhanh như cũ, vừa không bắt
@@ -8704,16 +8759,26 @@
     var wx = camX + cx / ctlZoom(), wy = camY + cy / ctlZoom();
     var tx = Math.floor(wx / TILE), ty = Math.floor(wy / TILE);
     var mp = curMap();
-    var path = findClickPath(mp, Math.floor(px / TILE), Math.floor(py / TILE), tx, ty, !!flying);
-    if (!path) { toast('Không tới được ô đó.'); return; }
-    var directDest = clickTileFree(mp, tx, ty, { x: tx, y: ty }, !!flying);
-    if (directDest && clickLineClear(mp, px, py, wx, wy, { x: tx, y: ty }, !!flying)) {
-      movePath = null; moveTarget = { x: wx, y: wy };
+    // QA110C: đích hiệu dụng — ô đích bị chặn thì đi tới ô đi được
+    // gần nhất trong bán kính 3 ô (clickDestResolve); chỉ khi
+    // quanh đích không có ô nào tới được mới báo như cũ.
+    var res = clickDestResolve(mp, Math.floor(px / TILE), Math.floor(py / TILE), tx, ty, !!flying);
+    if (!res) { toast('Không tới được ô đó.'); return; }
+    var path = res.path;
+    // Đích giữ nguyên thì ngắm đúng pixel đã bấm như click cũ;
+    // đích đã dời sang ô kề thì ngắm tâm ô thay thế (cùng quy ước
+    // điểm dừng BFS: +16/+28).
+    var dwx = res.retargeted ? (res.x * TILE + 16) : wx;
+    var dwy = res.retargeted ? (res.y * TILE + 28) : wy;
+    var directDest = clickTileFree(mp, res.x, res.y, { x: res.x, y: res.y }, !!flying);
+    if (directDest && clickLineClear(mp, px, py, dwx, dwy, { x: res.x, y: res.y }, !!flying)) {
+      movePath = null; moveTarget = { x: dwx, y: dwy };
     } else {
       movePath = path.map(function (t) { return { x: t.x * TILE + 16, y: t.y * TILE + 28 }; });
-      // Đích đi bộ được thì đoạn cuối ngắm đúng pixel đã bấm (như click
-      // cũ), không dừng ở tâm ô; đích tương tác thì dừng ở ô kề như BFS.
-      if (directDest && movePath.length) movePath[movePath.length - 1] = { x: wx, y: wy };
+      // Đích đi bộ được thì đoạn cuối ngắm đúng pixel đích hiệu
+      // dụng, không dừng ở tâm ô; đích tương tác thì dừng ở ô kề
+      // như BFS.
+      if (directDest && movePath.length) movePath[movePath.length - 1] = { x: dwx, y: dwy };
       moveTarget = movePath.length ? movePath.shift() : null;
     }
     stuckT = 0;
@@ -9367,6 +9432,11 @@
     // VÁ LỆCH NỀN V7: bgCov = vùng tranh phủ sau khi dịch theo neo
     // (null khi map không có tranh toàn cảnh hoặc không có neo).
     var bgCov = bgR ? bgCoverFor(mp, bgR) : null;
+    // CHẾ ĐỘ VẬT THỂ THẬT (bản đồ 1 làm lại theo bản thử atlas-town): nền chỉ
+    // còn đất thuần, nhà/cây/sạp/giếng/cổng là vật thể ảnh sắp xếp theo chiều
+    // sâu qua js/props.js (PNT_OBJMAPS). Map không có dữ liệu vật thể thì
+    // objMode = false và mọi đường vẽ giữ nguyên như cũ.
+    var objMode = !!(PROPS && PROPS.isObjMap && PROPS.isObjMap(curMapId));
     if (bgR && bgCov) {
       // Ô mặt đất phủ toàn khung nhìn trước (vành ngoài tranh có
       // đất/đường/cổng dạng ô), rồi đặt tranh đã dịch neo đè lên
@@ -9559,7 +9629,7 @@
     var gate = mp.gate;
     var gX0 = gate ? gate.x * TILE - camX : -999, gX1 = gate ? (gate.x + 2) * TILE - camX : -999;
     var gCX = (gX0 + gX1) / 2, gY = gate ? gate.y * TILE - camY : -999;
-    if (gate && !bgCoversTile(bgCov, gate.x, gate.y) && gX1 >= 0 && gX0 <= VIEW_W) {
+    if (gate && !objMode && !bgCoversTile(bgCov, gate.x, gate.y) && gX1 >= 0 && gX0 <= VIEW_W) { // chế độ vật thể thật: cổng vẽ bằng vật thể ảnh riêng, bỏ khối cổng cứng tự vẽ
       ctx.fillStyle = '#6b4a2a';
       ctx.fillRect(gX0 - 8, gY - 186, 80, 62);
       ctx.fillStyle = '#7a2e22';
@@ -9606,7 +9676,11 @@
     var lo;
     for (y = y0; y <= y1; y++) for (x = x0; x <= x1; x++) {
       var tt = mp.tiles[y][x];
-      if (!bgCoversTile(bgCov, x, y) && (tt === 'H' || tt === 'T' || tt === 'S' || tt === 'L' || tt === 'F' || tt === 'o' || tt === 'E')) {
+      if (objMode ? (tt === 'F' || tt === 'L')
+                  : (!bgCoversTile(bgCov, x, y) && (tt === 'H' || tt === 'T' || tt === 'S' || tt === 'L' || tt === 'F' || tt === 'o' || tt === 'E'))) {
+        // Chế độ vật thể thật: nhà/cây/sạp/đá/giếng đã là vật thể ảnh riêng
+        // (lprop); lớp ô chỉ còn vẽ hàng rào + đèn đá (vật thấp, không cần
+        // che theo chiều sâu). Ngoài chế độ này giữ nguyên điều kiện cũ.
         lo = pooledObj(); lo.kind = 'tile'; lo.tile = tt; lo.x = x; lo.y = y; lo.sy = (y + 1) * TILE; list.push(lo);
       }
     }
@@ -9616,7 +9690,7 @@
     var drawProps = mp.props || [];
     if (DP && curMapId === DP.MAP_ID) drawProps = drawProps.concat(DP.decorProps(flags));
     drawProps.forEach(function (p) {
-      if (bgCoversTile(bgCov, p.x, p.y) && p.sprite !== 'sign' && !(DP && curMapId === DP.MAP_ID)) return; // trong vùng tranh phủ, tranh đã có sẵn vật trang trí; chỉ giữ biển hiệu + nhãn (phủ: nền hang không chứa prop tông nên phải hiện). Ngoài vùng phủ (vành ô) prop vẽ bình thường.
+      if (!objMode && bgCoversTile(bgCov, p.x, p.y) && p.sprite !== 'sign' && !(DP && curMapId === DP.MAP_ID)) return; // trong vùng tranh phủ, tranh đã có sẵn vật trang trí; chỉ giữ biển hiệu + nhãn (phủ: nền hang không chứa prop tông nên phải hiện). Ngoài vùng phủ (vành ô) prop vẽ bình thường. Chế độ vật thể thật: nền đất thuần không chứa vật trang trí nên prop đặt sẵn phải vẽ hết.
       var psx = p.x * TILE - camX, psy = p.y * TILE - camY;
       if (psx < -160 || psx > VIEW_W + 96 || psy < -160 || psy > VIEW_H + 96) return;
       lo = pooledObj(); lo.kind = 'prop'; lo.sprite = p.sprite; lo.label = p.label; lo.x = p.x; lo.y = p.y; lo.sy = (p.y + 1) * TILE; list.push(lo);
@@ -9641,6 +9715,16 @@
       var pview = PROPS.collect(curMapId, camX - 90, camY - 120, camX + VIEW_W + 90, camY + VIEW_H + 40, gfxLevel, Date.now());
       for (var pvi = 0; pvi < pview.length; pvi++) {
         lo = pooledObj(); lo.kind = 'rprop'; lo.prop = pview[pvi]; lo.sy = pview[pvi].y; list.push(lo);
+      }
+      // VẬT THỂ THẬT CỠ LỚN (nhà, cây, cổng có mái che theo chiều sâu):
+      // vào chung danh sách y-sort với mốc sắp xếp riêng — mái cổng có mốc
+      // ở mép nam của lối đi nên nhân vật bước vào vòm sẽ bị mái che đúng
+      // khoảnh khắc, đứng trước cổng thì hiện nguyên vẹn.
+      if (objMode) {
+        var oview = PROPS.collectObj(curMapId, camX - 340, camY - 380, camX + VIEW_W + 340, camY + VIEW_H + 60);
+        for (var ovi = 0; ovi < oview.length; ovi++) {
+          lo = pooledObj(); lo.kind = 'lprop'; lo.oprop = oview[ovi]; lo.sy = oview[ovi].sy; list.push(lo);
+        }
       }
     }
     // Linh điền trong động phủ: cây đang trồng vào cùng danh sách y-sort
@@ -9773,6 +9857,11 @@
         // Prop sống (lúa): blit sprite tiền-scale từ atlas, neo chân tại
         // y prop (js/props.js lo cache + đếm số đang vẽ).
         if (PROPS) PROPS.drawOne(ctx, it.prop, camX, camY);
+      } else if (it.kind === 'lprop') {
+        // Vật thể thật cỡ lớn: blit từ atlas vật thể + bóng tiếp xúc mềm
+        // (js/props.js lo toàn bộ, gồm cả bóng — không dùng bóng phẳng của
+        // lớp thực thể ở đây).
+        if (PROPS) PROPS.drawObj(ctx, it.oprop, camX, camY);
       } else if (it.kind === 'stele') {
         // Bia sào huyệt boss thế giới: tảng đá đứng như vật thể trong map.
         S.drawGridToCanvas(ctx, S.OBJECTS.rock, it.x * TILE + 16 - 24 - camX, (it.y + 1) * TILE - 48 - camY, 3);
@@ -10670,7 +10759,7 @@
       }
     });
     // Cổng lầu — biển + trụ trước + dầm vòm (vẽ sau thực thể để luôn đọc được).
-    if (gate && !bgCoversTile(bgCov, gate.x, gate.y) && gX1 >= 0 && gX0 <= VIEW_W) {
+    if (gate && !objMode && !bgCoversTile(bgCov, gate.x, gate.y) && gX1 >= 0 && gX0 <= VIEW_W) { // chế độ vật thể thật: cổng vẽ bằng vật thể ảnh riêng, bỏ khối cổng cứng tự vẽ
       ctx.fillStyle = '#3a2a1a';
       ctx.fillRect(gCX - 30, gY - 142, 60, 22);
       ctx.fillStyle = '#f2c14e';
@@ -10751,20 +10840,39 @@
       }
     });
     // Nhãn biển hiệu vẽ cuối cùng; nếu kề/đè nhãn NPC thì ẩn biển (NPC quan trọng hơn).
+    // QA110C (đợt 3, nghiệm thu chơi thật đợt 2 vẫn còn 2 lần nhãn bị
+    // cắt ở rìa trái): nhãn biển trước đây vẽ canh giữa tại đúng vị
+    // trí biển trong thế giới, KHÔNG kẹp màn hình và KHÔNG tránh
+    // khung HTML phủ — biển gần rìa trái khung nhìn là hộp nhãn tràn
+    // ra ngoài, mất đúng phần đầu chữ ("…ác: Quảng Trường Sơn Môn"
+    // là biển "Bắc: …" bị cắt). Nay vị trí nhãn qua
+    // PLZ.anchoredBoxLayout: kẹp cứng 4 rìa là ràng buộc bắt buộc,
+    // ưu tiên lật sang phía còn chỗ của biển, tránh khung HTML phủ
+    // khi còn chỗ; thiếu module thì rơi về kẹp cứng đơn giản.
     (mp.props || []).forEach(function (p) {
       if (p.sprite !== 'sign' || !p.label) return;
       ctx.font = 'bold 11px sans-serif'; ctx.textAlign = 'center';
       var tw = ctx.measureText(p.label).width + 14;
       var tx0 = p.x * TILE + 16 - camX, ty0 = (p.y + 1) * TILE - 48 - 20 - camY;
+      var sbx = tx0 - tw / 2, sby = ty0;
+      var slay = null;
+      if (PLZ && PLZ.anchoredBoxLayout) {
+        try { slay = PLZ.anchoredBoxLayout(tx0, ty0, { w: effVW(), h: effVH() }, tw, 18, hudOccluders()); } catch (e) { slay = null; }
+      }
+      if (slay) { sbx = slay.x; sby = slay.y; }
+      else {
+        sbx = Math.max(2, Math.min(Math.max(2, effVW() - tw - 2), sbx));
+        sby = Math.max(2, Math.min(Math.max(2, effVH() - 20), sby));
+      }
       var clash = placedLabels.some(function (b) {
-        return tx0 - tw / 2 < b.x + b.w + 6 && tx0 + tw / 2 > b.x - 6 && ty0 < b.y + b.h + 6 && ty0 + 18 > b.y - 6;
+        return sbx < b.x + b.w + 6 && sbx + tw > b.x - 6 && sby < b.y + b.h + 6 && sby + 18 > b.y - 6;
       });
       if (clash) return;
-      placedLabels.push({ x: tx0 - tw / 2, y: ty0, w: tw, h: 18 });
+      placedLabels.push({ x: sbx, y: sby, w: tw, h: 18 });
       ctx.fillStyle = '#202020';
-      ctx.fillRect(tx0 - tw / 2, ty0, tw, 18);
+      ctx.fillRect(sbx, sby, tw, 18);
       ctx.fillStyle = '#f2e6c0';
-      ctx.fillText(p.label, tx0, ty0 + 13);
+      ctx.fillText(p.label, sbx + tw / 2, sby + 13);
     });
     // Bia boss thế giới: tên boss + trạng thái/đếm ngược hồi sinh (giờ thật)
     // vẽ ngay trên bia để người chơi đứng ở sào huyệt là đọc được.
@@ -11668,6 +11776,21 @@
   // (PLZ.plazaRoute), không còn chỉ thẳng chim bay qua rừng. Tuyến
   // được nhớ đệm: chỉ tính lại khi chưa có tuyến hoặc người chơi
   // lệch khỏi tuyến quá 3 ô — không tính mỗi khung hình.
+  // ĐỢT 3 (QA110C, nghiệm thu chơi thật đợt 2 07:59–08:19 vẫn nửa
+  // đạt — kẹt ở rừng rậm phía tây, ảnh kẹt cuối không thấy tam
+  // giác): ba sửa —
+  // (1) VÒNG TRÒN MẢNH NHẤP NHÁY TẠI Ô ĐIỂM NHÌN TRƯỚC trên mặt
+  // đất: hàm này chạy SAU draw() nên vòng nằm ở lớp trên cùng, sau
+  // mọi cây/vật thể — ô đích bước tiếp theo luôn lộ rõ kể cả khi
+  // nằm dưới tán cây.
+  // (2) Nhấp nháy CHỈ đổi độ mờ trong dải nhìn thấy rõ
+  // (PLZ.guidePulse, alpha không bao giờ về 0); tam giác trong màn
+  // hình thêm vòng nền tối như nhánh ngoài màn hình để nổi trên
+  // tán lá sáng (trước đây chỉ là tam giác vàng trơ 24×17px ngay
+  // mép trên ô đích — vùng tán cây dày nhất — nên chìm hẳn).
+  // (3) Tam giác trong màn hình CŨNG tránh khung HTML phủ (trước
+  // đây chỉ nhánh ngoài màn hình mới tránh): đích nhìn trước nằm
+  // dưới khung nhân vật/bản đồ nhỏ là người chơi không thấy gì.
   var plazaOccCache = { t: -1e9, rects: [] };
   function hudOccluders() {
     var nowMs = performance.now();
@@ -11725,19 +11848,61 @@
     var info = PLZ.arrowFor(curMap(), curMapId, flags.sectJoined, pt, { x: camX, y: camY }, view, TILE, aim || undefined);
     if (!info) return;
     var bob = Math.abs(Math.sin(now / 280)) * 6;
+    var pulse = PLZ.guidePulse ? PLZ.guidePulse(now) : { alpha: 1, ringR: 15, ringAlpha: 0.9 };
+    var occ = (PLZ.arrowSafePos && PLZ.labelSafeLayout) ? hudOccluders() : [];
     ctx.save();
+    // QA110C (1): vòng tròn mảnh nhấp nháy tại ô đích bước tiếp
+    // theo (điểm nhìn trước trên tuyến; không theo tuyến thì là
+    // tâm quảng trường). Vẽ trong hàm này — tức SAU toàn bộ draw()
+    // — nên vòng nằm trên mọi tán cây/vật thể.
+    if (info.target) {
+      var rgx = info.target.x * TILE + 16 - camX, rgy = info.target.y * TILE + 28 - camY;
+      if (rgx > -24 && rgx < view.w + 24 && rgy > -24 && rgy < view.h + 24) {
+        ctx.save();
+        ctx.globalAlpha = pulse.ringAlpha;
+        ctx.lineWidth = 4.5; ctx.strokeStyle = 'rgba(20,16,8,.85)';
+        ctx.beginPath(); ctx.ellipse(rgx, rgy, pulse.ringR, pulse.ringR * 0.45, 0, 0, Math.PI * 2); ctx.stroke();
+        ctx.lineWidth = 2.2; ctx.strokeStyle = '#ffd94a';
+        ctx.beginPath(); ctx.ellipse(rgx, rgy, pulse.ringR, pulse.ringR * 0.45, 0, 0, Math.PI * 2); ctx.stroke();
+        ctx.fillStyle = '#ffd94a';
+        ctx.beginPath(); ctx.ellipse(rgx, rgy, 3.2, 1.6, 0, 0, Math.PI * 2); ctx.fill();
+        ctx.restore();
+      }
+    }
     ctx.fillStyle = '#ffd94a';
     ctx.strokeStyle = 'rgba(0,0,0,.65)'; ctx.lineWidth = 2;
     if (info.onScreen) {
       var sx = info.txPx, sy = info.tyPx - 14 - bob;
+      // QA110C (3): tránh khung HTML phủ cho cả nhánh trong màn
+      // hình; phải dời xa thì vẽ nét đứt nối về vị trí gốc.
+      var tSafe = PLZ.arrowSafePos ? PLZ.arrowSafePos({ ex: sx, ey: sy - 8, txPx: info.txPx, tyPx: info.tyPx }, view, occ, 16)
+        : { x: sx, y: sy - 8, moved: 0, overlap: 0 };
+      var tcx = tSafe.x, tcy = tSafe.y;
+      if (tSafe.moved > 24) {
+        ctx.save();
+        ctx.strokeStyle = 'rgba(255,217,74,.75)'; ctx.lineWidth = 2;
+        if (ctx.setLineDash) ctx.setLineDash([5, 5]);
+        ctx.beginPath(); ctx.moveTo(tcx, tcy); ctx.lineTo(sx, sy - 8); ctx.stroke();
+        ctx.restore();
+      }
+      // QA110C (2): vòng nền tối + độ mờ nhấp nháy trong dải nhìn
+      // thấy rõ (guidePulse, không bao giờ mờ về 0).
+      ctx.save();
+      ctx.globalAlpha = pulse.alpha;
       ctx.beginPath();
-      ctx.moveTo(sx - 12, sy - 17); ctx.lineTo(sx + 12, sy - 17); ctx.lineTo(sx, sy);
+      ctx.arc(tcx, tcy, 15, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(20,16,8,.55)'; ctx.fill();
+      ctx.strokeStyle = '#ffd94a'; ctx.lineWidth = 2; ctx.stroke();
+      ctx.fillStyle = '#ffd94a';
+      ctx.strokeStyle = 'rgba(0,0,0,.65)'; ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(tcx - 11, tcy - 8); ctx.lineTo(tcx + 11, tcy - 8); ctx.lineTo(tcx, tcy + 9);
       ctx.closePath(); ctx.fill(); ctx.stroke();
+      ctx.restore();
     } else {
       // MỤC 110 + ĐỢT 2: dời mũi tên ra khỏi vùng bị khung HTML phủ
       // (vòng tròn nền phóng to r=19, tam giác 21/-13/15 cho dễ thấy
       // trên nền rừng sáng), góc chỉ hướng giữ nguyên.
-      var occ = (PLZ.arrowSafePos && PLZ.labelSafeLayout) ? hudOccluders() : [];
       var safeA = PLZ.arrowSafePos ? PLZ.arrowSafePos(info, view, occ, 20) : { x: info.ex, y: info.ey, moved: 0, overlap: 0 };
       var ex = safeA.x, ey = safeA.y;
       if (safeA.moved > 24) {
@@ -11749,6 +11914,11 @@
         ctx.beginPath(); ctx.moveTo(ex, ey); ctx.lineTo(info.ex, info.ey); ctx.stroke();
         ctx.restore();
       }
+      // QA110C (2): mũi tên rìa màn hình nhấp nháy cùng nhịp
+      // guidePulse nhưng sàn độ mờ 0.8 để luôn nổi rõ; nhãn giữ
+      // nguyên độ mờ 1 cho dễ đọc.
+      ctx.save();
+      ctx.globalAlpha = Math.max(0.8, pulse.alpha);
       ctx.beginPath();
       ctx.arc(ex, ey, 19, 0, Math.PI * 2);
       ctx.fillStyle = 'rgba(20,16,8,.55)'; ctx.fill();
@@ -11761,6 +11931,7 @@
       ctx.closePath(); ctx.fill(); ctx.stroke();
       ctx.rotate(-info.angle);
       ctx.translate(-ex, -ey);
+      ctx.restore();
       // MỤC 110 + ĐỢT 2: nhãn đặt vào VÙNG AN TOÀN (không giao khung
       // HTML phủ) bằng PLZ.labelSafeLayout với bề rộng chữ đo thật;
       // nhãn phải dời xa mũi tên thì vẽ nét đứt nối hai thứ.
@@ -13714,9 +13885,15 @@
       // movePathLeft trả số đoạn còn lại, clickTo đặt đường như handler.
       clickPath: function (tx, ty, fly) { var mp = curMap(); return findClickPath(mp, Math.floor(px / TILE), Math.floor(py / TILE), tx, ty, !!fly); },
       movePathLeft: function () { return movePath ? movePath.length : 0; },
-      clickTo: function (tx, ty, fly) { var mp = curMap(); var p = findClickPath(mp, Math.floor(px / TILE), Math.floor(py / TILE), tx, ty, !!fly); if (!p) return null; var cxp = tx * TILE + 16, cyp = ty * TILE + 28; if (clickTileFree(mp, tx, ty, { x: tx, y: ty }, !!fly) && clickLineClear(mp, px, py, cxp, cyp, { x: tx, y: ty }, !!fly)) { movePath = null; moveTarget = { x: cxp, y: cyp }; } else { movePath = p.map(function (t) { return { x: t.x * TILE + 16, y: t.y * TILE + 28 }; }); moveTarget = movePath.length ? movePath.shift() : null; } return p; },
+      clickTo: function (tx, ty, fly) { var mp = curMap(); var res = clickDestResolve(mp, Math.floor(px / TILE), Math.floor(py / TILE), tx, ty, !!fly); if (!res) return null; var cxp = res.x * TILE + 16, cyp = res.y * TILE + 28; if (clickTileFree(mp, res.x, res.y, { x: res.x, y: res.y }, !!fly) && clickLineClear(mp, px, py, cxp, cyp, { x: res.x, y: res.y }, !!fly)) { movePath = null; moveTarget = { x: cxp, y: cyp }; } else { movePath = res.path.map(function (t) { return { x: t.x * TILE + 16, y: t.y * TILE + 28 }; }); moveTarget = movePath.length ? movePath.shift() : null; } return res.path; },
+      // QA110C: đích click hiệu dụng — ô đích bị chặn thì là ô đi
+      // được gần nhất trong bán kính 3 ô (retargeted = true).
+      clickDest: function (tx, ty, fly) { var mp = curMap(); var res = clickDestResolve(mp, Math.floor(px / TILE), Math.floor(py / TILE), tx, ty, !!fly); return res ? { x: res.x, y: res.y, retargeted: res.retargeted } : null; },
       teleport: function (tx, ty) { px = tx * TILE + 16; py = ty * TILE + 28; moveTarget = null; movePath = null; pvx = 0; pvy = 0; },
       switchMap: function (toId, tx, ty) { switchMap(toId, tx, ty); }, // QA32: doi map that de test HUD doi ten ngay
+      // QA56: duong thoai that cua game (dialogueLinesFor) de test phan
+      // ung Di Tu — npc chi can id, ham tu doc ch/flags/qs hien tai.
+      dialogueFor: function (npcId) { return dialogueLinesFor({ id: npcId }); },
       // MUC 108: hinh hoc mui ten quang truong son mon o trang thai hien tai.
       plazaGuide: function () { if (!PLZ || !ch) return null; return PLZ.arrowFor(curMap(), curMapId, flags.sectJoined, playerTile(), { x: camX, y: camY }, { w: effVW(), h: effVH() }, TILE); },
       // QA37: mo phong chet de test phi hoi sinh (muc 37 hang cho).
