@@ -27,7 +27,7 @@
 
   /* ================= HẰNG SỐ + LOGIC THUẦN ================= */
 
-  var ZOOM_MIN = 0.6, ZOOM_MAX = 2.0;
+  var ZOOM_MIN = 0.35, ZOOM_MAX = 2.0; // REWORK-VS bước 1: dải zoom về chuẩn Vô Sắc 0,35–2,0 (trước 0,6–2,0)
 
   // Vùng chạm tối thiểu (px) — lệnh Bui 12:34 ngày 2026-10-30 (nút nhỏ gọn
   // hơn): hình nút VẼ có thể nhỏ hơn mức này, nhưng hộp chạm hiệu dụng
@@ -255,6 +255,7 @@
       label: 'Màn hình NGANG',
       joy: { x: 0.095, y: 0.78, d: 0.24 },
       dpad: { x: 0.095, y: 0.78, d: 0.24 },
+      run: { x: 0.095, y: 0.47, d: 0.07 }, // REWORK-VS bước 2: nút CHẠY ngay trên cụm cần gạt/D-pad
       // MCTL 31/10: vòng cung cũ SẬP ở khung ngang điện thoại (audit:
       // 9–10 cặp hộp chạm chồng ở 363x272/320x240, Đánh bị skill5 +
       // interact nuốt). Đổi sang QUẠT 2 HÀNG: hàng trên y=0.76 (Tương
@@ -280,6 +281,7 @@
       // Hàng điều khiển dồn ở khoang dưới (deck) của khung dọc.
       joy: { x: 0.15, y: 0.89, d: 0.21 },
       dpad: { x: 0.15, y: 0.89, d: 0.21 },
+      run: { x: 0.15, y: 0.665, d: 0.068 }, // REWORK-VS bước 2: nút CHẠY ngay trên cụm cần gạt/D-pad
       // MCTL 31/10: bản cũ skill1 x interact chồng 34.2x8.0 (bấm Kiếm
       // Khí thành Tương tác), attack x skill4/5 chồng ~5x20, skill4/5
       // tràn mép phải khung 358. Bố cục mới: Tương tác lùi trái (0.575),
@@ -517,6 +519,7 @@
   var account = null;
   var heldKeys = {};        // phím di chuyển gán-riêng đang giữ
   var joyVec = { x: 0, y: 0 };
+  var runToggle = false;    // REWORK-VS bước 2: nút CHẠY trên lớp cảm ứng đang bật hay không (chỉ runtime)
   var dpadHeld = {};
   var padVec = { x: 0, y: 0 };
   var capturing = null;     // action PC đang chờ bấm phím để gán
@@ -528,6 +531,14 @@
     });
     var kv = customMove ? keyboardVector(heldKeys, settings.keys) : { x: 0, y: 0 };
     return combineVec([kv, joyVec, dpadVector(dpadHeld), padVec]);
+  }
+  // REWORK-VS bước 2 (chuẩn Vô Sắc): "đang chạy" từ thiết bị — cần
+  // gạt/tay cầm đẩy SÁT VÀNH (độ lớn vector >= 0,92) hoặc nút CHẠY
+  // trên lớp cảm ứng đang bật. game.js cộng thêm nguồn giữ Shift.
+  function runHeld() {
+    var jm = Math.sqrt(joyVec.x * joyVec.x + joyVec.y * joyVec.y);
+    var pm = Math.sqrt(padVec.x * padVec.x + padVec.y * padVec.y);
+    return runToggle || jm >= 0.92 || pm >= 0.92;
   }
   function zoom() { return clampZoom(settings.view.zoom); }
   function swallowKey(key) { return keySwallowed(settings.keys, key, capturing); }
@@ -695,11 +706,16 @@
       zb.setAttribute('data-zoom', z[0]);
       zoomBox.appendChild(zb);
     });
+    // REWORK-VS bước 2: nút CHẠY (bật/tắt) — mặt nút dùng chung họ
+    // .ctl-skill để đồng bộ hình thức + trạng thái .on có sẵn.
+    var runBtn = mk('div', 'ctlRun', 'ctl-el ctl-skill ctl-run');
+    runBtn.innerHTML = '<span class="ctl-face"><span class="sn">CHẠY</span><span class="sk">»</span></span>';
     var hint = mk('div', 'ctlPadHint', 'ctl-el');
     ov.appendChild(zone); ov.appendChild(joy); ov.appendChild(dpad);
     ov.appendChild(skills); ov.appendChild(zoomBox); ov.appendChild(hint);
+    ov.appendChild(runBtn);
     wrap.appendChild(ov);
-    els = { ov: ov, zone: zone, joy: joy, knob: joy.firstChild, dpad: dpad, skills: skills, zoomBox: zoomBox, hint: hint };
+    els = { ov: ov, zone: zone, joy: joy, knob: joy.firstChild, dpad: dpad, skills: skills, zoomBox: zoomBox, hint: hint, run: runBtn };
     bindOverlay();
   }
 
@@ -823,6 +839,8 @@
       for (var i = 0; i < L.skills.length; i++) if (L.skills[i].id === b.getAttribute('data-act')) spec = L.skills[i];
       if (spec) place(b, spec, W, H, minDim);
     });
+    // REWORK-VS bước 2: nút CHẠY đặt theo spec run của bố cục hiện tại.
+    if (els.run && L.run) place(els.run, L.run, W, H, minDim);
     // MCTL 31/10: zoom theo zoomPlan (không đè minimap — audit cũ: cả 3
     // nút zoom đè minimap ở hầu hết khung điện thoại) + thẻ thu nhỏ
     // (chipTray) xếp TIẾP dưới cụm minimap+zoom: dải phải chỉ một chủ.
@@ -876,6 +894,14 @@
     els.ov.classList.toggle('on', inGame);
     els.zone.style.display = (showTouch && settings.touch.mode === 'joystick' && settings.touch.float) ? 'block' : 'none';
     els.skills.style.display = showTouch ? 'block' : 'none';
+    // QA58 (muc 58 hang cho): cum chieu cam ung da du hang chieu 1
+    // (attack + skill1..5 = dung SK.BAR: combo + 5 chieu dau) nen khi no
+    // hien trong game thi an #skillBar HTML de khoi trung bo chieu tren
+    // man hinh doc. #skillBar2 (chieu canh gioi/bi tich) KHONG co trong
+    // cum cam ung nen giu nguyen — khong bot chuc nang nao. Het cam ung
+    // (off, hoac chua vao game) thi tra display ve '' de CSS flex lo lai.
+    var htmlBar = document.getElementById('skillBar');
+    if (htmlBar) htmlBar.style.display = (showTouch && inGame) ? 'none' : '';
     els.joy.style.display = (showTouch && settings.touch.mode === 'joystick' && (!settings.touch.float || joyActive)) ? 'block' : 'none';
     els.dpad.style.display = (showTouch && settings.touch.mode === 'dpad') ? 'block' : 'none';
     positionOverlay();
@@ -903,6 +929,16 @@
   }
   function bindOverlay() {
     var wrap = $('gameWrap');
+    // REWORK-VS bước 2: nút CHẠY — bấm để bật/tắt chạy (lớp cảm ứng);
+    // trạng thái giữ ở biến runtime runToggle, mặt nút đổi theo .on.
+    if (els.run) {
+      els.run.addEventListener('pointerdown', function (e) {
+        runToggle = !runToggle;
+        els.run.classList.toggle('on', runToggle);
+        e.preventDefault();
+        if (e.stopPropagation) e.stopPropagation();
+      });
+    }
     els.zone.addEventListener('pointerdown', function (e) {
       if (joyPid !== null) return;
       joyPid = e.pointerId; joyActive = true;
@@ -1440,7 +1476,7 @@
     loadSettings: loadSettings, saveSettings: saveSettings, resetGroup: resetGroup,
     storageKey: storageKey,
     // Runtime (trình duyệt; game.js gọi):
-    moveVec: moveVec, zoom: zoom, swallowKey: swallowKey,
+    moveVec: moveVec, runHeld: runHeld, zoom: zoom, swallowKey: swallowKey,
     getSettings: function () { return normalizeSettings(settings); },
     setZoom: setZoom,
     toggleSettingsPanel: toggleSettingsPanel

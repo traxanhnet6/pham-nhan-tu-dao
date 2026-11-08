@@ -42,7 +42,10 @@
   // đều bay qua được. Biên map luôn chặn (game.js kiểm biên riêng).
   var FLY_BLOCKED = { W: 1, H: 1, o: 1 };
   var FLY_PASS_LOW = ['T', 'R', 'F', 'S', 'L', 'E']; // vật thấp bay qua (tài liệu/test)
-  var SPEED_MULT = 1.8;   // so với tốc độ chạy bộ MOVE_TOP của game.js
+  // REWORK-VS bước 2 (chuẩn Vô Sắc, Bui duyệt 23:02 07/11/2026): tốc
+  // độ bay là TRẦN PHẲNG 198 px/giây cho mọi kiểu bay — thay hệ số
+  // SPEED_MULT = 1,8 lần tốc độ chạy bộ cũ (~270 px/giây, quá nhanh).
+  var TOP_SPEED = 198;
   var LIFT = 26;          // độ nâng render (px) khi bay
   // Q1 — đúc linh kiếm phôi: kiếm phẩm Linh trở lên (không tiêu hao) +
   // 200 Linh Thạch + 3 Linh Chi.
@@ -258,7 +261,7 @@
   var api = {
     CHAIN: CHAIN, REQUIRED_RANK: REQUIRED_RANK,
     FLY_BLOCKED: FLY_BLOCKED, FLY_PASS_LOW: FLY_PASS_LOW,
-    SPEED_MULT: SPEED_MULT, LIFT: LIFT,
+    TOP_SPEED: TOP_SPEED, LIFT: LIFT,
     FORGE: FORGE, GRADE_ORDER: GRADE_ORDER, DUEL: DUEL,
     TRIAL_SECONDS: TRIAL_SECONDS, TRIAL_MAP: TRIAL_MAP,
     CHECKPOINTS: CHECKPOINTS, CHECKPOINT_RADIUS: CHECKPOINT_RADIUS,

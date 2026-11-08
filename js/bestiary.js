@@ -30,9 +30,10 @@
 //   linh thú 2; đan 1; bí cảnh 2 khi vào + 1 khi hoàn thành lượt;
 //   vũ khí 1; pháp bảo 2; NPC 1. Tổng tối đa theo dữ liệu thật
 //   hiện tại: 9 quái ×2 + 21 boss ×3 + 51 thú ×2 + 17 đan + 15
-//   bí cảnh ×3 + 30 vũ khí + 21 pháp bảo ×2 + 27 NPC = 344 điểm
-//   (21 pháp bảo = 16 gốc trong js/artifacts.js + 5 pháp bảo lễ
-//   hội do js/wardrobe.js đăng ký thêm vào cùng danh mục).
+//   bí cảnh ×3 + 30 vũ khí + 33 pháp bảo ×2 + 138 NPC = 479 điểm
+//   (33 pháp bảo = 16 gốc trong js/artifacts.js + 12 đợt 1 + 5 pháp
+//   bảo lễ hội do js/wardrobe.js đăng ký thêm vào cùng danh mục;
+//   138 NPC theo catalog story.js hiện tại — test BX khóa đúng số này).
 // - Mốc thưởng (nhận đúng 1 lần/mốc, chỉ khi đủ điểm, qua nút
 //   trong panel — không tự cộng khi vừa đủ, để người chơi tự
 //   quyết lúc nào "nộp sổ" cho Lục Tiểu Lục): 25→20 LT,
@@ -61,7 +62,7 @@
 (function (global) {
   'use strict';
 
-  var KEEPER = { id: 'tieu_thuong', name: 'Lục Tiểu Lục', title: 'Tiểu thương sạp chợ — người giữ sổ', mapId: 'map1', x: 64, y: 44 } // V7-EXPAND: (36,19)+neo map1 (28,25); // V10: (24,11) + offset map (12,8)
+  var KEEPER = { id: 'tieu_thuong', name: 'Lục Tiểu Lục', title: 'Tiểu thương sạp chợ — người giữ sổ', mapId: 'map1', x: 76, y: 74 } // QA (c) 10:01 01/11: khớp vị trí thật trong maps.js nướng (76,74) — số cũ (64,44) là tọa độ trước V7-EXPAND; cùng NPC này trong js/market-fair.js cũng là (76,74).
   var DETAIL_KILLS = 10;
 
   // Điểm theo từng loại trang (xem đầu file).

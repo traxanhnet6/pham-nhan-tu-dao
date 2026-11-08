@@ -89,6 +89,9 @@
   // Móc controls (3): zoom camera — khung nhìn HIỆU DỤNG theo mức zoom.
   // Toạ độ thế giới + va chạm KHÔNG đổi; chỉ camera nhìn rộng/hẹp hơn.
   function ctlZoom() { try { return (CTL && CTL.zoom) ? CTL.zoom() : 1; } catch (e) { return 1; } }
+  // REWORK-VS bước 2: trạng thái "chạy" từ lớp điều khiển cảm ứng/tay
+  // cầm (joystick/gậy đẩy sát vành hoặc nút CHẠY) — js/controls.js.
+  function ctlRunHeld() { try { return (CTL && CTL.runHeld) ? !!CTL.runHeld() : false; } catch (e) { return false; } }
   function effVW() { return VIEW_W / ctlZoom(); }
   function effVH() { return VIEW_H / ctlZoom(); }
   var pendingAhackNotice = null; // thông báo khôi phục save (từ loadSave) — hiện 1 lần khi vào game
@@ -96,6 +99,33 @@
   var canvas = document.getElementById('gameCanvas');
   var ctx = canvas.getContext('2d');
   canvas.width = VIEW_W; canvas.height = VIEW_H;
+  // REWORK-VS bước 1 (kế hoạch docs/rework-move-map-plan.md, Bui duyệt
+  // 23:02 07/11/2026): khung nhìn TỰ THÍCH ỨNG theo khung chứa thật
+  // (#gameWrap) thay cho 768×576 cố định — canvas lấp đầy khung chứa,
+  // VIEW_W/VIEW_H cập nhật theo kích thước thật; toạ độ thế giới + TILE
+  // không đổi, mọi đường vẽ vẫn qua effVW()/effVH(), camera giữ lerp +
+  // kẹp biên như cũ. Khung đang ẩn (clientWidth = 0) thì giữ nguyên
+  // kích thước cũ. Gọi: sự kiện resize/orientationchange + kiểm tra nhẹ
+  // mỗi 30 khung trong loop() (bắt cả lúc vừa chuyển sang màn chơi).
+  function resizeGameView() {
+    try {
+      // Đo theo CHÍNH canvas (không theo khung chứa): ở chế độ tỉ lệ
+      // khung cố định, js/controls.js cấp cho canvas kích thước riêng
+      // (computeCanvasFit) nhỏ hơn khung — backing phải khớp đúng
+      // kích thước hiển thị của canvas để không méo hình.
+      if (!canvas.clientWidth || !canvas.clientHeight) return;
+      var w = Math.round(canvas.clientWidth), h = Math.round(canvas.clientHeight);
+      if (w < 120 || h < 120) return;
+      if (w === VIEW_W && h === VIEW_H) return;
+      VIEW_W = w; VIEW_H = h;
+      canvas.width = w; canvas.height = h;
+      snapCamera();
+    } catch (e) {}
+  }
+  if (typeof window !== 'undefined' && window.addEventListener) {
+    window.addEventListener('resize', resizeGameView);
+    window.addEventListener('orientationchange', resizeGameView);
+  }
   var ACC_KEY = 'pnt-accounts-v1';
   var SAVE_PREFIX = 'pnt-save-';
   var accounts = {};
@@ -166,10 +196,18 @@
   var dlgOriginCue = false; // QA 18:16 30/10: hộp thoại vừa mở có phải câu NHẬN RA DẤU ẤN (origins.js) không — để openDialogue phát tiếng kỳ ngộ thay vì im lặng
   var lastTime = 0, camX = 0, camY = 0, loopStarted = false;
   var moveTarget = null, movePath = null, stuckFrames = 0, lastPX = 0, lastPY = 0;
+  // REWORK-VS bước 2: clickMark = vòng elip tại điểm bấm (chỉ hiển thị);
+  // guideDrive = lượt đi hiện tại do CHỈ ĐƯỜNG phát (luôn đi bộ 132).
+  // REWORK-VS bước 3: pendingTalk = NPC của cú bấm từ xa đang chờ mở
+  // thoại khi đi tới nơi ({npc, mapId}), mở đúng 1 lần rồi xoá.
+  var clickMark = null, guideDrive = false, pendingTalk = null;
   // V7 di chuyển + động tác: vận tốc px/giây có easing (gia tốc/giảm tốc),
   // pha đi bộ khóa theo quãng đường, camera lerp có nhìn trước, động tác
   // nhân vật đang chạy (sprites.actionFrame), tư thế thổ nạp, bụi bước chân.
-  var MOVE_TOP = 150;
+  // REWORK-VS bước 2 (chuẩn Vô Sắc, Bui duyệt 23:02 07/11/2026): tách
+  // ĐI 132 / CHẠY 176 / BAY 198 px/giây — trước đây một tốc độ trần
+  // MOVE_TOP = 150 duy nhất và bay nhân hệ số 1,8 (~270).
+  var WALK_TOP = 132, RUN_TOP = 176, FLY_TOP = 198;
   var pvx = 0, pvy = 0, walkPhase = 0, idleT = 0, stuckT = 0;
   var action = null, deathPending = false;
   var medPoseT = 0, medPhase = 0;
@@ -333,6 +371,106 @@
     });
   }
   function curBg() { var b = bgImgs[curMapId]; return (b && b._ready) ? b : null; }
+  // ----- NATURE-VS (đợt mỹ thuật cây/đá/cỏ 2026-11-08, lệnh Bui
+  // "Chỉnh cây cối đá quái giống vô sắc linh căn") -----
+  // Cây/đá ô vật thể và lớp rắc thực vật sơn môn vẽ bằng ẢNH VẼ
+  // assets/props-nature/ (bộ prop thiên nhiên cùng chuẩn Vô Sắc:
+  // tán mềm nhiều lớp, đá có khối, bụi cỏ lá mảnh, bụi hoa điểm
+  // nhấn) thay cho lưới ký tự phẳng của sprites.js. Nạp lười theo
+  // khóa như nền map: ảnh chưa nạp xong (hoặc môi trường không có
+  // Image, như harness kiểm thử) thì rơi về ĐÚNG đường lưới cũ —
+  // hành vi cũ không đổi một ly. Chỉ lớp vẽ; dữ liệu bản đồ,
+  // va chạm, luật chơi không đụng.
+  var natureImgs = {};
+  function natureImg(key) {
+    var im = natureImgs[key];
+    if (!im) {
+      if (typeof Image === 'undefined') return null;
+      im = new Image();
+      im.onload = function () { im._ready = true; };
+      im.src = 'assets/props-nature/' + key + '.png';
+      natureImgs[key] = im;
+    }
+    return im;
+  }
+  function natureReady(key) { var im = natureImg(key); return !!(im && im._ready); }
+  // Biến thể cây theo băm ô (tất định — cùng ô luôn cùng cây):
+  // đa số là thông/xanh thường, ~7% anh đào làm điểm nhấn.
+  var NATURE_TREE_POOL = [
+    { k: 'tree', w: 124 }, { k: 'tree2', w: 124 }, { k: 'tree_small', w: 110 },
+    { k: 'pine', w: 116 }, { k: 'pine2', w: 116 }, { k: 'tree_mid', w: 140 }
+  ];
+  function natureTreeFor(x, y) {
+    var h = hash01(x * 7 + 3, y * 13 + 5);
+    if (h < 0.07) return { k: 'tree_sakura', w: 126 };
+    return NATURE_TREE_POOL[Math.floor((h - 0.07) / 0.93 * NATURE_TREE_POOL.length) % NATURE_TREE_POOL.length];
+  }
+  function natureRockFor(x, y) {
+    var h = hash01(x * 11 + 7, y * 5 + 3);
+    if (h < 0.45) return { k: 'rock_m', w: 60 };
+    if (h < 0.70) return { k: 'rock_l_a', w: 78 };
+    if (h < 0.92) return { k: 'rock_l_b', w: 78 };
+    return { k: 'rock_s', w: 46 };
+  }
+  // Rắc thực vật trên ô đất/đường (chỉ dùng cho lớp sơn môn):
+  // bụi cỏ lá mảnh là chính, bụi cây/bụi hoa/đá nhỏ thưa hơn.
+  function natureScatterFor(x, y, t) {
+    if (t !== '.' && t !== '#') return null;
+    var h = hash01(x * 3 + 21, y * 7 + 9);
+    if (h < 0.055) return { k: 'grass_clump', w: 40 + Math.floor(hash01(x + 31, y + 17) * 14) };
+    if (h < 0.075) return { k: hash01(x + 5, y + 23) < 0.5 ? 'bush1' : 'bush2', w: 50 };
+    if (h < 0.085) return { k: 'flower_bush', w: 48 };
+    if (h < 0.10) return { k: 'rock_s', w: 30 };
+    return null;
+  }
+  // Bóng tiếp xúc MỀM cho vật vẽ tay: elip gradient xuyên tâm tan
+  // dần về mép (cùng chuẩn bóng của vật thể thật trong js/props.js),
+  // cache theo bề rộng như bên đó. Chỉ gọi khi ảnh đã sẵn sàng nên
+  // harness không có Image không bao giờ chạm tới.
+  var _natShCache = {};
+  function natureShadowSpr(w) {
+    if (typeof document === 'undefined') return null;
+    var c = _natShCache[w];
+    if (c) return c;
+    var g = null;
+    try {
+      c = document.createElement('canvas');
+      c.width = w; c.height = Math.max(4, Math.round(w * 0.30));
+      g = c.getContext('2d');
+    } catch (e) { return null; }
+    // Môi trường canvas thiếu gradient xuyên tâm (harness kiểm thử
+    // dùng ctx giả) thì bỏ bóng mềm — vật vẫn vẽ, không lỗi khung.
+    if (!g || typeof g.createRadialGradient !== 'function') return null;
+    var h = c.height;
+    try {
+      var gr = g.createRadialGradient(w / 2, h / 2, 1, w / 2, h / 2, w / 2);
+      gr.addColorStop(0, 'rgba(12,20,10,0.32)');
+      gr.addColorStop(0.7, 'rgba(12,20,10,0.14)');
+      gr.addColorStop(1, 'rgba(12,20,10,0)');
+      g.fillStyle = gr;
+      g.save();
+      g.translate(w / 2, h / 2); g.scale(1, h / w); g.translate(-w / 2, -h / 2);
+      g.beginPath(); g.arc(w / 2, h / 2, w / 2, 0, Math.PI * 2); g.fill();
+      g.restore();
+    } catch (e) { return null; }
+    _natShCache[w] = c;
+    return c;
+  }
+  function drawNatureShadow(cx, feetY, w) {
+    var s = natureShadowSpr(w);
+    if (s) ctx.drawImage(s, Math.round(cx - w / 2), Math.round(feetY - s.height / 2));
+  }
+  // Vẽ ảnh thiên nhiên neo ĐÁY-GIỮA tại (cx, bottomY) màn hình, bề
+  // rộng w, chiều cao theo tỉ lệ thật của ảnh. Trả false khi ảnh
+  // chưa sẵn sàng để nơi gọi rơi về đường cũ.
+  function drawNatureImg(key, cx, bottomY, w) {
+    var im = natureImg(key);
+    if (!im || !im._ready) return false;
+    var nw = im.naturalWidth || w, nh = im.naturalHeight || w;
+    var dh = Math.round(w * nh / nw);
+    ctx.drawImage(im, Math.round(cx - w / 2), Math.round(bottomY - dh), w, dh);
+    return true;
+  }
   // ----- V7/V8: 3 mức đồ hoạ cho QUÁI + NHÂN VẬT + NPC (sheet ảnh AI) -----
   //   Cao        = sheet ảnh thiết kế AI gốc (assets/monsters-ai, nạp lười).
   //   Trung bình = sheet ảnh AI giảm chi tiết riêng (assets/monsters-md).
@@ -694,6 +832,8 @@
     ['screen-register', 'screen-login', 'screen-create', 'screen-game'].forEach(function (s) {
       $(s).style.display = s === id ? 'block' : 'none';
     });
+    // REWORK-VS bước 1: vào màn chơi thì khớp kích thước canvas ngay.
+    if (id === 'screen-game') resizeGameView();
     // MÀN ĐẦU CÓ HỒN (20:22 mục 4): ngoài màn chơi, phủ nền tranh
     // map 1 v7 (nạp lười qua CSS #bgArt) + pan chậm; lỗi nạp thì
     // lớp nền không hiện, giữ nguyên nền trơn cũ.
@@ -1141,6 +1281,7 @@
     dir = ch.dir || 'down';
     dir8 = dir; // DIR8: khởi tạo hướng hiển thị theo hướng đã lưu
     pvx = 0; pvy = 0; action = null; deathPending = false; medPoseT = 0; dusts = [];
+    parts = []; ambFlies = []; ambWaterCache = null; amb2Reset(); buildSkyClouds();
     snapCamera();
     if (SK) {
       SK.ensureState(ch); // save cũ chưa có ll/cd: khởi tạo, không phá dữ liệu cũ
@@ -1204,6 +1345,7 @@
     px = tx * TILE + 16; py = ty * TILE + 28;
     moveTarget = null; movePath = null;
     pvx = 0; pvy = 0; action = null;
+    parts = []; ambFlies = []; ambWaterCache = null; amb2Reset(); buildSkyClouds();
     snapCamera();
     portalCooldown = 0.5;
     // NGỰ KIẾM: qua cổng = tự hạ cánh (cổng chỉ kích hoạt khi đi bộ trên
@@ -1233,6 +1375,9 @@
     updateHUD();
     if (SND) { SND.sfx('portal'); SND.setMap(toId); }
     saveGame();
+    // REWORK-VS bước 4: đang bật chỉ đường thì phát tiếp lượt đi
+    // trên bản đồ mới (đích chính hoặc cổng tiếp theo trên tuyến).
+    if (guideOn) guideDriveStep();
   }
   // ================= NGỰ KIẾM — ENGINE BAY (luật: js/flight.js) ==========
   // Va chạm bay theo CHIỀU CAO (Bui 21:48): chỉ vật CAO chặn — tường/vách
@@ -2530,6 +2675,19 @@
     var html = '<p>Sổ tay của Lục Tiểu Lục (sạp chợ làng Thanh Khê, map 1) — tự ghi những gì bạn đã thật sự gặp. Trang chưa gặp hiện “???”, không tiết lộ trước. Điểm Đồ Giám chỉ để nhận thưởng mốc, không phải tiền, không đổi giữa chừng.</p>';
     html += '<div class="qitem"><b>Điểm Đồ Giám: ' + sum.points + ' / ' + BX.maxPoints(totals) + '</b>' +
       (sum.titles.length ? '<br>Danh hiệu đã nhận: ' + sum.titles.map(esc).join(' · ') : '') + '</div>';
+    // QA (c) 10:01 01/11: khối thưởng mốc đặt NGAY ĐẦU panel, trước mọi
+    // danh sách dài — người chơi mở sổ là thấy ngay có thưởng chờ nhận
+    // hay còn thiếu bao nhiêu điểm, không phải cuộn qua ~264 dòng mới tới.
+    var cl = BX.claimable(flags);
+    if (cl.length) {
+      html += '<div class="qitem"><b>Thưởng mốc đang chờ nhận:</b><br>' + cl.map(function (m) {
+        return m.pts + ' điểm — “' + esc(m.title) + '”: +' + m.lt + ' Linh Thạch' + (m.item ? ' + ' + esc(L.ITEMS[m.item.id] ? L.ITEMS[m.item.id].name : m.item.id) + ' ×' + m.item.n : '') +
+          ' <button data-bx-claim="' + m.pts + '">Nhận thưởng</button>';
+      }).join('<br>') + '</div>';
+    } else {
+      var nx = BX.nextMilestone(flags);
+      html += '<p>' + (nx ? 'Mốc kế: ' + nx.milestone.pts + ' điểm (“' + esc(nx.milestone.title) + '”, +' + nx.milestone.lt + ' Linh Thạch) — còn thiếu ' + nx.need + ' điểm.' : 'Đã nhận hết mọi mốc Đồ Giám.') + '</p>';
+    }
     // Quái: trang mở khi hạ 1, chi tiết khi hạ đủ 10.
     var monHtml = Object.keys(L.MONSTERS).map(function (id) {
       var def = L.MONSTERS[id], n = b.kills[id] || 0;
@@ -2586,16 +2744,6 @@
       return b.npcs[id] ? esc(ST.NPCS[id].name) + ' — ' + esc(ST.NPCS[id].title || '') : '??? (chưa gặp)';
     }).join('<br>');
     html += '<div class="qitem"><b>Người làng đã gặp: ' + sum.npcs.met + '/' + totals.npcs + '</b><br>' + npcHtml + '</div>';
-    var cl = BX.claimable(flags);
-    if (cl.length) {
-      html += '<div class="qitem"><b>Thưởng mốc đang chờ nhận:</b><br>' + cl.map(function (m) {
-        return m.pts + ' điểm — “' + esc(m.title) + '”: +' + m.lt + ' Linh Thạch' + (m.item ? ' + ' + esc(L.ITEMS[m.item.id] ? L.ITEMS[m.item.id].name : m.item.id) + ' ×' + m.item.n : '') +
-          ' <button data-bx-claim="' + m.pts + '">Nhận thưởng</button>';
-      }).join('<br>') + '</div>';
-    } else {
-      var nx = BX.nextMilestone(flags);
-      html += '<p>' + (nx ? 'Mốc kế: ' + nx.milestone.pts + ' điểm (“' + esc(nx.milestone.title) + '”, +' + nx.milestone.lt + ' Linh Thạch) — còn thiếu ' + nx.need + ' điểm.' : 'Đã nhận hết mọi mốc Đồ Giám.') + '</p>';
-    }
     if (sum.claimed.length) {
       html += '<p>Đã nhận: ' + sum.claimed.map(function (pts) {
         var m = BX.milestoneByPts(pts); return pts + ' điểm (“' + esc(m.title) + '”, +' + m.lt + ' Linh Thạch)';
@@ -4453,7 +4601,7 @@
     // QA107: mo thoai thi dung ngay phim di chuyen dang giu (WASD + mui
     // ten) — neu khong, phim giu tu truoc khi bam E van keo nhan vat di
     // trong luc noi chuyen du keydown moi da bi chan o tren.
-    ['w', 'a', 's', 'd', 'arrowup', 'arrowdown', 'arrowleft', 'arrowright'].forEach(function (kk) { keys[kk] = false; });
+    ['w', 'a', 's', 'd', 'arrowup', 'arrowdown', 'arrowleft', 'arrowright', 'shift'].forEach(function (kk) { keys[kk] = false; });
     $('dlgName').textContent = def.name;
     var dlgRoleEl = $('dlgRole');
     if (dlgRoleEl) dlgRoleEl.textContent = def.role ? '— ' + def.role : '';
@@ -8536,6 +8684,9 @@
     // va dang bay giu nguyen nhu WASD: khong co cong rieng cho ca hai,
     // mui ten di bay qua dung readMoveVector + he so toc do bay nhu WASD.
     if (KEYMAP[k]) { if (!dlg) keys[k] = true; e.preventDefault(); }
+    // REWORK-VS bước 2: giữ Shift = CHẠY (tốc độ 176 thay cho đi 132);
+    // keyup chung ở dưới tự xoá keys['shift'] khi nhả phím.
+    if (k === 'shift') keys['shift'] = true;
     // PANEL LỰA CHỌN KỲ NGỘ ĐANG MỞ (QA 19:01 30/10): nuốt mọi phím
     // hành động — trước đây Space/E/T/F/B/1–7 vẫn chạy xuyên xuống
     // game trong lúc panel che màn hình. Phím 1/2 chọn ngay lựa chọn
@@ -8759,6 +8910,23 @@
     var wx = camX + cx / ctlZoom(), wy = camY + cy / ctlZoom();
     var tx = Math.floor(wx / TILE), ty = Math.floor(wy / TILE);
     var mp = curMap();
+    // REWORK-VS bước 3: cú bấm rơi đúng ô một NPC đang đứng — đang ở
+    // trong tầm nói chuyện thì mở thoại NGAY (như phím E); ở xa thì
+    // ghi pendingTalk để vòng lặp tự mở thoại khi đi tới nơi.
+    var clickNpc = null;
+    var cnps = mp.npcs || [];
+    for (var cni = 0; cni < cnps.length; cni++) {
+      if (npcVisible(cnps[cni]) && cnps[cni].x === tx && cnps[cni].y === ty) { clickNpc = cnps[cni]; break; }
+    }
+    if (clickNpc) {
+      var cndx = clickNpc.x * TILE + 16 - px, cndy = clickNpc.y * TILE + 28 - py;
+      if (Math.sqrt(cndx * cndx + cndy * cndy) <= NPC_TALK_DIST) {
+        moveTarget = null; movePath = null; guideDrive = false; pendingTalk = null;
+        if (flying) landPlayer(true);
+        openDialogue(clickNpc);
+        return;
+      }
+    }
     // QA110C: đích hiệu dụng — ô đích bị chặn thì đi tới ô đi được
     // gần nhất trong bán kính 3 ô (clickDestResolve); chỉ khi
     // quanh đích không có ô nào tới được mới báo như cũ.
@@ -8781,6 +8949,16 @@
       if (directDest && movePath.length) movePath[movePath.length - 1] = { x: dwx, y: dwy };
       moveTarget = movePath.length ? movePath.shift() : null;
     }
+    // REWORK-VS bước 2: vòng elip tại điểm bấm — đặt tại ĐÍCH HIỆU
+    // DỤNG cuối cùng của đường đi (điểm nhân vật sẽ dừng), vẽ ở
+    // draw(), mờ dần khi tới nơi. Lượt bấm này cũng ngắt chế độ
+    // chỉ đường tự lái (guideDrive) — người chơi đã tự điều khiển.
+    var endPt = (movePath && movePath.length) ? movePath[movePath.length - 1] : moveTarget;
+    if (endPt) clickMark = { x: endPt.x, y: endPt.y, t: performance.now() };
+    guideDrive = false;
+    // REWORK-VS bước 3: cú bấm này nhắm NPC ở xa -> chờ mở thoại khi
+    // tới nơi; cú bấm thường thì xoá cờ chờ của lượt trước.
+    pendingTalk = clickNpc ? { npc: clickNpc, mapId: curMapId } : null;
     stuckT = 0;
   }
   canvas.addEventListener('click', handleCanvasClickMove);
@@ -8815,15 +8993,23 @@
     var dt = Math.max(0, Math.min(0.05, (ts - lastTime) / 1000 || 0.016));
     lastTime = ts;
     if (!ch) return;
+    // REWORK-VS bước 1: bắt thay đổi kích thước khung chứa (chuyển màn,
+    // xoay máy, kéo cửa sổ) — kiểm tra nhẹ mỗi 30 khung hình.
+    loop._rzc = (loop._rzc || 0) + 1;
+    if (loop._rzc % 30 === 0) resizeGameView();
     // ----- Di chuyển V7: vận tốc có gia tốc/giảm tốc (easing), va chạm hộp
     // chân + trượt tường, pha đi bộ khóa theo quãng đường đi được. -----
     // Tốc độ trần cộng % từ trang bị phẩm cao (chỉ số speed trong statTotals).
-    // NGỰ KIẾM: đang bay thì tốc độ trần x1,8 (SPEED_MULT ở js/flight.js).
-    var topSpd = MOVE_TOP * (1 + (L.statTotals ? L.statTotals(ch).speed : 0) / 100) * (flying ? (FLIGHT ? FLIGHT.SPEED_MULT : 1.8) : 1);
+    // REWORK-VS bước 2: trần theo CHẾ ĐỘ — bay 198 (FLIGHT.TOP_SPEED ở
+    // js/flight.js, mọi kiểu bay dùng chung), chạy 176, đi 132 px/giây.
+    // "Chạy" = giữ Shift / joystick-gậy đẩy sát vành / nút CHẠY cảm ứng
+    // (CTL.runHeld). Lượt đi do CHỈ ĐƯỜNG phát (guideDrive) luôn đi bộ.
+    var runNow = !flying && !guideDrive && (!!keys['shift'] || ctlRunHeld());
+    var topSpd = (flying ? (FLIGHT && FLIGHT.TOP_SPEED ? FLIGHT.TOP_SPEED : FLY_TOP) : (runNow ? RUN_TOP : WALK_TOP)) * (1 + (L.statTotals ? L.statTotals(ch).speed : 0) / 100);
     var want = readMoveVector();
     var desX = 0, desY = 0, hasWant = false, wantDir = null;
     if (deathPending) { moveTarget = null; movePath = null; }
-    else if (want) { moveTarget = null; movePath = null; desX = want.x * topSpd; desY = want.y * topSpd; hasWant = true; wantDir = want; }
+    else if (want) { moveTarget = null; movePath = null; guideDrive = false; desX = want.x * topSpd; desY = want.y * topSpd; hasWant = true; wantDir = want; }
     else if (moveTarget) {
       var mdx = moveTarget.x - px, mdy = moveTarget.y - py;
       var mdist = Math.sqrt(mdx * mdx + mdy * mdy);
@@ -8900,8 +9086,29 @@
       if (spdNow < 8 && hasWant) { stuckT += dt; if (stuckT > 0.4) { moveTarget = null; movePath = null; stuckT = 0; } }
       else stuckT = 0;
     } else stuckT = 0;
+    // REWORK-VS bước 3: đi tới nơi sau cú bấm vào NPC ở xa -> tự mở
+    // thoại của ĐÚNG NPC đó, đúng 1 lần rồi xoá cờ. Hủy cờ khi đã
+    // có thoại khác mở, đã sang bản đồ khác, hoặc NPC đã đi quá xa
+    // tầm nói chuyện (biên +24px cho NPC đi lại khoảng 1 ô). Lượt
+    // đi theo MŨI TÊN CHỈ ĐƯỜNG không bao giờ tự mở thoại:
+    // pendingTalk chỉ do cú bấm trực tiếp vào NPC tạo ra.
+    if (pendingTalk) {
+      if (dlg || curMapId !== pendingTalk.mapId) pendingTalk = null;
+      else if (!moveTarget && !movePath && !want) {
+        var ptNpc = pendingTalk.npc; pendingTalk = null;
+        if (ptNpc && npcVisible(ptNpc)) {
+          var ptdx = ptNpc.x * TILE + 16 - px, ptdy = ptNpc.y * TILE + 28 - py;
+          if (Math.sqrt(ptdx * ptdx + ptdy * ptdy) <= NPC_TALK_DIST + 24) {
+            if (flying) landPlayer(true);
+            openDialogue(ptNpc);
+          }
+        }
+      }
+    }
     // Bụi bước chân theo mức đồ hoạ (Cao nhiều, Trung bình ít, Thấp tắt).
-    if (spdNow > 95 && gfxLevel !== 'thap') {
+    // REWORK-VS bước 2: bụi CHỈ bốc khi CHẠY (hoặc đang bay) — đi bộ
+    // 132 không bốc bụi nữa, theo ngôn ngữ chuyển động của Vô Sắc.
+    if (spdNow > 95 && (flying || runNow) && gfxLevel !== 'thap') {
       dustAcc += dt * (gfxLevel === 'cao' ? 1 : 0.5) * (SM ? SM.meter.particleScale() : 1);
       while (dustAcc > 0.11) {
         dustAcc -= 0.11;
@@ -8948,6 +9155,7 @@
       if (!realmFxState || realmFxState.mapId !== curMapId) realmFxState = RA.createState(curMapId, raMp.w * TILE, raMp.h * TILE);
       RA.update(realmFxState, dt);
     }
+    updateAmbScenery(dt);
     for (var di = dusts.length - 1; di >= 0; di--) {
       var dp = dusts[di];
       dp.t += dt; dp.x += dp.vx * dt; dp.y += dp.vy * dt; dp.r += 5 * dt;
@@ -9226,6 +9434,11 @@
   function drawGround(x, y, t) {
     var gx = x * TILE - camX, gy = y * TILE - camY;
     var h = hash01(x, y), h2 = hash01(y, x);
+    // REWORK-VS bước 6: cờ map SƠN MÔN + băm theo khối 4 ô — chỉ
+    // các map sonmon_* dùng biến thể khử lộ ô dưới đây; 14 map thế
+    // giới (đã có tranh nền) giữ nguyên đường vẽ cũ từng dòng.
+    var sectG = !!(curMapId && curMapId.indexOf('sonmon_') === 0);
+    var bh4 = sectG ? hash01(Math.floor(x / 4), Math.floor(y / 4)) : 0;
     var isMeadow = false;
     var base = '#c2a071'; // đất ấm chung cho mọi ô đi được
     if (t === '.') {
@@ -9238,6 +9451,13 @@
       } else {
         base = h < 0.33 ? '#c2a071' : (h < 0.66 ? '#bda87e' : '#c7a878');
       }
+      // REWORK-VS bước 6 (sơn môn): mảng cỏ theo khối 4x4 (128px)
+      // thay vì chỉ 3x3 và không phụ thuộc hàng y — sân tông môn
+      // rộng, mảng lớn mới phá được nhịp lưới; mép mảng bị gặm
+      // theo băm từng ô như mảng cỏ thường.
+      if (sectG && bh4 < 0.34 && !(x % 4 === 0 && h > 0.5) && !(y % 4 === 0 && h2 > 0.5)) {
+        base = '#93b45e'; isMeadow = true;
+      }
     }
     else if (t === 'Q') base = '#b7a98f';      // sân lát đá tông ấm
     else if (t === 'W') base = '#7d766b'; // tường đá
@@ -9247,14 +9467,33 @@
     ctx.fillStyle = base;
     ctx.fillRect(gx, gy, TILE, TILE);
     if (t === 'Q') {
-      // Mạch đá lát: đường joint mờ, tông đá từng ô chỉ lệch rất nhẹ (alpha).
-      ctx.fillStyle = 'rgba(0,0,0,0.05)';
-      if (h < 0.5) ctx.fillRect(gx, gy, TILE, TILE);
-      ctx.fillStyle = '#8d8578';
-      ctx.fillRect(gx, gy + 15, TILE, 1);
-      ctx.fillRect(gx + ((y % 2) ? 8 : 24), gy, 1, TILE);
-      ctx.fillStyle = 'rgba(0,0,0,0.10)';
-      ctx.fillRect(gx + Math.floor(h * 24), gy + Math.floor(h2 * 24), 3, 2);
+      if (sectG) {
+        // REWORK-VS bước 6 (sơn môn): PHIẾN ĐÁ 2x2 Ô (64px) — tông
+        // theo từng phiến NHƯNG biên độ tông tỉ lệ theo độ lệch
+        // băm (đa số phiến gần như không lệch, tránh caro 2 màu);
+        // mạch chỉ chạy trên biên phiến, màu mạch mờ và ~16% đoạn
+        // mạch bị bỏ theo băm (đá mòn không đều): tần suất lưới
+        // trên sân đá giảm một nửa so với mạch từng ô của bản đồ
+        // thế giới mà không thành lưới mới.
+        var sth = hash01(Math.floor(x / 2), Math.floor(y / 2));
+        var sta = Math.abs(sth - 0.5) * 0.09;
+        ctx.fillStyle = sth < 0.5 ? 'rgba(0,0,0,' + sta.toFixed(3) + ')' : 'rgba(255,255,255,' + sta.toFixed(3) + ')';
+        ctx.fillRect(gx, gy, TILE, TILE);
+        ctx.fillStyle = 'rgba(88,80,68,0.55)';
+        if (y % 2 === 0 && hash01(x * 7 + 1, y * 3 + 2) > 0.16) ctx.fillRect(gx, gy, TILE, 1);
+        if (x % 2 === 0 && hash01(x * 3 + 5, y * 7 + 1) > 0.16) ctx.fillRect(gx, gy, 1, TILE);
+        ctx.fillStyle = 'rgba(0,0,0,0.10)';
+        ctx.fillRect(gx + Math.floor(h * 24), gy + Math.floor(h2 * 24), 3, 2);
+      } else {
+        // Mạch đá lát: đường joint mờ, tông đá từng ô chỉ lệch rất nhẹ (alpha).
+        ctx.fillStyle = 'rgba(0,0,0,0.05)';
+        if (h < 0.5) ctx.fillRect(gx, gy, TILE, TILE);
+        ctx.fillStyle = '#8d8578';
+        ctx.fillRect(gx, gy + 15, TILE, 1);
+        ctx.fillRect(gx + ((y % 2) ? 8 : 24), gy, 1, TILE);
+        ctx.fillStyle = 'rgba(0,0,0,0.10)';
+        ctx.fillRect(gx + Math.floor(h * 24), gy + Math.floor(h2 * 24), 3, 2);
+      }
     } else if (t === '#') {
       ctx.fillStyle = '#a8855c';
       ctx.fillRect(gx + Math.floor(h * 26), gy + Math.floor(h2 * 26), 3, 2);
@@ -9297,6 +9536,13 @@
       ctx.fillRect(gx + 9, gy + 20, 3, 5);
       ctx.fillRect(gx + 21, gy + 22, 3, 5);
     } else {
+      // REWORK-VS bước 6 (sơn môn, chỉ ô đất '.'): phủ tông theo
+      // khối 4 ô TRƯỚC khi rắc chi tiết — bậc tông từng ô (3 mức
+      // theo băm) bị làm mượt thành mảng tông 128px.
+      if (sectG && t === '.') {
+        ctx.fillStyle = bh4 < 0.5 ? 'rgba(74,54,24,0.055)' : 'rgba(255,246,220,0.05)';
+        ctx.fillRect(gx, gy, TILE, TILE);
+      }
       // Đất thường / đồng cỏ: sỏi thưa + cỏ dại + mảng cỏ mềm thưa, to (không chấm bi).
       ctx.fillStyle = isMeadow ? '#7a8a4a' : '#a8855c';
       ctx.fillRect(gx + Math.floor(h * 26), gy + Math.floor(h2 * 26), 3, 2);
@@ -9469,6 +9715,84 @@
         drawGround(x, y, mp.tiles[y][x]);
       }
     }
+    // REWORK-VS bước 6: lớp bóng mềm khổ lớn RIÊNG cho map sơn môn
+    // (không tranh nền nên sân/đất vẽ theo ô dễ lộ lưới) — vệt elip
+    // tông đất khổ 50–95px theo lưới 4 ô, alpha rất thấp, chỉ phủ
+    // trên ô đất/đường/sân đá. Tự trả lại globalAlpha, không dùng
+    // save/restore như các lớp vẽ khác của đợt này.
+    if (!bgR && curMapId && curMapId.indexOf('sonmon_') === 0) {
+      var csS = 4;
+      var prevAS = ctx.globalAlpha;
+      for (var scy = Math.floor(y0 / csS); scy <= Math.floor(y1 / csS); scy++) {
+        for (var scx = Math.floor(x0 / csS); scx <= Math.floor(x1 / csS); scx++) {
+          var shh = hash01(scx * 3 + 11, scy * 5 + 7);
+          if (shh < 0.55) continue;
+          var stx2 = scx * csS + 2, sty2 = scy * csS + 2;
+          if (stx2 < 0 || sty2 < 0 || stx2 >= mp.w || sty2 >= mp.h) continue;
+          var stt = mp.tiles[sty2][stx2];
+          if (stt !== '.' && stt !== '#' && stt !== 'Q') continue;
+          // Vệt lớn (bán kính 70–125px), rất mờ, tâm lệch mạnh theo
+          // băm để không thành hàng chấm đều.
+          var srx = 70 + Math.floor(shh * 55);
+          ctx.globalAlpha = shh > 0.86 ? 0.034 : 0.042;
+          ctx.fillStyle = shh > 0.86 ? '#fff2c8' : '#4a341e';
+          ctx.beginPath();
+          ctx.ellipse(stx2 * TILE + 16 - camX + Math.floor(hash01(scx * 13 + 3, scy * 7 + 9) * 80) - 40,
+                      sty2 * TILE + 16 - camY + Math.floor(hash01(scy * 11 + 5, scx * 3 + 1) * 64) - 32,
+                      srx, Math.floor(srx * 0.62), 0, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+      ctx.globalAlpha = prevAS;
+    }
+    // NATURE-VS (đợt mỹ thuật 2026-11-08): lớp RẮC THỰC VẬT VẼ TAY
+    // riêng cho map sơn môn — cùng phạm vi với lớp bóng mềm bước 6 ở
+    // trên (map không tranh toàn cảnh): bụi cỏ lá mảnh, bụi cây bo
+    // tròn, bụi hoa điểm nhấn, đá nhỏ bằng sprite assets/props-nature
+    // theo băm tất định từng ô (natureScatterFor), vẽ TRƯỚC lớp thực
+    // thể nên người/quái luôn đứng trên cỏ — đúng kiến trúc prop rời
+    // trên nền của Vô Sắc. Mức đồ hoạ Thấp bỏ qua như luật prop nhỏ
+    // của js/props.js; ảnh nào chưa nạp thì bỏ qua vị trí đó.
+    if (!bgR && curMapId && curMapId.indexOf('sonmon_') === 0 && gfxLevel !== 'thap') {
+      for (y = y0; y <= y1; y++) for (x = x0; x <= x1; x++) {
+        var nsc = natureScatterFor(x, y, mp.tiles[y][x]);
+        if (!nsc || !natureReady(nsc.k)) continue;
+        var nsx = x * TILE + 16 + Math.floor(hash01(x * 17 + 1, y * 19 + 3) * 10) - 5 - camX;
+        var nsy = (y + 1) * TILE - 2 - camY;
+        var nscShear = amb2PropShear({ type: nsc.k, x: x, y: y });
+        var canShearN = !!(nscShear && ctx.save && ctx.translate && ctx.transform && ctx.restore);
+        if (canShearN) {
+          ctx.save(); ctx.translate(nsx, nsy); ctx.transform(1, 0, nscShear, 1, 0, 0); ctx.translate(-nsx, -nsy);
+        }
+        if (nsc.k === 'bush1' || nsc.k === 'bush2' || nsc.k === 'flower_bush') drawNatureShadow(nsx, nsy, Math.round(nsc.w * 0.8));
+        drawNatureImg(nsc.k, nsx, nsy, nsc.w);
+        if (canShearN) ctx.restore();
+      }
+    }
+    // REWORK-VS bước 2: vòng elip tại điểm bấm (ngôn ngữ của Vô Sắc) —
+    // hai vòng đồng tâm lan nhẹ trên mặt đất tại đích hiệu dụng, mờ
+    // dần khi nhân vật tới nơi hoặc sau 1,6 giây. Chỉ hiển thị.
+    if (clickMark) {
+      var cmAge = (performance.now() - clickMark.t) / 1000;
+      var cmArrived = !moveTarget && !movePath;
+      if (cmAge > 1.6 || (cmArrived && cmAge > 0.4)) clickMark = null;
+      else {
+        var cmx = clickMark.x - camX, cmy = clickMark.y - camY;
+        var cmA = cmArrived ? Math.max(0, 1 - Math.max(0, cmAge - 0.15) / 0.25) : Math.min(1, Math.max(0.3, 1 - cmAge / 1.6));
+        var cmPulse = 0.78 + 0.22 * Math.sin(cmAge * 9);
+        // Tự khôi phục trạng thái bút thay ctx.save/restore (giữ
+        // tương thích với mọi môi trường vẽ của dự án).
+        var cmPrevA = ctx.globalAlpha, cmPrevS = ctx.strokeStyle, cmPrevW = ctx.lineWidth;
+        ctx.strokeStyle = '#ffe9a8'; ctx.lineWidth = 2;
+        ctx.globalAlpha = 0.85 * cmA;
+        ctx.beginPath(); ctx.ellipse(cmx, cmy, 15 * cmPulse + 3, 7 * cmPulse + 1.5, 0, 0, Math.PI * 2); ctx.stroke();
+        ctx.globalAlpha = 0.5 * cmA;
+        ctx.beginPath(); ctx.ellipse(cmx, cmy, 8 * cmPulse + 2, 4 * cmPulse + 1, 0, 0, Math.PI * 2); ctx.stroke();
+        ctx.globalAlpha = cmPrevA; ctx.strokeStyle = cmPrevS; ctx.lineWidth = cmPrevW;
+      }
+    }
+    // Bóng mây trôi trên mặt đất
+    drawCloudShadows();
     // Bụi bước chân (vẽ trên nền, dưới thực thể): hạt mềm bốc lên sau gót.
     dusts.forEach(function (dp) {
       var da = 1 - dp.t / dp.life;
@@ -9834,7 +10158,9 @@
     list.forEach(function (it) {
       // Bóng đổ dài (vẽ trước sprite, cùng lượt y-sort).
       if (it.kind === 'tile' && it.tile === 'H') drawShadow(it.x * TILE + 16 - camX, (it.y + 1) * TILE - camY, 44);
-      else if (it.kind === 'tile' && it.tile === 'T') drawShadow(it.x * TILE + 16 - camX, (it.y + 1) * TILE - camY, 40);
+      // NATURE-VS: cây vẽ bằng ảnh thì nhánh tile tự vẽ bóng mềm của
+      // nó — bỏ bóng phẳng ở đây để không chồng hai bóng.
+      else if (it.kind === 'tile' && it.tile === 'T' && !natureReady(natureTreeFor(it.x, it.y).k)) drawShadow(it.x * TILE + 16 - camX, (it.y + 1) * TILE - camY, 40);
       else if (it.kind === 'tile' && (it.tile === 'S' || it.tile === 'E')) drawShadow(it.x * TILE + 16 - camX, (it.y + 1) * TILE - camY, 26);
       else if (it.kind === 'npc') drawShadow(it.x * TILE + 16 - camX, (it.y + 1) * TILE - camY, 22, true);
       else if (it.kind === 'monster') { var shRxB = it.m._dw ? Math.max(13, Math.round(it.m._dw * 0.30)) : 16; drawShadow(it.m.x * TILE + 16 - camX, it.m.y * TILE + 28 - camY, (it.m.svx || it.m.svy) ? shRxB * (1 - 0.10 * Math.abs(Math.sin((it.m.animT || 0) * 9))) : shRxB, true); }
@@ -9846,13 +10172,39 @@
       else if (it.kind === 'player') drawShadow(px - camX, py - camY, (medActiveNow() ? 27 : 22 * (1 - 0.05 * Math.abs(Math.cos(walkPhase * Math.PI / 10)))) * (1 - flyLift * 0.008), true); // ngự kiếm: bóng vẫn DƯỚI ĐẤT, nhỏ dần theo độ nâng
       if (it.kind === 'tile') {
         var spr = { H: 'house', T: 'tree', S: 'stall', L: 'lantern', F: 'fence', o: 'rock', E: 'well' }[it.tile];
-        var gw = (spr === 'house' || spr === 'tree' || spr === 'stall' || spr === 'well') ? 32 : 16;
-        var sc = (spr === 'house' || spr === 'tree') ? 4 : (spr === 'stall' ? 3 : 2);
-        var wpx = gw * sc;
-        S.drawGridToCanvas(ctx, S.OBJECTS[spr], it.x * TILE + 16 - wpx / 2 - camX, (it.y + 1) * TILE - gw * sc - camY, sc);
+        // NATURE-VS: cây/đá ưu tiên ẢNH VẼ assets/props-nature (tán
+        // mềm nhiều lớp / đá có khối + bóng tiếp xúc mềm), neo đáy
+        // giữa ô như vật thể thật; ảnh chưa nạp thì lưới cũ bên dưới.
+        var drewNature = false;
+        if (spr === 'tree') {
+          var ntv = natureTreeFor(it.x, it.y);
+          if (natureReady(ntv.k)) {
+            drawNatureShadow(it.x * TILE + 16 - camX, (it.y + 1) * TILE - camY, Math.round(ntv.w * 0.62));
+            drewNature = drawNatureImg(ntv.k, it.x * TILE + 16 - camX, (it.y + 1) * TILE - camY, ntv.w);
+          }
+        } else if (spr === 'rock') {
+          var nrv = natureRockFor(it.x, it.y);
+          if (natureReady(nrv.k)) {
+            drawNatureShadow(it.x * TILE + 16 - camX, (it.y + 1) * TILE - 2 - camY, Math.round(nrv.w * 0.8));
+            drewNature = drawNatureImg(nrv.k, it.x * TILE + 16 - camX, (it.y + 1) * TILE - camY, nrv.w);
+          }
+        }
+        if (!drewNature) {
+          var gw = (spr === 'house' || spr === 'tree' || spr === 'stall' || spr === 'well') ? 32 : 16;
+          var sc = (spr === 'house' || spr === 'tree') ? 4 : (spr === 'stall' ? 3 : 2);
+          var wpx = gw * sc;
+          S.drawGridToCanvas(ctx, S.OBJECTS[spr], it.x * TILE + 16 - wpx / 2 - camX, (it.y + 1) * TILE - gw * sc - camY, sc);
+        }
       } else if (it.kind === 'prop') {
         // Vật trang trí 16 ô vẽ to 48px, căn đáy vào ô (trông như đồ thật, không tí hon).
+        var amb2Shear = (gfxLevel !== 'thap') ? amb2PropShear(it) : 0;
+        var canShearP = !!(amb2Shear && ctx.save && ctx.translate && ctx.transform && ctx.restore);
+        if (canShearP) {
+          var amb2Bx = it.x * TILE + 16 - camX, amb2By = (it.y + 1) * TILE - camY;
+          ctx.save(); ctx.translate(amb2Bx, amb2By); ctx.transform(1, 0, amb2Shear, 1, 0, 0); ctx.translate(-amb2Bx, -amb2By);
+        }
         S.drawGridToCanvas(ctx, S.OBJECTS[it.sprite], it.x * TILE + 16 - 24 - camX, (it.y + 1) * TILE - 48 - camY, 3);
+        if (canShearP) ctx.restore();
       } else if (it.kind === 'rprop') {
         // Prop sống (lúa): blit sprite tiền-scale từ atlas, neo chân tại
         // y prop (js/props.js lo cache + đếm số đang vẽ).
@@ -9864,7 +10216,13 @@
         if (PROPS) PROPS.drawObj(ctx, it.oprop, camX, camY);
       } else if (it.kind === 'stele') {
         // Bia sào huyệt boss thế giới: tảng đá đứng như vật thể trong map.
-        S.drawGridToCanvas(ctx, S.OBJECTS.rock, it.x * TILE + 16 - 24 - camX, (it.y + 1) * TILE - 48 - camY, 3);
+        // NATURE-VS: ưu tiên đá vẽ tay có khối khi ảnh đã nạp.
+        var drewStele = false;
+        if (natureReady('rock_l_b')) {
+          drawNatureShadow(it.x * TILE + 16 - camX, (it.y + 1) * TILE - 2 - camY, 50);
+          drewStele = drawNatureImg('rock_l_b', it.x * TILE + 16 - camX, (it.y + 1) * TILE - camY, 62);
+        }
+        if (!drewStele) S.drawGridToCanvas(ctx, S.OBJECTS.rock, it.x * TILE + 16 - 24 - camX, (it.y + 1) * TILE - 48 - camY, 3);
       } else if (it.kind === 'herb') {
         var isLinhChi = it.item === 'linh_chi';
         var herbGrade = ALCH && ALCH.herbDef(it.item) ? ALCH.herbDef(it.item).grade : 'pham';
@@ -11080,6 +11438,12 @@
       ctx.fillStyle = '#ffe9a8';
       ctx.fillText(hint, px - camX, py - 124 - camY);
     }
+    // Lớp môi trường sống Vô Sắc (bản đồ sống: nước, đom đóm, vệt chân, gợn lội, lá/cánh hoa rơi, mưa, sao băng)
+    if (fxOn()) {
+      drawAmbOverlay();
+      drawAmbOverlay2();
+      drawAmbParts();
+    }
     // Mây map 3 — mây tiền cảnh: cụm lớn mờ thi thoảng bay ngang sát camera,
     // vẽ cuối cùng trong canvas (UI/panel là DOM nên không bao giờ bị che).
     if (CL && cloudState && CL.activeFor(curMapId)) {
@@ -11097,6 +11461,21 @@
         if (mmCv) {
           var mmState = { player: playerTile(), npcs: curMap().npcs || [],
             monsters: monsters.filter(function (mm2) { return !mm2.dying && mm2.hp > 0; }) };
+          // REWORK-VS bước 7: chấm ĐÍCH nhiệm vụ đang theo dõi trên
+          // bản đồ nhỏ — cùng bản đồ thì tại ô đích; khác bản đồ thì
+          // tại CỔNG TIẾP THEO trên tuyến (bước 4). Chỉ hiển thị,
+          // không đổi dữ liệu nào.
+          if (guideOn) {
+            var mmTg = null;
+            try { mmTg = guideTarget(); } catch (e) { mmTg = null; }
+            if (mmTg) {
+              if (mmTg.mapId === curMapId) mmState.target = { x: mmTg.x, y: mmTg.y };
+              else {
+                var mmFp = guideFirstPortal(mmTg.mapId, true);
+                if (mmFp) mmState.target = { x: mmFp.x, y: mmFp.y };
+              }
+            }
+          }
           // Đặt kích thước TRƯỚC khi vẽ: gán width/height sau draw sẽ xóa canvas.
           var mmCell = MM.cellSize(curMap(), 180, 140);
           if (mmCv.width !== curMap().w * mmCell) mmCv.width = curMap().w * mmCell;
@@ -11619,8 +11998,10 @@
       if (gid !== guideQuestId || gkey !== guideTargetKey) {
         guideQuestId = gid;
         guideTargetKey = gkey;
-        if (gtg && gtg.mapId === curMapId) { moveTarget = { x: gtg.x * TILE + 16, y: gtg.y * TILE + 28 }; movePath = null; }
-        else moveTarget = null; movePath = null;
+        // REWORK-VS bước 4: phát lượt đi qua guideDriveStep — cùng
+        // bản đồ tới đích, khác bản đồ tới cổng tiếp theo trên tuyến
+        // (trước đây khác bản đồ là đứng yên chờ người chơi tự đi).
+        guideDriveStep();
       }
     }
     var gb = $('qtGuide');
@@ -11721,6 +12102,82 @@
     var tg = guideTarget();
     return tg ? tg.name : questGiverName(t.q);
   }
+  // REWORK-VS bước 4: DẪN ĐƯỜNG XUYÊN BẢN ĐỒ — đồ thị tuyến cổng
+  // giữa các bản đồ (cạnh là portal trong dữ liệu maps), tìm đường
+  // BFS theo số cổng ít nhất. Khóa cổng tôn trọng ĐÚNG 3 luật của
+  // checkPortal (gate.rank / minTier / reqSect): tuyến không bao
+  // giờ dẫn qua cổng người chơi chưa qua được — cổng khóa thì báo
+  // lý do thay vì dẫn đi.
+  function portalLockReason(p) {
+    if (!p) return null;
+    if (p.gate && M && M.realmRankOf && ch && M.realmRankOf(ch) < p.gate.rank) return 'Cần đột phá ' + p.gate.name + ' mới qua được cổng này.';
+    if (p.minTier && ch && (ch.tier || 0) < p.minTier) return 'Cần ' + (p.reqLabel || ('Luyện Khí tầng ' + p.minTier)) + ' mới qua được cổng này.';
+    if (p.reqSect && (!flags || flags.sectJoined !== p.reqSect)) return 'Cần bái nhập tông môn mới qua được cổng sơn môn này.';
+    return null;
+  }
+  // BFS từ bản đồ hiện tại tới destMapId; respectLocks=true thì bỏ
+  // qua cổng đang khóa với người chơi. Trả về MẢNG portal của cả
+  // tuyến theo thứ tự đi, hoặc null khi không có tuyến.
+  function guidePathPortals(destMapId, respectLocks) {
+    if (!M || !M.MAPS || destMapId === curMapId) return null;
+    var prev = {}, seen = {}, q = [curMapId], head = 0;
+    seen[curMapId] = 1;
+    while (head < q.length) {
+      var mid = q[head++];
+      var ps = (M.MAPS[mid] && M.MAPS[mid].portals) || [];
+      for (var i = 0; i < ps.length; i++) {
+        var p = ps[i];
+        if (!p || !p.to || seen[p.to]) continue;
+        if (respectLocks && portalLockReason(p)) continue;
+        seen[p.to] = 1; prev[p.to] = { from: mid, portal: p };
+        if (p.to === destMapId) {
+          var path = [], cur2 = destMapId;
+          while (prev[cur2]) { path.unshift(prev[cur2].portal); cur2 = prev[cur2].from; }
+          return path;
+        }
+        q.push(p.to);
+      }
+    }
+    return null;
+  }
+  // Portal đầu tiên phải bước lên Ở BẢN ĐỒ HIỆN TẠI trên tuyến
+  // tôn trọng khóa, hoặc null.
+  function guideFirstPortal(destMapId, respectLocks) {
+    var path = guidePathPortals(destMapId, respectLocks);
+    return path && path.length ? path[0] : null;
+  }
+  // Lý do khóa trên tuyến (khi tuyến tôn trọng khóa không tới được
+  // nhưng tuyến bỏ qua khóa thì tới được): cổng khóa ĐẦU TIÊN tính
+  // từ bản đồ hiện tại dọc tuyến đó.
+  function guideLockReason(destMapId) {
+    var path = guidePathPortals(destMapId, false);
+    if (!path) return null;
+    for (var i = 0; i < path.length; i++) {
+      var r = portalLockReason(path[i]);
+      if (r) return r;
+    }
+    return null;
+  }
+  // Phát một lượt đi chỉ đường: đích cùng bản đồ -> đi tới đích;
+  // khác bản đồ -> đi tới cổng tiếp theo trên tuyến (bước lên cổng
+  // là checkPortal tự chuyển bản đồ, về đích mới lại gọi hàm này).
+  // Trả: 'same' | 'portal' | 'locked' | 'none'.
+  function guideDriveStep() {
+    if (!guideOn) return 'none';
+    var tg = guideTarget();
+    if (!tg) { moveTarget = null; movePath = null; return 'none'; }
+    if (tg.mapId === curMapId) {
+      moveTarget = { x: tg.x * TILE + 16, y: tg.y * TILE + 28 }; movePath = null; guideDrive = true;
+      return 'same';
+    }
+    var fp = guideFirstPortal(tg.mapId, true);
+    if (fp) {
+      moveTarget = { x: fp.x * TILE + 16, y: fp.y * TILE + 28 }; movePath = null; guideDrive = true;
+      return 'portal';
+    }
+    moveTarget = null; movePath = null;
+    return guideLockReason(tg.mapId) ? 'locked' : 'none';
+  }
   function toggleGuide() {
     guideOn = !guideOn;
     if (guideOn) {
@@ -11730,10 +12187,15 @@
       guideTargetKey = t ? (t.q.id + '|' + (tg ? tg.mapId + ':' + tg.x + ',' + tg.y : '-')) : null;
       if (t && tg) {
         if (tg.mapId === curMapId) {
-          moveTarget = { x: tg.x * TILE + 16, y: tg.y * TILE + 28 }; movePath = null;
-          toast('Đang chỉ đường tới ' + tg.name + ' — nhân vật tự đi, mũi tên vàng nhấp nháy trên đầu đích.');
+          guideDriveStep();
+          toast('Đang chỉ đường tới ' + tg.name + ' — nhân vật tự đi, dấu ! vàng ngay tại đích.');
         } else {
-          toast(tg.name + ' đang ở ' + M.MAPS[tg.mapId].name + ' — qua cổng bản đồ để sang đó.');
+          // REWORK-VS bước 4: đích khác bản đồ — tự đi qua các cổng
+          // trên tuyến; cổng khóa thì nói rõ lý do, không dẫn đi.
+          var gst = guideDriveStep();
+          if (gst === 'portal') toast(tg.name + ' đang ở ' + M.MAPS[tg.mapId].name + ' — đang chỉ đường qua các cổng tới đó, nhân vật tự đi.');
+          else if (gst === 'locked') toast((guideLockReason(tg.mapId) || 'Cổng trên tuyến đang khóa.') + ' (' + tg.name + ' ở ' + M.MAPS[tg.mapId].name + '.)');
+          else toast(tg.name + ' đang ở ' + M.MAPS[tg.mapId].name + ' — qua cổng bản đồ để sang đó.');
         }
       }
     } else { guideQuestId = null; guideTargetKey = null; }
@@ -11745,15 +12207,59 @@
     var t = trackedQuest();
     if (!t) return;
     var tg = guideTarget();
-    if (!tg || tg.mapId !== curMapId) return;
-    var sx = tg.x * TILE + 16 - camX, sy = tg.y * TILE - camY - 14 - Math.abs(Math.sin(now / 280)) * 6;
-    if (sx < -20 || sy < -30 || sx > VIEW_W + 20 || sy > VIEW_H + 20) return;
+    if (!tg) return;
+    // REWORK-VS bước 4: đích ở bản đồ khác -> mũi tên ngắm CỔNG
+    // TIẾP THEO trên tuyến (hiệu ứng như cũ); vòng đích + dấu "!"
+    // chỉ vẽ cho ĐÍCH THẬT khi cùng bản đồ. Đích ngoài khung hình:
+    // tam giác xoay theo hướng đích, kẹp ở rìa vùng nhìn (theo mẫu
+    // mũi tên quảng trường) thay vì biến mất như trước.
+    var aim = tg, isPortalAim = false;
+    if (tg.mapId !== curMapId) {
+      var fpA = guideFirstPortal(tg.mapId, true);
+      if (!fpA) return;
+      aim = { x: fpA.x, y: fpA.y };
+      isPortalAim = true;
+    }
+    var bobY = Math.abs(Math.sin(now / 280)) * 6;
+    var vw = effVW(), vh = effVH();
     ctx.save();
+    if (!isPortalAim) {
+      var gx = tg.x * TILE + 16 - camX, gy = tg.y * TILE + 28 - camY;
+      if (gx > -40 && gx < vw + 40 && gy > -40 && gy < vh + 40) {
+        // Vòng elip nhấp nháy ngay tại ô đích (tỉ lệ 0,45 như vòng
+        // quảng trường, hai nét: lót tối + vàng).
+        var pu = (PLZ && PLZ.guidePulse) ? PLZ.guidePulse(now) : { ringR: 20, ringAlpha: 0.9 };
+        ctx.globalAlpha = pu.ringAlpha;
+        ctx.lineWidth = 4.5; ctx.strokeStyle = 'rgba(20,16,8,.85)';
+        ctx.beginPath(); ctx.ellipse(gx, gy, pu.ringR, pu.ringR * 0.45, 0, 0, Math.PI * 2); ctx.stroke();
+        ctx.lineWidth = 2.2; ctx.strokeStyle = '#ffd94a';
+        ctx.beginPath(); ctx.ellipse(gx, gy, pu.ringR, pu.ringR * 0.45, 0, 0, Math.PI * 2); ctx.stroke();
+        ctx.globalAlpha = 1;
+        // Dấu "!" phát sáng trên đầu đích.
+        ctx.font = 'bold 22px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.lineWidth = 4; ctx.strokeStyle = 'rgba(0,0,0,.7)';
+        var bangY = gy - 54 - bobY;
+        ctx.strokeText('!', gx, bangY);
+        ctx.fillStyle = '#ffe14a';
+        ctx.fillText('!', gx, bangY);
+      }
+    }
+    var sx = aim.x * TILE + 16 - camX, sy = aim.y * TILE - camY - 14 - bobY;
     ctx.fillStyle = '#ffd94a';
     ctx.strokeStyle = 'rgba(0,0,0,.65)'; ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.moveTo(sx - 9, sy - 14); ctx.lineTo(sx + 9, sy - 14); ctx.lineTo(sx, sy);
-    ctx.closePath(); ctx.fill(); ctx.stroke();
+    if (sx >= -20 && sy >= -30 && sx <= vw + 20 && sy <= vh + 20) {
+      ctx.beginPath();
+      ctx.moveTo(sx - 9, sy - 14); ctx.lineTo(sx + 9, sy - 14); ctx.lineTo(sx, sy);
+      ctx.closePath(); ctx.fill(); ctx.stroke();
+    } else {
+      var ang = Math.atan2(sy - vh / 2, sx - vw / 2);
+      var ex = Math.max(30, Math.min(vw - 30, sx)), ey = Math.max(30, Math.min(vh - 30, sy));
+      ctx.translate(ex, ey); ctx.rotate(ang + Math.PI / 2);
+      ctx.beginPath();
+      ctx.moveTo(0, -12); ctx.lineTo(9, 8); ctx.lineTo(-9, 8);
+      ctx.closePath(); ctx.fill(); ctx.stroke();
+    }
     ctx.restore();
   }
   // MỤC 108: mũi tên dẫn đường tới quảng trường sơn môn map 3.
@@ -11801,7 +12307,15 @@
       var cr = canvas.getBoundingClientRect();
       if (cr.width > 0 && cr.height > 0) {
         var kx = effVW() / cr.width, ky = effVH() / cr.height;
-        var ids = ['hud', 'questTracker', 'minimapWrap', 'liveTicker', 'achToast', 'riftBanner', 'festBanner', 'ctlJoyFloat'];
+        // QA110D (đợt 4): thêm 'ctlZoom' — cụm 3 nút zoom (+/−/1:1)
+        // do js/controls.js dựng trong #ctlZoom (trong #ctlOverlay),
+        // nằm thành cột ngay dưới bản đồ nhỏ ở mép phải. Danh sách cũ
+        // thiếu nó nên nhãn biển phía phải bị đặt đè dưới cụm nút
+        // (overlap thật 972px² trong mô phỏng neo (733,250) trong
+        // khi overlap báo cáo = 0). 'ctlJoyFloat' trong danh sách là
+        // id của ô tích trong panel Cài đặt, không phải lớp phủ điều
+        // khiển — giữ lại vì vô hại.
+        var ids = ['hud', 'questTracker', 'minimapWrap', 'liveTicker', 'achToast', 'riftBanner', 'festBanner', 'ctlJoyFloat', 'ctlZoom'];
         for (var i = 0; i < ids.length; i++) {
           var el = document.getElementById(ids[i]);
           if (!el) continue;
@@ -11848,8 +12362,28 @@
     var info = PLZ.arrowFor(curMap(), curMapId, flags.sectJoined, pt, { x: camX, y: camY }, view, TILE, aim || undefined);
     if (!info) return;
     var bob = Math.abs(Math.sin(now / 280)) * 6;
-    var pulse = PLZ.guidePulse ? PLZ.guidePulse(now) : { alpha: 1, ringR: 15, ringAlpha: 0.9 };
+    var pulse = PLZ.guidePulse ? PLZ.guidePulse(now) : { alpha: 1, ringR: 20, ringAlpha: 0.9, discR: 26, discAlpha: 0.33 };
     var occ = (PLZ.arrowSafePos && PLZ.labelSafeLayout) ? hudOccluders() : [];
+    // QA110D (đợt 4, nghiệm thu đợt gộp 08:49–09:13): nhãn biển
+    // phía trái vẫn bị tam giác dẫn đường che/cắt chữ. Nguyên nhân
+    // đã mô phỏng số: hàm này chạy SAU draw() nên tam giác vẽ đè
+    // lên nhãn biển, mà arrowSafePos trước đây chỉ tránh khung
+    // HTML — vị trí nhà của tam giác giao hộp nhãn biển tới
+    // 576px². Nay đưa cả hộp nhãn biển + nhãn tên NPC (draw() vừa
+    // ghi vào _placedLabels của chính khung hình này) vào danh
+    // sách phải tránh cho cả tam giác lẫn nhãn "Quảng Trường Sơn
+    // Môn": bên di chuyển được là tam giác/nhãn dẫn đường, nhãn
+    // biển giữ nguyên vị trí đã bố cục. Vòng đích KHÔNG dời (nó
+    // đánh dấu đúng ô đích trên mặt đất) — vòng nằm sát đất còn
+    // nhãn biển lơ lửng trên biển nên hai thứ không tranh nhau.
+    var occAll = occ;
+    if (_placedLabels && _placedLabels.length) {
+      occAll = occ.slice();
+      for (var li4 = 0; li4 < _placedLabels.length; li4++) {
+        var lb4 = _placedLabels[li4];
+        if (lb4 && lb4.w > 0 && lb4.h > 0) occAll.push({ x: lb4.x, y: lb4.y, w: lb4.w, h: lb4.h });
+      }
+    }
     ctx.save();
     // QA110C (1): vòng tròn mảnh nhấp nháy tại ô đích bước tiếp
     // theo (điểm nhìn trước trên tuyến; không theo tuyến thì là
@@ -11857,9 +12391,19 @@
     // — nên vòng nằm trên mọi tán cây/vật thể.
     if (info.target) {
       var rgx = info.target.x * TILE + 16 - camX, rgy = info.target.y * TILE + 28 - camY;
-      if (rgx > -24 && rgx < view.w + 24 && rgy > -24 && rgy < view.h + 24) {
+      if (rgx > -40 && rgx < view.w + 40 && rgy > -40 && rgy < view.h + 40) {
         ctx.save();
         ctx.globalAlpha = pulse.ringAlpha;
+        // QA110D (đợt 4): đĩa tối mềm lót dưới vòng để tách vòng
+        // vàng khỏi nền cỏ/đá sáng — hai lớp elip cùng nhịp đĩa
+        // của guidePulse (lớp ngoài bán kính discR mờ một nửa,
+        // lớp trong sát vòng đặc hơn). Vẫn là elip sát đất tỉ lệ
+        // 0,45 như vòng, không phải mảng tròn che cảnh.
+        var dR4 = pulse.discR || (pulse.ringR + 6), dA4 = (pulse.discAlpha != null ? pulse.discAlpha : 0.33);
+        ctx.fillStyle = 'rgba(14,18,8,' + (dA4 * 0.45).toFixed(3) + ')';
+        ctx.beginPath(); ctx.ellipse(rgx, rgy, dR4, dR4 * 0.45, 0, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = 'rgba(14,18,8,' + dA4.toFixed(3) + ')';
+        ctx.beginPath(); ctx.ellipse(rgx, rgy, pulse.ringR + 3, (pulse.ringR + 3) * 0.45, 0, 0, Math.PI * 2); ctx.fill();
         ctx.lineWidth = 4.5; ctx.strokeStyle = 'rgba(20,16,8,.85)';
         ctx.beginPath(); ctx.ellipse(rgx, rgy, pulse.ringR, pulse.ringR * 0.45, 0, 0, Math.PI * 2); ctx.stroke();
         ctx.lineWidth = 2.2; ctx.strokeStyle = '#ffd94a';
@@ -11875,7 +12419,7 @@
       var sx = info.txPx, sy = info.tyPx - 14 - bob;
       // QA110C (3): tránh khung HTML phủ cho cả nhánh trong màn
       // hình; phải dời xa thì vẽ nét đứt nối về vị trí gốc.
-      var tSafe = PLZ.arrowSafePos ? PLZ.arrowSafePos({ ex: sx, ey: sy - 8, txPx: info.txPx, tyPx: info.tyPx }, view, occ, 16)
+      var tSafe = PLZ.arrowSafePos ? PLZ.arrowSafePos({ ex: sx, ey: sy - 8, txPx: info.txPx, tyPx: info.tyPx }, view, occAll, 16)
         : { x: sx, y: sy - 8, moved: 0, overlap: 0 };
       var tcx = tSafe.x, tcy = tSafe.y;
       if (tSafe.moved > 24) {
@@ -11903,7 +12447,7 @@
       // MỤC 110 + ĐỢT 2: dời mũi tên ra khỏi vùng bị khung HTML phủ
       // (vòng tròn nền phóng to r=19, tam giác 21/-13/15 cho dễ thấy
       // trên nền rừng sáng), góc chỉ hướng giữ nguyên.
-      var safeA = PLZ.arrowSafePos ? PLZ.arrowSafePos(info, view, occ, 20) : { x: info.ex, y: info.ey, moved: 0, overlap: 0 };
+      var safeA = PLZ.arrowSafePos ? PLZ.arrowSafePos(info, view, occAll, 20) : { x: info.ex, y: info.ey, moved: 0, overlap: 0 };
       var ex = safeA.x, ey = safeA.y;
       if (safeA.moved > 24) {
         // Nét đứt phụ: nối mũi tên đã dời về điểm rìa gốc nơi hướng
@@ -11939,7 +12483,7 @@
       var label = 'Quảng Trường Sơn Môn';
       var tw110 = ctx.measureText ? ctx.measureText(label).width : 150;
       var anchor110 = { ex: ex, ey: ey, txPx: info.txPx, tyPx: info.tyPx };
-      var lay110 = PLZ.labelSafeLayout ? PLZ.labelSafeLayout(anchor110, view, tw110, 19, occ)
+      var lay110 = PLZ.labelSafeLayout ? PLZ.labelSafeLayout(anchor110, view, tw110, 19, occAll)
         : (PLZ.labelLayout ? PLZ.labelLayout(info, view, tw110) : { x: Math.max(4, ex - tw110 / 2), y: ey + 26 });
       var lcx = lay110.x + tw110 / 2, lcy = lay110.y - 5;
       var ldx = lcx - ex, ldy = lcy - ey;
@@ -12093,6 +12637,1026 @@
       saveGame();
     });
   }
+
+  /* ================= ĐỢT MÔI TRƯỜNG CHUYỂN ĐỘNG — MAP SINH ĐỘNG (THAM CHIẾU VÔ SẮC LINH CĂN) =================
+     Lớp trình diễn thuần: bóng mây trên đất, lá/cánh rơi theo bản đồ,
+     nước sống, đom đóm đêm, linh khí ở điểm tu luyện, khói bếp, cỏ lay
+     theo bước chân, bụi + vệt chân khi CHẠY, gợn + bọt lội nước nông.
+     Không ghi save, không sửa state, không đổi số gameplay.
+     Hạt môi trường vào TRẦN PHỤ CỨNG AMB_PARTS_MAX (24) trong trần chung MAX_PARTS (90);
+     đom đóm là mảng riêng ambFlies (trần riêng 10, KHÔNG tính vào MAX_PARTS);
+     vệt chân trần 42, gợn nước trần 24. */
+  var MAX_PARTS = 90;
+  var AMB_PARTS_MAX = 24;
+  var AMB_SUN_DX = 150, AMB_SUN_DY = 105; // vector nắng cố định của bóng mây (px)
+  var SKY_PUFFS = [[-48, 4, 54, 17], [0, -9, 62, 20], [50, 2, 52, 16], [-20, -17, 40, 13], [26, -18, 42, 13], [0, 8, 58, 14]];
+  var AMB_MAP = {
+    // Bản đồ Phàm Nhân Tu Đạo
+    map1: { petal: true, firefly: true },
+    map2: { leaf_bamboo: true, firefly: true },
+    map3: { petal: true },
+    map4: { leaf_bamboo: true, firefly: true },
+    map5: { leaf_bamboo: true, firefly: true },
+    map6: { leaf_gold: true, firefly: true },
+    map7: { leaf_gold: true, firefly: true },
+    map8: { petal: true, firefly: true },
+    map9: { leaf_gold: true, firefly: true },
+    map14: { petal: true },
+    sonmon_thanhphong: { petal: true },
+    sonmon_huyenphap: { petal: true },
+    sonmon_danha: { petal: true },
+    sonmon_vanthu: { leaf_bamboo: true, firefly: true },
+    sonmon_ngudoc: { leaf_bamboo: true, firefly: true },
+    sonmon_huyenam: { leaf_gold: true, firefly: true },
+    // Bản đồ tương thích tham chiếu Vô Sắc
+    co_chau: { petal: true, firefly: true },
+    thanh_van_tong: { petal: true },
+    kiem_trac_thap: { petal: true },
+    thang_long_dai: { petal: true },
+    duong_mon: { leaf_bamboo: true, firefly: true },
+    hb_valley: { leaf_bamboo: true, firefly: true },
+    thap_van_dai_son: { leaf_bamboo: true, firefly: true },
+    tvds_truc_co: { leaf_bamboo: true, firefly: true },
+    song_bac_thuong: { leaf_gold: true, firefly: true },
+    tvds_kim_dan: { leaf_gold: true, firefly: true },
+    tvds_nguyen_anh: { leaf_gold: true, firefly: true },
+    tvds_hoa_than: { leaf_gold: true, firefly: true }
+  };
+  var AMB_SPIRIT = [
+    { map: 'map1', x: 71, y: 70 },
+    { map: 'map3', x: 55, y: 31 },
+    { map: 'map14', x: 120, y: 105 },
+    { map: 'thanh_van_tong', x: 61, y: 8 },
+    { map: 'thanh_van_tong', x: 31, y: 61 },
+    { map: 'thang_long_dai', x: 23, y: 16 }
+  ];
+  var parts = [];
+  var skyClouds = [], skyCloudsMap = null;
+  var ambFlies = [], ambFliesMap = null, ambDt = 0, ambNightF = 0;
+  var ambWaterCache = null, ambWaterMap = null;
+  var ambSceneryT = 0, ambClock = 0;
+  var ambSimDayMinutes = null;
+
+  function hash2(x, y) {
+    var n = (x * 374761393 + y * 668265263) | 0;
+    n = (n ^ (n >> 13)) | 0;
+    return ((n * 1274126177) | 0) >>> 0;
+  }
+  function ambCount() {
+    var n = 0;
+    for (var i = 0; i < parts.length; i++) if (parts[i].amb) n++;
+    return n;
+  }
+  function ambCountsObj() {
+    return { parts: parts.length, amb: ambCount(), flies: ambFlies.length, clouds: skyClouds.length };
+  }
+  function ambBudgetOK() {
+    return parts.length < MAX_PARTS && ambCount() < AMB_PARTS_MAX;
+  }
+  function ambMarkFrom(n0) {
+    for (var i = n0; i < parts.length; i++) parts[i].amb = true;
+  }
+  function ambCurrentMap() {
+    return curMapId || (ch ? ch.mapId : 'map1');
+  }
+  function ambMapDef(id) {
+    var mid = id || ambCurrentMap();
+    return (M && M.MAPS && M.MAPS[mid]) || (typeof curMap === 'function' ? curMap() : null);
+  }
+  function ambEffW() {
+    return effVW ? effVW() : VIEW_W;
+  }
+  function ambEffH() {
+    return effVH ? effVH() : VIEW_H;
+  }
+  function ambDayPhaseAt(m) {
+    var mins = ((m % 1440) + 1440) % 1440;
+    var night = 0;
+    if (mins >= 1200 || mins < 240) {
+      night = 1;
+    } else if (mins >= 240 && mins < 360) {
+      night = 1 - (mins - 240) / 120;
+    } else if (mins >= 360 && mins < 1080) {
+      night = 0;
+    } else {
+      night = (mins - 1080) / 120;
+    }
+    return { night: night, day: 1 - night, minutes: mins };
+  }
+  function ambPhase() {
+    var mins = amb2Minutes();
+    return ambDayPhaseAt(mins);
+  }
+  function fxOn() {
+    if (typeof gfxLevel !== 'undefined' && gfxLevel === 'thap') return false;
+    try {
+      if (window.PNT_CONTROLS && window.PNT_CONTROLS.getSettings && window.PNT_CONTROLS.getSettings().view && window.PNT_CONTROLS.getSettings().view.ambientFx === false) return false;
+    } catch (e) {}
+    return true;
+  }
+  function spawnParts(x, y, n, col, spd, up) {
+    if (!fxOn()) return;
+    var cnt = n || 1;
+    for (var i = 0; i < cnt && parts.length < MAX_PARTS; i++) {
+      var a = Math.random() * Math.PI * 2, s = (0.3 + Math.random() * 0.7) * (spd || 26);
+      parts.push({ x: x, y: y, vx: Math.cos(a) * s, vy: Math.sin(a) * s * 0.6 - (up ? 16 : 0), life: 0.9 + Math.random() * 0.7, t: 0, col: col || '228,243,252', r: 1.4 + Math.random() * 1.8 });
+    }
+  }
+  function spawnPetals(x, y, n) {
+    if (!fxOn()) return;
+    var cnt = n || 1;
+    for (var i = 0; i < cnt && parts.length < MAX_PARTS; i++) {
+      parts.push({ kind: 'petal', x: x + (Math.random() - 0.5) * 36, y: y + (Math.random() - 0.5) * 14,
+        vx: -8 - Math.random() * 12, vy: 7 + Math.random() * 8, life: 1.5 + Math.random() * 0.9, t: 0,
+        col: '244,170,196', r: 2.4 + Math.random() * 1.8, rot: Math.random() * 3.2, vr: (Math.random() - 0.5) * 3.4, sw: Math.random() * 6.3 });
+    }
+  }
+  function spawnSmoke(x, y, n, col) {
+    if (!fxOn()) return;
+    var cnt = n || 1;
+    for (var i = 0; i < cnt && parts.length < MAX_PARTS; i++) {
+      parts.push({ kind: 'smoke', x: x + (Math.random() - 0.5) * 22, y: y + (Math.random() - 0.5) * 8,
+        vx: (Math.random() - 0.5) * 9, vy: -6 - Math.random() * 7, life: 1.1 + Math.random() * 0.7, t: 0,
+        col: col || '148,163,184', r: 4 + Math.random() * 5 });
+    }
+  }
+  function spawnAmb(e) {
+    if (!ambBudgetOK()) return;
+    var wx = (e.x + (Math.random() * 2 - 1) * (e.spread || 3)) * TILE + 16;
+    var wy = (e.y + (Math.random() * 2 - 1) * 1.5) * TILE + 16;
+    if (e.kind === 'smoke') { var n0s = parts.length; spawnSmoke(wx, wy, 1, e.col || undefined); ambMarkFrom(n0s); return; }
+    if (parts.length >= MAX_PARTS) return;
+    if (e.kind === 'leaf') parts.push({ kind: 'leaf', amb: true, x: wx, y: wy, vx: 6 + Math.random() * 12, vy: 3 + Math.random() * 7, life: 2.4, t: 0, col: e.col || '120,160,80', r: 2.4, rot: Math.random() * 6.28, vr: 2 });
+    else if (e.kind === 'drip') parts.push({ amb: true, x: e.x * TILE + 16, y: e.y * TILE + 4, vx: 0, vy: 55, life: 0.55, t: 0, col: '170,215,255', r: 1.8 });
+    else if (e.kind === 'mote') parts.push({ kind: 'petal', amb: true, x: wx, y: wy, vx: 2 + Math.random() * 3, vy: 4 + Math.random() * 4, life: 3, t: 0, col: e.col || '235,242,255', r: 1.7, rot: Math.random() * 6.28, vr: 0.6, sw: Math.random() * 6.28 });
+    else parts.push({ amb: true, x: wx, y: wy, vx: (Math.random() - 0.5) * 6, vy: -4 - Math.random() * 6, life: 1.8, t: 0, col: e.col || '200,220,240', r: 1.6 });
+  }
+  function ambSpawnLeafFall() {
+    if (!fxOn()) return false;
+    var curM = ambCurrentMap();
+    var cfg = AMB_MAP[curM];
+    if (!cfg || (!cfg.petal && !cfg.leaf_bamboo && !cfg.leaf_gold)) return false;
+    if (!ambBudgetOK()) return false;
+    var def = ambMapDef(); if (!def) return false;
+    var effW2 = ambEffW(), effH2 = ambEffH();
+    if (camX + effW2 < 0 || camY + effH2 < 0 || camX > def.w * TILE || camY > def.h * TILE) return false;
+    var x = camX + Math.random() * effW2;
+    var y = camY - 24 + Math.random() * (effH2 * 0.6 + 24);
+    if (cfg.petal) {
+      var n0 = parts.length; spawnPetals(x, y, 1);
+      if (parts.length === n0) return false;
+      ambMarkFrom(n0); return true;
+    }
+    var col = cfg.leaf_bamboo ? '110,165,90' : '215,175,85';
+    parts.push({ kind: 'leaf', amb: true, x: x, y: y, vx: 5 + Math.random() * 9, vy: 6 + Math.random() * 7, life: 3.2, t: 0, col: col, r: 2.2 + Math.random() * 0.8, rot: Math.random() * 6.28, vr: (Math.random() - 0.5) * 3 });
+    return true;
+  }
+  function ambSpawnWispAt(sp) {
+    if (!sp || !fxOn()) return false;
+    if (!ambBudgetOK()) return false;
+    parts.push({ kind: 'wisp', amb: true, x: sp.x * TILE + 16 + (Math.random() - 0.5) * 24, y: sp.y * TILE + 26, vx: (Math.random() - 0.5) * 4, vy: -13 - Math.random() * 7, life: 2.6, t: 0, col: '170,235,255', r: 1.8 + Math.random() * 1.2, ph: Math.random() * 6.28 });
+    return true;
+  }
+  function ambNearestSpirit() {
+    var curM = ambCurrentMap();
+    var pt = { x: Math.floor(px / TILE), y: Math.floor(py / TILE) };
+    var best = null, bestD = 1e9;
+    for (var i = 0; i < AMB_SPIRIT.length; i++) {
+      var sp = AMB_SPIRIT[i]; if (sp.map !== curM) continue;
+      var d = Math.abs(pt.x - sp.x) + Math.abs(pt.y - sp.y);
+      if (d < bestD) { bestD = d; best = sp; }
+    }
+    return best;
+  }
+  function ambSpawnFly() {
+    var a = Math.random() * Math.PI * 2, rad = Math.random() * 9 * TILE * 0.85;
+    var ax = px + 16 + Math.cos(a) * rad, ay = py + 16 + Math.sin(a) * rad * 0.7;
+    ambFlies.push({ x: ax, y: ay, ax: ax, ay: ay, ph: Math.random() * 6.28, sp: 0.7 + Math.random() * 0.9, t: Math.random() * 10 });
+  }
+  function ambUpdateFlies(dt) {
+    var curM = ambCurrentMap();
+    if (ambFliesMap !== curM) { ambFlies = []; ambFliesMap = curM; }
+    var cfg = AMB_MAP[curM];
+    var phase = ambPhase();
+    var night = phase ? phase.night : 0;
+    if (!cfg || !cfg.firefly || night < 0.4) { if (ambFlies.length) ambFlies = []; return; }
+    if (night >= 0.55) { while (ambFlies.length < 7) ambSpawnFly(); }
+    if (ambFlies.length > 10) ambFlies.length = 10;
+    var pcx = px + 16, pcy = py + 16;
+    for (var i = 0; i < ambFlies.length; i++) {
+      var f = ambFlies[i];
+      f.t += dt;
+      var dax = f.ax - pcx, day = f.ay - pcy;
+      if (dax * dax + day * day > (9.5 * TILE) * (9.5 * TILE)) {
+        var a2 = Math.random() * Math.PI * 2, rad2 = Math.random() * 9 * TILE * 0.85;
+        f.ax = pcx + Math.cos(a2) * rad2; f.ay = pcy + Math.sin(a2) * rad2 * 0.7;
+      }
+      f.x = f.ax + Math.sin(f.t * f.sp + f.ph) * 20 + Math.sin(f.t * 0.9 + f.ph * 1.7) * 7;
+      f.y = f.ay + Math.cos(f.t * f.sp * 0.82 + f.ph) * 13 + Math.cos(f.t * 1.1 + f.ph) * 5;
+    }
+  }
+  function ambComputeWater(id) {
+    var mid = id || ambCurrentMap();
+    var def = (M && M.MAPS && M.MAPS[mid]) || null;
+    var out = { wTiles: 0, shoreTiles: 0, flow: null, tiles: [], lookup: {} };
+    if (!def) return out;
+    var grid = def.tiles || def.grid;
+    if (!grid) return out;
+    var w = def.w, h = def.h;
+    function chAt(tx, ty) { if (tx < 0 || ty < 0 || tx >= w || ty >= h) return 'X'; var row = grid[ty]; return row ? row.charAt(tx) : 'X'; }
+    var tx, ty;
+    for (ty = 0; ty < h; ty++) for (tx = 0; tx < w; tx++) {
+      if (chAt(tx, ty) !== 'W') continue;
+      out.wTiles++;
+      var shore = chAt(tx + 1, ty) !== 'W' || chAt(tx - 1, ty) !== 'W' || chAt(tx, ty + 1) !== 'W' || chAt(tx, ty - 1) !== 'W';
+      if (shore) out.shoreTiles++;
+      var rec = { tx: tx, ty: ty, shore: shore, hash: hash2(tx, ty) };
+      out.tiles.push(rec); out.lookup[tx + ',' + ty] = rec;
+    }
+    var maxH = 0, maxV = 0, run;
+    for (ty = 0; ty < h; ty++) { run = 0; for (tx = 0; tx < w; tx++) { if (chAt(tx, ty) === 'W') { run++; if (run > maxH) maxH = run; } else run = 0; } }
+    for (tx = 0; tx < w; tx++) { run = 0; for (ty = 0; ty < h; ty++) { if (chAt(tx, ty) === 'W') { run++; if (run > maxV) maxV = run; } else run = 0; } }
+    out.flow = out.wTiles ? (maxH >= maxV ? 'h' : 'v') : null;
+    return out;
+  }
+  function ambEnsureWaterCache(mapId) {
+    var mid = mapId || ambCurrentMap();
+    if (ambWaterCache && ambWaterMap === mid) return ambWaterCache;
+    ambWaterMap = mid; ambWaterCache = ambComputeWater(mid);
+    return ambWaterCache;
+  }
+  function ambCloudShadowGeom(c, i) {
+    var p = SKY_PUFFS[i];
+    var tNow = animClock * 1000;
+    var wob = Math.sin(tNow / 7000 + c.seed + i * 1.3) * 3;
+    return { cx: c.x + AMB_SUN_DX + p[0] * c.s * 1.15, cy: c.y + AMB_SUN_DY + (p[1] * c.s + wob) * 1.15, rx: p[2] * c.s * 1.15, ry: p[3] * c.s * 1.15 };
+  }
+  function buildSkyClouds() {
+    skyClouds = [];
+    var m = ambMapDef(); if (!m || m.indoor) return;
+    var W = m.w * TILE, H = m.h * TILE;
+    var n = Math.max(6, Math.round(W / 330));
+    for (var i = 0; i < n; i++) {
+      var front = i % 3 === 2;
+      skyClouds.push({
+        x: Math.random() * (W + 480) - 240, y: Math.random() * H,
+        s: front ? 1.25 + Math.random() * 0.9 : 0.6 + Math.random() * 0.55,
+        v: 3 + Math.random() * 4.5, front: front, seed: Math.random() * 6.28
+      });
+    }
+  }
+  function updateSkyClouds(dt) {
+    var def = ambMapDef();
+    if (!def || def.indoor || !fxOn()) {
+      if (skyClouds.length) skyClouds = [];
+      skyCloudsMap = null;
+      return;
+    }
+    if (skyCloudsMap !== ambCurrentMap()) {
+      skyCloudsMap = ambCurrentMap();
+      buildSkyClouds();
+    }
+    var W = def.w * TILE, H = def.h * TILE;
+    for (var ci = 0; ci < skyClouds.length; ci++) {
+      var c = skyClouds[ci];
+      c.x += c.v * dt;
+      if (c.x - 200 * c.s > W + 60) { c.x = -200 * c.s - 40; c.y = Math.random() * H; }
+    }
+  }
+  function drawCloudShadows() {
+    if (!fxOn() || !skyClouds.length) return;
+    var def = ambMapDef(); if (!def || def.indoor) return;
+    var phaseS = ambPhase(); var nightS = phaseS ? phaseS.night : 0;
+    var effWS = ambEffW(), effHS = ambEffH();
+    for (var ci2 = 0; ci2 < skyClouds.length; ci2++) {
+      var c2 = skyClouds[ci2];
+      var baseAS = (c2.front ? 0.14 : 0.10) * (1 - nightS * 0.75);
+      ctx.fillStyle = 'rgba(26,38,24,' + baseAS.toFixed(3) + ')';
+      for (var pi2 = 0; pi2 < SKY_PUFFS.length; pi2++) {
+        var g2 = ambCloudShadowGeom(c2, pi2);
+        if (g2.cx + g2.rx < camX || g2.cx - g2.rx > camX + effWS || g2.cy + g2.ry < camY || g2.cy - g2.ry > camY + effHS) continue;
+        ctx.beginPath(); ctx.ellipse(g2.cx - camX, g2.cy - camY, g2.rx, g2.ry, 0, 0, Math.PI * 2); ctx.fill();
+      }
+    }
+  }
+  function drawAmbOverlay() {
+    var def = ambMapDef(); if (!def || def.indoor) return;
+    var phase = ambPhase(); ambNightF = phase ? phase.night : 0;
+    var night = ambNightF, dayF = 1 - night;
+    var effW2 = ambEffW(), effH2 = ambEffH();
+    var tNow = animClock * 1000;
+    // Khói bếp trên mái nhà
+    var props = def.props || [];
+    var houseTypes = { house: 1, house_b: 1, house_c: 1, house_big: 1, inn: 1, H: 1 };
+    for (var hi = 0; hi < props.length; hi++) {
+      var hp = props[hi];
+      var ptype = hp.type || hp.sprite;
+      if (!houseTypes[ptype]) continue;
+      var pw = hp.w || 2, ph = hp.h || 2;
+      var sx = (hp.x + pw * 0.68) * TILE;
+      var sy = (hp.y + ph - (hp.fy || 0)) * TILE - ph * TILE + 6;
+      if (sx < camX - 60 || sx > camX + effW2 + 60 || sy < camY - 90 || sy > camY + effH2 + 60) continue;
+      var hh = hash2(hp.x, hp.y);
+      for (var k = 0; k < 3; k++) {
+        var age = ((tNow / 1000) * 0.16 + k / 3 + (hh % 40) / 40) % 1;
+        var cxp = sx + Math.sin(age * 5 + hh) * 4 + 8 * age;
+        var cyp = sy - 46 * age;
+        var rr = 4 + 11 * age;
+        var aa = 0.16 * (1 - age) * (0.55 + 0.45 * dayF);
+        if (aa <= 0.004) continue;
+        ctx.fillStyle = 'rgba(168,178,190,' + aa.toFixed(3) + ')';
+        ctx.beginPath(); ctx.arc(cxp - camX, cyp - camY, rr, 0, Math.PI * 2); ctx.fill();
+      }
+    }
+    // Nước sống trên ô 'W'
+    var wc = ambEnsureWaterCache();
+    if (wc && wc.wTiles) {
+      var tx0 = Math.max(0, Math.floor(camX / TILE) - 1), tx1 = Math.min(def.w - 1, Math.floor((camX + effW2) / TILE) + 1);
+      var ty0 = Math.max(0, Math.floor(camY / TILE) - 1), ty1 = Math.min(def.h - 1, Math.floor((camY + effH2) / TILE) + 1);
+      for (var wy2 = ty0; wy2 <= ty1; wy2++) for (var wx2 = tx0; wx2 <= tx1; wx2++) {
+        var rec = wc.lookup[wx2 + ',' + wy2]; if (!rec) continue;
+        for (var sj = 0; sj < 2; sj++) {
+          var hj = sj === 0 ? rec.hash : hash2(wx2 + 101, wy2 + 57);
+          var pha = tNow / (1400 + (hj % 900)) + hj;
+          var sn = Math.sin(pha); if (sn < 0) sn = 0;
+          var alw = (0.10 + 0.14 * sn * sn) * (1 - night * 0.35);
+          var vx = wx2 * TILE + 4 + (hj % 18), vy = wy2 * TILE + 6 + ((hj >> 4) % 20);
+          var len = 7 + (hj % 5);
+          ctx.strokeStyle = 'rgba(235,246,255,' + alw.toFixed(3) + ')'; ctx.lineWidth = 1.5;
+          ctx.beginPath();
+          if (wc.flow === 'v') { ctx.moveTo(vx - camX, vy - camY); ctx.lineTo(vx - camX, vy + len - camY); }
+          else { ctx.moveTo(vx - camX, vy - camY); ctx.lineTo(vx + len - camX, vy - camY); }
+          ctx.stroke();
+        }
+        if (rec.shore) {
+          var sr = 9 + 3 * Math.sin(tNow / 700 + rec.hash);
+          ctx.strokeStyle = 'rgba(235,246,255,0.10)'; ctx.lineWidth = 1.2;
+          ctx.beginPath(); ctx.ellipse(wx2 * TILE + 16 - camX, wy2 * TILE + 16 - camY, sr, sr * 0.4, 0, 0, Math.PI * 2); ctx.stroke();
+        }
+      }
+    }
+    // Đom đóm đêm
+    for (var fi = 0; fi < ambFlies.length; fi++) {
+      var fl2 = ambFlies[fi];
+      var fa = Math.max(0, Math.sin(tNow / 520 + fl2.ph)); fa = fa * fa * fa;
+      if (fa <= 0.01) continue;
+      ctx.fillStyle = 'rgba(255,244,170,' + (fa * 0.25).toFixed(3) + ')';
+      ctx.beginPath(); ctx.arc(fl2.x - camX, fl2.y - camY, 5, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = 'rgba(255,244,170,' + fa.toFixed(3) + ')';
+      ctx.beginPath(); ctx.arc(fl2.x - camX, fl2.y - camY, 1.8, 0, Math.PI * 2); ctx.fill();
+    }
+  }
+  function updateParts(dt) {
+    var pw = 0;
+    for (var i = 0; i < parts.length; i++) {
+      var p = parts[i];
+      p.t += dt;
+      if (p.t >= p.life) continue;
+      if (p.kind === 'petal') {
+        p.x += (p.vx + Math.sin(p.t * 5 + (p.sw || 0)) * 13) * dt; p.y += p.vy * dt; p.rot += (p.vr || 0) * dt;
+      } else if (p.kind === 'smoke') {
+        p.x += p.vx * dt; p.y += p.vy * dt; p.r += 5.5 * dt;
+      } else if (p.kind === 'leaf') {
+        p.rot += (p.vr || 2) * dt; p.x += (p.vx + Math.sin(p.t * 6 + p.rot) * 10) * dt; p.y += p.vy * dt;
+      } else if (p.kind === 'wisp') {
+        p.x += (p.vx + Math.sin(p.t * 2.1 + (p.ph || 0)) * 7) * dt; p.y += p.vy * dt;
+      } else {
+        p.x += p.vx * dt; p.y += p.vy * dt;
+      }
+      parts[pw++] = p;
+    }
+    parts.length = pw;
+  }
+  function drawAmbParts() {
+    if (!fxOn() || !parts.length) return;
+    var tNow = animClock * 1000;
+    parts.forEach(function (p) {
+      var al = Math.max(0, 1 - p.t / p.life) * 0.85;
+      var sx = p.x - camX, sy = p.y - camY;
+      if (p.kind === 'petal') {
+        if (ctx.save && ctx.translate && ctx.rotate && ctx.restore && ctx.ellipse) {
+          ctx.save(); ctx.translate(sx, sy); ctx.rotate(p.rot || 0);
+          ctx.fillStyle = 'rgba(' + p.col + ',' + al + ')';
+          ctx.beginPath(); ctx.ellipse(0, 0, p.r, p.r * 0.55, 0, 0, Math.PI * 2); ctx.fill();
+          ctx.restore();
+        } else {
+          ctx.fillStyle = 'rgba(' + p.col + ',' + al + ')';
+          ctx.beginPath(); ctx.arc(sx, sy, p.r, 0, Math.PI * 2); ctx.fill();
+        }
+      } else if (p.kind === 'smoke') {
+        ctx.fillStyle = 'rgba(' + p.col + ',' + (al * 0.34) + ')';
+        ctx.beginPath(); ctx.arc(sx, sy, p.r, 0, Math.PI * 2); ctx.fill();
+      } else if (p.kind === 'leaf') {
+        if (ctx.save && ctx.translate && ctx.rotate && ctx.restore && ctx.ellipse) {
+          ctx.save(); ctx.translate(sx, sy); ctx.rotate(p.rot || 0);
+          ctx.fillStyle = 'rgba(' + p.col + ',' + al + ')';
+          ctx.beginPath(); ctx.ellipse(0, 0, p.r * 2.2, p.r, 0, 0, Math.PI * 2); ctx.fill();
+          ctx.strokeStyle = 'rgba(200,240,215,' + al + ')'; ctx.lineWidth = 1;
+          ctx.beginPath(); ctx.moveTo(-p.r * 2, 0); ctx.lineTo(p.r * 2, 0); ctx.stroke();
+          ctx.restore();
+        } else {
+          ctx.fillStyle = 'rgba(' + p.col + ',' + al + ')';
+          ctx.beginPath(); ctx.arc(sx, sy, p.r * 1.5, 0, Math.PI * 2); ctx.fill();
+        }
+      } else if (p.kind === 'wisp') {
+        var alW = al * (0.75 + 0.25 * Math.sin(tNow / 300 + p.ph));
+        ctx.fillStyle = 'rgba(150,220,255,' + (alW * 0.30).toFixed(3) + ')';
+        ctx.beginPath(); ctx.arc(sx, sy, p.r * 3.2, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = 'rgba(225,248,255,' + alW.toFixed(3) + ')';
+        ctx.beginPath(); ctx.arc(sx, sy, p.r * 0.8, 0, Math.PI * 2); ctx.fill();
+      } else {
+        ctx.fillStyle = 'rgba(' + (p.col || '228,243,252') + ',' + al + ')';
+        ctx.beginPath(); ctx.arc(sx, sy, p.r, 0, Math.PI * 2); ctx.fill();
+      }
+    });
+  }
+  function updateAmbScenery(dt) {
+    ambDt = dt;
+    if (!fxOn()) { if (ambFlies.length) ambFlies = []; return; }
+    ambUpdateFlies(ambDt);
+    updateSkyClouds(ambDt);
+    updateParts(ambDt);
+    updateAmb2(ambDt);
+    ambSceneryT -= dt;
+    if (ambSceneryT > 0) return;
+    ambSceneryT = 0.25;
+    ambClock += 0.25;
+    var curM = ambCurrentMap();
+    var pt = { x: Math.floor(px / TILE), y: Math.floor(py / TILE) };
+    var cfg = AMB_MAP[curM];
+    if (cfg && (cfg.petal || cfg.leaf_bamboo || cfg.leaf_gold)) {
+      if (Math.random() < 0.55) ambSpawnLeafFall();
+    }
+    for (var si = 0; si < AMB_SPIRIT.length; si++) {
+      var sp2 = AMB_SPIRIT[si];
+      if (sp2.map !== curM) continue;
+      if (Math.abs(pt.x - sp2.x) > 40 || Math.abs(pt.y - sp2.y) > 30) continue;
+      if (Math.random() < 0.5) ambSpawnWispAt(sp2);
+    }
+  }
+
+  /* ================= ĐỢT MÔI TRƯỜNG CHUYỂN ĐỘNG — MAP SINH ĐỘNG NHÓM 2: TƯƠNG TÁC =================
+     Lớp trình diễn thuần (tham chiếu Vô Sắc Linh Căn): cỏ lay theo
+     bước chân, bụi + vệt chân khi CHẠY, gợn + bọt lội nước nông, mưa
+     rào theo vùng + cầu vồng sau mưa, thế giới theo giờ (chuông tông môn,
+     đệ tử tập sớm, chợ đông/thưa, sao băng đêm), chạm cây anh đào rung cành.
+     Mọi hạt mới đều mang cờ amb và vào TRẦN PHỤ AMB_PARTS_MAX của nhóm 1. */
+  var AMB2_RAIN = [
+    { map: 'map2', x0: 28, y0: 18, x1: 72, y1: 62, period: 300, dur: 45, off: 40 },
+    { map: 'map4', x0: 16, y0: 8, x1: 76, y1: 52, period: 360, dur: 50, off: 150 },
+    { map: 'map6', x0: 8, y0: 8, x1: 92, y1: 62, period: 330, dur: 55, off: 230 },
+    { map: 'map1', x0: 38, y0: 4, x1: 92, y1: 46, period: 420, dur: 40, off: 310 },
+    { map: 'duong_mon', x0: 28, y0: 18, x1: 72, y1: 62, period: 300, dur: 45, off: 40 },
+    { map: 'hb_valley', x0: 16, y0: 8, x1: 76, y1: 52, period: 360, dur: 50, off: 150 },
+    { map: 'song_bac_thuong', x0: 8, y0: 8, x1: 92, y1: 62, period: 330, dur: 55, off: 230 },
+    { map: 'co_chau', x0: 38, y0: 4, x1: 92, y1: 46, period: 420, dur: 40, off: 310 }
+  ];
+  var AMB2_RAINBOW_SPAN = 25; // giây cầu vồng tồn tại sau khi mưa tạnh
+  var AMB2_PRINTS_MAX = 42, AMB2_RIPPLES_MAX = 24;
+  var amb2 = {
+    time: 0, tick: 0, lastFx: null, lastFy: null, stepAcc: 0, stepSide: 1,
+    prints: [], ripples: [], meteors: [], sway: {},
+    grassCache: null, grassMap: null, sakuraCache: null, sakuraMap: null,
+    shake: {}, rainSeen: {}, rainForceIdx: -1, rainForceUntil: 0,
+    lastHour: -1, bells: 0, wadeT: 0,
+    crowdCache: null, discCache: null,
+    stats: { prints: 0, dust: 0, ripples: 0, foam: 0, shakes: 0 }
+  };
+  function amb2Reset() {
+    amb2.lastFx = null; amb2.lastFy = null; amb2.stepAcc = 0;
+    amb2.prints = []; amb2.ripples = []; amb2.meteors = []; amb2.sway = {};
+    amb2.shake = {}; amb2.rainSeen = {}; amb2.rainForceIdx = -1; amb2.rainForceUntil = 0;
+    amb2.lastHour = -1; amb2.wadeT = 0;
+    amb2.grassCache = null; amb2.grassMap = null; amb2.sakuraCache = null; amb2.sakuraMap = null;
+    amb2.crowdCache = null; amb2.discCache = null;
+  }
+  function amb2Minutes() {
+    if (ambSimDayMinutes !== null) return ambSimDayMinutes;
+    try {
+      if (typeof L !== 'undefined' && L.displayDayMinutes && ch) return L.displayDayMinutes(ch);
+    } catch (e) {}
+    return 720;
+  }
+  function amb2Feet() { return { x: px, y: py }; }
+  function ambTileAt(tx, ty, mapId) {
+    var mid = mapId || ambCurrentMap();
+    var def = ambMapDef(mid); if (!def) return null;
+    var grid = def.tiles || def.grid;
+    if (!grid || ty < 0 || ty >= def.h || tx < 0 || tx >= def.w) return null;
+    var row = grid[ty]; return row ? row.charAt(tx) : null;
+  }
+  function amb2WaterAt(tx, ty, mapId) {
+    var c = ambTileAt(tx, ty, mapId);
+    if (c === 'W') return 'deep';
+    if (c === 'w') return 'shore';
+    var wc = ambEnsureWaterCache(mapId);
+    if (wc && wc.lookup) {
+      if (wc.lookup[(tx + 1) + ',' + ty] || wc.lookup[(tx - 1) + ',' + ty] || wc.lookup[tx + ',' + (ty + 1)] || wc.lookup[tx + ',' + (ty - 1)]) return 'edge';
+    }
+    return null;
+  }
+  function amb2GrassList() {
+    var curM = ambCurrentMap();
+    if (amb2.grassCache && amb2.grassMap === curM) return amb2.grassCache;
+    var def = ambMapDef(); var out = [];
+    if (def && def.props) {
+      for (var i = 0; i < def.props.length; i++) {
+        var p = def.props[i];
+        var pt = p.type || p.sprite || p.id;
+        if (pt !== 'grass_clump' && pt !== 'reeds' && pt !== 'bush') continue;
+        out.push({ x: p.x, y: p.y, key: p.x + ',' + p.y, cx: (p.x + (p.w || 1) / 2) * TILE, cy: (p.y + (p.h || 1)) * TILE - 6 });
+      }
+    }
+    amb2.grassMap = curM; amb2.grassCache = out;
+    return out;
+  }
+  function amb2SakuraList() {
+    var curM = ambCurrentMap();
+    if (amb2.sakuraCache && amb2.sakuraMap === curM) return amb2.sakuraCache;
+    var def = ambMapDef(); var out = [];
+    if (def && def.props) {
+      for (var i = 0; i < def.props.length; i++) {
+        var p = def.props[i];
+        var pt = p.type || p.sprite || p.id;
+        if (pt !== 'tree_sakura' && pt !== 'sakura_big') continue;
+        out.push({ x: p.x, y: p.y, w: p.w || 1, h: p.h || 1, key: p.x + ',' + p.y, cx: (p.x + (p.w || 1) / 2) * TILE, top: p.y * TILE + 12 });
+      }
+    }
+    if (!out.length && curM === 'kiem_trac_thap') {
+      out.push({ x: 17, y: 2, w: 2, h: 2, key: '17,2', cx: 18 * TILE, top: 2 * TILE + 12 });
+    }
+    amb2.sakuraMap = curM; amb2.sakuraCache = out;
+    return out;
+  }
+  function amb2SwayImpulse(wx, wy, dirx) {
+    var list = amb2GrassList();
+    for (var i = 0; i < list.length; i++) {
+      var g = list[i];
+      var dx = g.cx - wx, dy = g.cy - wy;
+      if (dx * dx + dy * dy > 48 * 48) continue;
+      var cur = amb2.sway[g.key];
+      var ph = (hash2(g.x, g.y) % 628) / 100;
+      amb2.sway[g.key] = { s: Math.min(1, (cur ? cur.s : 0) + 0.8), dir: dirx < 0 ? -1 : 1, ph: ph };
+    }
+  }
+  function amb2PropShear(p) {
+    var ptype = p.type || p.sprite || p.k;
+    if (ptype === 'grass_clump' || ptype === 'reeds' || ptype === 'bush') {
+      var sw = amb2.sway[p.x + ',' + p.y];
+      var tNow = animClock * 1000;
+      if (sw && sw.s > 0.03) return sw.dir * sw.s * 0.20 * (0.65 + 0.35 * Math.sin(tNow / 95 + sw.ph));
+      return 0;
+    }
+    if (ptype === 'tree_sakura' || ptype === 'sakura_big') {
+      var sh = amb2.shake[p.x + ',' + p.y];
+      if (sh != null) {
+        var age = amb2.time - sh;
+        if (age >= 0 && age < 0.9) return Math.sin(age * 38) * 0.05 * (1 - age / 0.9);
+      }
+      return 0;
+    }
+    return 0;
+  }
+  function amb2Ripple(x, y) {
+    amb2.ripples.push({ x: x, y: y, t: 0, life: 1.15 });
+    if (amb2.ripples.length > AMB2_RIPPLES_MAX) amb2.ripples.shift();
+    amb2.stats.ripples++;
+  }
+  function amb2Foam(x, y) {
+    for (var i = 0; i < 2; i++) {
+      if (!ambBudgetOK()) return;
+      parts.push({ amb: true, x: x + (Math.random() - 0.5) * 14, y: y - 1, vx: (Math.random() - 0.5) * 16, vy: -4 - Math.random() * 7, life: 0.45, t: 0, col: '228,243,252', r: 1.1 + Math.random() * 0.8 });
+      amb2.stats.foam++;
+    }
+  }
+  function amb2Step(speed, fx, fy, dx, dy) {
+    var tx = Math.floor(fx / TILE), ty = Math.floor(fy / TILE);
+    var water = amb2WaterAt(tx, ty);
+    if (water === 'shore' || water === 'edge') {
+      amb2Ripple(fx, fy);
+      if (water === 'shore') amb2Foam(fx, fy);
+      return;
+    }
+    if (water === 'deep') return;
+    if (speed > 150) {
+      var len = Math.sqrt(dx * dx + dy * dy) || 1;
+      var ox = (-dy / len) * 4.5 * amb2.stepSide, oy = (dx / len) * 4.5 * amb2.stepSide;
+      amb2.prints.push({ x: fx + ox, y: fy + oy, ang: Math.atan2(dy, dx), t: 0, life: 5 });
+      if (amb2.prints.length > AMB2_PRINTS_MAX) amb2.prints.shift();
+      amb2.stats.prints++;
+      amb2.stepSide *= -1;
+      if (ambBudgetOK()) {
+        parts.push({ amb: true, x: fx - dx * 0.04, y: fy - 2, vx: -dx * 0.05 + (Math.random() - 0.5) * 7, vy: -8 - Math.random() * 8, life: 0.55, t: 0, col: '199,184,158', r: 1.5 + Math.random() * 0.9 });
+        amb2.stats.dust++;
+      }
+    }
+  }
+  function amb2TouchSakura() {
+    var list = amb2SakuraList();
+    if (!list.length) return;
+    var pt = { x: Math.floor(px / TILE), y: Math.floor(py / TILE) };
+    for (var i = 0; i < list.length; i++) {
+      var sp = list[i];
+      var dx = Math.max(sp.x - pt.x, 0, pt.x - (sp.x + sp.w - 1));
+      var dy = Math.max(sp.y - pt.y, 0, pt.y - (sp.y + sp.h - 1));
+      if (dx > 1 || dy > 1) continue;
+      var last = amb2.shake[sp.key];
+      if (last != null && amb2.time - last < 5) continue;
+      amb2.shake[sp.key] = amb2.time;
+      amb2.stats.shakes++;
+      if (ambBudgetOK()) {
+        var n0 = parts.length;
+        spawnPetals(sp.cx, sp.top, 7);
+        ambMarkFrom(n0);
+      }
+    }
+  }
+  function amb2Bell() {
+    try {
+      if (typeof SND !== 'undefined' && SND && SND.sfx) SND.sfx('bell');
+      else if (typeof beep === 'function') {
+        beep(392, 1.6, 'sine', 0.045); beep(196, 1.9, 'sine', 0.030); beep(587, 1.1, 'sine', 0.016);
+      }
+    } catch (e) {}
+  }
+  function amb2RainPhaseAt(z, t) {
+    var cyc = ((t + z.off) % z.period + z.period) % z.period;
+    if (cyc < z.dur) return 'rain';
+    return null;
+  }
+  function amb2ZoneState(z, idx, seen) {
+    if (amb2.rainForceIdx === idx && amb2.time < amb2.rainForceUntil) return 'rain';
+    var cyc = ((amb2.time + z.off) % z.period + z.period) % z.period;
+    if (cyc < z.dur) return 'rain';
+    if (seen && cyc < z.dur + AMB2_RAINBOW_SPAN) return 'rainbow';
+    return 'clear';
+  }
+  function amb2SpawnMeteor() {
+    var effW2 = ambEffW(), effH2 = ambEffH();
+    var dir = Math.random() < 0.5 ? -1 : 1;
+    amb2.meteors.push({
+      x: camX + effW2 * (0.25 + Math.random() * 0.5), y: camY + effH2 * (0.05 + Math.random() * 0.2),
+      vx: dir * (250 + Math.random() * 130), vy: 150 + Math.random() * 60, t: 0, life: 0.95
+    });
+  }
+  function amb2Tick025() {
+    var hour = Math.floor(amb2Minutes() / 60);
+    if (amb2.lastHour === -1) amb2.lastHour = hour;
+    else if (hour !== amb2.lastHour) {
+      amb2.lastHour = hour;
+      var curM = ambCurrentMap();
+      if (curM === 'thanh_van_tong' || curM === 'sonmon_thanhphong') {
+        amb2Bell();
+        amb2.bells++;
+      }
+    }
+    var curM = ambCurrentMap();
+    for (var zi = 0; zi < AMB2_RAIN.length; zi++) {
+      if (AMB2_RAIN[zi].map !== curM) continue;
+      if (amb2RainPhaseAt(AMB2_RAIN[zi], amb2.time) === 'rain') amb2.rainSeen[zi] = true;
+    }
+    var def = ambMapDef();
+    var phase = ambPhase();
+    if (phase && phase.night >= 0.85 && def && !def.indoor && amb2.meteors.length === 0 && Math.random() < 0.010) amb2SpawnMeteor();
+  }
+  function updateAmb2(dt) {
+    if (!fxOn() || dt <= 0) return;
+    amb2.time += dt;
+    amb2.tick += dt;
+    if (amb2.tick >= 0.25) { amb2.tick -= 0.25; amb2Tick025(); }
+    var i;
+    for (i = amb2.prints.length - 1; i >= 0; i--) { amb2.prints[i].t += dt; if (amb2.prints[i].t >= amb2.prints[i].life) amb2.prints.splice(i, 1); }
+    for (i = amb2.ripples.length - 1; i >= 0; i--) { amb2.ripples[i].t += dt; if (amb2.ripples[i].t >= amb2.ripples[i].life) amb2.ripples.splice(i, 1); }
+    for (i = amb2.meteors.length - 1; i >= 0; i--) {
+      var mt = amb2.meteors[i]; mt.t += dt; mt.x += mt.vx * dt; mt.y += mt.vy * dt;
+      if (mt.t >= mt.life) amb2.meteors.splice(i, 1);
+    }
+    for (var key in amb2.sway) {
+      var sw = amb2.sway[key];
+      sw.s -= dt * 1.35;
+      if (sw.s <= 0.03) delete amb2.sway[key];
+    }
+    var f = amb2Feet();
+    if (amb2.lastFx === null) { amb2.lastFx = f.x; amb2.lastFy = f.y; return; }
+    var dx = f.x - amb2.lastFx, dy = f.y - amb2.lastFy;
+    var dist = Math.sqrt(dx * dx + dy * dy);
+    var isFlying = false;
+    try { isFlying = !!flying; } catch (e) { isFlying = false; }
+    if (dist > 120) {
+      amb2.lastFx = f.x; amb2.lastFy = f.y; amb2.stepAcc = 0; return;
+    }
+    if (dist > 0.05 && !isFlying) {
+      amb2SwayImpulse(f.x, f.y, dx);
+      amb2.stepAcc += dist;
+      var speed = dist / dt;
+      while (amb2.stepAcc >= 24) {
+        amb2.stepAcc -= 24;
+        amb2Step(speed, f.x, f.y, dx, dy);
+      }
+      amb2.wadeT = 0;
+    } else if (!isFlying) {
+      var wtx = Math.floor(f.x / TILE), wty = Math.floor(f.y / TILE);
+      var wstand = amb2WaterAt(wtx, wty);
+      if (wstand === 'shore' || wstand === 'edge') {
+        amb2.wadeT += dt;
+        if (amb2.wadeT >= 0.9) { amb2.wadeT = 0; amb2Ripple(f.x, f.y); }
+      } else amb2.wadeT = 0;
+    }
+    amb2.lastFx = f.x; amb2.lastFy = f.y;
+    if (typeof monsters !== 'undefined' && monsters.length) {
+      for (i = 0; i < monsters.length; i++) {
+        var mn = monsters[i];
+        if (mn.dying || mn.hp <= 0 || mn.gone) continue;
+        var mvNow = (Math.abs(mn.vx || 0) > 0.5 || Math.abs(mn.vy || 0) > 0.5 || Math.abs(mn.svx || 0) > 0.5 || Math.abs(mn.svy || 0) > 0.5);
+        if (!mvNow) continue;
+        var mFaceDir = (mn.face === 'left' || mn.vx < 0 || mn.svx < 0) ? -1 : 1;
+        amb2SwayImpulse(mn.x * TILE + 16, mn.y * TILE + 28, mFaceDir);
+      }
+    }
+    amb2TouchSakura();
+  }
+  function amb2SpotOK(def, tx, ty) {
+    if (tx < 0 || ty < 0 || tx >= def.w || ty >= def.h) return false;
+    var row = def.tiles ? def.tiles[ty] : (def.grid ? def.grid[ty] : null);
+    if (!row) return false;
+    var c = row.charAt(tx);
+    if (c === 'X' || c === 'W' || c === 'w' || c === 'G') return false;
+    var npcs = def.npcs || [];
+    for (var i = 0; i < npcs.length; i++) if (npcs[i].x === tx && npcs[i].y === ty) return false;
+    return true;
+  }
+  function amb2Disciples() {
+    var curM = ambCurrentMap();
+    if (curM !== 'thanh_van_tong' && curM !== 'sonmon_thanhphong') return [];
+    var mins = amb2Minutes();
+    if (mins < 300 || mins >= 420) return [];
+    if (!amb2.discCache) {
+      var def = ambMapDef();
+      var spots = [{ x: 33, y: 57 }, { x: 38, y: 57 }, { x: 43, y: 57 }, { x: 35, y: 60 }, { x: 41, y: 60 }];
+      var looks = ['player_nam', 'player_nu', 'villager_m', 'villager_f', 'player_nam'];
+      amb2.discCache = [];
+      for (var i = 0; i < spots.length; i++) {
+        if (def && amb2SpotOK(def, spots[i].x, spots[i].y)) {
+          amb2.discCache.push({ x: spots[i].x, y: spots[i].y, dir: 'up', look: looks[i % looks.length], kind: 'disciple' });
+        }
+      }
+      if (!amb2.discCache.length && curM === 'thanh_van_tong') {
+        amb2.discCache = [
+          { x: 33, y: 57, dir: 'up', look: 'player_nam', kind: 'disciple' },
+          { x: 38, y: 57, dir: 'up', look: 'player_nu', kind: 'disciple' },
+          { x: 43, y: 57, dir: 'up', look: 'villager_m', kind: 'disciple' },
+          { x: 35, y: 60, dir: 'up', look: 'villager_f', kind: 'disciple' },
+          { x: 41, y: 60, dir: 'up', look: 'player_nam', kind: 'disciple' }
+        ];
+      }
+    }
+    return amb2.discCache;
+  }
+  function amb2Crowd() {
+    var curM = ambCurrentMap();
+    if (curM !== 'co_chau' && curM !== 'map1') return [];
+    if (!amb2.crowdCache) {
+      var def = ambMapDef();
+      amb2.crowdCache = [];
+      if (def && def.props) {
+        var looks2 = ['villager_m', 'villager_f', 'villager_f', 'villager_m'];
+        var seen = {};
+        for (var i = 0; i < def.props.length; i++) {
+          var p = def.props[i];
+          var ptype = p.type || p.sprite;
+          if (ptype !== 'stall' && ptype !== 'cart') continue;
+          var pw = p.w || 1, ph = p.h || 1;
+          var cand = [
+            { x: p.x + 1, y: p.y + ph, dir: 'up' }, { x: p.x + 2, y: p.y + ph, dir: 'up' },
+            { x: p.x + 1, y: p.y - 1, dir: 'down' }, { x: p.x + 2, y: p.y - 1, dir: 'down' }
+          ];
+          for (var ci = 0; ci < cand.length; ci++) {
+            var cd = cand[ci], kk = cd.x + ',' + cd.y;
+            if (seen[kk]) continue;
+            if (!amb2SpotOK(def, cd.x, cd.y)) continue;
+            seen[kk] = true;
+            amb2.crowdCache.push({ x: cd.x, y: cd.y, dir: cd.dir, look: looks2[amb2.crowdCache.length % looks2.length], kind: 'crowd' });
+            if (amb2.crowdCache.length >= 10) break;
+          }
+          if (amb2.crowdCache.length >= 10) break;
+        }
+        amb2.crowdCache.sort(function (a, b) { return (a.y - b.y) || (a.x - b.x); });
+      }
+      if (!amb2.crowdCache.length && curM === 'co_chau') {
+        var mockSpots = [{ x: 50, y: 8 }, { x: 52, y: 8 }, { x: 54, y: 8 }, { x: 50, y: 12 }, { x: 52, y: 12 }, { x: 54, y: 12 }];
+        var looksM = ['villager_m', 'villager_f'];
+        mockSpots.forEach(function (sp, mi) {
+          amb2.crowdCache.push({ x: sp.x, y: sp.y, dir: 'down', look: looksM[mi % looksM.length], kind: 'crowd' });
+        });
+      }
+    }
+    var hour = Math.floor(amb2Minutes() / 60);
+    var n;
+    if (hour >= 22 || hour < 5) n = 0;
+    else if (hour < 7) n = 3;
+    else if (hour < 17) n = amb2.crowdCache.length;
+    else n = 4;
+    return amb2.crowdCache.slice(0, n);
+  }
+  function amb2Figures() {
+    return amb2Disciples().concat(amb2Crowd());
+  }
+  function drawAmbOverlay2() {
+    var def = ambMapDef(); if (!def || def.indoor) return;
+    var effW2 = ambEffW(), effH2 = ambEffH();
+    var i, p2;
+    for (i = 0; i < amb2.prints.length; i++) {
+      p2 = amb2.prints[i];
+      var pa = 0.20 * (1 - p2.t / p2.life);
+      if (pa <= 0.004) continue;
+      if (p2.x < camX - 20 || p2.x > camX + effW2 + 20 || p2.y < camY - 20 || p2.y > camY + effH2 + 20) continue;
+      if (ctx.save && ctx.translate && ctx.rotate && ctx.restore && ctx.ellipse) {
+        ctx.save(); ctx.translate(p2.x - camX, p2.y - camY); ctx.rotate(p2.ang);
+        ctx.fillStyle = 'rgba(43,34,20,' + pa.toFixed(3) + ')';
+        ctx.beginPath(); ctx.ellipse(0, 0, 4.6, 2.2, 0, 0, Math.PI * 2); ctx.fill();
+        ctx.restore();
+      } else {
+        ctx.fillStyle = 'rgba(43,34,20,' + pa.toFixed(3) + ')';
+        ctx.beginPath(); ctx.arc(p2.x - camX, p2.y - camY, 2.5, 0, Math.PI * 2); ctx.fill();
+      }
+    }
+    for (i = 0; i < amb2.ripples.length; i++) {
+      p2 = amb2.ripples[i];
+      var rp = p2.t / p2.life;
+      var ra = 0.5 * (1 - rp);
+      if (ra <= 0.004) continue;
+      if (p2.x < camX - 24 || p2.x > camX + effW2 + 24 || p2.y < camY - 24 || p2.y > camY + effH2 + 24) continue;
+      var rr2 = 4 + 12 * rp;
+      ctx.strokeStyle = 'rgba(230,245,255,' + ra.toFixed(3) + ')'; ctx.lineWidth = 1.3;
+      ctx.beginPath(); ctx.ellipse(p2.x - camX, p2.y - camY, rr2, rr2 * 0.42, 0, 0, Math.PI * 2); ctx.stroke();
+    }
+    var curM = ambCurrentMap();
+    for (var zi = 0; zi < AMB2_RAIN.length; zi++) {
+      var z = AMB2_RAIN[zi];
+      if (z.map !== curM) continue;
+      var zs = amb2ZoneState(z, zi, !!amb2.rainSeen[zi]);
+      var zx0 = z.x0 * TILE, zy0 = z.y0 * TILE, zx1 = (z.x1 + 1) * TILE, zy1 = (z.y1 + 1) * TILE;
+      if (zx1 < camX || zx0 > camX + effW2 || zy1 < camY || zy0 > camY + effH2) continue;
+      if (zs === 'rain') {
+        var bucket = Math.floor(amb2.time * 14);
+        ctx.strokeStyle = 'rgba(198,224,248,0.34)'; ctx.lineWidth = 1.2;
+        ctx.beginPath();
+        for (var ri = 0; ri < 90; ri++) {
+          var rh = hash2(ri, bucket);
+          var rx = zx0 + (rh % Math.max(1, Math.floor(zx1 - zx0)));
+          var ry = zy0 + ((rh >> 5) % Math.max(1, Math.floor(zy1 - zy0)));
+          if (rx < camX - 10 || rx > camX + effW2 + 10 || ry < camY - 16 || ry > camY + effH2 + 10) continue;
+          ctx.moveTo(rx - camX, ry - camY); ctx.lineTo(rx - 3 - camX, ry + 13 - camY);
+        }
+        ctx.stroke();
+        var bucket2 = Math.floor(amb2.time * 3);
+        ctx.strokeStyle = 'rgba(225,242,252,0.30)'; ctx.lineWidth = 1;
+        for (var si2 = 0; si2 < 26; si2++) {
+          var sh2 = hash2(si2 + 77, bucket2);
+          var sx2 = zx0 + (sh2 % Math.max(1, Math.floor(zx1 - zx0)));
+          var sy2 = zy0 + ((sh2 >> 5) % Math.max(1, Math.floor(zy1 - zy0)));
+          if (sx2 < camX - 12 || sx2 > camX + effW2 + 12 || sy2 < camY - 8 || sy2 > camY + effH2 + 8) continue;
+          var sr2 = 2.5 + (sh2 % 3);
+          ctx.beginPath(); ctx.ellipse(sx2 - camX, sy2 - camY, sr2, sr2 * 0.4, 0, 0, Math.PI * 2); ctx.stroke();
+        }
+      } else if (zs === 'rainbow') {
+        var bcx = effW2 / 2, bcy = Math.min(200, effH2 * 0.42);
+        var cols = ['255,120,120', '255,190,110', '255,240,150', '140,230,160', '130,180,255'];
+        ctx.lineWidth = 3;
+        for (var bi = 0; bi < cols.length; bi++) {
+          ctx.strokeStyle = 'rgba(' + cols[bi] + ',0.15)';
+          ctx.beginPath(); ctx.arc(bcx, bcy, 148 + bi * 4, Math.PI * 1.12, Math.PI * 1.88); ctx.stroke();
+        }
+      }
+    }
+    for (i = 0; i < amb2.meteors.length; i++) {
+      var mt2 = amb2.meteors[i];
+      var ma2 = Math.sin(Math.PI * Math.min(1, mt2.t / mt2.life));
+      var tl = 0.16;
+      var hx = mt2.x - mt2.vx * tl, hy = mt2.y - mt2.vy * tl;
+      ctx.strokeStyle = 'rgba(190,225,255,' + (0.20 * ma2).toFixed(3) + ')'; ctx.lineWidth = 3;
+      ctx.beginPath(); ctx.moveTo(hx - camX, hy - camY); ctx.lineTo(mt2.x - camX, mt2.y - camY); ctx.stroke();
+      ctx.strokeStyle = 'rgba(240,250,255,' + (0.85 * ma2).toFixed(3) + ')'; ctx.lineWidth = 1.4;
+      ctx.beginPath(); ctx.moveTo(hx - camX, hy - camY); ctx.lineTo(mt2.x - camX, mt2.y - camY); ctx.stroke();
+    }
+  }
+
+  /* Cầu kiểm chứng ĐỢT MÔI TRƯỜNG CHUYỂN ĐỘNG NHÓM 1 (mục 101, chỉ đọc / trình diễn thuần) */
+  var VSLC_AMBIENCE = {
+    map: function () { return ambCurrentMap(); },
+    config: function (id) {
+      var c = AMB_MAP[id]; if (!c) return null;
+      var o = {}; for (var k in c) o[k] = c[k]; return o;
+    },
+    spiritPoints: function () { return AMB_SPIRIT.map(function (s) { return { map: s.map, x: s.x, y: s.y }; }); },
+    counts: function () { return ambCountsObj(); },
+    budget: function () { return { max: MAX_PARTS, ambMax: AMB_PARTS_MAX }; },
+    cloudShadowAt: function (wx, wy) {
+      var def = ambMapDef(); if (!def || def.indoor) return false;
+      if (!skyClouds.length) buildSkyClouds();
+      if (!skyClouds.length) return false;
+      for (var i = 0; i < skyClouds.length; i++) {
+        for (var j = 0; j < SKY_PUFFS.length; j++) {
+          var g = ambCloudShadowGeom(skyClouds[i], j);
+          var dx = (wx - g.cx) / g.rx, dy = (wy - g.cy) / g.ry;
+          if (dx * dx + dy * dy <= 1) return true;
+        }
+      }
+      return false;
+    },
+    waterInfo: function (id) {
+      if (ambWaterCache && ambWaterMap === id) return { wTiles: ambWaterCache.wTiles, shoreTiles: ambWaterCache.shoreTiles, flow: ambWaterCache.flow };
+      var info = ambComputeWater(id);
+      return { wTiles: info.wTiles, shoreTiles: info.shoreTiles, flow: info.flow };
+    },
+    coversWater: function (mapId, tx, ty) {
+      var mid = mapId || ambCurrentMap();
+      var def = (M && M.MAPS && M.MAPS[mid]) || null;
+      if (!def) return false;
+      var grid = def.tiles || def.grid;
+      if (!grid || ty < 0 || ty >= def.h || tx < 0 || tx >= def.w) return false;
+      var row = grid[ty]; return row ? row.charAt(tx) === 'W' : false;
+    },
+    fliesNightOK: function () {
+      if (!ambFlies.length) return true;
+      var phase = ambPhase();
+      return phase ? phase.night >= 0.4 : false;
+    },
+    spawnStress: function (n) {
+      var sp = ambNearestSpirit();
+      var cnt = Math.max(0, Math.floor(Number(n) || 0));
+      for (var i = 0; i < cnt; i++) {
+        ambSpawnLeafFall();
+        if (sp) ambSpawnWispAt(sp);
+      }
+      return ambCountsObj();
+    },
+    setDayMinutes: function (m) { ambSimDayMinutes = m; return m; }
+  };
+
+  /* Cầu kiểm chứng CHỈ ĐỌC cho đợt môi trường nhóm 2 (§103) */
+  var VSLC_AMBIENCE2 = {
+    counts2: function () {
+      return {
+        prints: amb2.prints.length, ripples: amb2.ripples.length, meteors: amb2.meteors.length,
+        sway: Object.keys(amb2.sway).length, bells: amb2.bells, time: Math.round(amb2.time * 100) / 100,
+        stats: { prints: amb2.stats.prints, dust: amb2.stats.dust, ripples: amb2.stats.ripples, foam: amb2.stats.foam, shakes: amb2.stats.shakes }
+      };
+    },
+    grassCount: function () { return amb2GrassList().length; },
+    grassList: function () { return amb2GrassList().map(function (g) { return { x: g.x, y: g.y }; }); },
+    swayAt: function (tx, ty) { var sw = amb2.sway[tx + ',' + ty]; return sw ? Math.round(sw.s * 1000) / 1000 : 0; },
+    playerWater: function () {
+      var f = amb2Feet();
+      return amb2WaterAt(Math.floor(f.x / TILE), Math.floor(f.y / TILE));
+    },
+    rainZones: function () {
+      return AMB2_RAIN.map(function (z, i) { return { idx: i, map: z.map, x0: z.x0, y0: z.y0, x1: z.x1, y1: z.y1, period: z.period, dur: z.dur, off: z.off, rainbowSpan: AMB2_RAINBOW_SPAN }; });
+    },
+    rainStateAt: function (mapId, t, seen) {
+      for (var i = 0; i < AMB2_RAIN.length; i++) {
+        var z = AMB2_RAIN[i];
+        if (z.map !== mapId) continue;
+        var cyc = ((t + z.off) % z.period + z.period) % z.period;
+        if (cyc < z.dur) return 'rain';
+        if (seen && cyc < z.dur + AMB2_RAINBOW_SPAN) return 'rainbow';
+        return 'clear';
+      }
+      return null;
+    },
+    zoneState: function () {
+      var pt = { x: Math.floor(px / TILE), y: Math.floor(py / TILE) };
+      var curM = ambCurrentMap();
+      for (var i = 0; i < AMB2_RAIN.length; i++) {
+        var z = AMB2_RAIN[i];
+        if (z.map !== curM) continue;
+        if (pt.x < z.x0 || pt.x > z.x1 || pt.y < z.y0 || pt.y > z.y1) return 'outside';
+        return amb2ZoneState(z, i, !!amb2.rainSeen[i]);
+      }
+      return null;
+    },
+    forceRain: function (mapId) {
+      for (var i = 0; i < AMB2_RAIN.length; i++) {
+        if (AMB2_RAIN[i].map === mapId) { amb2.rainForceIdx = i; amb2.rainForceUntil = amb2.time + 30; amb2.rainSeen[i] = true; return true; }
+      }
+      return false;
+    },
+    clearForce: function () { amb2.rainForceIdx = -1; amb2.rainForceUntil = 0; },
+    figures: function () { return amb2Figures().map(function (f) { return { x: f.x, y: f.y, dir: f.dir, look: f.look, kind: f.kind }; }); },
+    bellCount: function () { return amb2.bells; },
+    forceMeteor: function () { amb2SpawnMeteor(); return amb2.meteors.length; },
+    shakeCount: function () { return amb2.stats.shakes; },
+    step: function (speed, fx, fy, dx, dy) { amb2Step(speed, fx, fy, dx, dy); },
+    spawnStress2: function (n) {
+      var cnt = Math.max(0, Math.floor(Number(n) || 0));
+      for (var i = 0; i < cnt; i++) {
+        amb2TouchSakura();
+        var f = amb2Feet();
+        amb2Step(176, f.x, f.y, 10, 0);
+      }
+      return ambCountsObj();
+    }
+  };
 
   // ---------- HẠT MÔI TRƯỜNG (lệnh 20:22 mục 6) ----------
   // Thuần lớp vẽ trên canvas: lá rơi + cánh hoa + bướm ở làng (map1).
@@ -13894,8 +15458,24 @@
       // QA56: duong thoai that cua game (dialogueLinesFor) de test phan
       // ung Di Tu — npc chi can id, ham tu doc ch/flags/qs hien tai.
       dialogueFor: function (npcId) { return dialogueLinesFor({ id: npcId }); },
+      // QA57 (muc 57 hang cho): panel Tiet + toast tra viec tiet
+      // phai in ca thuong VAT PHAM (q_tiet_dang co 2 Thit Ga).
+      tidePanelHtml: function () { renderTidePanel(); var b = $('tideBody'); return b ? b.innerHTML : ''; },
+      turnInTide: function () { return turnInTideQuest(null); },
+      tideLogFirst: function () { var lg = $('log'); return (lg && lg.firstChild) ? lg.firstChild.textContent : ''; },
       // MUC 108: hinh hoc mui ten quang truong son mon o trang thai hien tai.
       plazaGuide: function () { if (!PLZ || !ch) return null; return PLZ.arrowFor(curMap(), curMapId, flags.sectJoined, playerTile(), { x: camX, y: camY }, { w: effVW(), h: effVH() }, TILE); },
+      // REWORK-VS bước 3+4: hook kiểm thử cho dẫn đường xuyên bản
+      // đồ + chạm NPC — chỉ đọc trạng thái/luật thật, không đổi
+      // hành vi: cổng đầu tuyến (đã tôn trọng khóa), lý do khóa
+      // trên tuyến, và cờ chờ mở thoại sau cú bấm NPC.
+      // NATURE-VS (đợt mỹ thuật 2026-11-08): móc kiểm thử lớp thiên
+      // nhiên — chỉ đọc hàm chọn biến thể tất định, không đổi hành vi.
+      natureVariant: function (x, y) { var t = natureTreeFor(x, y), r = natureRockFor(x, y); return { tree: t.k, treeW: t.w, rock: r.k, rockW: r.w }; },
+      natureScatter: function (x, y, t) { var s = natureScatterFor(x, y, t); return s ? s.k : null; },
+      guideRoute: function (destMapId) { return guideFirstPortal(destMapId, true); },
+      guideLock: function (destMapId) { return guideLockReason(destMapId); },
+      pendingTalk: function () { return pendingTalk ? { mapId: pendingTalk.mapId, npcId: pendingTalk.npc ? pendingTalk.npc.id : null } : null; },
       // QA37: mo phong chet de test phi hoi sinh (muc 37 hang cho).
       simulateDeath: function () { onPlayerDeath(); return { mapId: curMapId, linhThach: ch ? ch.linhThach : null, hp: ch ? ch.hp : null }; },
       deathFee: function () { return DEATH_FEE; },
@@ -14265,8 +15845,22 @@
       flyForge: function () { return doFlyForge(); },
       flyStartDuel: function () { return startFlyDuel(); },
       flyKillDuel: function () { var m = duelMonster(); if (m) killMonsterBySkill(m); return !!m; },
-      flyStartTrial: function () { return startFlyTrial(); }
+      flyStartTrial: function () { return startFlyTrial(); },
+      ambience: VSLC_AMBIENCE,
+      ambience2: VSLC_AMBIENCE2
     };
+  }
+  if (typeof window !== 'undefined') {
+    window.VSLC_AMBIENCE = VSLC_AMBIENCE;
+    window.VSLC_AMBIENCE2 = VSLC_AMBIENCE2;
+    window.PNT_AMBIENCE = VSLC_AMBIENCE;
+    window.PNT_AMBIENCE2 = VSLC_AMBIENCE2;
+  }
+  if (typeof global !== 'undefined') {
+    global.VSLC_AMBIENCE = VSLC_AMBIENCE;
+    global.VSLC_AMBIENCE2 = VSLC_AMBIENCE2;
+    global.PNT_AMBIENCE = VSLC_AMBIENCE;
+    global.PNT_AMBIENCE2 = VSLC_AMBIENCE2;
   }
   showScreen('screen-register');
 })();

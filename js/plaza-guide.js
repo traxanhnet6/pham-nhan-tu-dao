@@ -257,9 +257,22 @@
   // phủ khi còn chỗ, và kẹp cứng 4 rìa là bước cuối bắt buộc.
   // Trả { x, y, box, overlap, flipped } — x/y là góc trái-trên hộp.
   // ==========================================================
+  // QA110D ĐỢT 4 (01/11/2026, nghiệm thu chơi thật đợt gộp 08:49–
+  // 09:13): vòng đích cũ (bán kính 13–17px, chỉ hai nét vẽ) nhìn
+  // thấy trong rừng rậm nhưng nhỏ và dễ lẫn vào cỏ/đá. Tăng độ nổi
+  // bật VỪA PHẢI: ringR 18–23px (chưa tới nửa ô 32px theo chiều
+  // dọc elip 0,45 nên không che nhân vật/quái) + đĩa tối mềm dưới
+  // vòng: discR = ringR + 6, discAlpha 0,26–0,40 cùng nhịp nhấp
+  // nháy — game.js lót hai lớp elip tối (lớp ngoài mờ một nửa) để
+  // tách vòng vàng khỏi nền cỏ sáng. Các sàn độ mờ cũ giữ nguyên:
+  // alpha ∈ [0,62, 1], ringAlpha ∈ [0,55, 1] — không pha nào tắt.
   function guidePulse(nowMs) {
     var u = 0.5 + 0.5 * Math.sin((nowMs || 0) / 300);
-    return { alpha: 0.62 + 0.38 * u, ringR: 13 + 4 * u, ringAlpha: 0.55 + 0.45 * u };
+    var ringR = 18 + 5 * u;
+    return {
+      alpha: 0.62 + 0.38 * u, ringR: ringR, ringAlpha: 0.55 + 0.45 * u,
+      discR: ringR + 6, discAlpha: 0.26 + 0.14 * u
+    };
   }
   function clampBoxPos(x, y, viewPx, boxW, boxH) {
     var mx = Math.max(2, viewPx.w - boxW - 2), my = Math.max(2, viewPx.h - boxH - 2);

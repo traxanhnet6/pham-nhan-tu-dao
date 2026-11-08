@@ -13,6 +13,24 @@
   // không có mục ở đây = chưa có dải chéo, engine rơi về hướng chính
   // (js/dir8.js). Bộ 4 hướng chính trong nv60-manifest KHÔNG đổi.
   data.diag = {"nu_nv13": {"set": "nu/nv13diag", "directions": ["down_left", "down_right", "up_left", "up_right"], "actions": ["idle", "walk", "slash1", "slash2", "slash3"], "frames": 60}};
+  // REWORK-VS bước 5 (đợt làm lại di chuyển + bản đồ, 07/11/2026):
+  // đăng ký thêm 4 bộ chéo ĐÃ CÓ SẴN TRÊN ĐĨA từ đợt sản xuất
+  // 31/10/2026 (nv14–nv17, mỗi bộ đủ 20 dải × 60 frame cả 2 mức
+  // Cao/Trung, manifest nvXX-diag-manifest.json) nhưng chưa từng
+  // được khai vào registry nên engine vẫn rơi về hướng chính.
+  // Đã kiểm: audit đĩa tham số hoá (md5 sheet + md5 từng frame
+  // khớp manifest 100%, 60 frame phân biệt/dải) + mắt kiểm ảnh
+  // tiếp xúc từng look (chéo 3/4 thật, đúng nhận diện bộ chính).
+  // Khai báo: nv17 up_right là lật gương của up_left (ghi sẵn
+  // trong manifest nguồn; trang phục đối xứng). Các look còn lại
+  // (thân gốc theo nghề + nv01–nv12) chưa có nguồn view chéo —
+  // sản xuất là đợt riêng, engine vẫn rơi về hướng chính.
+  var DIAG_DIRS = ["down_left", "down_right", "up_left", "up_right"];
+  var DIAG_ACTS = ["idle", "walk", "slash1", "slash2", "slash3"];
+  data.diag["nu_nv14"] = {"set": "nu/nv14diag", "directions": DIAG_DIRS, "actions": DIAG_ACTS, "frames": 60};
+  data.diag["nam_nv15"] = {"set": "nam/nv15diag", "directions": DIAG_DIRS, "actions": DIAG_ACTS, "frames": 60};
+  data.diag["nam_nv16"] = {"set": "nam/nv16diag", "directions": DIAG_DIRS, "actions": DIAG_ACTS, "frames": 60};
+  data.diag["nu_nv17"] = {"set": "nu/nv17diag", "directions": DIAG_DIRS, "actions": DIAG_ACTS, "frames": 60};
   if (typeof module !== 'undefined' && module.exports) module.exports = data;
   else if (typeof window !== 'undefined') window.PNT_HERO_AI = data;
 })();

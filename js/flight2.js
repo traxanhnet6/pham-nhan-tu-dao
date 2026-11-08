@@ -1,7 +1,8 @@
 // Phàm Nhân Tu Đạo — NGỰ PHÁP BẢO + NGỰ LINH THÚ (mục 27 hàng chờ).
 // Hai chế độ bay còn lại, cùng với ngự kiếm (js/flight.js) thành đủ 3 chế
 // độ bay DUY NHẤT được phép của game (lệnh cứng: bay CHỈ ở 3 chế độ ngự).
-// Mọi chế độ dùng CHUNG khung của ngự kiếm: tốc độ ×1,8 (FLIGHT.SPEED_MULT),
+// Mọi chế độ dùng CHUNG khung của ngự kiếm: tốc độ bay trần phẳng
+// 198 px/giây (FLIGHT.TOP_SPEED; REWORK-VS bước 2 đổi từ hệ số ×1,8 cũ),
 // va chạm theo chiều cao (FLIGHT.FLY_BLOCKED), cổng chỉ kích hoạt khi đã
 // hạ xuống đất đi bộ (game.js chỉ gọi checkPortal khi !flying), vào chiến
 // đấu / nói chuyện / hái / thổ nạp / ra chiêu thì tự hạ (các điểm gọi

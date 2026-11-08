@@ -45,7 +45,10 @@
   var COLORS = {
     player: '#ffd75e', npc: '#7fd7ff', portal: '#ff9f1e', monster: '#ff5a4e',
     walk: '#3d6b35', blocked: '#1e2a1a', path: '#8a7a52', water: '#3a7bd5',
-    border: '#8b5a2b', label: '#ffe9a8'
+    border: '#8b5a2b', label: '#ffe9a8',
+    // REWORK-VS bước 7: chấm ĐÍCH nhiệm vụ đang theo dõi — khung
+    // trắng, lõi vàng (nổi trên mọi chấm khác, vẽ sau cùng).
+    target: '#ffffff', targetCore: '#ffd75e'
   };
 
   function num(v, d) { v = +v; return isFinite(v) ? v : d; }
@@ -108,7 +111,7 @@
       if (!p) return null;
       return { x: clamp(Math.floor(num(p.x, 0)), 0, Math.max(0, w - 1)), y: clamp(Math.floor(num(p.y, 0)), 0, Math.max(0, h - 1)) };
     }
-    var res = { player: pt(state.player), npcs: [], portals: [], monsters: [] };
+    var res = { player: pt(state.player), npcs: [], portals: [], monsters: [], target: pt(state.target) };
     (state.npcs || []).forEach(function (n) { var p = pt(n); if (p) res.npcs.push(p); });
     portalsOf(map || {}).forEach(function (g) { var p = pt(g); if (p) res.portals.push({ x: p.x, y: p.y, to: g.to, gate: g.gate }); });
     (state.monsters || []).forEach(function (m) { var p = pt(m); if (p) res.monsters.push(p); });
@@ -144,6 +147,15 @@
       ctx.fillStyle = '#202020';
       ctx.fillRect(d.player.x * cell - 2, d.player.y * cell - 2, cell + 4, cell + 4);
       dot(d.player, COLORS.player, 1);
+    }
+    // REWORK-VS bước 7: chấm đích vẽ SAU CÙNG (trên mọi chấm khác):
+    // viền tối, khung trắng, lõi vàng đúng ô đích.
+    if (d.target) {
+      ctx.fillStyle = '#202020';
+      ctx.fillRect(d.target.x * cell - 3, d.target.y * cell - 3, cell + 6, cell + 6);
+      ctx.fillStyle = COLORS.target;
+      ctx.fillRect(d.target.x * cell - 2, d.target.y * cell - 2, cell + 4, cell + 4);
+      dot(d.target, COLORS.targetCore, 0);
     }
     return { w: w, h: h, cell: cell };
   }
